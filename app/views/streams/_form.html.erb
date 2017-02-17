@@ -1,0 +1,60 @@
+<%= form_for(stream) do |f| %>
+  <% if stream.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(stream.errors.count, "error") %> prohibited this stream from being saved:</h2>
+
+      <ul>
+      <% stream.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :station_id %>
+    <%= f.select :station_id, Station.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :source_type %>
+    <%= f.select :source_type, ['application/ogg', 'audio/ogg', 'audio/wave', 'audio/wav', 'xaudio/x-wav', 'xaudio/x-pn-wav', 'audio/webm', 'audio/mpeg' ], :include_blank => true %>
+  </div>
+
+  <div class="field">
+        <% if streamUrlIsAudio?(stream.url_type) %> 
+        <%= audio_tag(stream.name, controls: true)  %> 
+        <% end %> 
+  </div>
+
+  <div class="field">
+    <%= f.label :url_type %>
+    <%= f.select :url_type, ['Stream', 'Web', 'Facebook', 'Twitter', 'Pinterest'] %>
+
+  </div>
+
+  <div class="field">
+    <%= f.label :head_is_working %>?
+    <%= f.check_box :head_is_working%>
+  </div>
+
+  <div class="field">
+    <%= f.label :listen_is_working %>?
+    <%= f.check_box :listen_is_working%>
+  </div>
+
+  <div class="field">
+    <%= f.label :use_web %>?
+    <%= f.check_box :use_web%>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+class Theft < ApplicationRecord
+end

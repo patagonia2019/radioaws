@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sessions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Api key</th>
+      <th>Session</th>
+      <th>Token</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sessions.each do |session| %>
+      <tr>
+        <td><%= session.api_key %></td>
+        <td><%= session.session_id %></td>
+        <td><%= session.token_id %></td>
+        <td><%= session.beacon_id %></td>
+        <td><%= link_to 'Show', session %></td>
+        <td><%= link_to 'Edit', edit_session_path(session) %></td>
+        <td><%= link_to 'Destroy', session, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Session', new_session_path %>

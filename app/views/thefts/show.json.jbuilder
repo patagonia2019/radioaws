@@ -1,0 +1,1 @@
+json.partial! "thefts/theft", theft: @theft

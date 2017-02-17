@@ -1,0 +1,6 @@
+  <tr>
+    <td><%= country.name %></td>
+    <td><%= Land.find(country.land_id).name if country.land_id? %></td>
+    <td><%= link_to 'Edit', edit_country_path(country), class: "btn btn-success" %></td>
+    <td><%= link_to 'Destroy', country, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>

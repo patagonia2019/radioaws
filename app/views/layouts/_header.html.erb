@@ -1,0 +1,21 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+    <%= link_to full_title(), root_url, id: "logo" %>
+    <br>
+    <%= link_to full_subtitle() %> 
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to t("Home"),   root_url %></li>
+        <li><%= link_to t("Thefts"),   thefts_url %></li>
+        <li><%= link_to t("Stations"),   stations_url %></li>
+        <li><%= link_to t("Streams"),   streams_url %></li>
+        <li><%= link_to t("Lands"),   lands_url %></li>
+        <li><%= link_to t("Countries"),   countries_url %></li>
+        <li><%= link_to t("Districts"),   districts_url %></li>
+        <li><%= link_to t("Cities"),   cities_url %></li>
+        <li><%= link_to t("Help"),   help_url %></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+

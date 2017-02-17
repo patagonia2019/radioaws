@@ -1,0 +1,8 @@
+  <tr>
+    <td><%= city.name %></td>
+    <td><%= District.find(city.district_id).name if city.district_id? %></td>
+    <td><%= Country.find(District.find(city.district_id).country_id).name if city.district_id? %></td>
+    <td><%= Land.find(Country.find(District.find(city.district_id).country_id).land_id).name if city.district_id? %></td>
+    <td><%= link_to 'Edit', edit_city_path(city), class: "btn btn-success" %></td>
+    <td><%= link_to 'Destroy', city, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>

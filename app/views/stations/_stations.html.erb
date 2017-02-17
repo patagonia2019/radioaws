@@ -1,0 +1,14 @@
+  <tr>
+    <td><%= station.name %></td>
+    <td><%= station.tuning_dial %></td>
+    <td><%= station.internal_hash %></td>
+    <td><%= station.is_am %></td>
+    <td><%= url_to_image(station.imageUrl) %></td>
+    <td><%= Land.find(Country.find(District.find(City.find(station.city_id).district_id).country_id).land_id).name if station.city_id? %></td>
+    <td><%= Country.find(District.find(City.find(station.city_id).district_id).country_id).name if station.city_id? %></td>
+    <td><%= District.find(City.find(station.city_id).district_id).name if station.city_id? %></td>
+    <td><%= City.find(station.city_id).name if station.city_id? %></td>
+    <td><%= link_to 'Edit', edit_station_path(station), class: "btn btn-success" %></td>
+    <td><%= link_to 'Destroy', station, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+

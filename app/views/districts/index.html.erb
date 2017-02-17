@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Districts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Country</th>
+      <th>Land</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render @districts %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New District', new_district_path, class: "btn btn-primary" %>

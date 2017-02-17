@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @station.name %>
+</p>
+
+<p>
+  <strong>Tuning dial:</strong>
+  <%= @station.tuning_dial %>
+</p>
+
+<p>
+  <strong>Hash:</strong>
+  <%= @station.internal_hash %>
+</p>
+
+<p>
+  <strong>Is am:</strong>
+  <%= @station.is_am %>
+</p>
+
+<p>
+  <strong>Imageurl:</strong>
+  <%= image_tag @station.imageUrl, :size => "100x50" %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= City.find(@station.city_id).name %>,
+  <%= District.find(City.find(@station.city_id).district_id).name %>,
+  <%= Country.find(District.find(City.find(@station.city_id).district_id).country_id).name %>,
+  <%= Land.find(Country.find(District.find(City.find(@station.city_id).district_id).country_id).land_id).name %>
+</p>
+
+<%= link_to 'Edit', edit_station_path(@station) %> |
+<%= link_to 'Back', stations_path %>

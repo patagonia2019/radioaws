@@ -1,0 +1,37 @@
+<%= form_for(session) do |f| %>
+  <% if session.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(session.errors.count, "error") %> prohibited this session from being saved:</h2>
+
+      <ul>
+      <% session.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :api_key %>
+    <%= f.text_field :api_key %>
+  </div>
+
+  <div class="field">
+    <%= f.label :session_id %>
+    <%= f.text_field :session_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :beacon_id %>
+    <%= f.number_field :beacon_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :token_id %>
+    <%= f.number_field :token_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

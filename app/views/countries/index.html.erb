@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Countries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Land</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+     <%= render @countries %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Country', new_country_path, class: "btn btn-primary" %>

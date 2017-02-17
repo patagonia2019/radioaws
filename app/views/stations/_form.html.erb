@@ -1,0 +1,48 @@
+<%= form_for(station) do |f| %>
+  <% if station.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(station.errors.count, "error") %> prohibited this station from being saved:</h2>
+
+      <ul>
+      <% station.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tuning_dial %>
+    <%= f.text_field :tuning_dial %>
+  </div>
+
+  <div class="field">
+    <%= f.label :hash %>
+    <%= f.text_field :internal_hash %>
+  </div>
+
+  <div class="field">
+    <%= f.label :is_am %>
+    <%= f.check_box :is_am %>
+  </div>
+
+  <div class="field">
+    <%= f.label :imageUrl %>
+    <%= f.text_field :imageUrl %>
+    <%= image_tag @station.imageUrl, :size => "100x50" if @station.imageUrl? %>
+  </div>
+
+  <div class="field">
+    <%= f.label :city_id %>
+    <%= f.select :city_id, City.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

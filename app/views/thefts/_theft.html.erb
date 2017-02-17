@@ -1,0 +1,6 @@
+      <tr>
+        <td><%= theft.url %></td>
+        <td><%= link_to 'Run', run_path(theft), method: :run, class: "btn btn-primary" %></td>
+        <td><%= link_to 'Edit', edit_theft_path(theft), class: "btn btn-success" %></td>
+        <td><%= link_to 'Destroy', theft, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>

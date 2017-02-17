@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @stream.name %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @stream.url_type %>
+</p>
+
+<p>
+  <strong>Station:</strong>
+  <%= @stream.station_id %>
+</p>
+<p>
+  <strong>Use_web:</strong>
+  <%= @stream.use_web %>
+</p>
+
+<%= link_to 'Edit', edit_stream_path(@stream) %> |
+<%= link_to 'Back', streams_path %>

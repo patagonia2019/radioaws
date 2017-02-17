@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Api key:</strong>
+  <%= @session.api_key %>
+</p>
+
+<p>
+  <strong>Session:</strong>
+  <%= @session.session_id %>
+</p>
+
+<p>
+  <strong>Token:</strong>
+  <%= @session.token_id %>
+</p>
+
+<%= link_to 'Edit', edit_session_path(@session) %> |
+<%= link_to 'Back', sessions_path %>

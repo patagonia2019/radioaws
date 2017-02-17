@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8FBC3743DF5FABA2AF665B1D1E3EA6F54C0705C7",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "ECB4E5D30EB201A75BEE03B65290D3567A84F732" : 9223372036854775807,
+    "8FBC3743DF5FABA2AF665B1D1E3EA6F54C0705C7" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B85BC1A0-B98A-4A27-B54A-F88EE82A0896",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "ECB4E5D30EB201A75BEE03B65290D3567A84F732" : "..\/Job\/southfox\/jfcore",
+    "8FBC3743DF5FABA2AF665B1D1E3EA6F54C0705C7" : "radio\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "LDLARadio",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/LDLARadio.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/southfox\/radio.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8FBC3743DF5FABA2AF665B1D1E3EA6F54C0705C7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/southfox\/jfcore.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ECB4E5D30EB201A75BEE03B65290D3567A84F732"
+    }
+  ]
+}
