@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # This line is needed until OGVKit is fully published to CocoaPods
 # Remove once packages published:
-source 'https://github.com/brion/OGVKit-Specs.git'
+# source 'https://github.com/brion/OGVKit-Specs.git'
 
 use_frameworks!
 
@@ -18,7 +18,7 @@ def iosPods
     pod 'NVActivityIndicatorView', '~> 3.1'
     pod 'SCLAlertView', '~> 0.7'
     pod 'SwiftIconFont', '~> 2.6'
-    pod 'OGVKit'
+    #    pod 'OGVKit'
 end
 
 target 'LDLARadio' do

@@ -22,7 +22,6 @@
 		703373A81E284C1800E6D458 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A91E291DF600E6D458 /* WebViewController.swift */; };
 		7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7073F3B61E155C05004DBB59 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		70862BC21E307B4100846BAA /* OGVPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70862BC11E307B4100846BAA /* OGVPlayerViewController.m */; };
 		708AAD9E1E27B407004D88C3 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9D1E27B407004D88C3 /* Station.swift */; };
 		708AADA01E27B586004D88C3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
@@ -298,7 +297,6 @@
 				708AAD9E1E27B407004D88C3 /* Station.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
 				421AAB661CE4FCCB007444CA /* RadioListTableViewController.swift in Sources */,
-				70862BC21E307B4100846BAA /* OGVPlayerViewController.m in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				703373A61E284B6400E6D458 /* City.swift in Sources */,
 				42AA6D151D04CE63002A8B3F /* StreamListManager.swift in Sources */,
