@@ -32,13 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func registerSettingsBundle() {
         var appDefaults = [String:AnyObject]()
-        appDefaults["server_url"] = "http://192.168.250.185:3000" as AnyObject?
+        appDefaults["server_url"] = "http://ec2-34-214-84-98.us-west-2.compute.amazonaws.com:3000" as AnyObject?
         UserDefaults.standard.register(defaults: appDefaults)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
     }
     
-    func defaultsChanged() {
+    @objc func defaultsChanged() {
         userDefault = UserDefaults.standard
     }
     

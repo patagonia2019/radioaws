@@ -8,8 +8,6 @@
 
 import Foundation
 import UIKit
-import Localize_Swift
-import SCLAlertView
 import JFCore
 
 class WebViewController: BaseViewController, UIWebViewDelegate {
@@ -26,8 +24,8 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
         }
         web.scrollView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
         
-        if let path = Bundle.main.path(forResource: Localize.currentLanguage(), ofType: "lproj"),
-            let bundle = Bundle(path: path),
+        let path = Bundle.main.bundlePath
+        if let bundle = Bundle(path: path),
             let name = fileName
         {
             let url = URL(fileURLWithPath: bundle.bundlePath + "/" + name)

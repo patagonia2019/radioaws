@@ -9,16 +9,10 @@ use_frameworks!
 def sharedPods
     pod 'AlamofireObjectMapper'
     pod 'AlamofireImage'
-    pod 'Localize-Swift', '~> 1.7'
-    pod 'JFCore', :path => '/Users/javierfuchs/Job/southfox/jfcore'
+    pod 'JFCore', :path => '/Users/mobilepatagonia/Job/southfox/jfcore'
 end
 
 def iosPods
-    pod 'DGElasticPullToRefresh', '~> 1.1'
-    pod 'NVActivityIndicatorView', '~> 3.1'
-    pod 'SCLAlertView', '~> 0.7'
-    pod 'SwiftIconFont', '~> 2.6'
-    #    pod 'OGVKit'
 end
 
 target 'LDLARadio' do

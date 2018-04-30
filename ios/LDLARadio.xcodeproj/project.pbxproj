@@ -55,8 +55,7 @@
 		708AAD9D1E27B407004D88C3 /* Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		708AAD9F1E27B586004D88C3 /* StationListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationListManager.swift; sourceTree = "<group>"; };
 		70D4EC031E304A9B008DE753 /* common.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = common.css; sourceTree = "<group>"; };
-		70D4EC061E3064EA008DE753 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
-		70D4EC081E3064EF008DE753 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/LDLARadio.html; sourceTree = "<group>"; };
+		7A6DA202209754560004126A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/LDLARadio.html; sourceTree = "<group>"; };
 		7EAAF7AFF51F030A534694AA /* Pods-LDLARadio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.release.xcconfig"; sourceTree = "<group>"; };
 		EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -168,7 +167,6 @@
 				428139EB1CE44B7300972264 /* Frameworks */,
 				428139EC1CE44B7300972264 /* Resources */,
 				6CE87B9F3FBDAB5D9DC48DC1 /* [CP] Embed Pods Frameworks */,
-				78F0B74CA73048EC6C6F41C6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -192,7 +190,7 @@
 					428139ED1CE44B7300972264 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 27XTSJS68A;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0930;
 						LastSwiftUpdateCheck = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -244,28 +242,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		78F0B74CA73048EC6C6F41C6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7E4195A1384A60A4C5463141 /* [CP] Check Pods Manifest.lock */ = {
@@ -274,13 +268,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LDLARadio-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -327,8 +324,7 @@
 		70D4EC071E3064EA008DE753 /* LDLARadio.html */ = {
 			isa = PBXVariantGroup;
 			children = (
-				70D4EC061E3064EA008DE753 /* Base */,
-				70D4EC081E3064EF008DE753 /* en */,
+				7A6DA202209754560004126A /* en */,
 			);
 			name = LDLARadio.html;
 			sourceTree = "<group>";
@@ -443,9 +439,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = "LDLARadio/LDLARadio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -465,9 +463,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OBJC_BRIDGING_HEADER = "LDLARadio/LDLARadio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
