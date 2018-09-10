@@ -260,7 +260,7 @@ class StreamPersistenceManager: NSObject {
 
             guard let assetCache = asset.assetCache else { return (nil, nil) }
 
-            let mediaCharacteristics = [AVMediaCharacteristicAudible, AVMediaCharacteristicLegible]
+            let mediaCharacteristics = [AVMediaCharacteristic.audible, AVMediaCharacteristic.legible]
             
             for mediaCharacteristic in mediaCharacteristics {
                 if let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) {

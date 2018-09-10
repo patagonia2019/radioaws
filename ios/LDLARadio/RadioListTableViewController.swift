@@ -93,7 +93,7 @@ class RadioListTableViewController: UITableViewController {
             let stream = streams.first else { return }
         
         if let use_web = stream.use_web, use_web == true {
-            performSegue(withIdentifier: RadioListTableViewController.presentOgvViewControllerSegueIdentifier, sender: cell)
+            performSegue(withIdentifier: RadioListTableViewController.presentWebViewControllerSegueIdentifier, sender: cell)
             return
         } else {
             performSegue(withIdentifier: RadioListTableViewController.presentPlayerViewControllerSegueIdentifier, sender: cell)
@@ -164,18 +164,18 @@ class RadioListTableViewController: UITableViewController {
                 webViewControler.urlLink = URL(string: streamLink)
             }
             
-        } else if segue.identifier == RadioListTableViewController.presentOgvViewControllerSegueIdentifier {
-            guard let cell = sender as? RadioListTableViewCell,
-                let ogvViewControler = segue.destination as? OGVPlayerViewController,
-                let station = cell.station,
-                let stream = cell.stream,
-                let city = cell.city,
-                let streamLink = stream.name,
-                let stationName = station.name,
-                let cityName = city.name
-                else { return }
-            ogvViewControler.title = "\(stationName) \(cityName)"
-            ogvViewControler.urlLink = URL(string: streamLink)
+//        } else if segue.identifier == RadioListTableViewController.presentOgvViewControllerSegueIdentifier {
+//            guard let cell = sender as? RadioListTableViewCell,
+//                let ogvViewControler = segue.destination as? OGVPlayerViewController,
+//                let station = cell.station,
+//                let stream = cell.stream,
+//                let city = cell.city,
+//                let streamLink = stream.name,
+//                let stationName = station.name,
+//                let cityName = city.name
+//                else { return }
+//            ogvViewControler.title = "\(stationName) \(cityName)"
+//            ogvViewControler.urlLink = URL(string: streamLink)
         }
         else if segue.identifier == RadioListTableViewController.presentPlayerViewControllerSegueIdentifier {
             guard let cell = sender as? RadioListTableViewCell,
