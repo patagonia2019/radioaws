@@ -20,11 +20,11 @@ gem 'rails', '~> 5.0.1'
 gem 'rails-i18n'
 # Use sqlite3 as the database for Active Record
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', '1.3.13'
 end
-#group :production do
-  #gem 'postgresql'
-#end
+group :production do
+  gem 'sqlite3', '1.3.13'
+end
 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
@@ -73,3 +73,7 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
 gem 'rest-client'
+gem 'thin'
+
+
+
