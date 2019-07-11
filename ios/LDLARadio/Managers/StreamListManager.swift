@@ -7,18 +7,15 @@
 //
 
 import Foundation
-import AVFoundation
-import ObjectMapper
-import Alamofire
-import AlamofireObjectMapper
+import CoreData
+import AlamofireCoreData
 import JFCore
 
-class StreamListManager: NSObject {
+struct StreamListManager {
     // MARK: Properties
     
-    /// A singleton instance of StreamListManager.
-    static let sharedManager = StreamListManager()
-    
+    static var instance = StreamListManager()
+
     /// Notification for when download progress has changed.
     static let didLoadNotification = NSNotification.Name(rawValue: "StreamListManagerDidLoadNotification")
 
@@ -29,23 +26,31 @@ class StreamListManager: NSObject {
     
     // MARK: Initialization
     
-    override private init() {
-        super.init()
-        
-        /*
-         Do not setup the StreamListManager.assets until StreamPersistenceManager has
-         finished restoring.  This prevents race conditions where the `StreamListManager`
-         creates a list of `Stream`s that doesn't reuse already existing `AVURLAssets`
-         from existng `AVAssetDownloadTasks.
-         */
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(handleStreamPersistenceManagerDidRestoreStateNotification(_:)), name: StreamPersistenceManagerDidRestoreStateNotification, object: nil)
+    init() {
+        update(tryRequest: true)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: StreamPersistenceManagerDidRestoreStateNotification, object: nil)
+    mutating func update(tryRequest: Bool = false) {
+        // try memory
+        if streams.count == 0 {
+            // Try the database
+            streams = streamsFetch() ?? [Stream]()
+        }
+        // try request
+        if tryRequest && streams.count == 0 {
+            setup()
+        }
     }
     
+    /// Function to obtain all the albums sorted by title
+    func streamsFetch() -> [Stream]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+
     // MARK: Stream access
     
     /// Returns the number of Streams.
@@ -59,72 +64,37 @@ class StreamListManager: NSObject {
     }
 
     /// Returns the streams for a given station id.
-    func stream(byStation stationId: Int?) -> [Stream]? {
-        var array = [Stream]()
-        for stream in streams {
-            if stream.station_id == stationId {
-                array.append(stream)
-            }
-        }
+    func stream(byName name: String?) -> Stream? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let name = name else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "name = %s", name)
+        let array = try? context.fetch(req)
+        return array?.first
+    }
+    
+    /// Returns the streams for a given station id.
+    func stream(byStation stationId: Int16?) -> [Stream]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let stationId = stationId else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "station.id = %d", stationId)
+        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let array = try? context.fetch(req)
         return array
     }
  
-    func handleStreamPersistenceManagerDidRestoreStateNotification(_ notification: Notification) {
-        DispatchQueue.main.async {
-            guard let server = UserDefaults.standard.string(forKey: "server_url") else {
+    func setup() {
+        RestApi.instance.request(usingQuery: "/streams.json", type: Many<Stream>.self) { error in
+            guard let error = error else {
+                NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: nil)
                 return
             }
-            let streamsJsonUrl = server + "/streams.json"
-
-            Alamofire.request(streamsJsonUrl, method:.get).validate().responseArray { (response: DataResponse<[Stream]>) in
-                if let result = response.result.value {
-                    for entry in result {
-                        // Get the Stream name from the dictionary
-                        guard let streamName = entry.name else { continue }
-                        
-                        // To ensure that we are reusing AVURLAssets we first find out if there is one available for an already active download.
-                        if let asset = StreamPersistenceManager.sharedManager.assetForStream(withName: streamName) {
-                            guard let url = asset.name,
-                                let streamPlaylistURL = URL(string: url),
-                                let isWorking = asset.listen_is_working,
-                                isWorking else { continue }
-                            asset.urlAsset = AVURLAsset(url: streamPlaylistURL)
-                            self.streams.append(asset)
-                        }
-                        else {
-                            /*
-                             If an existing `AVURLAsset` is not available for an active
-                             download we then see if there is a file URL available to
-                             create an asset from.
-                             */
-                            if let asset = StreamPersistenceManager.sharedManager.localAssetForStream(withName: streamName) {
-                                guard let url = asset.name,
-                                    let streamPlaylistURL = URL(string: url),
-                                    let isWorking = asset.listen_is_working,
-                                    isWorking else { continue }
-                                asset.urlAsset = AVURLAsset(url: streamPlaylistURL)
-                                self.streams.append(asset)
-                            }
-                            else {
-                                guard let url = entry.name,
-                                    let streamPlaylistURL = URL(string: url),
-                                    let isWorking = entry.listen_is_working,
-                                    isWorking else { continue }
-                                entry.urlAsset = AVURLAsset(url: streamPlaylistURL)
-                                self.streams.append(entry)
-                            }
-                        }
-                    }
-                    NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: self)
-                }
-                else if let error = response.result.error {
-                    let myerror = JFError(code: 101,
-                                          desc: "failed to get appId=\(1) userId=\(1) locationId=\(1)",
-                        reason: "something get wrong on request \(streamsJsonUrl)", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                        underError: error as NSError?)
-                    NotificationCenter.default.post(name: StreamListManager.errorNotification, object: self)
-                }
-            }
+            let jerror = JFError(code: 101,
+                                 desc: "failed to get streams.json",
+                                 reason: "something get wrong on request streams.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
+                underError: error as NSError?)
+            NotificationCenter.default.post(name: StreamListManager.errorNotification, object: jerror)
         }
     }
 }

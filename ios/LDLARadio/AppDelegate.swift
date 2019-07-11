@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JFCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var userDefault: UserDefaults?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         registerSettingsBundle()
         
@@ -30,9 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+    func applicationWillResignActive(_ application: UIApplication) {
+        CoreDataManager.instance.save()
+    }
+    
     func registerSettingsBundle() {
         var appDefaults = [String:AnyObject]()
-        appDefaults["server_url"] = "http://ec2-34-214-84-98.us-west-2.compute.amazonaws.com:3000" as AnyObject?
+        appDefaults["server_url"] = RestApi.Constants.Service.server as AnyObject?
         UserDefaults.standard.register(defaults: appDefaults)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)

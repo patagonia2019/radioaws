@@ -22,7 +22,7 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
         guard let web : UIWebView = self.view as? UIWebView else {
             return
         }
-        web.scrollView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        web.scrollView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
         
         let path = Bundle.main.bundlePath
         if let bundle = Bundle(path: path),
@@ -47,10 +47,10 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
         }
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if navigationType == .linkClicked {
             if let url = request.url {
-                UIApplication.shared.openURL(url)
+//                UIApplication.shared.open(url, options: [], completionHandler: nil)
                 return false
             }
         }

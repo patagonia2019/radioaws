@@ -7,18 +7,16 @@
 //
 
 import Foundation
-import AVFoundation
-import ObjectMapper
-import Alamofire
-import AlamofireObjectMapper
+import CoreData
+import AlamofireCoreData
 import JFCore
 
-class StationListManager: NSObject {
+struct StationListManager {
     // MARK: Properties
     
     /// A singleton instance of StationListManager.
-    static let sharedManager = StationListManager()
-    
+    static var instance = StationListManager()
+
     /// Notification for when download progress has changed.
     static let didLoadNotification = NSNotification.Name(rawValue: "StationListManagerDidLoadNotification")
 
@@ -29,25 +27,34 @@ class StationListManager: NSObject {
     
     // MARK: Initialization
     
-    override private init() {
-        super.init()
-        
-        /*
-         Do not setup the StationListManager.assets until StationPersistenceManager has
-         finished restoring.  This prevents race conditions where the `StationListManager`
-         creates a list of `Station`s that doesn't reuse already existing `AVURLAssets`
-         from existng `AVAssetDownloadTasks.
-         */
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(handleStationPersistenceManagerDidRestoreStateNotification(_:)), name: StationPersistenceManagerDidRestoreStateNotification, object: nil)
+    init() {
+        update(tryRequest: true)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: StationPersistenceManagerDidRestoreStateNotification, object: nil)
+    mutating func update(tryRequest: Bool = false) {
+        // try memory
+        if stations.count == 0 {
+            // Try the database
+            stations = stationsFetch() ?? [Station]()
+        }
+        // try request
+        if tryRequest && stations.count == 0 {
+            setup()
+        }
     }
-    
+
+
     // MARK: Station access
     
+    /// Function to obtain all the albums sorted by title
+    func stationsFetch() -> [Station]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<Station>(entityName: "Station")
+        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+
     /// Returns the number of Stations.
     func numberOfStations() -> Int {
         return stations.count
@@ -59,38 +66,26 @@ class StationListManager: NSObject {
     }
 
     /// Returns an Station for a given station id.
-    func station(by id: Int?) -> Station? {
-        for station in stations {
-            if station.id == id {
-                return station
-            }
-        }
-        return nil
+    func station(by id: Int16?) -> Station? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<Station>(entityName: "Station")
+        guard let id = id else { return nil }
+        req.predicate = NSPredicate(format: "id = %d", id)
+        let array = try? context.fetch(req)
+        return array?.first
     }
     
-    func handleStationPersistenceManagerDidRestoreStateNotification(_ notification: Notification) {
-        DispatchQueue.main.async {
-            guard let server = UserDefaults.standard.string(forKey: "server_url") else {
+    func setup() {
+        RestApi.instance.request(usingQuery: "/stations.json", type: Many<Station>.self) { error in
+            guard let error = error else {
+                NotificationCenter.default.post(name: StationListManager.didLoadNotification, object: nil)
                 return
             }
-            let stationsJsonUrl = server + "/stations.json"
-
-            Alamofire.request(stationsJsonUrl, method:.get).validate().responseArray { (response: DataResponse<[Station]>) in
-                if let result = response.result.value {
-                    for entry in result {
-                        // Get the Station name from the dictionary
-                        self.stations.append(entry)
-                    }
-                    NotificationCenter.default.post(name: StationListManager.didLoadNotification, object: self)
-                }
-                else if let error = response.result.error {
-                    let myerror = JFError(code: 101,
-                                          desc: "failed to get appId=\(1) userId=\(1) locationId=\(1)",
-                        reason: "something get wrong on request \(stationsJsonUrl)", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                        underError: error as NSError?)
-                    NotificationCenter.default.post(name: StationListManager.errorNotification, object: self)
-                }
-            }
+            let jerror = JFError(code: 101,
+                                 desc: "failed to get stations.json",
+                                 reason: "something get wrong on request stations.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
+                underError: error as NSError?)
+            NotificationCenter.default.post(name: StationListManager.errorNotification, object: jerror)
         }
     }
 }

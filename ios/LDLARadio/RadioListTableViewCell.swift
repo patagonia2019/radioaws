@@ -25,27 +25,7 @@ class RadioListTableViewCell: UITableViewCell {
     @IBOutlet weak var downloadProgressView: UIProgressView!
     
     weak var delegate: AssetListTableViewCellDelegate?
-    
-    var station: Station? {
-        didSet {
-            if let station = station {
-                guard let imageUrl = station.imageUrl,
-                    let url = URL(string: imageUrl) else { return }
-                
-                assetImageView.af_setImage(withURL: url)
-                assetNameLabel.text = station.name
-            }
-        }
-    }
-    
-    var city: City? {
-        didSet {
-            if let city = city {
-                cityLabel.text = city.name
-            }
-        }
-    }
-    
+        
     var stream: Stream? {
         didSet {
             if let stream = stream {
@@ -64,6 +44,13 @@ class RadioListTableViewCell: UITableViewCell {
                     break
                 }
                 
+                assetImageView.image = nil
+                if let imageUrl = stream.station?.imageUrl,
+                    let url = URL(string: imageUrl) {
+                    assetImageView.af_setImage(withURL: url)
+                }
+                cityLabel.text = stream.station?.city?.name
+                assetNameLabel.text = stream.station?.name
                 
                 let notificationCenter = NotificationCenter.default
                 notificationCenter.addObserver(self, selector: #selector(handleStreamDownloadStateChangedNotification(_:)), name: StreamDownloadStateChangedNotification, object: nil)
@@ -77,9 +64,20 @@ class RadioListTableViewCell: UITableViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        assetNameLabel.text = ""
+        cityLabel.text = ""
+        assetImageView.image = nil
+        downloadStateLabel.text = ""
+        downloadStateLabel.text = ""
+        downloadProgressView.isHidden = true
+    }
+    
     // MARK: Notification handling
     
-    func handleStreamDownloadStateChangedNotification(_ notification: Notification) {
+    @objc func handleStreamDownloadStateChangedNotification(_ notification: Notification) {
         guard let assetStreamName = notification.userInfo![Stream.Keys.name] as? String,
             let downloadStateRawValue = notification.userInfo![Stream.Keys.downloadState] as? String,
             let downloadState = Stream.DownloadState(rawValue: downloadStateRawValue),
@@ -103,7 +101,7 @@ class RadioListTableViewCell: UITableViewCell {
         }
     }
     
-    func handleAssetDownloadProgressNotification(_ notification: NSNotification) {
+    @objc func handleAssetDownloadProgressNotification(_ notification: NSNotification) {
         guard let assetStreamName = notification.userInfo![Stream.Keys.name] as? String, let asset = stream , asset.name == assetStreamName else { return }
         guard let progress = notification.userInfo![Stream.Keys.percentDownloaded] as? Double else { return }
         

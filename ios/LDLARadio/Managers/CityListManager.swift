@@ -7,18 +7,16 @@
 //
 
 import Foundation
-import AVFoundation
-import ObjectMapper
-import Alamofire
-import AlamofireObjectMapper
+import CoreData
+import AlamofireCoreData
 import JFCore
 
-class CityListManager: NSObject {
+struct CityListManager {
     // MARK: Properties
     
     /// A singleton instance of CityListManager.
-    static let sharedManager = CityListManager()
-    
+    static var instance = CityListManager()
+
     /// Notification for when download progress has changed.
     static let didLoadNotification = NSNotification.Name(rawValue: "CityListManagerDidLoadNotification")
 
@@ -28,23 +26,22 @@ class CityListManager: NSObject {
     private var cities = [City]()
     
     // MARK: Initialization
-    
-    override private init() {
-        super.init()
-        
-        /*
-         Do not setup the CityListManager.assets until CityPersistenceManager has
-         finished restoring.  This prevents race conditions where the `CityListManager`
-         creates a list of `City`s that doesn't reuse already existing `AVURLAssets`
-         from existng `AVAssetDownloadTasks.
-         */
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(handleCityPersistenceManagerDidRestoreStateNotification(_:)), name: CityPersistenceManagerDidRestoreStateNotification, object: nil)
+    init() {
+        update(tryRequest: true)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: CityPersistenceManagerDidRestoreStateNotification, object: nil)
+    mutating func update(tryRequest: Bool = false) {
+        // try memory
+        if cities.count == 0 {
+            // Try the database
+            cities = citiesFetch() ?? [City]()
+        }
+        // try request
+        if tryRequest && cities.count == 0 {
+            setup()
+        }
     }
+
     
     // MARK: City access
     
@@ -54,7 +51,8 @@ class CityListManager: NSObject {
     }
     
     /// Returns an City for a given IndexPath.
-    func city(by id: Int?) -> City? {
+    func city(by id: Int16?) -> City? {
+        guard let id = id else { return nil }
         for city in cities {
             if city.id == id {
                 return city
@@ -63,29 +61,27 @@ class CityListManager: NSObject {
         return nil
     }
     
-    func handleCityPersistenceManagerDidRestoreStateNotification(_ notification: Notification) {
-        DispatchQueue.main.async {
-            guard let server = UserDefaults.standard.string(forKey: "server_url") else {
+    /// Function to obtain all the albums sorted by title
+    func citiesFetch() -> [City]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<City>(entityName: "City")
+        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+
+    func setup() {
+        RestApi.instance.request(usingQuery: "/cities.json", type: Many<City>.self) { error in
+            guard let error = error else {
+                NotificationCenter.default.post(name: CityListManager.didLoadNotification, object: nil)
                 return
             }
-            let citiesJsonUrl = server + "/cities.json"
-
-            Alamofire.request(citiesJsonUrl, method:.get).validate().responseArray { (response: DataResponse<[City]>) in
-                if let result = response.result.value {
-                    for entry in result {
-                        // Get the City name from the dictionary
-                        self.cities.append(entry)
-                    }
-                    NotificationCenter.default.post(name: CityListManager.didLoadNotification, object: self)
-                }
-                else if let error = response.result.error {
-                    let myerror = JFError(code: 101,
-                                          desc: "failed to get appId=\(1) userId=\(1) locationId=\(1)",
-                        reason: "something get wrong on request \(citiesJsonUrl)", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                        underError: error as NSError?)
-                    NotificationCenter.default.post(name: CityListManager.errorNotification, object: self)
-                }
-            }
+            let jerror = JFError(code: 101,
+                                 desc: "failed to get cities.json",
+                                 reason: "something get wrong on request cities.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
+                underError: error as NSError?)
+            NotificationCenter.default.post(name: CityListManager.errorNotification, object: jerror)
         }
     }
+
 }

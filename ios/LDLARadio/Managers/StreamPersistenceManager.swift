@@ -53,17 +53,16 @@ class StreamPersistenceManager: NSObject {
         super.init()
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true) }
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        }
         catch let error as NSError { print(error) }
                 
         // Create the configuration for the AVAssetDownloadURLSession.
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "AAPL-Identifier")
         
         // Create the AVAssetDownloadURLSession using the configuration.
-        if #available(iOS 10.0, *) {
-            assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration, assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
-        }
+        assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration, assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
     }
     
     /// Restores the Application state by getting all the AVAssetDownloadTasks and restoring their Stream structs.
@@ -72,9 +71,9 @@ class StreamPersistenceManager: NSObject {
         
         didRestorePersistenceManager = true
         
-        _ = StreamListManager.sharedManager;
-        _ = CityListManager.sharedManager;
-        _ = StationListManager.sharedManager;
+        _ = StreamListManager.instance;
+        _ = CityListManager.instance;
+        _ = StationListManager.instance;
         
         NotificationCenter.default.post(name: CityPersistenceManagerDidRestoreStateNotification, object: nil)
         
@@ -87,7 +86,7 @@ class StreamPersistenceManager: NSObject {
                 for task in tasksArray {
                     guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetName = task.taskDescription else { break }
                     
-                    let asset = Stream(name: assetName, urlAsset: assetDownloadTask.urlAsset)
+                    guard let asset = StreamListManager.instance.stream(byName: assetName) else { break }
                     self.activeDownloadsMap[assetDownloadTask] = asset
                 }
                 
@@ -108,21 +107,11 @@ class StreamPersistenceManager: NSObject {
          */
         let assetDownloadTask: AVAssetDownloadTask?
         
-        if #available(iOS 10.0, *) {
-            guard let name = asset.name,
-                  let urlAsset = asset.urlAsset else { return }
-            assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 265000])
-        } else {
-            guard let name = asset.name,
-                let urlAsset = asset.urlAsset else { return }
-            
-            guard let url = urlForStream(withName: name) else {
-                return
-            }
-            
-            assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset, destinationURL: url, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 265000])
-        }
+        guard let name = asset.name,
+            let urlAsset = asset.urlAsset() else { return }
         
+        assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 265000])
+       
         guard let task = assetDownloadTask else {
             return
         }
@@ -155,25 +144,10 @@ class StreamPersistenceManager: NSObject {
         return asset
     }
     
-    /// Returns the Url pointing to a file on disk if it exists.
-    func urlForStream(withName name: String) -> URL? {
-        let userDefaults = UserDefaults.standard
-        guard let localFileLocation = userDefaults.value(forKey: name) as? String else { return nil }
-        
-        let url = baseDownloadURL.appendingPathComponent(localFileLocation)
-        
-        return url
-    }
     
     /// Returns an Stream pointing to a file on disk if it exists.
     func localAssetForStream(withName name: String) -> Stream? {
-        var asset: Stream?
-        guard let url = urlForStream(withName: name) else {
-            return nil
-        }
-        asset = Stream(name: name, urlAsset: AVURLAsset(url: url))
-        
-        return asset
+        return StreamListManager.instance.stream(byName: name)
     }
     
     /// Returns the current download state for a given Stream.
@@ -256,23 +230,20 @@ class StreamPersistenceManager: NSObject {
      and comparing it to the remote versions.
      */
     fileprivate func nextMediaSelection(_ asset: AVURLAsset) -> (mediaSelectionGroup: AVMediaSelectionGroup?, mediaSelectionOption: AVMediaSelectionOption?) {
-        if #available(iOS 10.0, *) {
-
-            guard let assetCache = asset.assetCache else { return (nil, nil) }
-
-            let mediaCharacteristics = [AVMediaCharacteristic.audible, AVMediaCharacteristic.legible]
-            
-            for mediaCharacteristic in mediaCharacteristics {
-                if let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) {
-                    let savedOptions = assetCache.mediaSelectionOptions(in: mediaSelectionGroup)
-                    
-                    if savedOptions.count < mediaSelectionGroup.options.count {
-                        // There are still media options left to download.
-                        for option in mediaSelectionGroup.options {
-                            if !savedOptions.contains(option) {
-                                // This option has not been download.
-                                return (mediaSelectionGroup, option)
-                            }
+        guard let assetCache = asset.assetCache else { return (nil, nil) }
+        
+        let mediaCharacteristics = [AVMediaCharacteristic.audible, AVMediaCharacteristic.legible]
+        
+        for mediaCharacteristic in mediaCharacteristics {
+            if let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) {
+                let savedOptions = assetCache.mediaSelectionOptions(in: mediaSelectionGroup)
+                
+                if savedOptions.count < mediaSelectionGroup.options.count {
+                    // There are still media options left to download.
+                    for option in mediaSelectionGroup.options {
+                        if !savedOptions.contains(option) {
+                            // This option has not been download.
+                            return (mediaSelectionGroup, option)
                         }
                     }
                 }
@@ -302,7 +273,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
         var userInfo = [String: Any]()
         userInfo[Stream.Keys.name] = asset.name
         
-        if let error = error as? NSError {
+        if let error = error as NSError? {
             switch (error.domain, error.code) {
             case (NSURLErrorDomain, NSURLErrorCancelled):
                 /*
@@ -318,7 +289,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                     
                     userDefaults.removeObject(forKey: name)
                 } catch {
-                    print("An error occured trying to delete the contents on disk for \(asset.name): \(error)")
+                    print("An error occured trying to delete the contents on disk for \(String(describing: asset.name)): \(error)")
                 }
                 
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.notDownloaded.rawValue
@@ -365,20 +336,9 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                 
                 let assetDownloadTask: AVAssetDownloadTask?
                 
-                guard let name = asset.name,
-                      let urlAsset = asset.urlAsset else { return }
-                if #available(iOS 10.0, *) {
-                    assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: task.urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 2000000, AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
-                    
-                } else {
-                    
-                    guard let url = urlForStream(withName: name) else {
-                        return
-                    }
-                    
-                    assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset, destinationURL: url, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 2000000, AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
-                }
-                
+                guard let name = asset.name else { return }
+                assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: task.urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 2000000, AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
+
                 guard let task = assetDownloadTask else {
                     return
                 }

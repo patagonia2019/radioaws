@@ -1,24 +1,44 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-# This line is needed until OGVKit is fully published to CocoaPods
-# Remove once packages published:
-# source 'https://github.com/brion/OGVKit-Specs.git'
-
 use_frameworks!
 
 def sharedPods
-    pod 'AlamofireObjectMapper'
+    pod 'AlamofireCoreData'
     pod 'AlamofireImage'
-    pod 'JFCore', :path => '/Users/mobilepatagonia/Job/southfox/jfcore'
+    pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
 end
 
 def iosPods
 end
 
 target 'LDLARadio' do
+    platform :ios, '12.0'
     iosPods
     sharedPods
 end
+
+
+target 'LDLARadioTests' do
+    platform :ios, '12.0'
+    pod 'AlamofireCoreData'
+end
+
+#target 'LDLARadio Extension' do
+#  platform :watchos, '5.2'
+#  sharedPods
+#end
+#
+#
+#target 'LDLARadioTVOS' do
+#  platform :tvos, '12.0'
+#  sharedPods
+#end
+#
+#
+#target 'LDLARadioMacOS' do
+#  platform :macos, '10.14'
+#  sharedPods
+#end
 
 
 post_install do |installer|

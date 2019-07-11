@@ -24,9 +24,9 @@ class RadioListTableViewController: UITableViewController {
     // MARK: Deinitialization
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: StreamListManager.didLoadNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: StationListManager.didLoadNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: CityListManager.didLoadNotification, object: nil)
+        for note in [StreamListManager.didLoadNotification, StationListManager.didLoadNotification, CityListManager.didLoadNotification] {
+            NotificationCenter.default.removeObserver(self, name: note, object: nil)
+        }
     }
     
     // MARK: UIViewController
@@ -36,7 +36,7 @@ class RadioListTableViewController: UITableViewController {
         
         // General setup for auto sizing UITableViewCells.
         tableView.estimatedRowHeight = 75.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         // Set RadioListTableViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
@@ -67,20 +67,15 @@ class RadioListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return StreamListManager.sharedManager.numberOfStreams()
+        return StreamListManager.instance.numberOfStreams()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RadioListTableViewCell.reuseIdentifier, for: indexPath)
         
-        let stream = StreamListManager.sharedManager.stream(at: indexPath.row)
-        if let cell = cell as? RadioListTableViewCell,
-            let stationId = stream.station_id,
-            let station = StationListManager.sharedManager.station(by: stationId) {
-            let city = CityListManager.sharedManager.city(by: station.city_id)
+        let stream = StreamListManager.instance.stream(at: indexPath.row)
+        if let cell = cell as? RadioListTableViewCell {
             cell.stream = stream
-            cell.station = station
-            cell.city = city
             cell.delegate = self
         }
         
@@ -88,11 +83,10 @@ class RadioListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? RadioListTableViewCell, let station = cell.station,
-            let streams = StreamListManager.sharedManager.stream(byStation: station.id),
-            let stream = streams.first else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? RadioListTableViewCell,
+            let stream = cell.stream else { return }
         
-        if let use_web = stream.use_web, use_web == true {
+        if stream.useWeb {
             performSegue(withIdentifier: RadioListTableViewController.presentWebViewControllerSegueIdentifier, sender: cell)
             return
         } else {
@@ -145,15 +139,13 @@ class RadioListTableViewController: UITableViewController {
         if segue.identifier == RadioListTableViewController.presentWebViewControllerSegueIdentifier {
             guard let cell = sender as? RadioListTableViewCell,
                 let webViewControler = segue.destination as? WebViewController,
-                let station = cell.station,
-                let stream = cell.stream,
-                let city = cell.city,
-                let streamLink = stream.name,
-                let stationName = station.name,
-                let cityName = city.name
+                let station = cell.stream?.station,
+                let streamLink = cell.stream?.name,
+                let stationName = cell.stream?.station?.name,
+                let cityName = cell.stream?.station?.city?.name
                 else { return }
             webViewControler.title = "\(stationName) \(cityName)"
-            if let source = stream.source_type, source != "" {
+            if let source = cell.stream?.sourceType, source != "" {
                 webViewControler.fileName = "LDLARadio.html"
                 webViewControler.tokens = [
                     "<RADIO_URL>": streamLink,
@@ -179,42 +171,40 @@ class RadioListTableViewController: UITableViewController {
         }
         else if segue.identifier == RadioListTableViewController.presentPlayerViewControllerSegueIdentifier {
             guard let cell = sender as? RadioListTableViewCell,
-                let playerViewControler = segue.destination as? AVPlayerViewController,
-                let station = cell.station,
-                let city = cell.city
-                else { return }
+                let playerViewControler = segue.destination as? AVPlayerViewController else { return }
             
             // Grab a reference for the destinationViewController to use in later delegate callbacks from StreamPlaybackManager.
             playerViewController = playerViewControler
             
             var nowPlayingInfo = [String : Any]()
             nowPlayingInfo[MPMediaItemPropertyTitle] = "Locos de la azotea"
-            if let stationName = station.name {
+            if let stationName = cell.stream?.station?.name {
                 playerViewControler.title = stationName
                 nowPlayingInfo[MPMediaItemPropertyTitle] = stationName
                 nowPlayingInfo[MPMediaItemPropertyArtist] = stationName
             }
-            if let tunning_dial = station.tunning_dial {
-                nowPlayingInfo[MPMediaItemPropertyArtist] = tunning_dial
-            }
-            if let cityName = city.name {
-                nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = cityName
-            }
+            nowPlayingInfo[MPMediaItemPropertyArtist] = cell.stream?.station?.tunningDial
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = cell.stream?.station?.city?.name
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
 
             if let placeholderImage = UIImage.init(named: "Locos_de_la_azotea") {
-                    nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: placeholderImage)
+                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (size) -> UIImage in
+                    return placeholderImage
+                }
+//                    nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: placeholderImage)
 
                 let iv = UIImageView.init(image: placeholderImage)
 
-                //    public func af_setImage(withURL url: URL, placeholderImage: UIImage? = default, filter: ImageFilter? = default, progress: AlamofireImage.ImageDownloader.ProgressHandler? = default, progressQueue: DispatchQueue = default, imageTransition: UIImageView.ImageTransition = default, runImageTransitionIfCached: Bool = default, completion: ((Alamofire.DataResponse<UIImage>) -> Swift.Void)? = default)
-
-                if let imageUrl = station.imageUrl,
+                if let imageUrl = cell.stream?.station?.imageUrl,
                     let url = URL(string: imageUrl) {
                     iv.af_setImage(withURL: url, placeholderImage: placeholderImage)
                     if  let image = iv.image,
                         let imageCopy = image.copy() as? UIImage {
-                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: imageCopy)
+//                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: imageCopy)
+                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (size) -> UIImage in
+                            return imageCopy
+                        }
+
                     }
                 }
             }
@@ -228,8 +218,11 @@ class RadioListTableViewController: UITableViewController {
     
     // MARK: Notification handling
     
-    func handleStreamListManagerDidLoadNotification(_: Notification) {
+    @objc func handleStreamListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
+            StreamListManager.instance.update()
+            StationListManager.instance.update()
+            CityListManager.instance.update()
             self.tableView.reloadData()
         }
     }

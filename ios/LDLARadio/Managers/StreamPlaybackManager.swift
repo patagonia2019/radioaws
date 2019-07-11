@@ -39,13 +39,13 @@ class StreamPlaybackManager: NSObject {
     /// The Stream that is currently being loaded for playback.
     private var asset: Stream? {
         willSet {
-            guard let urlAsset = asset?.urlAsset else { return }
+            guard let urlAsset = asset?.urlAsset() else { return }
             urlAsset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
         }
         
         didSet {
             if let asset = asset {
-                guard let urlAsset = asset.urlAsset else { return }
+                guard let urlAsset = asset.urlAsset() else { return }
                 urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
             }
             else {
@@ -90,7 +90,7 @@ class StreamPlaybackManager: NSObject {
         switch keyPath {
         case #keyPath(AVURLAsset.isPlayable):
             guard let asset = asset,
-                  let urlAsset = asset.urlAsset,
+                  let urlAsset = asset.urlAsset(),
                 urlAsset.isPlayable == true else { return }
             
             playerItem = AVPlayerItem(asset: urlAsset)
