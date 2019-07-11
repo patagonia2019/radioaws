@@ -218,7 +218,7 @@ class RadioListTableViewController: UITableViewController {
                 nowPlayingInfo[MPMediaItemPropertyTitle] = stationName
                 nowPlayingInfo[MPMediaItemPropertyArtist] = stationName
             }
-            nowPlayingInfo[MPMediaItemPropertyArtist] = cell.stream?.station?.tunningDial
+            nowPlayingInfo[MPMediaItemPropertyArtist] = cell.stream?.station?.tuningDial
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = cell.stream?.station?.city?.name
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
 

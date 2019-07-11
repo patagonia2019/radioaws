@@ -49,7 +49,14 @@ class RadioListTableViewCell: UITableViewCell {
                     let url = URL(string: imageUrl) {
                     assetImageView.af_setImage(withURL: url)
                 }
-                cityLabel.text = stream.station?.city?.name
+                var aux = [String]()
+                if let cityName = stream.station?.city?.name {
+                    aux.append(cityName)
+                }
+                if let tuningDial = stream.station?.tuningDial {
+                    aux.append(tuningDial)
+                }
+                cityLabel.text = aux.joined(separator: " - ")
                 assetNameLabel.text = stream.station?.name
                 
                 let notificationCenter = NotificationCenter.default

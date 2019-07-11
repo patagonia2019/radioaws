@@ -73,9 +73,9 @@
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <attribute name="tunningDial" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="tuningDial" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="tunning_dial"/>
+                <entry key="JSONKeyPath" value="tuning_dial"/>
             </userInfo>
         </attribute>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES">
@@ -147,6 +147,6 @@
         <element name="City" positionX="-36" positionY="9" width="128" height="120"/>
         <element name="District" positionX="-18" positionY="27" width="128" height="105"/>
         <element name="Station" positionX="-54" positionY="-9" width="128" height="180"/>
-        <element name="Stream" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="Stream" positionX="-63" positionY="-18" width="128" height="30"/>
     </elements>
 </model>
