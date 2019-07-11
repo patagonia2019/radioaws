@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import AVKit
 import MediaPlayer
-
+import JFCore
 
 class RadioListTableViewController: UITableViewController {
     // MARK: Properties
@@ -23,6 +23,8 @@ class RadioListTableViewController: UITableViewController {
     
     // MARK: Deinitialization
     
+    private var streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
+
     deinit {
         for note in [StreamListManager.didLoadNotification, StationListManager.didLoadNotification, CityListManager.didLoadNotification] {
             NotificationCenter.default.removeObserver(self, name: note, object: nil)
@@ -34,18 +36,18 @@ class RadioListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // General setup for auto sizing UITableViewCells.
-        tableView.estimatedRowHeight = 75.0
-        tableView.rowHeight = UITableView.automaticDimension
-        
         // Set RadioListTableViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleStreamListManagerDidLoadNotification(_:)), name: StreamListManager.didLoadNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleStreamListManagerDidLoadNotification(_:)), name: StationListManager.didLoadNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleStationListManagerDidLoadNotification(_:)), name: StationListManager.didLoadNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleStreamListManagerDidLoadNotification(_:)), name: CityListManager.didLoadNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCityListManagerDidLoadNotification(_:)), name: CityListManager.didLoadNotification, object: nil)
+        
+        addRefreshControl()
+        tableView.remembersLastFocusedIndexPath = true
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +60,50 @@ class RadioListTableViewController: UITableViewController {
             playerViewController?.player = nil
             playerViewController = nil
         }
+        
+        tableView.reloadData()
+        
     }
+    
+    /// Refresh control to allow pull to refresh
+    private func addRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.accessibilityHint = "refresh"
+        refreshControl.accessibilityLabel = "refresh"
+        refreshControl.addTarget(self, action:
+            #selector(RadioListTableViewController.handleRefresh(_:)),
+                                 for: .valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        tableView.addSubview(refreshControl)
+        
+    }
+
+    /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        streams = [Stream]()
+        tableView.reloadData()
+        StreamListManager.instance.clean()
+        StationListManager.instance.clean()
+        CityListManager.instance.clean()
+        
+        refreshControl.endRefreshing()
+
+        StreamListManager.instance.setup { (error) in
+            if error != nil {
+                CoreDataManager.instance.rollback()
+            }
+            else {
+                CoreDataManager.instance.save()
+            }
+            self.streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        
+    }
+
     
     // MARK: - Table view data source
     
@@ -67,18 +112,22 @@ class RadioListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return StreamListManager.instance.numberOfStreams()
+        return streams.count
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RadioListTableViewCell.reuseIdentifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RadioListTableViewCell.reuseIdentifier, for: indexPath) as? RadioListTableViewCell else { fatalError() }
         
-        let stream = StreamListManager.instance.stream(at: indexPath.row)
-        if let cell = cell as? RadioListTableViewCell {
+        if indexPath.row < streams.count {
+            let stream = streams[indexPath.row]
             cell.stream = stream
             cell.delegate = self
         }
-        
+
         return cell
     }
     
@@ -139,7 +188,6 @@ class RadioListTableViewController: UITableViewController {
         if segue.identifier == RadioListTableViewController.presentWebViewControllerSegueIdentifier {
             guard let cell = sender as? RadioListTableViewCell,
                 let webViewControler = segue.destination as? WebViewController,
-                let station = cell.stream?.station,
                 let streamLink = cell.stream?.name,
                 let stationName = cell.stream?.station?.name,
                 let cityName = cell.stream?.station?.city?.name
@@ -155,19 +203,6 @@ class RadioListTableViewController: UITableViewController {
             else {
                 webViewControler.urlLink = URL(string: streamLink)
             }
-            
-//        } else if segue.identifier == RadioListTableViewController.presentOgvViewControllerSegueIdentifier {
-//            guard let cell = sender as? RadioListTableViewCell,
-//                let ogvViewControler = segue.destination as? OGVPlayerViewController,
-//                let station = cell.station,
-//                let stream = cell.stream,
-//                let city = cell.city,
-//                let streamLink = stream.name,
-//                let stationName = station.name,
-//                let cityName = city.name
-//                else { return }
-//            ogvViewControler.title = "\(stationName) \(cityName)"
-//            ogvViewControler.urlLink = URL(string: streamLink)
         }
         else if segue.identifier == RadioListTableViewController.presentPlayerViewControllerSegueIdentifier {
             guard let cell = sender as? RadioListTableViewCell,
@@ -221,8 +256,24 @@ class RadioListTableViewController: UITableViewController {
     @objc func handleStreamListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
             StreamListManager.instance.update()
-            StationListManager.instance.update()
+            self.streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
+            self.tableView.reloadData()
+        }
+    }
+    @objc func handleCityListManagerDidLoadNotification(_: Notification) {
+        DispatchQueue.main.async {
+            //            StreamListManager.instance.update()
+            //            StationListManager.instance.update()
             CityListManager.instance.update()
+            self.tableView.reloadData()
+        }
+    }
+
+    @objc func handleStationListManagerDidLoadNotification(_: Notification) {
+        DispatchQueue.main.async {
+//            StreamListManager.instance.update()
+            StationListManager.instance.update()
+//            CityListManager.instance.update()
             self.tableView.reloadData()
         }
     }

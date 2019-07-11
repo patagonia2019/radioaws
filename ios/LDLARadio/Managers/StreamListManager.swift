@@ -46,7 +46,7 @@ struct StreamListManager {
     func streamsFetch() -> [Stream]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
         let array = try? context.fetch(req)
         return array
     }
@@ -68,7 +68,7 @@ struct StreamListManager {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "name = %s", name)
+        req.predicate = NSPredicate(format: "name = %s and listenIsWorking = true", name)
         let array = try? context.fetch(req)
         return array?.first
     }
@@ -83,18 +83,73 @@ struct StreamListManager {
         let array = try? context.fetch(req)
         return array
     }
- 
-    func setup() {
-        RestApi.instance.request(usingQuery: "/streams.json", type: Many<Stream>.self) { error in
-            guard let error = error else {
-                NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: nil)
+    
+    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
+        RestApi.instance.request(usingQuery: "/streams.json", type: Many<Stream>.self) { error1 in
+            if finish == nil {
+                guard let error = error1 else {
+                    NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: nil)
+                    return
+                }
+                let jerror = JFError(code: 101,
+                                     desc: "failed to get stations.json",
+                                     reason: "something get wrong on request stations.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
+                    underError: error as NSError?)
+                NotificationCenter.default.post(name: StreamListManager.errorNotification, object: jerror)
                 return
             }
-            let jerror = JFError(code: 101,
-                                 desc: "failed to get streams.json",
-                                 reason: "something get wrong on request streams.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                underError: error as NSError?)
-            NotificationCenter.default.post(name: StreamListManager.errorNotification, object: jerror)
+            guard let error1 = error1 else {
+                StationListManager.instance.setup(finish: { error2 in
+                    guard let error2 = error2 else {
+                        CityListManager.instance.setup(finish: { error3 in
+                            finish?(error3)
+                        })
+                        return
+                    }
+                    finish?(error2)
+                })
+                return
+            }
+            finish?(error1)
         }
     }
+    
+    private func removeAll() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.includesPropertyValues = false
+        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
+            for obj in array {
+                context.delete(obj)
+            }
+        }
+    }
+    
+    private func save() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        try? context.save()
+    }
+    
+    
+
+    private func rollback() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        context.rollback()
+    }
+
+
+    func clean() {
+        removeAll()
+    }
+    
+    func reset() {
+        setup()
+    }
+
 }

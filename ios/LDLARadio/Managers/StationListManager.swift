@@ -75,8 +75,12 @@ struct StationListManager {
         return array?.first
     }
     
-    func setup() {
+    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
         RestApi.instance.request(usingQuery: "/stations.json", type: Many<Station>.self) { error in
+            if let finish = finish {
+                finish(error)
+                return
+            }
             guard let error = error else {
                 NotificationCenter.default.post(name: StationListManager.didLoadNotification, object: nil)
                 return
@@ -88,4 +92,43 @@ struct StationListManager {
             NotificationCenter.default.post(name: StationListManager.errorNotification, object: jerror)
         }
     }
+
+    private func removeAll() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        let req = NSFetchRequest<Station>(entityName: "Station")
+        req.includesPropertyValues = false
+        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
+            for obj in array {
+                context.delete(obj)
+            }
+        }
+    }
+    
+    private func save() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        try? context.save()
+    }
+    
+    
+    
+    private func rollback() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        context.rollback()
+    }
+    
+    
+    func clean() {
+        removeAll()
+    }
+    
+    func reset() {
+        setup()
+    }
+
 }

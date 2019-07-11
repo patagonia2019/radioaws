@@ -70,8 +70,12 @@ struct CityListManager {
         return array
     }
 
-    func setup() {
+    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
         RestApi.instance.request(usingQuery: "/cities.json", type: Many<City>.self) { error in
+            if let finish = finish {
+                finish(error)
+                return
+            }
             guard let error = error else {
                 NotificationCenter.default.post(name: CityListManager.didLoadNotification, object: nil)
                 return
@@ -83,5 +87,44 @@ struct CityListManager {
             NotificationCenter.default.post(name: CityListManager.errorNotification, object: jerror)
         }
     }
-
+    
+    
+    private func removeAll() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        let req = NSFetchRequest<City>(entityName: "City")
+        req.includesPropertyValues = false
+        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
+            for obj in array {
+                context.delete(obj)
+            }
+        }
+    }
+    
+    private func save() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        try? context.save()
+    }
+    
+    
+    
+    private func rollback() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        context.rollback()
+    }
+    
+    
+    func clean() {
+        removeAll()
+    }
+    
+    func reset() {
+        setup()
+    }
+    
 }

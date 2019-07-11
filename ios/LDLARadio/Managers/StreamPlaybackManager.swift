@@ -28,7 +28,9 @@ class StreamPlaybackManager: NSObject {
     /// The AVPlayerItem associated with StreamPlaybackManager.asset.urlAsset
     private var playerItem: AVPlayerItem? {
         willSet {
-            playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
+            if ((playerItem?.observationInfo) != nil) {
+                playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
+            }
         }
         
         didSet {
@@ -40,7 +42,9 @@ class StreamPlaybackManager: NSObject {
     private var asset: Stream? {
         willSet {
             guard let urlAsset = asset?.urlAsset() else { return }
-            urlAsset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+            if ((urlAsset.observationInfo) != nil) {
+                urlAsset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+            }
         }
         
         didSet {
@@ -60,7 +64,7 @@ class StreamPlaybackManager: NSObject {
     
     override private init() {
         super.init()
-        player.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
+	        player.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
     }
     
     deinit {
