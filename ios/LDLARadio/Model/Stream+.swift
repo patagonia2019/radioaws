@@ -11,7 +11,7 @@ import AVFoundation
 
 extension Stream {
     func urlAsset() -> AVURLAsset? {
-        guard let playUrl = name,
+        guard let playUrl = name?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let streamPlaylistURL = URL(string: playUrl),
             listenIsWorking else { return nil }
         return AVURLAsset(url: streamPlaylistURL)

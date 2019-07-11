@@ -46,6 +46,7 @@ struct StreamListManager {
     func streamsFetch() -> [Stream]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "listenIsWorking = true")
         req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
         let array = try? context.fetch(req)
         return array
@@ -68,7 +69,7 @@ struct StreamListManager {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "name = %s and listenIsWorking = true", name)
+        req.predicate = NSPredicate(format: "name = %s", name)
         let array = try? context.fetch(req)
         return array?.first
     }
