@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Radios-->
+        <!--Locos de la Azotea-->
         <scene sceneID="SwC-nA-HIj">
             <objects>
                 <tableViewController id="4gz-Ru-rsq" customClass="RadioListTableViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
@@ -81,7 +81,7 @@
                             <outlet property="delegate" destination="4gz-Ru-rsq" id="808-cC-Scq"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Radios" id="Zw5-2X-12I"/>
+                    <navigationItem key="navigationItem" title="Locos de la Azotea" id="Zw5-2X-12I"/>
                     <connections>
                         <segue destination="Pcj-Rn-AxA" kind="presentation" identifier="presentPlayerViewControllerSegueIdentifier" modalPresentationStyle="fullScreen" id="fQd-to-YXw"/>
                         <segue destination="d4b-Ga-jPE" kind="show" identifier="presentWebViewControllerSegueIdentifier" id="ClR-VP-3ZM"/>
@@ -91,10 +91,29 @@
             </objects>
             <point key="canvasLocation" x="1604" y="787"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="6TM-Je-eAM">
+            <objects>
+                <tabBarController id="X43-98-nWc" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5Gv-sf-6HL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="0GS-23-uGy" kind="relationship" relationship="viewControllers" id="pUf-hW-sjM"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e2p-bw-EhN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="53"/>
+        </scene>
+        <!--Item-->
         <scene sceneID="zkN-5i-EbQ">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0GS-23-uGy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="Rex-0T-nyn"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HCo-nV-RNR">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -105,7 +124,6 @@
                         <segue destination="4gz-Ru-rsq" kind="relationship" relationship="rootViewController" id="1GA-48-TVA"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="831" y="787"/>
         </scene>
@@ -115,7 +133,7 @@
                 <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Pcj-Rn-AxA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52E-27-LQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2401" y="787"/>
+            <point key="canvasLocation" x="2778" y="787"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="g36-kx-4Vi">

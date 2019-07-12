@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Catalog" representedClassName="Catalog" syncable="YES" codeGenerationType="class">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="title"/>
+            </userInfo>
+        </attribute>
+        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Section" inverseName="catalog" inverseEntity="Section" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="body"/>
+            </userInfo>
+        </relationship>
+        <userInfo>
+            <entry key="identityAttribute" value="title"/>
+        </userInfo>
+    </entity>
     <entity name="City" representedClassName=".City" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
@@ -45,6 +60,37 @@
         <relationship name="cities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="City" inverseName="district" inverseEntity="City" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
+        </userInfo>
+    </entity>
+    <entity name="Section" representedClassName=".Section" syncable="YES" codeGenerationType="class">
+        <attribute name="element" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="element"/>
+            </userInfo>
+        </attribute>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="key"/>
+            </userInfo>
+        </attribute>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="text"/>
+            </userInfo>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="type"/>
+            </userInfo>
+        </attribute>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="URL"/>
+            </userInfo>
+        </attribute>
+        <relationship name="catalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="sections" inverseEntity="Catalog" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="key"/>
         </userInfo>
     </entity>
     <entity name="Station" representedClassName=".Station" syncable="YES" codeGenerationType="class">
@@ -146,7 +192,9 @@
     <elements>
         <element name="City" positionX="-36" positionY="9" width="128" height="120"/>
         <element name="District" positionX="-18" positionY="27" width="128" height="105"/>
+        <element name="Section" positionX="-45" positionY="63" width="128" height="135"/>
         <element name="Station" positionX="-54" positionY="-9" width="128" height="180"/>
         <element name="Stream" positionX="-63" positionY="-18" width="128" height="30"/>
+        <element name="Catalog" positionX="-45" positionY="63" width="128" height="75"/>
     </elements>
 </model>

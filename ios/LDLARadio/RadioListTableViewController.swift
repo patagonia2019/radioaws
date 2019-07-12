@@ -87,8 +87,6 @@ class RadioListTableViewController: UITableViewController {
         StationListManager.instance.clean()
         CityListManager.instance.clean()
         
-        refreshControl.endRefreshing()
-
         StreamListManager.instance.setup { (error) in
             if error != nil {
                 CoreDataManager.instance.rollback()
@@ -98,6 +96,7 @@ class RadioListTableViewController: UITableViewController {
             }
             self.streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
             DispatchQueue.main.async {
+                refreshControl.endRefreshing()
                 self.tableView.reloadData()
             }
         }

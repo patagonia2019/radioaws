@@ -1,5 +1,8 @@
 # LDLARadio 
 
+## Font
+Arial Rounded MT Bound
+
 ## TODO
 * https://api.radiotime.com/
 * https://api.radiotime.com/?render=json
