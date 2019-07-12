@@ -6,6 +6,7 @@ def sharedPods
     pod 'AlamofireCoreData'
     pod 'AlamofireImage'
     pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
+    pod 'SwiftSpinner'
 end
 
 def iosPods

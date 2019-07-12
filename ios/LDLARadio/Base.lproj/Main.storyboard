@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0GS-23-uGy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="X43-98-nWc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -8,6 +8,37 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="jAp-iQ-CDi">
+            <objects>
+                <viewController id="hxy-wJ-H2x" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zY7-64-hxe"/>
+                        <viewControllerLayoutGuide type="bottom" id="EMF-Pf-hv6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vdU-bj-GQA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cO3-pC-bUr">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cO3-pC-bUr" firstAttribute="centerX" secondItem="vdU-bj-GQA" secondAttribute="centerX" id="644-7q-4oy"/>
+                            <constraint firstItem="cO3-pC-bUr" firstAttribute="width" secondItem="vdU-bj-GQA" secondAttribute="width" id="8cH-Wa-V9e"/>
+                            <constraint firstItem="cO3-pC-bUr" firstAttribute="centerY" secondItem="vdU-bj-GQA" secondAttribute="centerY" id="dbD-Gt-cKA"/>
+                            <constraint firstItem="cO3-pC-bUr" firstAttribute="height" secondItem="vdU-bj-GQA" secondAttribute="height" id="qLs-7u-Duj"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="NgT-YM-wcS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5JR-6b-QJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1660" y="53"/>
+        </scene>
         <!--Locos de la Azotea-->
         <scene sceneID="SwC-nA-HIj">
             <objects>
@@ -34,20 +65,20 @@
                                             <rect key="frame" x="16" y="11" width="343" height="78"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXd-ua-aqZ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="19.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vqh-uG-R3L">
-                                                    <rect key="frame" x="0.0" y="35.5" width="343" height="13.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <rect key="frame" x="0.0" y="30.5" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ok-UN-xcP">
-                                                    <rect key="frame" x="0.0" y="64.5" width="343" height="13.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <rect key="frame" x="0.0" y="61" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -89,7 +120,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzH-NA-Ji1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1604" y="787"/>
+            <point key="canvasLocation" x="1660" y="787"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -102,18 +133,18 @@
                     </tabBar>
                     <connections>
                         <segue destination="0GS-23-uGy" kind="relationship" relationship="viewControllers" id="pUf-hW-sjM"/>
+                        <segue destination="yP0-ZM-hBA" kind="relationship" relationship="viewControllers" id="ee6-JZ-46k"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e2p-bw-EhN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="53"/>
         </scene>
-        <!--Item-->
+        <!--Music -->
         <scene sceneID="zkN-5i-EbQ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0GS-23-uGy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Rex-0T-nyn"/>
+                    <tabBarItem key="tabBarItem" title="Music " image="f0001-music" id="Rex-0T-nyn"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HCo-nV-RNR">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -124,6 +155,7 @@
                         <segue destination="4gz-Ru-rsq" kind="relationship" relationship="rootViewController" id="1GA-48-TVA"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="831" y="787"/>
         </scene>
@@ -155,5 +187,28 @@
             </objects>
             <point key="canvasLocation" x="2401" y="1545"/>
         </scene>
+        <!--Catalog-->
+        <scene sceneID="ecA-e5-0VC">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yP0-ZM-hBA" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Catalog" image="f0ce-catalog" id="FKk-hv-kaU"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LsC-Cs-kPT">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hxy-wJ-H2x" kind="relationship" relationship="rootViewController" id="LEE-4k-kTq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iHD-uh-k5y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="830" y="53"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="f0001-music" width="14" height="19"/>
+        <image name="f0ce-catalog" width="13" height="16"/>
+    </resources>
 </document>

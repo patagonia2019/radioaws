@@ -8,6 +8,7 @@
 
 import UIKit
 import JFCore
+import SwiftSpinner
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Restore the state of the application and any running downloads.
         StreamPersistenceManager.sharedManager.restorePersistenceManager()
+
+        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size))
 
         return true
     }

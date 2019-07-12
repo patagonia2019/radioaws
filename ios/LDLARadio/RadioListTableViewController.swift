@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import AVKit
 import MediaPlayer
+import SwiftSpinner
 import JFCore
 
 class RadioListTableViewController: UITableViewController {
@@ -35,7 +36,9 @@ class RadioListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
+        SwiftSpinner.useContainerView(view)
+
         // Set RadioListTableViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
         
@@ -82,6 +85,7 @@ class RadioListTableViewController: UITableViewController {
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         streams = [Stream]()
+        SwiftSpinner.show(Quote.randomQuote())
         tableView.reloadData()
         StreamListManager.instance.clean()
         StationListManager.instance.clean()
@@ -97,6 +101,7 @@ class RadioListTableViewController: UITableViewController {
             self.streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
+                SwiftSpinner.hide()
                 self.tableView.reloadData()
             }
         }
@@ -130,7 +135,14 @@ class RadioListTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        SwiftSpinner.show(Quote.randomQuote())
+        return indexPath
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+
         guard let cell = tableView.cellForRow(at: indexPath) as? RadioListTableViewCell,
             let stream = cell.stream else { return }
         
@@ -248,6 +260,7 @@ class RadioListTableViewController: UITableViewController {
             // Load the new Stream to playback into StreamPlaybackManager.
             StreamPlaybackManager.sharedManager.setAssetForPlayback(cell.stream)
         }
+        SwiftSpinner.hide()
     }
     
     // MARK: Notification handling
@@ -261,8 +274,6 @@ class RadioListTableViewController: UITableViewController {
     }
     @objc func handleCityListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
-            //            StreamListManager.instance.update()
-            //            StationListManager.instance.update()
             CityListManager.instance.update()
             self.tableView.reloadData()
         }
@@ -270,9 +281,7 @@ class RadioListTableViewController: UITableViewController {
 
     @objc func handleStationListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
-//            StreamListManager.instance.update()
             StationListManager.instance.update()
-//            CityListManager.instance.update()
             self.tableView.reloadData()
         }
     }

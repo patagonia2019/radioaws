@@ -62,6 +62,21 @@
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
+    <entity name="Quote" representedClassName=".Quote" syncable="YES" codeGenerationType="class">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="quoteAuthor"/>
+            </userInfo>
+        </attribute>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="quoteText"/>
+            </userInfo>
+        </attribute>
+        <userInfo>
+            <entry key="identityAttribute" value="text"/>
+        </userInfo>
+    </entity>
     <entity name="Section" representedClassName=".Section" syncable="YES" codeGenerationType="class">
         <attribute name="element" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
@@ -190,11 +205,12 @@
         </userInfo>
     </entity>
     <elements>
+        <element name="Catalog" positionX="-45" positionY="63" width="128" height="75"/>
         <element name="City" positionX="-36" positionY="9" width="128" height="120"/>
         <element name="District" positionX="-18" positionY="27" width="128" height="105"/>
         <element name="Section" positionX="-45" positionY="63" width="128" height="135"/>
         <element name="Station" positionX="-54" positionY="-9" width="128" height="180"/>
         <element name="Stream" positionX="-63" positionY="-18" width="128" height="30"/>
-        <element name="Catalog" positionX="-45" positionY="63" width="128" height="75"/>
+        <element name="Quote" positionX="-45" positionY="72" width="128" height="75"/>
     </elements>
 </model>

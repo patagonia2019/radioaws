@@ -22,6 +22,11 @@
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
 		70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC071E3064EA008DE753 /* LDLARadio.html */; };
 		73D37F61E3762F655B440C11 /* Pods_LDLARadioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */; };
+		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
+		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
+		98195FA522D82370006E7961 /* CatalogListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA422D82370006E7961 /* CatalogListTableViewController.swift */; };
+		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
+		98195FAB22D845C2006E7961 /* quotes2.json in Resources */ = {isa = PBXBuildFile; fileRef = 98195FAA22D845C2006E7961 /* quotes2.json */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -67,6 +72,11 @@
 		70D4EC031E304A9B008DE753 /* common.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = common.css; sourceTree = "<group>"; };
 		7A6DA202209754560004126A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/LDLARadio.html; sourceTree = "<group>"; };
 		7EAAF7AFF51F030A534694AA /* Pods-LDLARadio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.release.xcconfig"; sourceTree = "<group>"; };
+		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
+		98195FA422D82370006E7961 /* CatalogListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogListTableViewController.swift; sourceTree = "<group>"; };
+		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
+		98195FAA22D845C2006E7961 /* quotes2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = quotes2.json; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +112,7 @@
 			children = (
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
+				98195FA822D83664006E7961 /* Quote+.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -133,11 +144,15 @@
 				4285E1701CF5623E0080B60C /* Managers */,
 				425DD0A11D0CF18200F96325 /* Model */,
 				428139F11CE44B7300972264 /* AppDelegate.swift */,
+				98195FA222D81B55006E7961 /* Commons.swift */,
 				421AAB651CE4FCCB007444CA /* RadioListTableViewController.swift */,
 				426CB19F1D054A3F0044B8A7 /* RadioListTableViewCell.swift */,
+				98195FA422D82370006E7961 /* CatalogListTableViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 				428139F81CE44B7300972264 /* Assets.xcassets */,
 				70D4EC031E304A9B008DE753 /* common.css */,
+				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+				98195FAA22D845C2006E7961 /* quotes2.json */,
 				70D4EC071E3064EA008DE753 /* LDLARadio.html */,
 				428139F51CE44B7300972264 /* Main.storyboard */,
 				428139FA1CE44B7300972264 /* LaunchScreen.storyboard */,
@@ -288,7 +303,9 @@
 			files = (
 				428139FC1CE44B7300972264 /* LaunchScreen.storyboard in Resources */,
 				428139F91CE44B7300972264 /* Assets.xcassets in Resources */,
+				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				703373A41E28343600E6D458 /* Settings.bundle in Resources */,
+				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
@@ -339,6 +356,7 @@
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -347,6 +365,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -407,10 +426,13 @@
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
+				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
+				98195FA522D82370006E7961 /* CatalogListTableViewController.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
 				421AAB661CE4FCCB007444CA /* RadioListTableViewController.swift in Sources */,
 				987DA0B522D6464A00F34BD3 /* StreamListManager.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
+				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
 				987DA0B722D6465600F34BD3 /* RestApi.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
