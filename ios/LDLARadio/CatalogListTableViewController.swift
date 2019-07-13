@@ -12,7 +12,7 @@ class CatalogListViewController : UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
 
-    var all = [Catalog]()
+    var all = [RTCatalog]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
