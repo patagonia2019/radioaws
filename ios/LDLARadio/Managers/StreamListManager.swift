@@ -17,9 +17,9 @@ struct StreamListManager {
     static var instance = StreamListManager()
 
     /// Notification for when download progress has changed.
-    static let didLoadNotification = NSNotification.Name(rawValue: "StreamListManagerDidLoadNotification")
+    static let didLoadNotification = NSNotification.Name(rawValue: "StreamListManager.didLoadNotification")
 
-    static let errorNotification = NSNotification.Name(rawValue: "StreamListManagerErrorNotification")
+    static let errorNotification = NSNotification.Name(rawValue: "StreamListManager.errorNotification")
 
     /// The internal array of Stream structs.
     private var streams = [Stream]()
@@ -54,16 +54,6 @@ struct StreamListManager {
 
     // MARK: Stream access
     
-    /// Returns the number of Streams.
-    func numberOfStreams() -> Int {
-        return streams.count
-    }
-    
-    /// Returns an Stream for a given IndexPath.
-    func stream(at index: Int) -> Stream {
-        return streams[index]
-    }
-
     /// Returns the streams for a given station id.
     func stream(byName name: String?) -> Stream? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
@@ -86,7 +76,7 @@ struct StreamListManager {
     }
     
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
-        RestApi.instance.request(usingQuery: "/streams.json", type: Many<Stream>.self) { error1 in
+        RestApi.instance.requestLDLA(usingQuery: "/streams.json", type: Many<Stream>.self) { error1, _ in
             if finish == nil {
                 guard let error = error1 else {
                     NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: nil)

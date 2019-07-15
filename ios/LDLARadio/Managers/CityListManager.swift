@@ -18,9 +18,9 @@ struct CityListManager {
     static var instance = CityListManager()
 
     /// Notification for when download progress has changed.
-    static let didLoadNotification = NSNotification.Name(rawValue: "CityListManagerDidLoadNotification")
+    static let didLoadNotification = NSNotification.Name(rawValue: "CityListManager.didLoadNotification")
 
-    static let errorNotification = NSNotification.Name(rawValue: "CityListManagerErrorNotification")
+    static let errorNotification = NSNotification.Name(rawValue: "CityListManager.errorNotification")
 
     /// The internal array of City structs.
     private var cities = [City]()
@@ -45,22 +45,6 @@ struct CityListManager {
     
     // MARK: City access
     
-    /// Returns the number of Citys.
-    func numberOfCitys() -> Int {
-        return cities.count
-    }
-    
-    /// Returns an City for a given IndexPath.
-    func city(by id: Int16?) -> City? {
-        guard let id = id else { return nil }
-        for city in cities {
-            if city.id == id {
-                return city
-            }
-        }
-        return nil
-    }
-    
     /// Function to obtain all the albums sorted by title
     func citiesFetch() -> [City]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
@@ -71,7 +55,7 @@ struct CityListManager {
     }
 
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
-        RestApi.instance.request(usingQuery: "/cities.json", type: Many<City>.self) { error in
+        RestApi.instance.requestLDLA(usingQuery: "/cities.json", type: Many<City>.self) { error, _ in
             if let finish = finish {
                 finish(error)
                 return

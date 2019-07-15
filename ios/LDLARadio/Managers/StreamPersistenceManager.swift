@@ -74,7 +74,8 @@ class StreamPersistenceManager: NSObject {
         _ = StreamListManager.instance;
         _ = CityListManager.instance;
         _ = StationListManager.instance;
-        
+        _ = RTCatalogManager.instance;
+
         NotificationCenter.default.post(name: CityPersistenceManagerDidRestoreStateNotification, object: nil)
         
         NotificationCenter.default.post(name: StationPersistenceManagerDidRestoreStateNotification, object: nil)

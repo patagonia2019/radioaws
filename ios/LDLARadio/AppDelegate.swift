@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func registerSettingsBundle() {
         var appDefaults = [String:AnyObject]()
-        appDefaults["server_url"] = RestApi.Constants.Service.server as AnyObject?
+        appDefaults["server_url"] = RestApi.Constants.Service.ldlaServer as AnyObject?
         UserDefaults.standard.register(defaults: appDefaults)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)

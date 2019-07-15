@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>server_url</string>
 			<key>DefaultValue</key>
-			<string>http://ec2-34-214-84-98.us-west-2.compute.amazonaws.com:3000</string>
+			<string>http://adminradio.serveftp.com:35111</string>
 		</dict>
 	</array>
 </dict>

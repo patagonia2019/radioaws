@@ -18,9 +18,9 @@ struct StationListManager {
     static var instance = StationListManager()
 
     /// Notification for when download progress has changed.
-    static let didLoadNotification = NSNotification.Name(rawValue: "StationListManagerDidLoadNotification")
+    static let didLoadNotification = NSNotification.Name(rawValue: "StationListManager.didLoadNotification")
 
-    static let errorNotification = NSNotification.Name(rawValue: "StationListManagerErrorNotification")
+    static let errorNotification = NSNotification.Name(rawValue: "StationListManager.errorNotification")
 
     /// The internal array of Station structs.
     private var stations = [Station]()
@@ -54,29 +54,9 @@ struct StationListManager {
         let array = try? context.fetch(req)
         return array
     }
-
-    /// Returns the number of Stations.
-    func numberOfStations() -> Int {
-        return stations.count
-    }
-    
-    /// Returns an Stream for a given IndexPath.
-    func station(at index: Int) -> Station {
-        return stations[index]
-    }
-
-    /// Returns an Station for a given station id.
-    func station(by id: Int16?) -> Station? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        let req = NSFetchRequest<Station>(entityName: "Station")
-        guard let id = id else { return nil }
-        req.predicate = NSPredicate(format: "id = %d", id)
-        let array = try? context.fetch(req)
-        return array?.first
-    }
     
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
-        RestApi.instance.request(usingQuery: "/stations.json", type: Many<Station>.self) { error in
+        RestApi.instance.requestLDLA(usingQuery: "/stations.json", type: Many<Station>.self) { error, _ in
             if let finish = finish {
                 finish(error)
                 return

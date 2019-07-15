@@ -19,25 +19,25 @@ class RestApi {
     
     /// Singleton
     static let instance = RestApi()
-        
+    
+    var context : NSManagedObjectContext? = nil
+
     /// Some hardcoded constants
     struct Constants {
         struct Service {
             
             /// The timeout used in the test expectations and requests in RestApi.
-            static let timeout: TimeInterval = 4
+            static let timeout: TimeInterval = 10
             
             /// The current server where all the requests were made.
-            static let server: String = UserDefaults.standard.string(forKey: "server_url") ?? "http://adminradio.serveftp.com:35111"
+            static let ldlaServer: String = UserDefaults.standard.string(forKey: "server_url") ?? "http://adminradio.serveftp.com:35111"
             
-            /// Function to build the base url used in the requests.
-            static func baseUrl() -> String {
-                return "\(Constants.Service.server)"
-            }
-            
+            /// RT Server
+            static let rtServer: String = "https://api.radiotime.com"
+
             /// Function to build the url used in the requests.
-            static func url(with query: String?) -> String {
-                return "\(baseUrl())\(query ?? "")"
+            static func url(with query: String?, baseUrl: String = ldlaServer) -> String {
+                return "\(baseUrl)\(query ?? "")"
             }
         }
         
@@ -51,25 +51,73 @@ class RestApi {
     }()
     
     
-    /// Request with Insert in Core Data
+    /// Request in LDLA server with Insert in Core Data
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
     /// query: uri to build the url
     /// type: The class that implement insertable protocol
     /// finish: closure to know if there is an error in the request/json conversion/core data insert
-    func request<T: Insertable>(
+    func requestLDLA<T: Insertable>(
         usingQuery query: String,
+        type: T.Type,
+        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+    {
+        let url = Constants.Service.url(with: query, baseUrl: Constants.Service.ldlaServer)
+        request(usingUrl: url, method: .get, type: type, finish: finish)
+    }
+    
+    /// Request in RT server with Insert in Core Data
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// query: uri to build the url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    func requestRT<T: Insertable>(
+        usingQuery query: String? = "",
+        type: T.Type,
+        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+    {
+        let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rtServer)
+        requestRT(usingUrl: url, type: type, finish: finish)
+    }
+    
+    /// Request in RT server with Insert in Core Data
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// url: the url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    func requestRT<T: Insertable>(
+        usingUrl url: String,
+        type: T.Type,
+        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+    {
+        var urlJson : String = url
+        if urlJson.contains("?") {
+            urlJson += "&"
+        }
+        else {
+            urlJson += "?"
+        }
+        urlJson += "render=json"
+        request(usingUrl: urlJson, method: .get, type: type, finish: finish)
+    }
+
+    /// Request with Insert in Core Data
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// url: url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    
+
+    func request<T: Insertable>(
+        usingUrl url: String,
         method: HTTPMethod = .get,
         type: T.Type,
-        finish: ((_ error: Error?) -> Void)? = nil)
+        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
     {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-
-        let url = Constants.Service.url(with: query)
-        
+        guard let context = context else { fatalError() }
         let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         request.responseInsert(context: context, type: T.self) { response in
             print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")
-            finish?(response.error)
+            finish?(response.error, response.value)
         }
     }
 

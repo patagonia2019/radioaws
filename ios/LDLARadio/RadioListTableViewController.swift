@@ -16,10 +16,6 @@ import JFCore
 class RadioListTableViewController: UITableViewController {
     // MARK: Properties
     
-    static let presentPlayerViewControllerSegueIdentifier = "presentPlayerViewControllerSegueIdentifier"
-    static let presentWebViewControllerSegueIdentifier = "presentWebViewControllerSegueIdentifier"
-    static let presentOgvViewControllerSegueIdentifier = "presentOgvViewControllerSegueIdentifier"
-    
     fileprivate var playerViewController: AVPlayerViewController?
     
     // MARK: Deinitialization
@@ -147,10 +143,10 @@ class RadioListTableViewController: UITableViewController {
             let stream = cell.stream else { return }
         
         if stream.useWeb {
-            performSegue(withIdentifier: RadioListTableViewController.presentWebViewControllerSegueIdentifier, sender: cell)
+            performSegue(withIdentifier: Commons.segue.webView, sender: cell)
             return
         } else {
-            performSegue(withIdentifier: RadioListTableViewController.presentPlayerViewControllerSegueIdentifier, sender: cell)
+            performSegue(withIdentifier: Commons.segue.player, sender: cell)
         }
     }
     
@@ -196,7 +192,7 @@ class RadioListTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        if segue.identifier == RadioListTableViewController.presentWebViewControllerSegueIdentifier {
+        if segue.identifier == Commons.segue.webView {
             guard let cell = sender as? RadioListTableViewCell,
                 let webViewControler = segue.destination as? WebViewController,
                 let streamLink = cell.stream?.name,
@@ -215,7 +211,7 @@ class RadioListTableViewController: UITableViewController {
                 webViewControler.urlLink = URL(string: streamLink)
             }
         }
-        else if segue.identifier == RadioListTableViewController.presentPlayerViewControllerSegueIdentifier {
+        else if segue.identifier == Commons.segue.player {
             guard let cell = sender as? RadioListTableViewCell,
                 let playerViewControler = segue.destination as? AVPlayerViewController else { return }
             
@@ -237,7 +233,6 @@ class RadioListTableViewController: UITableViewController {
                 nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (size) -> UIImage in
                     return placeholderImage
                 }
-//                    nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: placeholderImage)
 
                 let iv = UIImageView.init(image: placeholderImage)
 
@@ -263,7 +258,7 @@ class RadioListTableViewController: UITableViewController {
         SwiftSpinner.hide()
     }
     
-    // MARK: Notification handling
+    /// MARK: Notification handling
     
     @objc func handleStreamListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
@@ -272,6 +267,7 @@ class RadioListTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
     @objc func handleCityListManagerDidLoadNotification(_: Notification) {
         DispatchQueue.main.async {
             CityListManager.instance.update()

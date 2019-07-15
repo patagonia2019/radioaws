@@ -4,12 +4,12 @@ use_frameworks!
 
 def sharedPods
     pod 'AlamofireCoreData'
-    pod 'AlamofireImage'
     pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
-    pod 'SwiftSpinner'
 end
 
 def iosPods
+  pod 'AlamofireImage'
+  pod 'SwiftSpinner'
 end
 
 target 'LDLARadio' do
@@ -21,7 +21,7 @@ end
 
 target 'LDLARadioTests' do
     platform :ios, '12.0'
-    pod 'AlamofireCoreData'
+    sharedPods
 end
 
 #target 'LDLARadio Extension' do

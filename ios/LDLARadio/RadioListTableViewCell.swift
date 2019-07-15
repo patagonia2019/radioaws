@@ -78,7 +78,6 @@ class RadioListTableViewCell: UITableViewCell {
         cityLabel.text = ""
         assetImageView.image = nil
         downloadStateLabel.text = ""
-        downloadStateLabel.text = ""
         downloadProgressView.isHidden = true
     }
     

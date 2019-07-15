@@ -5,13 +5,19 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="fontawesome-webfont.ttf">
+            <string>FontAwesome</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Browse-->
         <scene sceneID="jAp-iQ-CDi">
             <objects>
-                <viewController id="hxy-wJ-H2x" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RTCatalogViewController" title="Browse" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hxy-wJ-H2x" customClass="RTCatalogViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zY7-64-hxe"/>
                         <viewControllerLayoutGuide type="bottom" id="EMF-Pf-hv6"/>
@@ -23,6 +29,64 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cO3-pC-bUr">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CatalogIdentifier" id="Rh2-fG-zwc" customClass="CatalogTableViewCell" customModule="LDLARadio" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rh2-fG-zwc" id="uJX-vu-4Cp">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dm3-MM-GBA">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="uCQ-w7-kHz">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8Y-vj-e3W">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="43.5"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="44" id="5ml-SK-jrE"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QfP-ge-23h">
+                                                                    <rect key="frame" x="52" y="0.0" width="323" height="43.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="uCQ-w7-kHz" firstAttribute="centerY" secondItem="dm3-MM-GBA" secondAttribute="centerY" id="8va-m8-g4n"/>
+                                                        <constraint firstItem="uCQ-w7-kHz" firstAttribute="width" secondItem="dm3-MM-GBA" secondAttribute="width" id="NTk-ke-Edr"/>
+                                                        <constraint firstItem="uCQ-w7-kHz" firstAttribute="height" secondItem="dm3-MM-GBA" secondAttribute="height" id="oFf-hz-aIV"/>
+                                                        <constraint firstItem="uCQ-w7-kHz" firstAttribute="centerX" secondItem="dm3-MM-GBA" secondAttribute="centerX" id="rzB-h1-QFO"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="dm3-MM-GBA" firstAttribute="centerX" secondItem="uJX-vu-4Cp" secondAttribute="centerX" id="hhl-Kp-EYj"/>
+                                                <constraint firstItem="dm3-MM-GBA" firstAttribute="width" secondItem="uJX-vu-4Cp" secondAttribute="width" id="jLE-h0-UHN"/>
+                                                <constraint firstItem="dm3-MM-GBA" firstAttribute="centerY" secondItem="uJX-vu-4Cp" secondAttribute="centerY" id="mfF-DI-6M4"/>
+                                                <constraint firstItem="dm3-MM-GBA" firstAttribute="height" secondItem="uJX-vu-4Cp" secondAttribute="height" id="rIG-oG-fm3"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="detailView" destination="QfP-ge-23h" id="EKa-sG-vOd"/>
+                                            <outlet property="iconView" destination="q8Y-vj-e3W" id="aBx-o1-dhR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="hxy-wJ-H2x" id="urU-ML-LSh"/>
+                                    <outlet property="delegate" destination="hxy-wJ-H2x" id="zmq-yt-Ubg"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,10 +98,22 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NgT-YM-wcS"/>
+                    <connections>
+                        <outlet property="tableView" destination="cO3-pC-bUr" id="jxr-lT-ZqL"/>
+                        <segue destination="Aks-vR-Xwa" kind="show" identifier="recursiveCatalog" id="OTa-07-BgJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5JR-6b-QJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1660" y="53"/>
+        </scene>
+        <!--RTCatalogViewController-->
+        <scene sceneID="AE2-dc-De2">
+            <objects>
+                <viewControllerPlaceholder referencedIdentifier="RTCatalogViewController" id="Aks-vR-Xwa" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Taz-ss-WpI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2295" y="-104"/>
         </scene>
         <!--Locos de la Azotea-->
         <scene sceneID="SwC-nA-HIj">
@@ -171,10 +247,11 @@
         <scene sceneID="g36-kx-4Vi">
             <objects>
                 <viewController id="d4b-Ga-jPE" customClass="WebViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
-                    <webView key="view" contentMode="scaleToFill" id="MKQ-Cn-3UV">
+                    <webView key="view" contentMode="scaleToFill" scalesPageToFit="YES" id="MKQ-Cn-3UV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <dataDetectorType key="dataDetectorTypes"/>
                         <connections>
                             <outlet property="delegate" destination="d4b-Ga-jPE" id="T2Q-e2-pmD"/>
                         </connections>
