@@ -21,6 +21,8 @@ class Commons {
         static let player = "presentPlayerViewControllerSegueIdentifier"
         static let webView = "presentWebViewControllerSegueIdentifier"
         static let catalog = "recursiveCatalog"
+        static let audio = "audioViewController"
+        static let radio = "radioViewController"
     }
     
     public struct symbols {

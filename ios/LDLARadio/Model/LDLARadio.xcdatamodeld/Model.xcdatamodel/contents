@@ -63,37 +63,6 @@
         </userInfo>
     </entity>
     <entity name="RTCatalog" representedClassName=".RTCatalog" parentEntity="RTNode" syncable="YES" codeGenerationType="class">
-        <attribute name="guideId" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="guide_id"/>
-            </userInfo>
-        </attribute>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="key"/>
-            </userInfo>
-        </attribute>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="head.title"/>
-            </userInfo>
-        </attribute>
-        <relationship name="catalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="sections" inverseEntity="RTCatalog" syncable="YES"/>
-        <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RTChannel" inverseName="catalog" inverseEntity="RTChannel" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="children"/>
-            </userInfo>
-        </relationship>
-        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="catalog" inverseEntity="RTCatalog" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="body"/>
-            </userInfo>
-        </relationship>
-        <userInfo>
-            <entry key="identityAttribute" value="key,title,text"/>
-        </userInfo>
-    </entity>
-    <entity name="RTChannel" representedClassName=".RTChannel" syncable="YES" codeGenerationType="class">
         <attribute name="bitrate" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="bitrate"/>
@@ -102,11 +71,6 @@
         <attribute name="currentTrack" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="current_track"/>
-            </userInfo>
-        </attribute>
-        <attribute name="element" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="element"/>
             </userInfo>
         </attribute>
         <attribute name="formats" optional="YES" attributeType="String" syncable="YES">
@@ -132,6 +96,11 @@
         <attribute name="item" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="item"/>
+            </userInfo>
+        </attribute>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="key"/>
             </userInfo>
         </attribute>
         <attribute name="nowPlayingId" optional="YES" attributeType="String" syncable="YES">
@@ -164,24 +133,25 @@
                 <entry key="JSONKeyPath" value="subtext"/>
             </userInfo>
         </attribute>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="text"/>
+                <entry key="JSONKeyPath" value="head.title"/>
             </userInfo>
         </attribute>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES">
+        <relationship name="audioCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="audios" inverseEntity="RTCatalog" syncable="YES"/>
+        <relationship name="audios" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="type"/>
+                <entry key="JSONKeyPath" value="children"/>
             </userInfo>
-        </attribute>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
+        </relationship>
+        <relationship name="sectionCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="sections" inverseEntity="RTCatalog" syncable="YES"/>
+        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RTCatalog" inverseName="sectionCatalog" inverseEntity="RTCatalog" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="URL"/>
+                <entry key="JSONKeyPath" value="body"/>
             </userInfo>
-        </attribute>
-        <relationship name="catalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="channels" inverseEntity="RTCatalog" syncable="YES"/>
+        </relationship>
         <userInfo>
-            <entry key="identityAttribute" value="presetId"/>
+            <entry key="identityAttribute" value="key,title,text"/>
         </userInfo>
     </entity>
     <entity name="RTNode" representedClassName=".RTNode" isAbstract="YES" syncable="YES" codeGenerationType="class">
@@ -305,11 +275,10 @@
     <elements>
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="120"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="105"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="133"/>
-        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
-        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="178"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
-        <element name="RTChannel" positionX="-423.140625" positionY="124.43359375" width="128" height="313"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="330"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="103"/>
+        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
+        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
     </elements>
 </model>

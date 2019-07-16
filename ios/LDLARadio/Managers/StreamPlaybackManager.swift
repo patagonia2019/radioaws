@@ -39,17 +39,15 @@ class StreamPlaybackManager: NSObject {
     }
     
     /// The Stream that is currently being loaded for playback.
-    private var asset: Stream? {
+    private var urlAsset: AVURLAsset? {
         willSet {
-            guard let urlAsset = asset?.urlAsset() else { return }
-            if ((urlAsset.observationInfo) != nil) {
-                urlAsset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+            if ((urlAsset?.observationInfo) != nil) {
+                urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
             }
         }
         
         didSet {
-            if let asset = asset {
-                guard let urlAsset = asset.urlAsset() else { return }
+            if let urlAsset = urlAsset {
                 urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
             }
             else {
@@ -76,8 +74,8 @@ class StreamPlaybackManager: NSObject {
      is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
      and handle KVO cleanup.
      */
-    func setAssetForPlayback(_ asset: Stream?) {
-        self.asset = asset
+    func setAssetForPlayback(_ urlAsset: AVURLAsset?) {
+        self.urlAsset = urlAsset
     }
     
      // MARK: KVO
@@ -93,8 +91,7 @@ class StreamPlaybackManager: NSObject {
         
         switch keyPath {
         case #keyPath(AVURLAsset.isPlayable):
-            guard let asset = asset,
-                  let urlAsset = asset.urlAsset(),
+            guard let urlAsset = urlAsset,
                 urlAsset.isPlayable == true else { return }
             
             playerItem = AVPlayerItem(asset: urlAsset)

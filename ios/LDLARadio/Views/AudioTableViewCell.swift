@@ -1,5 +1,5 @@
 //
-//  RadioListTableViewCell.swift
+//  AudioTableViewCell.swift
 //  LDLARadio
 //
 //  Created by Javier Fuchs on 1/6/17.
@@ -9,23 +9,36 @@
 import UIKit
 import AlamofireImage
 
-class RadioListTableViewCell: UITableViewCell {
+class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
     
-    static let reuseIdentifier = "RadioListTableViewCellIdentifier"
+    static let reuseIdentifier = "AudioTableViewCellIdentifier"
     
-    @IBOutlet weak var assetNameLabel: UILabel!
-    
-    @IBOutlet weak var cityLabel: UILabel!
-    
-    @IBOutlet weak var assetImageView: UIImageView!
-    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var downloadStateLabel: UILabel!
-    
     @IBOutlet weak var downloadProgressView: UIProgressView!
     
     weak var delegate: AssetListTableViewCellDelegate?
-        
+    
+    var model : AudioViewModel? = nil {
+        didSet {
+//            detailLabel.text = model?.detail
+//            detailLabel.textColor = model?.detailColor
+//            detailLabel.font = model?.detailFont
+            subtitleLabel.text = model?.subTitle
+            subtitleLabel.textColor = model?.subTitleColor
+            subtitleLabel.font = model?.subTitleFont
+            titleLabel.text = model?.title
+            titleLabel.textColor = model?.titleColor
+            titleLabel.font = model?.titleFont
+            if let thumbnailUrl = model?.thumbnailUrl {
+                logoView.af_setImage(withURL: thumbnailUrl)
+            }
+        }
+    }
+
     var stream: Stream? {
         didSet {
             if let stream = stream {
@@ -44,10 +57,10 @@ class RadioListTableViewCell: UITableViewCell {
                     break
                 }
                 
-                assetImageView.image = nil
+                logoView.image = nil
                 if let imageUrl = stream.station?.imageUrl,
                     let url = URL(string: imageUrl) {
-                    assetImageView.af_setImage(withURL: url)
+                    logoView.af_setImage(withURL: url)
                 }
                 var aux = [String]()
                 if let cityName = stream.station?.city?.name {
@@ -56,8 +69,8 @@ class RadioListTableViewCell: UITableViewCell {
                 if let tuningDial = stream.station?.tuningDial {
                     aux.append(tuningDial)
                 }
-                cityLabel.text = aux.joined(separator: " - ")
-                assetNameLabel.text = stream.station?.name
+                subtitleLabel.text = aux.joined(separator: " - ")
+                titleLabel.text = stream.station?.name
                 
                 let notificationCenter = NotificationCenter.default
                 notificationCenter.addObserver(self, selector: #selector(handleStreamDownloadStateChangedNotification(_:)), name: StreamDownloadStateChangedNotification, object: nil)
@@ -65,7 +78,8 @@ class RadioListTableViewCell: UITableViewCell {
             }
             else {
                 downloadProgressView.isHidden = false
-                assetNameLabel.text = ""
+                titleLabel.text = ""
+                subtitleLabel.text = ""
                 downloadStateLabel.text = ""
             }
         }
@@ -74,9 +88,9 @@ class RadioListTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        assetNameLabel.text = ""
-        cityLabel.text = ""
-        assetImageView.image = nil
+        subtitleLabel.text = ""
+        titleLabel.text = ""
+        logoView.image = nil
         downloadStateLabel.text = ""
         downloadProgressView.isHidden = true
     }
@@ -117,5 +131,5 @@ class RadioListTableViewCell: UITableViewCell {
 
 protocol AssetListTableViewCellDelegate: class {
     
-    func assetListTableViewCell(_ cell: RadioListTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
+    func assetListTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
 }

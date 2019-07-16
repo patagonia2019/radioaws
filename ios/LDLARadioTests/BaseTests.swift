@@ -123,6 +123,29 @@ class BaseTests: XCTestCase {
                 ]
         ]
     }
+    
+    func station1JSON() -> JSONDictionary {
+        return [
+            "head": [
+                "title": "Chon Mix Stations - 2h, 34m left",
+                "status": "200"
+            ],
+            "body": [
+                [
+                    "element": "outline",
+                    "type": "audio",
+                    "text": "Drive home show-CHON-FM (Whitehorse, Canada)",
+                    "URL": "http://opml.radiotime.com/Tune.ashx?id=s12582&sid=p334299&filter=l169",
+                    "bitrate": "160",
+                    "guide_id": "s12582",
+                    "subtext": "The Beat of a different Drummer",
+                    "image": "http://cdn-radiotime-logos.tunein.com/s12582q.png",
+                    "now_playing_id": "s12582"
+                ]
+            ]
+        ]
+
+    }
 
     func stationsJSON() -> JSONDictionary {
         return

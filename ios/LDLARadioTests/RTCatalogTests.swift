@@ -22,7 +22,7 @@ class RTCatalogTests: BaseTests {
         RestApi.instance.requestRT(type: RTCatalog.self) { (error, catalog) in
             XCTAssertNil(error)
             XCTAssertNotNil(catalog)
-            XCTAssertEqual(catalog?.title, "Navegar")
+            XCTAssertEqual(catalog?.title, "Browse")
             XCTAssertEqual(catalog?.sections?.count, 7)
             expect.fulfill()
         }
@@ -50,7 +50,7 @@ class RTCatalogTests: BaseTests {
         XCTAssertEqual(catalog?.title, "Browse")
         XCTAssertEqual(catalog?.sections?.count, 2)
         
-        let section = catalog?.sections?.allObjects.first as? RTCatalog
+        let section = catalog?.sections?.array.first as? RTCatalog
         XCTAssertNotNil(section)
         XCTAssertNotNil(section?.text)
         
@@ -90,7 +90,7 @@ class RTCatalogTests: BaseTests {
         XCTAssertEqual(section?.title, "Music")
         XCTAssertEqual(section?.sections?.count, 2)
         
-        let subsection = section?.sections?.allObjects.first as? RTCatalog
+        let subsection = section?.sections?.array.first as? RTCatalog
         XCTAssertNotNil(subsection)
         XCTAssertNotNil(subsection?.text)
 
@@ -104,15 +104,15 @@ class RTCatalogTests: BaseTests {
             XCTAssertNotNil(subsection2)
             subsection?.sections = subsection2?.sections
             subsection?.title = subsection2?.title
-            XCTAssertNotNil(subsection?.sections?.allObjects.first)
-            guard let sectionChannel = subsection?.sections?.allObjects.first as? RTCatalog else {
+            XCTAssertNotNil(subsection?.sections?.first)
+            guard let sectionChannel = subsection?.sections?.array.first as? RTCatalog else {
                 XCTFail()
                 return
             }
-            XCTAssertNotNil(sectionChannel.channels)
-            XCTAssertTrue(sectionChannel.channels?.count ?? 0 > 0)
-            XCTAssertNotNil(sectionChannel.channels?.allObjects.first)
-            guard let channel = sectionChannel.channels?.allObjects.first as? RTChannel else {
+            XCTAssertNotNil(sectionChannel.audios)
+            XCTAssertTrue(sectionChannel.audios?.count ?? 0 > 0)
+            XCTAssertNotNil(sectionChannel.audios?.array.first)
+            guard let channel = sectionChannel.audios?.array.first as? RTCatalog else {
                 XCTFail()
                 return
             }

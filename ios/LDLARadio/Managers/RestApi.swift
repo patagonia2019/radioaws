@@ -85,11 +85,11 @@ class RestApi {
     /// type: The class that implement insertable protocol
     /// finish: closure to know if there is an error in the request/json conversion/core data insert
     func requestRT<T: Insertable>(
-        usingUrl url: String,
+        usingUrl url: String?,
         type: T.Type,
         finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
     {
-        var urlJson : String = url
+        var urlJson : String = url ?? Constants.Service.rtServer
         if urlJson.contains("?") {
             urlJson += "&"
         }
@@ -113,7 +113,7 @@ class RestApi {
         type: T.Type,
         finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
     {
-        guard let context = context else { fatalError() }
+        guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
         let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         request.responseInsert(context: context, type: T.self) { response in
             print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")

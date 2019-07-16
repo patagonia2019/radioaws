@@ -1,5 +1,5 @@
 //
-//  RadioListTableViewController.swift
+//  RadioViewController.swift
 //  LDLARadio
 //
 //  Created by Javier Fuchs on 1/6/17.
@@ -13,7 +13,7 @@ import MediaPlayer
 import SwiftSpinner
 import JFCore
 
-class RadioListTableViewController: UITableViewController {
+class RadioViewController: UITableViewController {
     // MARK: Properties
     
     fileprivate var playerViewController: AVPlayerViewController?
@@ -70,7 +70,7 @@ class RadioListTableViewController: UITableViewController {
         refreshControl.accessibilityHint = "refresh"
         refreshControl.accessibilityLabel = "refresh"
         refreshControl.addTarget(self, action:
-            #selector(RadioListTableViewController.handleRefresh(_:)),
+            #selector(RadioViewController.handleRefresh(_:)),
                                  for: .valueChanged)
         refreshControl.tintColor = UIColor.red
         
@@ -120,7 +120,7 @@ class RadioListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RadioListTableViewCell.reuseIdentifier, for: indexPath) as? RadioListTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
         
         if indexPath.row < streams.count {
             let stream = streams[indexPath.row]
@@ -138,8 +138,7 @@ class RadioListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-
-        guard let cell = tableView.cellForRow(at: indexPath) as? RadioListTableViewCell,
+        guard let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell,
             let stream = cell.stream else { return }
         
         if stream.useWeb {
@@ -151,7 +150,7 @@ class RadioListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? RadioListTableViewCell, let asset = cell.stream else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell, let asset = cell.stream else { return }
         
         let downloadState = StreamPersistenceManager.sharedManager.downloadState(for: asset)
         let alertAction: UIAlertAction
@@ -193,7 +192,7 @@ class RadioListTableViewController: UITableViewController {
         super.prepare(for: segue, sender: sender)
         
         if segue.identifier == Commons.segue.webView {
-            guard let cell = sender as? RadioListTableViewCell,
+            guard let cell = sender as? AudioTableViewCell,
                 let webViewControler = segue.destination as? WebViewController,
                 let streamLink = cell.stream?.name,
                 let stationName = cell.stream?.station?.name,
@@ -212,7 +211,7 @@ class RadioListTableViewController: UITableViewController {
             }
         }
         else if segue.identifier == Commons.segue.player {
-            guard let cell = sender as? RadioListTableViewCell,
+            guard let cell = sender as? AudioTableViewCell,
                 let playerViewControler = segue.destination as? AVPlayerViewController else { return }
             
             // Grab a reference for the destinationViewController to use in later delegate callbacks from StreamPlaybackManager.
@@ -241,7 +240,6 @@ class RadioListTableViewController: UITableViewController {
                     iv.af_setImage(withURL: url, placeholderImage: placeholderImage)
                     if  let image = iv.image,
                         let imageCopy = image.copy() as? UIImage {
-//                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: imageCopy)
                         nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (size) -> UIImage in
                             return imageCopy
                         }
@@ -253,7 +251,7 @@ class RadioListTableViewController: UITableViewController {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
 
             // Load the new Stream to playback into StreamPlaybackManager.
-            StreamPlaybackManager.sharedManager.setAssetForPlayback(cell.stream)
+            StreamPlaybackManager.sharedManager.setAssetForPlayback(cell.stream?.urlAsset())
         }
         SwiftSpinner.hide()
     }
@@ -286,9 +284,9 @@ class RadioListTableViewController: UITableViewController {
 /**
  Extend `RadioListTableViewController` to conform to the `AssetListTableViewCellDelegate` protocol.
  */
-extension RadioListTableViewController: AssetListTableViewCellDelegate {
+extension RadioViewController: AssetListTableViewCellDelegate {
     
-    func assetListTableViewCell(_ cell: RadioListTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
+    func assetListTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -298,7 +296,7 @@ extension RadioListTableViewController: AssetListTableViewCellDelegate {
 /**
  Extend `RadioListTableViewController` to conform to the `AssetPlaybackDelegate` protocol.
  */
-extension RadioListTableViewController: AssetPlaybackDelegate {
+extension RadioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer) {
         player.play()
     }

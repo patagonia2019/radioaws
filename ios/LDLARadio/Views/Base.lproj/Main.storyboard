@@ -82,6 +82,64 @@
                                             <outlet property="iconView" destination="q8Y-vj-e3W" id="aBx-o1-dhR"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioIdentifier" rowHeight="100" id="n20-zK-pwk" customClass="AudioTableViewCell" customModule="LDLARadio" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n20-zK-pwk" id="syA-jt-kpd">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="09q-qk-LSz">
+                                                    <rect key="frame" x="238" y="0.0" width="122" height="89"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="122" id="wwB-iU-Ysw"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tqw-Vn-woO">
+                                                    <rect key="frame" x="15" y="11" width="345" height="78"/>
+                                                    <subviews>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vty-nO-RpA">
+                                                            <rect key="frame" x="0.0" y="0.0" width="345" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGf-ql-5EP">
+                                                            <rect key="frame" x="0.0" y="30.5" width="345" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nl-kt-LP7">
+                                                            <rect key="frame" x="0.0" y="61" width="345" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0i0-uk-UZc">
+                                                            <rect key="frame" x="0.0" y="78" width="345" height="0.0"/>
+                                                        </progressView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Tqw-Vn-woO" secondAttribute="bottom" id="AGz-Bj-nip"/>
+                                                <constraint firstItem="Tqw-Vn-woO" firstAttribute="trailing" secondItem="syA-jt-kpd" secondAttribute="trailingMargin" id="GHd-nX-y2b"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="09q-qk-LSz" secondAttribute="trailing" id="Rmn-en-UwQ"/>
+                                                <constraint firstItem="Tqw-Vn-woO" firstAttribute="top" secondItem="syA-jt-kpd" secondAttribute="topMargin" id="XIN-Vd-BBb"/>
+                                                <constraint firstItem="09q-qk-LSz" firstAttribute="top" secondItem="syA-jt-kpd" secondAttribute="top" id="guL-Ci-YeB"/>
+                                                <constraint firstItem="Tqw-Vn-woO" firstAttribute="leading" secondItem="syA-jt-kpd" secondAttribute="leadingMargin" id="r18-M7-ptK"/>
+                                                <constraint firstItem="09q-qk-LSz" firstAttribute="bottom" secondItem="Tqw-Vn-woO" secondAttribute="bottom" id="rmZ-Jo-bGq"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="downloadProgressView" destination="0i0-uk-UZc" id="Pab-yj-DQ0"/>
+                                            <outlet property="downloadStateLabel" destination="2nl-kt-LP7" id="0EP-1h-q5h"/>
+                                            <outlet property="logoView" destination="09q-qk-LSz" id="hnu-PD-65I"/>
+                                            <outlet property="subtitleLabel" destination="mGf-ql-5EP" id="pGL-NB-JZz"/>
+                                            <outlet property="titleLabel" destination="vty-nO-RpA" id="iKl-W2-22d"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="hxy-wJ-H2x" id="urU-ML-LSh"/>
@@ -101,6 +159,9 @@
                     <connections>
                         <outlet property="tableView" destination="cO3-pC-bUr" id="jxr-lT-ZqL"/>
                         <segue destination="Aks-vR-Xwa" kind="show" identifier="recursiveCatalog" id="OTa-07-BgJ"/>
+                        <segue destination="lC7-gP-1qd" kind="show" identifier="audioViewController" id="moo-nS-QbR"/>
+                        <segue destination="Pcj-Rn-AxA" kind="presentation" identifier="presentPlayerViewControllerSegueIdentifier" modalPresentationStyle="fullScreen" id="WDZ-BC-saa"/>
+                        <segue destination="d4b-Ga-jPE" kind="show" identifier="presentWebViewControllerSegueIdentifier" id="fKq-Iw-pND"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5JR-6b-QJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -118,13 +179,13 @@
         <!--Locos de la Azotea-->
         <scene sceneID="SwC-nA-HIj">
             <objects>
-                <tableViewController id="4gz-Ru-rsq" customClass="RadioListTableViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="4gz-Ru-rsq" customClass="RadioViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" id="7UY-Vg-WFi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RadioListTableViewCellIdentifier" rowHeight="100" id="jwz-mI-047" customClass="RadioListTableViewCell" customModule="LDLARadio" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioTableViewCellIdentifier" rowHeight="100" id="jwz-mI-047" customClass="AudioTableViewCell" customModule="LDLARadio" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwz-mI-047" id="7MV-y7-UhL">
@@ -175,11 +236,11 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="assetImageView" destination="JsZ-mD-ogq" id="oO7-nT-mae"/>
-                                    <outlet property="assetNameLabel" destination="zXd-ua-aqZ" id="p0T-h1-Az5"/>
-                                    <outlet property="cityLabel" destination="Vqh-uG-R3L" id="YJZ-OL-a67"/>
                                     <outlet property="downloadProgressView" destination="sXu-qc-Uur" id="An4-9C-uvb"/>
                                     <outlet property="downloadStateLabel" destination="4ok-UN-xcP" id="qvg-hD-dxS"/>
+                                    <outlet property="logoView" destination="JsZ-mD-ogq" id="qiH-cx-nxT"/>
+                                    <outlet property="subtitleLabel" destination="Vqh-uG-R3L" id="49L-qc-27A"/>
+                                    <outlet property="titleLabel" destination="zXd-ua-aqZ" id="Qsz-AK-B9j"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -196,7 +257,86 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzH-NA-Ji1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1660" y="787"/>
+            <point key="canvasLocation" x="1794" y="882"/>
+        </scene>
+        <!--Locos de la Azotea-->
+        <scene sceneID="McR-LP-fX3">
+            <objects>
+                <tableViewController storyboardIdentifier="AudioViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lC7-gP-1qd" customClass="AudioViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" id="vRr-gt-3Y6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioTableViewCellIdentifier" rowHeight="100" id="x6P-E9-gKL" customClass="AudioTableViewCell" customModule="LDLARadio" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6P-E9-gKL" id="cIi-VJ-BtJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bXB-tz-cBx">
+                                            <rect key="frame" x="237" y="0.0" width="122" height="89"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="122" id="t6d-5e-0Rp"/>
+                                            </constraints>
+                                        </imageView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="TeW-cE-6eE">
+                                            <rect key="frame" x="16" y="11" width="343" height="78"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfO-WZ-k8o">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l54-bg-ecA">
+                                                    <rect key="frame" x="0.0" y="30.5" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBe-fh-keD">
+                                                    <rect key="frame" x="0.0" y="61" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NTN-Jy-KIS">
+                                                    <rect key="frame" x="0.0" y="78" width="343" height="0.0"/>
+                                                </progressView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="leading" secondItem="cIi-VJ-BtJ" secondAttribute="leadingMargin" id="2jO-Pa-azm"/>
+                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="top" secondItem="cIi-VJ-BtJ" secondAttribute="topMargin" id="Nks-Lp-xs5"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="TeW-cE-6eE" secondAttribute="bottom" id="NnP-HV-2VP"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="bXB-tz-cBx" secondAttribute="trailing" id="fjr-73-jgk"/>
+                                        <constraint firstItem="bXB-tz-cBx" firstAttribute="top" secondItem="cIi-VJ-BtJ" secondAttribute="top" id="kCI-Oo-7EA"/>
+                                        <constraint firstItem="bXB-tz-cBx" firstAttribute="bottom" secondItem="TeW-cE-6eE" secondAttribute="bottom" id="pPe-1V-Uly"/>
+                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="trailing" secondItem="cIi-VJ-BtJ" secondAttribute="trailingMargin" id="prh-sX-mVw"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="downloadProgressView" destination="NTN-Jy-KIS" id="EQ5-GT-Rnb"/>
+                                    <outlet property="downloadStateLabel" destination="HBe-fh-keD" id="sRs-up-zOi"/>
+                                    <outlet property="logoView" destination="bXB-tz-cBx" id="bz4-m4-L0g"/>
+                                    <outlet property="subtitleLabel" destination="l54-bg-ecA" id="sFO-LY-CjF"/>
+                                    <outlet property="titleLabel" destination="DfO-WZ-k8o" id="sG4-61-28f"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lC7-gP-1qd" id="Kfm-G9-Sl4"/>
+                            <outlet property="delegate" destination="lC7-gP-1qd" id="0IF-T4-1eo"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Locos de la Azotea" id="DLa-Zb-YEW"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DuL-mO-SbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2466" y="-667"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -241,7 +381,7 @@
                 <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Pcj-Rn-AxA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52E-27-LQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2778" y="787"/>
+            <point key="canvasLocation" x="3009" y="330"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="g36-kx-4Vi">
@@ -262,7 +402,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lh5-r5-ayq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2401" y="1545"/>
+            <point key="canvasLocation" x="2674" y="1101"/>
         </scene>
         <!--Catalog-->
         <scene sceneID="ecA-e5-0VC">
@@ -288,4 +428,8 @@
         <image name="f0001-music" width="14" height="19"/>
         <image name="f0ce-catalog" width="13" height="16"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="fKq-Iw-pND"/>
+        <segue reference="fQd-to-YXw"/>
+    </inferredMetricsTieBreakers>
 </document>

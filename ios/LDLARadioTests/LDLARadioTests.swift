@@ -95,12 +95,34 @@ class LDLARadioTests: BaseTests {
             XCTAssertNotNil(outline)
             XCTAssertEqual(outline?.text, "Stations")
             
-            let channel = outline?.channels?.first(where: { (c) -> Bool in
-                return (c as? RTChannel)?.presetId == "s216185"
-            }) as? RTChannel
+            let channel = outline?.audios?.array.first(where: { (c) -> Bool in
+                return (c as? RTCatalog)?.presetId == "s216185"
+            }) as? RTCatalog
             XCTAssertNotNil(channel)
             XCTAssertEqual(channel?.image, "http://cdn-radiotime-logos.tunein.com/s216185q.png")
+            
+        } catch {
+            XCTFail("error: \(error)")
+        }
+    }
 
+    func testModelMusicOne() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        
+        do {
+            let guide: RTCatalog = try object(fromJSONDictionary: station1JSON(), inContext: context)
+            XCTAssertNotNil(guide)
+            XCTAssertEqual(guide.title, "Chon Mix Stations - 2h, 34m left")
+            XCTAssertEqual(guide.sections?.count, 1)
+            
+            let audio = guide.sections?.firstObject as? RTCatalog
+            XCTAssertNotNil(audio)
+            XCTAssertEqual(audio?.type, "audio")
+            XCTAssertTrue(audio?.isAudio() ?? false)
+            
         } catch {
             XCTFail("error: \(error)")
         }

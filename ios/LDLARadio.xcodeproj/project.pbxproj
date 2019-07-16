@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		421AAB661CE4FCCB007444CA /* RadioListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421AAB651CE4FCCB007444CA /* RadioListTableViewController.swift */; };
+		421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421AAB651CE4FCCB007444CA /* RadioViewController.swift */; };
 		424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */; };
 		425DD0A51D0D146900F96325 /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
-		426CB1A01D054A3F0044B8A7 /* RadioListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CB19F1D054A3F0044B8A7 /* RadioListTableViewCell.swift */; };
+		426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */; };
 		428139F21CE44B7300972264 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428139F11CE44B7300972264 /* AppDelegate.swift */; };
 		428139F71CE44B7300972264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428139F51CE44B7300972264 /* Main.storyboard */; };
 		428139F91CE44B7300972264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428139F81CE44B7300972264 /* Assets.xcassets */; };
@@ -23,7 +23,7 @@
 		73D37F61E3762F655B440C11 /* Pods_LDLARadioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
-		98195FA522D82370006E7961 /* RTCatalogListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA422D82370006E7961 /* RTCatalogListTableViewController.swift */; };
+		98195FA522D82370006E7961 /* RTCatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA422D82370006E7961 /* RTCatalogViewController.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
 		98195FAB22D845C2006E7961 /* quotes2.json in Resources */ = {isa = PBXBuildFile; fileRef = 98195FAA22D845C2006E7961 /* quotes2.json */; };
 		98195FAD22D9E9D6006E7961 /* RTCatalogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FAC22D9E9D6006E7961 /* RTCatalogManager.swift */; };
@@ -35,12 +35,17 @@
 		98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBB22DBB944006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FBC22DBFBFE006E7961 /* BaseTests.swift */; };
+		9824386422DCF30500B418F9 /* RTAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386322DCF30500B418F9 /* RTAudioViewController.swift */; };
+		9824386622DCF82300B418F9 /* AudioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */; };
+		9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
+		9824387022DD362900B418F9 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386F22DD362900B418F9 /* AudioViewController.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0B522D6464A00F34BD3 /* StreamListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA6D141D04CE63002A8B3F /* StreamListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,11 +62,11 @@
 /* Begin PBXFileReference section */
 		0FE7D9B5057B5AF2DC72259D /* Pods-LDLARadioTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41A5E03699C4A53519AD1FFC /* Pods-LDLARadioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.release.xcconfig"; sourceTree = "<group>"; };
-		421AAB651CE4FCCB007444CA /* RadioListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RadioListTableViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		421AAB651CE4FCCB007444CA /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RadioViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StreamPlaybackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		42554D4B1D09EEDC0040BD4F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		425DD0A41D0D146900F96325 /* Stream+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stream+.swift"; sourceTree = "<group>"; };
-		426CB19F1D054A3F0044B8A7 /* RadioListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RadioListTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AudioTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		428139EE1CE44B7300972264 /* LDLARadio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDLARadio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		428139F11CE44B7300972264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		428139F61CE44B7300972264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,7 +85,7 @@
 		7EAAF7AFF51F030A534694AA /* Pods-LDLARadio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.release.xcconfig"; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
-		98195FA422D82370006E7961 /* RTCatalogListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogListTableViewController.swift; sourceTree = "<group>"; };
+		98195FA422D82370006E7961 /* RTCatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogViewController.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
 		98195FAA22D845C2006E7961 /* quotes2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = quotes2.json; sourceTree = "<group>"; };
 		98195FAC22D9E9D6006E7961 /* RTCatalogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogManager.swift; sourceTree = "<group>"; };
@@ -90,6 +95,10 @@
 		98195FB422DA658D006E7961 /* RTCatalogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogController.swift; sourceTree = "<group>"; };
 		98195FB622DB7C21006E7961 /* RTCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogTests.swift; sourceTree = "<group>"; };
 		98195FBC22DBFBFE006E7961 /* BaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTests.swift; sourceTree = "<group>"; };
+		9824386322DCF30500B418F9 /* RTAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTAudioViewController.swift; sourceTree = "<group>"; };
+		9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCollectionViewCell.swift; sourceTree = "<group>"; };
+		9824386922DCFD6400B418F9 /* AudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewModel.swift; sourceTree = "<group>"; };
+		9824386F22DD362900B418F9 /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,25 +164,16 @@
 		428139F01CE44B7300972264 /* LDLARadio */ = {
 			isa = PBXGroup;
 			children = (
+				428139F81CE44B7300972264 /* Assets.xcassets */,
+				428139FD1CE44B7300972264 /* Info.plist */,
 				4285E1701CF5623E0080B60C /* Managers */,
+				9824386B22DD189200B418F9 /* ViewModel */,
 				425DD0A11D0CF18200F96325 /* Model */,
 				428139F11CE44B7300972264 /* AppDelegate.swift */,
 				98195FA222D81B55006E7961 /* Commons.swift */,
-				421AAB651CE4FCCB007444CA /* RadioListTableViewController.swift */,
-				426CB19F1D054A3F0044B8A7 /* RadioListTableViewCell.swift */,
-				98195FA422D82370006E7961 /* RTCatalogListTableViewController.swift */,
-				98195FB422DA658D006E7961 /* RTCatalogController.swift */,
-				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
-				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
-				703373A91E291DF600E6D458 /* WebViewController.swift */,
-				428139F81CE44B7300972264 /* Assets.xcassets */,
-				70D4EC031E304A9B008DE753 /* common.css */,
-				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
-				98195FAA22D845C2006E7961 /* quotes2.json */,
-				70D4EC071E3064EA008DE753 /* LDLARadio.html */,
-				428139F51CE44B7300972264 /* Main.storyboard */,
-				428139FD1CE44B7300972264 /* Info.plist */,
-				703373A31E28343600E6D458 /* Settings.bundle */,
+				9824386C22DD18CE00B418F9 /* Views */,
+				9824386D22DD18DF00B418F9 /* Controllers */,
+				9824386E22DD1A0A00B418F9 /* Resources */,
 			);
 			path = LDLARadio;
 			sourceTree = "<group>";
@@ -200,6 +200,51 @@
 				BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9824386B22DD189200B418F9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
+				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9824386C22DD18CE00B418F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				428139F51CE44B7300972264 /* Main.storyboard */,
+				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
+				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
+				98195FA422D82370006E7961 /* RTCatalogViewController.swift */,
+				9824386F22DD362900B418F9 /* AudioViewController.swift */,
+				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
+				9824386322DCF30500B418F9 /* RTAudioViewController.swift */,
+				9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */,
+				703373A91E291DF600E6D458 /* WebViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9824386D22DD18DF00B418F9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				98195FB422DA658D006E7961 /* RTCatalogController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		9824386E22DD1A0A00B418F9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				70D4EC031E304A9B008DE753 /* common.css */,
+				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+				98195FAA22D845C2006E7961 /* quotes2.json */,
+				70D4EC071E3064EA008DE753 /* LDLARadio.html */,
+				703373A31E28343600E6D458 /* Settings.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		987DA0BD22D663E700F34BD3 /* LDLARadioTests */ = {
@@ -445,24 +490,28 @@
 			files = (
 				98195FBB22DBB944006E7961 /* RestApi.swift in Sources */,
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
+				9824386622DCF82300B418F9 /* AudioCollectionViewCell.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
+				9824387022DD362900B418F9 /* AudioViewController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
-				98195FA522D82370006E7961 /* RTCatalogListTableViewController.swift in Sources */,
+				98195FA522D82370006E7961 /* RTCatalogViewController.swift in Sources */,
+				9824386422DCF30500B418F9 /* RTAudioViewController.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
-				421AAB661CE4FCCB007444CA /* RadioListTableViewController.swift in Sources */,
+				421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */,
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
 				987DA0B522D6464A00F34BD3 /* StreamListManager.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
+				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RTCatalogController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				98195FAD22D9E9D6006E7961 /* RTCatalogManager.swift in Sources */,
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
-				426CB1A01D054A3F0044B8A7 /* RadioListTableViewCell.swift in Sources */,
+				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +524,7 @@
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
+				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
