@@ -62,6 +62,90 @@
             <entry key="identityAttribute" value="author"/>
         </userInfo>
     </entity>
+    <entity name="RNADial" representedClassName=".RNADial" syncable="YES" codeGenerationType="class">
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data"/>
+            </userInfo>
+        </relationship>
+    </entity>
+    <entity name="RNAStation" representedClassName=".RNAStation" syncable="YES" codeGenerationType="class">
+        <attribute name="amUri" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="am"/>
+            </userInfo>
+        </attribute>
+        <attribute name="dialAM" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="dialAM"/>
+            </userInfo>
+        </attribute>
+        <attribute name="dialFM" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="dialFM"/>
+            </userInfo>
+        </attribute>
+        <attribute name="facebook" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="urlfb"/>
+            </userInfo>
+        </attribute>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="first_name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="fmUri" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="fm"/>
+            </userInfo>
+        </attribute>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="image"/>
+            </userInfo>
+        </attribute>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="last_name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="port" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="puerto"/>
+            </userInfo>
+        </attribute>
+        <attribute name="twitter" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="urltw"/>
+            </userInfo>
+        </attribute>
+        <attribute name="url1" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="value"/>
+            </userInfo>
+        </attribute>
+        <attribute name="url2" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="urlstreaming2"/>
+            </userInfo>
+        </attribute>
+        <attribute name="web" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="web"/>
+            </userInfo>
+        </attribute>
+        <relationship name="dial" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial" syncable="YES"/>
+        <relationship name="random" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNADial" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="id"/>
+        </userInfo>
+    </entity>
     <entity name="RTCatalog" representedClassName=".RTCatalog" parentEntity="RTNode" syncable="YES" codeGenerationType="class">
         <attribute name="bitrate" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
@@ -280,5 +364,7 @@
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="103"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
+        <element name="RNADial" positionX="-243" positionY="-117" width="128" height="60"/>
+        <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="285"/>
     </elements>
 </model>

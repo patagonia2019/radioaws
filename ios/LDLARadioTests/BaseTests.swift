@@ -31,6 +31,45 @@ class BaseTests: XCTestCase {
         super.tearDown()
     }
 
+    func emisorasJSON() -> JSONDictionary {
+        return [
+            "data": [
+                [
+                    "id": "1",
+                    "first_name": "LRA 1",
+                    "last_name": "Buenos Aires",
+                    "web": "",
+                    "urlfb": "https://www.facebook.com/NacionalAM870/",
+                    "urltw": "https://twitter.com/NacionalAM870",
+                    "urlstreaming1": "sa.mp3.icecast.magma.edge-access.net",
+                    "urlstreaming2": "sb.mp3.icecast.magma.edge-access.net",
+                    "puerto": "7200",
+                    "am": "/sc_rad1",
+                    "fm": "",
+                    "dialAM": "AM870",
+                    "dialFM": "",
+                    "image": "LRA1.jpg"
+                ],
+                [
+                    "id": "2",
+                    "first_name": "LRA 337",
+                    "last_name": "Nacional Cl\\u00e1sica",
+                    "web": "",
+                    "urlfb": "https://www.facebook.com/pages/Radio-Nacional-Cl%C3%A1sica-FM-967/118404581585464",
+                    "urltw": "https://twitter.com/ClasicaNacional",
+                    "urlstreaming1": "sa.mp3.icecast.magma.edge-access.net",
+                    "urlstreaming2": "sb.mp3.icecast.magma.edge-access.net",
+                    "puerto": "7200",
+                    "am": "",
+                    "fm": "/sc_rad37",
+                    "dialAM": "",
+                    "dialFM": "FM 96.7",
+                    "image": "LRA337.jpg"
+                ]
+            ]
+        ]
+    }
+    
     func streamsJSON() -> JSONArray {
         return [
             [

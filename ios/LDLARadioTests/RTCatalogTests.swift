@@ -29,7 +29,6 @@ class RTCatalogTests: BaseTests {
         waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
             XCTAssertNil(error)
         })
-        
     }
 
     /// Unit test for Section, it requests all the information of section

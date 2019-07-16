@@ -35,6 +35,9 @@ class RestApi {
             /// RT Server
             static let rtServer: String = "https://api.radiotime.com"
 
+            /// RNA Server
+            static let rnaServer: String = "http://marcos.mineolo.com/rna/api"
+
             /// Function to build the url used in the requests.
             static func url(with query: String?, baseUrl: String = ldlaServer) -> String {
                 return "\(baseUrl)\(query ?? "")"
@@ -51,6 +54,20 @@ class RestApi {
     }()
     
     
+    /// Request in RNA server with Insert in Core Data
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// query: uri to build the url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    func requestRNA<T: Insertable>(
+        usingQuery query: String,
+        type: T.Type,
+        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+    {
+        let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rnaServer)
+        request(usingUrl: url, method: .get, type: type, finish: finish)
+    }
+    
     /// Request in LDLA server with Insert in Core Data
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
     /// query: uri to build the url
@@ -65,7 +82,7 @@ class RestApi {
         request(usingUrl: url, method: .get, type: type, finish: finish)
     }
     
-    /// Request in RT server with Insert in Core Data
+    /// Request in RT server with Insert in Core Data using RTServer
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
     /// query: uri to build the url
     /// type: The class that implement insertable protocol
@@ -79,7 +96,7 @@ class RestApi {
         requestRT(usingUrl: url, type: type, finish: finish)
     }
     
-    /// Request in RT server with Insert in Core Data
+    /// Request in RT server with Insert in Core Data using RTServer
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
     /// url: the url
     /// type: The class that implement insertable protocol
@@ -106,7 +123,6 @@ class RestApi {
     /// type: The class that implement insertable protocol
     /// finish: closure to know if there is an error in the request/json conversion/core data insert
     
-
     func request<T: Insertable>(
         usingUrl url: String,
         method: HTTPMethod = .get,
