@@ -35,8 +35,6 @@
 		98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBB22DBB944006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FBC22DBFBFE006E7961 /* BaseTests.swift */; };
-		9824386422DCF30500B418F9 /* RTAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386322DCF30500B418F9 /* RTAudioViewController.swift */; };
-		9824386622DCF82300B418F9 /* AudioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */; };
 		9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
 		9824387022DD362900B418F9 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386F22DD362900B418F9 /* AudioViewController.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
@@ -47,6 +45,7 @@
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
+		98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,8 +95,6 @@
 		98195FB422DA658D006E7961 /* RTCatalogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogController.swift; sourceTree = "<group>"; };
 		98195FB622DB7C21006E7961 /* RTCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogTests.swift; sourceTree = "<group>"; };
 		98195FBC22DBFBFE006E7961 /* BaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTests.swift; sourceTree = "<group>"; };
-		9824386322DCF30500B418F9 /* RTAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTAudioViewController.swift; sourceTree = "<group>"; };
-		9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCollectionViewCell.swift; sourceTree = "<group>"; };
 		9824386922DCFD6400B418F9 /* AudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewModel.swift; sourceTree = "<group>"; };
 		9824386F22DD362900B418F9 /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -106,6 +103,7 @@
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
+		98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewModel.swift; sourceTree = "<group>"; };
 		BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -207,6 +205,7 @@
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */,
 				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
 				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
 			);
@@ -222,8 +221,6 @@
 				98195FA422D82370006E7961 /* RTCatalogViewController.swift */,
 				9824386F22DD362900B418F9 /* AudioViewController.swift */,
 				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
-				9824386322DCF30500B418F9 /* RTAudioViewController.swift */,
-				9824386522DCF82300B418F9 /* AudioCollectionViewCell.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 			);
 			path = Views;
@@ -493,14 +490,12 @@
 			files = (
 				98195FBB22DBB944006E7961 /* RestApi.swift in Sources */,
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
-				9824386622DCF82300B418F9 /* AudioCollectionViewCell.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				9824387022DD362900B418F9 /* AudioViewController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
 				98195FA522D82370006E7961 /* RTCatalogViewController.swift in Sources */,
-				9824386422DCF30500B418F9 /* RTAudioViewController.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
 				421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */,
@@ -508,6 +503,7 @@
 				987DA0B522D6464A00F34BD3 /* StreamListManager.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
+				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RTCatalogController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,

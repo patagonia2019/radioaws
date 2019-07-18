@@ -18,7 +18,7 @@ class CatalogTableViewCell : UITableViewCell {
         didSet {
             iconView.text = model?.iconText()
             iconView.textColor = model?.color
-            detailView.text = model?.detail
+            detailView.text = model?.title
             detailView.textColor = model?.color
             detailView.font = model?.font
             selectionStyle = model?.selectionStyle ?? .none

@@ -75,14 +75,19 @@ struct AudioViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
         }
- }
+    }
     
     func urlAsset() -> AVURLAsset? {
-        guard let playUrl = url?.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+        guard let playUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let streamPlaylistURL = URL(string: playUrl) else { return nil }
         print("play = \(streamPlaylistURL)")
         return AVURLAsset(url: streamPlaylistURL)
     }
     
+    func urlString() -> String? {
+        return url?.absoluteString
+    }
+    
+
     
 }

@@ -71,9 +71,10 @@ class RTCatalogViewController : UIViewController {
         
     }
 
-    private func refresh(refreshControl: UIRefreshControl? = nil) {
+    private func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
-        controller.refresh(startClosure: {
+        controller.refresh(isClean: isClean,
+                           startClosure: {
             SwiftSpinner.show(Quote.randomQuote())
             self.reloadData()
 
@@ -86,10 +87,12 @@ class RTCatalogViewController : UIViewController {
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
-        refresh(refreshControl: refreshControl)
+        refresh(isClean: true, refreshControl: refreshControl)
     }
     
     private func reloadData() {
+        navigationItem.prompt = controller.prompt()
+        navigationItem.title = controller.title()
         tableView.reloadData()
     }
     
@@ -105,9 +108,9 @@ class RTCatalogViewController : UIViewController {
         if segue.identifier == Commons.segue.catalog {
             (segue.destination as? RTCatalogViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
-        else if segue.identifier == Commons.segue.audio {
-            (segue.destination as? AudioViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
-        }
+//        else if segue.identifier == Commons.segue.audio {
+//            (segue.destination as? AudioViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
+//        }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,
                 let webViewControler = segue.destination as? WebViewController,
@@ -166,77 +169,54 @@ class RTCatalogViewController : UIViewController {
 extension RTCatalogViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 44
-        }
-        return 75
+        return controller.heightForRow(at: indexPath.section, row: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 44
-        }
-        return 0
+        return 44
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            let model = controller.mainCatalogViewModel?.sections[indexPath.row]
-            if model?.sections.count ?? 0 > 0 {
-                performSegue(withIdentifier: Commons.segue.catalog, sender: model)
-            }
-            else if model?.audios.count ?? 0 > 0 {
-                performSegue(withIdentifier: Commons.segue.audio, sender: model)
-            }
-            else {
-                performSegue(withIdentifier: Commons.segue.catalog, sender: model)
+        
+        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            if audio.useWeb {
+                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
+            } else {
+                performSegue(withIdentifier: Commons.segue.player, sender: audio)
             }
         }
-        else {
-            let model = controller.mainCatalogViewModel?.audios[indexPath.row]
-            if model?.useWeb ?? false {
-                performSegue(withIdentifier: Commons.segue.webView, sender: model)
-            } else {
-                performSegue(withIdentifier: Commons.segue.player, sender: model)
-            }
+        if let section = object as? CatalogViewModel {
+            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
         }
     }
 }
 
 extension RTCatalogViewController : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return controller.numberOfSections()
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return controller.mainCatalogViewModel?.sections.count ?? 0
-        }
-        else {
-            return controller.mainCatalogViewModel?.audios.count ?? 0
-        }
+        return controller.numberOfRows(inSection: section)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return controller.mainCatalogViewModel?.title
-        }
-        return ""
+        return controller.titleForHeader(inSection: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            if controller.mainCatalogViewModel?.sections.count ?? 0 > 0 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
-                cell.model = controller.mainCatalogViewModel?.sections[indexPath.row]
-                return cell
-            }
+        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
+            cell.model = audio
+            return cell
+
         }
-        else if indexPath.section == 1 {
-            if controller.mainCatalogViewModel?.audios.count ?? 0 > 0 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
-                cell.model = controller.mainCatalogViewModel?.audios[indexPath.row]
-                return cell
-            }
+        if let section = object as? CatalogViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+            cell.model = section
+            return cell
         }
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }

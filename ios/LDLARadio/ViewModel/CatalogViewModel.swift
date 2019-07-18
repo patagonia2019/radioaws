@@ -33,23 +33,29 @@ struct CatalogViewModel {
 
     init(catalog: RTCatalog?) {
         assert(catalog?.isLink() ?? false)
-        title = catalog?.title ?? ""
-        detail = catalog?.text ?? ""
-        if let queryUrl = catalog?.url {
-            if let urlChecked = URL(string: queryUrl),
-                UIApplication.shared.canOpenURL(urlChecked) {
-                url = urlChecked
-                accessoryType = .disclosureIndicator
-            }
+        title = catalog?.title ?? catalog?.text ?? ""
+        detail = ""
+        if let queryUrl = catalog?.url,
+            let urlChecked = URL(string: queryUrl)/*,
+            UIApplication.shared.canOpenURL(urlChecked)*/ {
+            url = urlChecked
+            accessoryType = .disclosureIndicator
+        }
+        else {
+            print("here")
         }
         let sortBy = [NSSortDescriptor(key: "text", ascending: true)]
         if let innerSections = catalog?.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
             for section in innerSections {
                 if section.isLink() {
-                    sections.append(CatalogViewModel(catalog: section))
+                    let viewModel = CatalogViewModel(catalog: section)
+                    sections.append(viewModel)
+                    accessoryType = .disclosureIndicator
                 }
                 else if section.isAudio() {
-                    audios.append(AudioViewModel(audio: section))
+                    section.audioCatalog = section.sectionCatalog
+                    let viewModel = AudioViewModel(audio: section)
+                    audios.append(viewModel)
                 }
             }
         }
@@ -57,33 +63,17 @@ struct CatalogViewModel {
         if let innserAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
             for audio in innserAudios {
                 if audio.isLink() {
-                    sections.append(CatalogViewModel(catalog: audio))
+                    audio.sectionCatalog = audio.audioCatalog
+                    let viewModel = CatalogViewModel(catalog: audio)
+                    sections.append(viewModel)
+                    accessoryType = .disclosureIndicator
                 }
                 else if audio.isAudio() {
-                    audios.append(AudioViewModel(audio: audio))
+                    let viewModel = AudioViewModel(audio: audio)
+                    audios.append(viewModel)
                 }
             }
-        }
-        
-//        if let innerSections = catalog?.sections?.sortedArray(using: [NSSortDescriptor(key: "text", ascending: true)]), innerSections.count > 0 {
-//            sections.append(contentsOf: innerSections.filter({ s -> Bool in
-//                return (s as? RTCatalog)?.isLink() ?? false
-//            }).map { return CatalogViewModel(catalog: $0 as? RTCatalog) })
-//            audios.append(contentsOf: (innerSections.filter({ s -> Bool in
-//                return (s as? RTCatalog)?.isAudio() ?? false
-//            }).map { return AudioViewModel(audio: $0 as? RTCatalog) }))
-//        }
-//        if let innerAudios = catalog?.audios?.sortedArray(using: [NSSortDescriptor(key: "text", ascending: true)]).filter({ (s) -> Bool in
-//            return (s as? RTCatalog)?.isAudio() ?? false
-//        }), innerAudios.count > 0 {
-//            audios = innerAudios.map { return AudioViewModel(audio: $0 as? RTCatalog) }
-//        }
-//        if let innerSections = catalog?.sections?.sortedArray(using: [NSSortDescriptor(key: "text", ascending: true)]), innerSections.count > 0 {
-//            sections = innerSections.map { return CatalogViewModel(catalog: $0 as? RTCatalog) }
-//        }
-//        if let innerAudios = catalog?.audios?.sortedArray(using: [NSSortDescriptor(key: "text", ascending: true)]), innerAudios.count > 0 {
-//            audios = innerAudios.map { return AudioViewModel(audio: $0 as? RTCatalog) }
-//        }
+        }        
     }
     
     func iconText() -> String {

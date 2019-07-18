@@ -124,6 +124,21 @@ class RTCatalogTests: BaseTests {
             XCTAssertNil(error)
         })
     }
+    
+    func testSomeCrash() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        var catalog: RTCatalog? = nil
+        do {
+            catalog = try object(fromJSONDictionary: someCrashJSON(), inContext: context)
+        } catch {
+            XCTFail("error: \(error)")
+        }
+        XCTAssertNotNil(catalog)
+
+    }
 
 }
 

@@ -276,6 +276,103 @@ class BaseTests: XCTestCase {
         ]
     }
     
+    func someCrashJSON() -> JSONDictionary {
+        return 
+            [
+                "head": [
+                    "title": "Buenos Aires",
+                    "status": "200"
+                ],
+                "body": [[
+                    "element": "outline",
+                    "type": "audio",
+                    "text": "FM Milenium",
+                    "URL": "http://opml.radiotime.com/Tune.ashx?id=s26027&filter=g3",
+                    "bitrate": "128",
+                    "reliability": "91",
+                    "guide_id": "s26027",
+                    "subtext": "DE PUNTÃN",
+                    "genre_id": "g3",
+                    "formats": "mp3",
+                    "show_id": "p1164466",
+                    "item": "station",
+                    "image": "http://cdn-profiles.tunein.com/s26027/images/logoq.jpg?t=154029",
+                    "current_track": "DE PUNTÃN",
+                    "now_playing_id": "s26027",
+                    "preset_id": "s26027"
+                    ],
+                         [
+                            "element": "outline",
+                            "type": "audio",
+                            "text": "Radio Cooperativa",
+                            "URL": "http://opml.radiotime.com/Tune.ashx?id=s101604&filter=g3",
+                            "bitrate": "64",
+                            "reliability": "99",
+                            "guide_id": "s101604",
+                            "subtext": "Ultima Parada",
+                            "genre_id": "g3",
+                            "formats": "mp3",
+                            "show_id": "p1001531",
+                            "item": "station",
+                            "image": "http://cdn-radiotime-logos.tunein.com/s101604q.png",
+                            "current_track": "Ultima Parada",
+                            "now_playing_id": "s101604",
+                            "preset_id": "s101604"
+                    ],
+                         [
+                            "element": "outline",
+                            "type": "audio",
+                            "text": "Radio FM Aire",
+                            "URL": "http://opml.radiotime.com/Tune.ashx?id=s160002&filter=g3",
+                            "bitrate": "32",
+                            "reliability": "10",
+                            "guide_id": "s160002",
+                            "subtext": "TemÃ¡tico",
+                            "genre_id": "g3",
+                            "formats": "wma",
+                            "show_id": "p409908",
+                            "item": "station",
+                            "image": "http://cdn-radiotime-logos.tunein.com/s160002q.png",
+                            "current_track": "TemÃ¡tico",
+                            "now_playing_id": "s160002",
+                            "preset_id": "s160002"
+                    ],
+                         [
+                            "element": "outline",
+                            "type": "audio",
+                            "text": "Radio Rebelde",
+                            "URL": "http://opml.radiotime.com/Tune.ashx?id=s171847&filter=g3",
+                            "bitrate": "24",
+                            "reliability": "98",
+                            "guide_id": "s171847",
+                            "subtext": "Rebelde se nace, no se hace",
+                            "genre_id": "g3",
+                            "formats": "mp3",
+                            "item": "station",
+                            "image": "http://cdn-radiotime-logos.tunein.com/s171847q.png",
+                            "now_playing_id": "s171847",
+                            "preset_id": "s171847"
+                    ],
+                         [
+                            "element": "outline",
+                            "type": "audio",
+                            "text": "RSC Radio",
+                            "URL": "http://opml.radiotime.com/Tune.ashx?id=s137841&filter=g3",
+                            "bitrate": "96",
+                            "reliability": "100",
+                            "guide_id": "s137841",
+                            "subtext": "Te habla de cosas buenas",
+                            "genre_id": "g3",
+                            "formats": "mp3",
+                            "item": "station",
+                            "image": "http://cdn-radiotime-logos.tunein.com/s137841q.png",
+                            "now_playing_id": "s137841",
+                            "preset_id": "s137841"
+                    ]
+                ]
+        ]
+    }
+    
 
 }
 

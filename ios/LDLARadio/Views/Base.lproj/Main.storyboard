@@ -250,11 +250,10 @@
                             <constraint firstItem="cO3-pC-bUr" firstAttribute="height" secondItem="vdU-bj-GQA" secondAttribute="height" id="qLs-7u-Duj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="NgT-YM-wcS"/>
+                    <navigationItem key="navigationItem" title="Radio Time" prompt="Locos de la Azotea" id="NgT-YM-wcS"/>
                     <connections>
                         <outlet property="tableView" destination="cO3-pC-bUr" id="jxr-lT-ZqL"/>
                         <segue destination="Aks-vR-Xwa" kind="show" identifier="recursiveCatalog" id="OTa-07-BgJ"/>
-                        <segue destination="lC7-gP-1qd" kind="show" identifier="audioViewController" id="moo-nS-QbR"/>
                         <segue destination="Pcj-Rn-AxA" kind="presentation" identifier="presentPlayerViewControllerSegueIdentifier" modalPresentationStyle="fullScreen" id="WDZ-BC-saa"/>
                         <segue destination="d4b-Ga-jPE" kind="show" identifier="presentWebViewControllerSegueIdentifier" id="fKq-Iw-pND"/>
                     </connections>
@@ -353,85 +352,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzH-NA-Ji1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1794" y="882"/>
-        </scene>
-        <!--Locos de la Azotea-->
-        <scene sceneID="McR-LP-fX3">
-            <objects>
-                <tableViewController storyboardIdentifier="AudioViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lC7-gP-1qd" customClass="AudioViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" id="vRr-gt-3Y6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioTableViewCellIdentifier" rowHeight="100" id="x6P-E9-gKL" customClass="AudioTableViewCell" customModule="LDLARadio" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6P-E9-gKL" id="cIi-VJ-BtJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bXB-tz-cBx">
-                                            <rect key="frame" x="237" y="0.0" width="122" height="89"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="122" id="t6d-5e-0Rp"/>
-                                            </constraints>
-                                        </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="TeW-cE-6eE">
-                                            <rect key="frame" x="16" y="11" width="343" height="78"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfO-WZ-k8o">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
-                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l54-bg-ecA">
-                                                    <rect key="frame" x="0.0" y="30.5" width="343" height="17"/>
-                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBe-fh-keD">
-                                                    <rect key="frame" x="0.0" y="61" width="343" height="17"/>
-                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NTN-Jy-KIS">
-                                                    <rect key="frame" x="0.0" y="78" width="343" height="0.0"/>
-                                                </progressView>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="leading" secondItem="cIi-VJ-BtJ" secondAttribute="leadingMargin" id="2jO-Pa-azm"/>
-                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="top" secondItem="cIi-VJ-BtJ" secondAttribute="topMargin" id="Nks-Lp-xs5"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="TeW-cE-6eE" secondAttribute="bottom" id="NnP-HV-2VP"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="bXB-tz-cBx" secondAttribute="trailing" id="fjr-73-jgk"/>
-                                        <constraint firstItem="bXB-tz-cBx" firstAttribute="top" secondItem="cIi-VJ-BtJ" secondAttribute="top" id="kCI-Oo-7EA"/>
-                                        <constraint firstItem="bXB-tz-cBx" firstAttribute="bottom" secondItem="TeW-cE-6eE" secondAttribute="bottom" id="pPe-1V-Uly"/>
-                                        <constraint firstItem="TeW-cE-6eE" firstAttribute="trailing" secondItem="cIi-VJ-BtJ" secondAttribute="trailingMargin" id="prh-sX-mVw"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="downloadProgressView" destination="NTN-Jy-KIS" id="EQ5-GT-Rnb"/>
-                                    <outlet property="downloadStateLabel" destination="HBe-fh-keD" id="sRs-up-zOi"/>
-                                    <outlet property="logoView" destination="bXB-tz-cBx" id="bz4-m4-L0g"/>
-                                    <outlet property="subtitleLabel" destination="l54-bg-ecA" id="sFO-LY-CjF"/>
-                                    <outlet property="titleLabel" destination="DfO-WZ-k8o" id="sG4-61-28f"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="lC7-gP-1qd" id="Kfm-G9-Sl4"/>
-                            <outlet property="delegate" destination="lC7-gP-1qd" id="0IF-T4-1eo"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Locos de la Azotea" id="DLa-Zb-YEW"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DuL-mO-SbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3404" y="-667.01649175412297"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -545,7 +465,7 @@
         <image name="f5d1-apple-alt-solid" width="17" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ClR-VP-3ZM"/>
-        <segue reference="fQd-to-YXw"/>
+        <segue reference="fKq-Iw-pND"/>
+        <segue reference="WDZ-BC-saa"/>
     </inferredMetricsTieBreakers>
 </document>

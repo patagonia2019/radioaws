@@ -26,26 +26,26 @@ struct RTCatalogManager {
 
     // MARK: Initialization
     
-    init() {
-        update(tryRequest: true)
-    }
-    
-    mutating func catalogs() -> [CatalogViewModel]? {
-        update()
-        return nil
-    }
-    
-    mutating func update(tryRequest: Bool = false) {
-        // try memory
-        if catalog == nil {
-            // Try the database
-            catalog = catalogFetch()
-        }
-        // try request
-        if tryRequest && catalog == nil {
-            setup()
-        }
-    }
+//    init() {
+//        update(tryRequest: true)
+//    }
+//
+//    mutating func catalogs() -> [CatalogViewModel]? {
+//        update()
+//        return nil
+//    }
+//
+//    mutating func update(tryRequest: Bool = false) {
+//        // try memory
+//        if catalog == nil {
+//            // Try the database
+//            catalog = catalogFetch()
+//        }
+//        // try request
+//        if tryRequest && catalog == nil {
+//            setup()
+//        }
+//    }
     
     /// Function to obtain all the albums sorted by title
     func catalogFetch() -> RTCatalog? {
@@ -75,6 +75,9 @@ struct RTCatalogManager {
                 NotificationCenter.default.post(name: RTCatalogManager.errorNotification, object: jerror)
                 return
             }
+            if catalog?.title == nil {
+                catalog?.title = catalog?.text
+            }
             finish?(error, catalog)
         }
     }
@@ -102,8 +105,8 @@ struct RTCatalogManager {
         RTCatalog.clean()
     }
     
-    func reset() {
-        setup()
-    }
+//    func reset() {
+//        setup()
+//    }
     
 }

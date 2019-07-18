@@ -223,19 +223,19 @@
             </userInfo>
         </attribute>
         <relationship name="audioCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="audios" inverseEntity="RTCatalog" syncable="YES"/>
-        <relationship name="audios" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog" syncable="YES">
+        <relationship name="audios" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="children"/>
             </userInfo>
         </relationship>
         <relationship name="sectionCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="sections" inverseEntity="RTCatalog" syncable="YES"/>
-        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RTCatalog" inverseName="sectionCatalog" inverseEntity="RTCatalog" syncable="YES">
+        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="sectionCatalog" inverseEntity="RTCatalog" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="body"/>
             </userInfo>
         </relationship>
         <userInfo>
-            <entry key="identityAttribute" value="key,title,text"/>
+            <entry key="identityAttribute" value="url"/>
         </userInfo>
     </entity>
     <entity name="RTNode" representedClassName=".RTNode" isAbstract="YES" syncable="YES" codeGenerationType="class">

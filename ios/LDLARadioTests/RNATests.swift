@@ -19,10 +19,6 @@ class RNATests: BaseTests {
         
         do {
             let dial: RNADial = try object(withEntityName: "RNADial", fromJSONDictionary: emisorasJSON(), inContext: context) as! RNADial
-//            let dial: RNADial = try object(fromJSONDictionary: emisorasJSON()["data"], inContext:  context)
-//            let stations : [RNAStation] = try objects(withEntityName: "RNAStation", fromJSONArray: emisorasJSON()["data"] as! JSONArray, inContext: context) as! [RNAStation]
-//            let stations : RNAStation = try objects(fromJSONArray: emisorasJSON()["data"] as! JSONArray, inContext: context)
-//            XCTAssertNotNil(stations)
 
             XCTAssertNotNil(dial)
             XCTAssertEqual(dial.stations?.count, 2)

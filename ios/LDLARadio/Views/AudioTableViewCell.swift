@@ -24,9 +24,9 @@ class AudioTableViewCell: UITableViewCell {
     
     var model : AudioViewModel? = nil {
         didSet {
-//            detailLabel.text = model?.detail
-//            detailLabel.textColor = model?.detailColor
-//            detailLabel.font = model?.detailFont
+            downloadStateLabel.text = model?.detail
+            downloadStateLabel.textColor = model?.detailColor
+            downloadStateLabel.font = model?.detailFont
             subtitleLabel.text = model?.subTitle
             subtitleLabel.textColor = model?.subTitleColor
             subtitleLabel.font = model?.subTitleFont
