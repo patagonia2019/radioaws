@@ -58,9 +58,20 @@ class RTCatalogController {
             finishClosure?(nil)
             return
         }
+        
         let mainSection = sectionsToPop.popLast()
-        if mainCatalogFromDb(mainCatalog: mainSection) == nil,
-            let sectionUrl = mainSection?.url, (mainSection?.isLink() ?? false) {
+        
+        if let mainCatalog = mainCatalogFromDb(mainCatalog: mainSection),
+            mainCatalog.sections?.count ?? 0 > 0 {
+            if sectionsToPop.count > 0 {
+                self.querySections(catalogSections: sectionsToPop, finishClosure: finishClosure)
+            }
+            else {
+                finishClosure?(nil)
+            }
+            return
+        }
+        if let sectionUrl = mainSection?.url, (mainSection?.isLink() ?? false) {
             RTCatalogManager.instance.setup(url: sectionUrl) { error, catalog in
                 
                 if error != nil {
@@ -101,14 +112,6 @@ class RTCatalogController {
                 }
             }
         }
-        else {
-            if sectionsToPop.count > 0 {
-                self.querySections(catalogSections: sectionsToPop, finishClosure: finishClosure)
-            }
-            else {
-                finishClosure?(nil)
-            }
-        }
     }
     
     func refresh(isClean: Bool = false,
@@ -144,10 +147,17 @@ class RTCatalogController {
                 (mainCatalog?.sections?.count ?? 0 > 0 || mainCatalog?.audios?.count ?? 0 > 0)  {
                 var catalogSections = [RTCatalog]()
                 if let innerSections = mainCatalog?.sections?.array as? [RTCatalog] {
-                    catalogSections.append(contentsOf: innerSections)
+                    for section in innerSections {
+                        if let mainSection = mainCatalogFromDb(mainCatalog: section),
+                            mainSection.sections?.count ?? 0 > 0 {
+                        }
+                        else if section.url?.count ?? 0 > 0 {
+                            catalogSections.append(section)
+                        }
+                    }
                 }
 
-                if catalogSections.count > 0 {
+                if false /* catalogSections.count > 0 */ {
                     self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
                         self.mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
                         if let mainCatalogViewModel = self.mainCatalogViewModel {
@@ -202,7 +212,16 @@ class RTCatalogController {
                         }
                     }
                     if let innerSections = catalog?.sections?.array as? [RTCatalog] {
-                        catalogSections.append(contentsOf: innerSections)
+                        
+                        for section in innerSections {
+                            if let mainSection = self.mainCatalogFromDb(mainCatalog: section),
+                                mainSection.sections?.count ?? 0 > 0 {
+                            }
+                            else if section.url?.count ?? 0 > 0 {
+                                catalogSections.append(section)
+                            }
+                        }
+
                     }
                 }
 //                if catalog?.audios?.count ?? 0 > 0 {
@@ -213,7 +232,7 @@ class RTCatalogController {
 //                    }
 //                }
                 
-                if catalogSections.count > 0 {
+                if false /* catalogSections.count > 0 */ {
                     self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
                         CoreDataManager.instance.save()
                         self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)

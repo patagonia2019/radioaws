@@ -39,7 +39,6 @@ class RTCatalogViewController : UIViewController {
         
         tableView.remembersLastFocusedIndexPath = true
         
-        refresh()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,7 +52,7 @@ class RTCatalogViewController : UIViewController {
             playerViewController = nil
         }
 
-        reloadData()
+        refresh()
     }
     
     

@@ -137,6 +137,21 @@ class RTCatalogTests: BaseTests {
             XCTFail("error: \(error)")
         }
         XCTAssertNotNil(catalog)
+        
+    }
+    
+    func testNavegar() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        var catalog: RTCatalog? = nil
+        do {
+            catalog = try object(fromJSONDictionary: navegarJSON(), inContext: context)
+        } catch {
+            XCTFail("error: \(error)")
+        }
+        XCTAssertNotNil(catalog)
 
     }
 

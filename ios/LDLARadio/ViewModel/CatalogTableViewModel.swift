@@ -14,6 +14,7 @@ struct CatalogTableViewModel {
     var rows : Int = 1
     var sections = [String]()
     var elements = [String:[Any]]()
+    var defaultElements = [String:[Any]]()
     var heights = [String:[NSNumber]]()
 
     init() {
@@ -25,6 +26,7 @@ struct CatalogTableViewModel {
         for section in catalog.sections {
             sections.append(section.title)
             
+            var sectionDefault = defaultElements[section.title] ?? [Any]()
             var sectionElements = elements[section.title] ?? [Any]()
             var heightElements = heights[section.title] ?? [NSNumber]()
             if section.sections.count > 0 {
@@ -40,8 +42,13 @@ struct CatalogTableViewModel {
                     heightElements.append(NSNumber(75))
                 }
             }
+            if sectionElements.count == 0 {
+                sectionDefault.append(section)
+                heightElements.append(NSNumber(75))
+            }
             elements[section.title] = sectionElements
             heights[section.title] = heightElements
+            defaultElements[section.title] = sectionDefault
         }
         if catalog.audios.count > 0 {
             sections.append(catalog.title)
@@ -61,13 +68,16 @@ struct CatalogTableViewModel {
         if section < sections.count {
             return sections[section]
         }
-        return "empty section"
+        return ""
     }
     
     func numberOfRows(inSection section: Int) -> Int {
         if section < sections.count {
             let sectionName = sections[section]
-            return elements[sectionName]?.count ?? 1
+            let count = elements[sectionName]?.count ?? 0
+            if count > 0 {
+                return count
+            }
         }
         return 1
     }
@@ -81,6 +91,7 @@ struct CatalogTableViewModel {
                     return objects[row]
                 }
             }
+            return defaultElements[sectionName]?.first
         }
         return nil
     }

@@ -32,12 +32,11 @@ struct CatalogViewModel {
     var audios = [AudioViewModel]()
 
     init(catalog: RTCatalog?) {
-        assert(catalog?.isLink() ?? false)
         title = catalog?.title ?? catalog?.text ?? ""
         detail = ""
         if let queryUrl = catalog?.url,
-            let urlChecked = URL(string: queryUrl)/*,
-            UIApplication.shared.canOpenURL(urlChecked)*/ {
+            let urlChecked = URL(string: queryUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
             accessoryType = .disclosureIndicator
         }
@@ -57,11 +56,15 @@ struct CatalogViewModel {
                     let viewModel = AudioViewModel(audio: section)
                     audios.append(viewModel)
                 }
+                else if section.isText() && section.text?.count ?? 0 > 0 {
+                    let viewModel = CatalogViewModel(catalog: section)
+                    sections.append(viewModel)
+                }
             }
         }
 
-        if let innserAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
-            for audio in innserAudios {
+        if let innerAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
+            for audio in innerAudios {
                 if audio.isLink() {
                     audio.sectionCatalog = audio.audioCatalog
                     let viewModel = CatalogViewModel(catalog: audio)
@@ -71,6 +74,10 @@ struct CatalogViewModel {
                 else if audio.isAudio() {
                     let viewModel = AudioViewModel(audio: audio)
                     audios.append(viewModel)
+                }
+                else if audio.isText() && audio.text?.count ?? 0 > 0 {
+                    let viewModel = CatalogViewModel(catalog: audio)
+                    sections.append(viewModel)
                 }
             }
         }        

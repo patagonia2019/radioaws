@@ -58,6 +58,10 @@ extension RTCatalog {
     }
     
     
+    func isText() -> Bool {
+        return type == "text"
+    }
+    
     func isAudio() -> Bool {
         return type == "audio"
     }

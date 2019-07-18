@@ -373,6 +373,66 @@ class BaseTests: XCTestCase {
         ]
     }
     
+    func navegarJSON() -> JSONDictionary {
+        return [
+            "body": [[
+                "URL": "http://opml.radiotime.com/Browse.ashx?c=local",
+                "element": "outline",
+                "key": "local",
+                "text": "Radio Local",
+                "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?c=music",
+                        "element": "outline",
+                        "key": "music",
+                        "text": "M\\U00fasica",
+                        "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?c=talk",
+                        "element": "outline",
+                        "key": "talk",
+                        "text": "Hablada",
+                        "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?c=sports",
+                        "element": "outline",
+                        "key": "sports",
+                        "text": "Deportes",
+                        "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?id=r0",
+                        "element": "outline",
+                        "key": "location",
+                        "text": "Por Ubicaci\\U00f3n",
+                        "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?c=lang",
+                        "element": "outline",
+                        "key": "language",
+                        "text": "Por Idioma",
+                        "type": "link"
+                ],
+                     [
+                        "URL": "http://opml.radiotime.com/Browse.ashx?c=podcast",
+                        "element": "outline",
+                        "key": "podcast",
+                        "text": "P\\U00f3dcast",
+                        "type": "link"
+                ]
+            ],
+            "head": [
+                "status": 200,
+                "title": "Navegar"
+            ]
+        ]
+
+    }
+    
 
 }
 
