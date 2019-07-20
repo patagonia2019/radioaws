@@ -71,10 +71,10 @@ class StreamPersistenceManager: NSObject {
         
         didRestorePersistenceManager = true
         
-        _ = StreamListManager.instance;
-        _ = CityListManager.instance;
-        _ = StationListManager.instance;
-        _ = RTCatalogManager.instance;
+//        _ = StreamListManager.instance;
+//        _ = CityListManager.instance;
+//        _ = StationListManager.instance;
+//        _ = RTCatalogManager.instance;
 
         NotificationCenter.default.post(name: CityPersistenceManagerDidRestoreStateNotification, object: nil)
         
@@ -87,7 +87,7 @@ class StreamPersistenceManager: NSObject {
                 for task in tasksArray {
                     guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetName = task.taskDescription else { break }
                     
-                    guard let asset = StreamListManager.instance.stream(byName: assetName) else { break }
+                    guard let asset = Stream.stream(byName: assetName) else { break }
                     self.activeDownloadsMap[assetDownloadTask] = asset
                 }
                 
@@ -148,7 +148,7 @@ class StreamPersistenceManager: NSObject {
     
     /// Returns an Stream pointing to a file on disk if it exists.
     func localAssetForStream(withName name: String) -> Stream? {
-        return StreamListManager.instance.stream(byName: name)
+        return Stream.stream(byName: name)
     }
     
     /// Returns the current download state for a given Stream.

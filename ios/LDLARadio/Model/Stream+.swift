@@ -8,6 +8,8 @@
 
 import Foundation
 import AVFoundation
+import CoreData
+import JFCore
 
 extension Stream {
     func urlAsset() -> AVURLAsset? {
@@ -26,6 +28,41 @@ extension Stream {
         let url = baseDownloadURL.appendingPathComponent(localFileLocation)
         
         return url
+    }
+    
+    
+    /// Returns the streams for a given station id.
+    static func stream(byName name: String?) -> Stream? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let name = name else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "name = %s", name)
+        let array = try? context.fetch(req)
+        return array?.first
+    }
+    
+    /// Returns the streams for a given station id.
+    static func stream(byStation stationId: Int16?) -> [Stream]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let stationId = stationId else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "station.id = %d", stationId)
+        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+    
+    static func clean() {
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.includesPropertyValues = false
+        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
+            for obj in array {
+                context.delete(obj)
+            }
+        }
     }
 }
 

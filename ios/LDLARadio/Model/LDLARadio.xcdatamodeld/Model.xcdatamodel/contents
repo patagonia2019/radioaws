@@ -259,6 +259,9 @@
                 <entry key="JSONKeyPath" value="URL"/>
             </userInfo>
         </attribute>
+        <userInfo>
+            <entry key="identityAttribute" value="url"/>
+        </userInfo>
     </entity>
     <entity name="Station" representedClassName=".Station" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
@@ -360,11 +363,11 @@
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="120"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="105"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="330"/>
-        <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="103"/>
-        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
-        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
         <element name="RNADial" positionX="-243" positionY="-117" width="128" height="60"/>
         <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="285"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="30"/>
+        <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="30"/>
+        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
+        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
     </elements>
 </model>

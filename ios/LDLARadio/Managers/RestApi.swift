@@ -130,10 +130,12 @@ class RestApi {
         finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
     {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
-        let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
+        let request = self.alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         request.responseInsert(context: context, type: T.self) { response in
-            print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")
-            finish?(response.error, response.value)
+            context.performAndWait({
+                print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")
+                finish?(response.error, response.value)
+            })
         }
     }
 

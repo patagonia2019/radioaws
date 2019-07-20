@@ -32,9 +32,16 @@ struct CatalogViewModel {
     var audios = [AudioViewModel]()
 
     init(catalog: RTCatalog?) {
-        title = catalog?.title ?? catalog?.text ?? ""
-        detail = ""
-        if let queryUrl = catalog?.url,
+        guard let catalog = catalog else {
+            assert(false)
+        }
+        if catalog.title == nil && catalog.text == nil {
+            print("nil")
+        }
+        title = catalog.title ?? catalog.text ?? "x-empty-x"
+        
+        detail = catalog.isOnlyText() ? catalog.text ?? "-x-x-" : "-not-"
+        if let queryUrl = catalog.url,
             let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
@@ -44,7 +51,7 @@ struct CatalogViewModel {
             print("here")
         }
         let sortBy = [NSSortDescriptor(key: "text", ascending: true)]
-        if let innerSections = catalog?.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
+        if let innerSections = catalog.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
             for section in innerSections {
                 if section.isLink() {
                     let viewModel = CatalogViewModel(catalog: section)
@@ -56,14 +63,14 @@ struct CatalogViewModel {
                     let viewModel = AudioViewModel(audio: section)
                     audios.append(viewModel)
                 }
-                else if section.isText() && section.text?.count ?? 0 > 0 {
+                else if section.isOnlyText() && section.title?.count ?? 0 > 0 {
                     let viewModel = CatalogViewModel(catalog: section)
                     sections.append(viewModel)
                 }
             }
         }
 
-        if let innerAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
+        if let innerAudios = catalog.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
             for audio in innerAudios {
                 if audio.isLink() {
                     audio.sectionCatalog = audio.audioCatalog
@@ -75,7 +82,7 @@ struct CatalogViewModel {
                     let viewModel = AudioViewModel(audio: audio)
                     audios.append(viewModel)
                 }
-                else if audio.isText() && audio.text?.count ?? 0 > 0 {
+                else if audio.isOnlyText() && audio.title?.count ?? 0 > 0 {
                     let viewModel = CatalogViewModel(catalog: audio)
                     sections.append(viewModel)
                 }

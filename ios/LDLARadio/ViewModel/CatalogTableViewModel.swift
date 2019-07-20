@@ -23,18 +23,39 @@ struct CatalogTableViewModel {
     init(catalog: CatalogViewModel, parentTitle: String? = "Radio Time") {
         prompt = parentTitle ?? "Radio Time"
         title = catalog.title
-        for section in catalog.sections {
+        for section in catalog.sections.sorted(by: { (c1, c2) -> Bool in
+            return c1.title <= c2.title
+        }) {
             sections.append(section.title)
             
             var sectionDefault = defaultElements[section.title] ?? [Any]()
             var sectionElements = elements[section.title] ?? [Any]()
             var heightElements = heights[section.title] ?? [NSNumber]()
             if section.sections.count > 0 {
-                sectionElements.append(contentsOf: section.sections)
-                for _ in section.sections {
-                    heightElements.append(NSNumber(44))
+                if section.sections.count == 1 {
+                    print("here")
+                    title = "\(title) - \(section.title)"
+                    if let subSections = section.sections.first?.sections {
+                        sectionElements.append(contentsOf: subSections)
+                        for _ in subSections {
+                            heightElements.append(NSNumber(44))
+                        }
+                    }
+                    if let audios = section.sections.first?.audios {
+                        sectionElements.append(contentsOf: audios)
+                        for _ in audios {
+                            heightElements.append(NSNumber(75))
+                        }
+                    }
+                    heights[section.title] = heightElements
+               }
+                else {
+                    sectionElements.append(contentsOf: section.sections)
+                    for _ in section.sections {
+                        heightElements.append(NSNumber(44))
+                    }
+                    heights[section.title] = heightElements
                 }
-                heights[section.title] = heightElements
             }
             if section.audios.count > 0 {
                 sectionElements.append(contentsOf: section.audios)

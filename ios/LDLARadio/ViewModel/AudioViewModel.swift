@@ -37,7 +37,7 @@ struct AudioViewModel {
 
     init(audio: RTCatalog?) {
         assert(audio?.isAudio() ?? false)
-        title = audio?.text ?? ""
+        title = audio?.title ?? audio?.text ?? ""
         subTitle = audio?.subtext ?? ""
         if let bitrate = audio?.bitrate {
             detail = "\(bitrate) Kbps"

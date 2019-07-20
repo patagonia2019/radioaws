@@ -14,7 +14,7 @@ extension RTCatalog {
     func descript() -> String {
         var str = [String]()
         if let title = title { str.append(title) }
-        if let text = text { str.append(text) }
+//        if let text = textNode { str.append(text) }
         if let url = url { str.append(url) }
         if let key = key { str.append(key) }
         if let sections = sections { str.append("\(sections) sections") }
@@ -58,7 +58,7 @@ extension RTCatalog {
     }
     
     
-    func isText() -> Bool {
+    func isOnlyText() -> Bool {
         return type == "text"
     }
     

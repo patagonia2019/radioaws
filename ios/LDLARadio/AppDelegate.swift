@@ -34,14 +34,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        CoreDataManager.instance.save()
     }
     
-    func registerSettingsBundle() {
+    func applicationDidEnterBackground(_ application: UIApplication) {
+//        CoreDataManager.instance.save()
+    }
+    
+    private func registerSettingsBundle() {
         var appDefaults = [String:AnyObject]()
         appDefaults["server_url"] = RestApi.Constants.Service.ldlaServer as AnyObject?
         UserDefaults.standard.register(defaults: appDefaults)

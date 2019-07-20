@@ -20,7 +20,7 @@ class RadioViewController: UITableViewController {
     
     // MARK: Deinitialization
     
-    private var streams = StreamListManager.instance.streamsFetch() ?? [Stream]()
+    private var streams = /* StreamListManager.instance.streamsFetch() ?? */ [Stream]()
 
     deinit {
         for note in [StreamListManager.didLoadNotification, StationListManager.didLoadNotification, CityListManager.didLoadNotification] {

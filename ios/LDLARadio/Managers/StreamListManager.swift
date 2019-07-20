@@ -42,39 +42,6 @@ struct StreamListManager {
         }
     }
     
-    /// Function to obtain all the albums sorted by title
-    func streamsFetch() -> [Stream]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "listenIsWorking = true")
-        req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
-        let array = try? context.fetch(req)
-        return array
-    }
-
-    // MARK: Stream access
-    
-    /// Returns the streams for a given station id.
-    func stream(byName name: String?) -> Stream? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        guard let name = name else { return nil }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "name = %s", name)
-        let array = try? context.fetch(req)
-        return array?.first
-    }
-    
-    /// Returns the streams for a given station id.
-    func stream(byStation stationId: Int16?) -> [Stream]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        guard let stationId = stationId else { return nil }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "station.id = %d", stationId)
-        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        let array = try? context.fetch(req)
-        return array
-    }
-    
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/streams.json", type: Many<Stream>.self) { error1, _ in
             if finish == nil {
@@ -105,18 +72,18 @@ struct StreamListManager {
         }
     }
     
-    private func removeAll() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
+    
+    /// Function to obtain all the albums sorted by title
+    func streamsFetch() -> [Stream]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-            for obj in array {
-                context.delete(obj)
-            }
-        }
+        req.predicate = NSPredicate(format: "listenIsWorking = true")
+        req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
     }
+    
+    // MARK: Stream access
     
     private func save() {
         guard let context = CoreDataManager.instance.taskContext else {
@@ -136,7 +103,7 @@ struct StreamListManager {
 
 
     func clean() {
-        removeAll()
+        Stream.clean()
     }
     
     func reset() {

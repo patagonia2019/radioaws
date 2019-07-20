@@ -121,6 +121,16 @@ class RTCatalogController {
 
         startClosure?()
 
+        CoreDataManager.instance.taskContext?.performAndWait {
+            self.privateRefresh(isClean: isClean, prompt: prompt, startClosure: startClosure, finishClosure: finishClosure)
+        }
+    }
+    
+    private func privateRefresh(isClean: Bool = false,
+                 prompt: String = "Radio Time",
+                 startClosure: (() -> Void)? = nil,
+                 finishClosure: ((_ error: Error?) -> Void)? = nil) {
+
         let mainCatalog = mainCatalogFromDb(mainCVM: mainCatalogViewModel)
 
         var resetInfo = false
@@ -132,7 +142,7 @@ class RTCatalogController {
                 resetInfo = true
             }
         }
-        
+    
 
         if resetInfo == false {
             if mainCatalogViewModel?.audios.count ?? 0 > 0 {
@@ -178,77 +188,83 @@ class RTCatalogController {
         }
         
         RTCatalogManager.instance.setup(url: mainCatalog?.url ?? self.mainCatalogViewModel?.urlString()) { error, catalog in
-            DispatchQueue.main.async {
 
-                if error != nil {
+            if error != nil {
+                DispatchQueue.main.async {
                     finishClosure?(error)
-                    return
                 }
-                
-                if (self.mainCatalogViewModel == nil || self.mainCatalogViewModel?.title == "Browse") && catalog?.title == "Browse" {
-                    catalog?.url = RestApi.Constants.Service.rtServer
-                }
-                else {
-                    catalog?.url = mainCatalog?.url ?? self.mainCatalogViewModel?.urlString()
-                }
-//                let audios = mainCatalog?.audios
-                let sections = mainCatalog?.sections
-                let title = mainCatalog?.title ?? mainCatalog?.text
-                let sectionCatalog = mainCatalog?.sectionCatalog
-                mainCatalog?.remove()
-                catalog?.sectionCatalog = sectionCatalog
-                
-                
-                if catalog?.title == nil {
-                    catalog?.title = title
-                }
-                
-                var catalogSections = [RTCatalog]()
-
-                if catalog?.sections?.count ?? 0 > 0 {
-                    if let sections = sections?.array as? [RTCatalog] {
-                        for section in sections {
-                            section.sectionCatalog = catalog
-                        }
-                    }
-                    if let innerSections = catalog?.sections?.array as? [RTCatalog] {
-                        
-                        for section in innerSections {
-                            if let mainSection = self.mainCatalogFromDb(mainCatalog: section),
-                                mainSection.sections?.count ?? 0 > 0 {
-                            }
-                            else if section.url?.count ?? 0 > 0 {
-                                catalogSections.append(section)
-                            }
-                        }
-
+                return
+            }
+            
+            if (self.mainCatalogViewModel == nil || self.mainCatalogViewModel?.title == "Browse") && catalog?.title == "Browse" {
+                catalog?.url = RestApi.Constants.Service.rtServer
+            }
+            else {
+                catalog?.url = mainCatalog?.url ?? self.mainCatalogViewModel?.urlString()
+            }
+            let audios = mainCatalog?.audios
+            let sections = mainCatalog?.sections
+            let title = mainCatalog?.title
+            let text = mainCatalog?.text
+            let sectionCatalog = mainCatalog?.sectionCatalog
+            mainCatalog?.remove()
+            catalog?.sectionCatalog = sectionCatalog
+            
+            
+            if catalog?.title == nil {
+                catalog?.title = title
+            }
+            if catalog?.text == nil {
+                catalog?.text = text
+            }
+            
+            var catalogSections = [RTCatalog]()
+            
+            if catalog?.sections?.count ?? 0 > 0 {
+                if let sections = sections?.array as? [RTCatalog] {
+                    for section in sections {
+                        section.sectionCatalog = catalog
                     }
                 }
-//                if catalog?.audios?.count ?? 0 > 0 {
-//                    if let audios = audios?.array as? [RTCatalog] {
-//                        for audio in audios {
-//                            audio.audioCatalog = catalog
-//                        }
-//                    }
-//                }
-                
-                if false /* catalogSections.count > 0 */ {
-                    self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
-                        CoreDataManager.instance.save()
-                        self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
-                        if let mcvm = self.mainCatalogViewModel {
-                            self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
-                            
+                if let innerSections = catalog?.sections?.array as? [RTCatalog] {
+                    
+                    for section in innerSections {
+                        if let mainSection = self.mainCatalogFromDb(mainCatalog: section),
+                            mainSection.sections?.count ?? 0 > 0 {
                         }
-                        finishClosure?(error)
-                    })
+                        else if section.url?.count ?? 0 > 0 {
+                            catalogSections.append(section)
+                        }
+                    }
+                    
                 }
-                else {
+            }
+            if catalog?.audios?.count ?? 0 > 0 {
+                if let audios = audios?.array as? [RTCatalog] {
+                    for audio in audios {
+                        audio.audioCatalog = catalog
+                    }
+                }
+            }
+            
+            if false /* catalogSections.count > 0 */ {
+                self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
                     CoreDataManager.instance.save()
                     self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
                     if let mcvm = self.mainCatalogViewModel {
                         self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
-                    }                    
+                        
+                    }
+                    finishClosure?(error)
+                })
+            }
+            else {
+                CoreDataManager.instance.save()
+                self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
+                if let mcvm = self.mainCatalogViewModel {
+                    self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
+                }
+                DispatchQueue.main.async {
                     finishClosure?(error)
                 }
             }

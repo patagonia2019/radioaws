@@ -52,6 +52,12 @@ class RTCatalogViewController : UIViewController {
             playerViewController = nil
         }
 
+//        refresh()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         refresh()
     }
     
@@ -74,9 +80,11 @@ class RTCatalogViewController : UIViewController {
         
         controller.refresh(isClean: isClean,
                            startClosure: {
-            SwiftSpinner.show(Quote.randomQuote())
-            self.reloadData()
-
+                            CoreDataManager.instance.taskContext?.performAndWait {
+                                SwiftSpinner.show(Quote.randomQuote())
+                            }
+                            self.reloadData()
+                            
         }) { (error) in
             refreshControl?.endRefreshing()
             SwiftSpinner.hide()
