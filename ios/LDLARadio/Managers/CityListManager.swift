@@ -34,7 +34,7 @@ struct CityListManager {
         // try memory
         if cities.count == 0 {
             // Try the database
-            cities = citiesFetch() ?? [City]()
+            cities = City.all() ?? [City]()
         }
         // try request
         if tryRequest && cities.count == 0 {
@@ -45,14 +45,6 @@ struct CityListManager {
     
     // MARK: City access
     
-    /// Function to obtain all the albums sorted by title
-    func citiesFetch() -> [City]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        let req = NSFetchRequest<City>(entityName: "City")
-        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        let array = try? context.fetch(req)
-        return array
-    }
 
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/cities.json", type: Many<City>.self) { error, _ in
@@ -73,38 +65,8 @@ struct CityListManager {
     }
     
     
-    private func removeAll() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        let req = NSFetchRequest<City>(entityName: "City")
-        req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-            for obj in array {
-                context.delete(obj)
-            }
-        }
-    }
-    
-    private func save() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        try? context.save()
-    }
-    
-    
-    
-    private func rollback() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        context.rollback()
-    }
-    
-    
     func clean() {
-        removeAll()
+        City.clean()
     }
     
     func reset() {

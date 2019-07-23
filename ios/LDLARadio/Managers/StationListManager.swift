@@ -35,24 +35,12 @@ struct StationListManager {
         // try memory
         if stations.count == 0 {
             // Try the database
-            stations = stationsFetch() ?? [Station]()
+            stations = Station.all() ?? [Station]()
         }
         // try request
         if tryRequest && stations.count == 0 {
             setup()
         }
-    }
-
-
-    // MARK: Station access
-    
-    /// Function to obtain all the albums sorted by title
-    func stationsFetch() -> [Station]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
-        let req = NSFetchRequest<Station>(entityName: "Station")
-        req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        let array = try? context.fetch(req)
-        return array
     }
     
     func setup(finish: ((_ error: Error?) -> Void)? = nil) {
@@ -73,40 +61,11 @@ struct StationListManager {
         }
     }
 
-    private func removeAll() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        let req = NSFetchRequest<Station>(entityName: "Station")
-        req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-            for obj in array {
-                context.delete(obj)
-            }
-        }
-    }
-    
-    private func save() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        try? context.save()
-    }
-    
-    
-    
-    private func rollback() {
-        guard let context = CoreDataManager.instance.taskContext else {
-            fatalError("fatal: no core data context manager")
-        }
-        context.rollback()
-    }
-    
     
     func clean() {
-        removeAll()
+        Station.clean()
     }
-    
+
     func reset() {
         setup()
     }

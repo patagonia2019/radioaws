@@ -6,7 +6,7 @@
 //  Copyright © 2019 Apple Inc. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class RadioTimeViewController: BaseAudioViewController {
     // MARK: Properties

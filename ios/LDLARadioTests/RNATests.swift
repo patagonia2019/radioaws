@@ -35,7 +35,7 @@ class RNATests: BaseTests {
 
     func testRequestModelEmisoras() {
         let expect = expectation(description: "rna")
-        RestApi.instance.requestRNA(usingQuery: "/listar_emisoras.json", type: RNADial.self) { (error, dial) in
+        RestApi.instance.requestRNA(usingQuery: "api/listar_emisoras.json", type: RNADial.self) { (error, dial) in
             
             XCTAssertNil(error)
             XCTAssertNotNil(dial)

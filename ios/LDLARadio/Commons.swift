@@ -32,6 +32,8 @@ class Commons {
             case indent = 0xf03c
             case music = 0xf001
             case angry = 0xf556
+            case cat = 0xf6be
+            case ban = 0xf05e
         }
         public static func showAwesome(icon: FontAwesome) -> Character {
             return Character(UnicodeScalar(icon.rawValue) ?? "?")

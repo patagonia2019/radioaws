@@ -48,22 +48,7 @@ extension RTCatalog {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
         }
-//        let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
-//        if let title = title {
-//            req.predicate = NSPredicate(format: "title = %@", title)
-//        }
-//        else if let text = text {
-//            req.predicate = NSPredicate(format: "text = %@", text)
-//        }
-//        else {
-//            return
-//        }
-//        req.includesPropertyValues = false
-//        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-//            for obj in array {
         context.delete(self)
-//            }
-//        }
     }
     
     

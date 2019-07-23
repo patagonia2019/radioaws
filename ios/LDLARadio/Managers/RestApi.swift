@@ -36,8 +36,8 @@ class RestApi {
             static let rtServer: String = "https://api.radiotime.com"
 
             /// RNA Server
-            static let rnaServer: String = "http://marcos.mineolo.com/rna/api"
-
+            static let rnaServer: String = "http://marcos.mineolo.com/rna"
+            
             /// Function to build the url used in the requests.
             static func url(with query: String?, baseUrl: String = ldlaServer) -> String {
                 return "\(baseUrl)\(query ?? "")"

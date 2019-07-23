@@ -65,7 +65,7 @@ class BaseAudioViewController: UITableViewController {
     
     private func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
-        controller.refresh(isClean: isClean,
+        controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
                             CoreDataManager.instance.taskContext?.performAndWait {
                                 SwiftSpinner.show(Quote.randomQuote())

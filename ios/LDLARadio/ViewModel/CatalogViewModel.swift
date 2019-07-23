@@ -33,7 +33,7 @@ struct CatalogViewModel {
     
     init() {
         title = "No Info"
-        icon = .angry
+        icon = .ban
         detail = "No Info"
         selectionStyle = .none
         accessoryType = .none
@@ -95,11 +95,7 @@ struct CatalogViewModel {
         }
         
         if sections.count == 0 && audios.count == 0 && urlString() == nil {
-            title = "No Info"
-            detail = "No Info"
-            icon = .angry
-            selectionStyle = .none
-            accessoryType = .none
+            sections.append(CatalogViewModel())
         }
     }
     

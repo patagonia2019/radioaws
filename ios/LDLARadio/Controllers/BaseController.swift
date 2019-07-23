@@ -50,7 +50,7 @@ class BaseController {
     }
     
     func refresh(isClean: Bool = false,
-                 prompt: String = "Radio Time",
+                 prompt: String,
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: Error?) -> Void)? = nil) {
         

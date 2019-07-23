@@ -52,7 +52,7 @@ class RTCatalogController: BaseController {
     }
         
     override func privateRefresh(isClean: Bool = false,
-                 prompt: String,
+                 prompt: String = "Radio Time",
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: Error?) -> Void)? = nil) {
 
@@ -107,7 +107,8 @@ class RTCatalogController: BaseController {
             finishClosure?(nil)
             return
         }
-        RTCatalogManager.instance.setup(url: url) { error, catalog in
+        
+        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { error, catalog in
 
             if error != nil {
                 DispatchQueue.main.async {

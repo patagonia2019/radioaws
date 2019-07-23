@@ -33,8 +33,9 @@ class AudioTableViewCell: UITableViewCell {
             titleLabel.text = model?.title
             titleLabel.textColor = model?.titleColor
             titleLabel.font = model?.titleFont
+            logoView.image = model?.placeholderImage
             if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.af_setImage(withURL: thumbnailUrl)
+                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage)
             }
         }
     }

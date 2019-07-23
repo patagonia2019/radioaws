@@ -28,8 +28,10 @@ class CatalogTableViewCell : UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.text = "\(Commons.symbols.showAwesome(icon: .angry))"
+        iconView.text = "\(Commons.symbols.showAwesome(icon: .ban))"
         detailView.text = "No Info"
+        selectionStyle = .none
+        accessoryType = .none
     }
     
 }

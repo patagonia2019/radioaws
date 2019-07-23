@@ -23,12 +23,13 @@ struct AudioViewModel {
     
     var url: URL? = nil
     var thumbnailUrl: URL? = nil
+    var placeholderImage: UIImage? = nil
     var detail: String
     let titleColor: UIColor = .darkGray
     let titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
     let subTitleColor: UIColor = .lightGray
     let subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-2)
-    let detailColor: UIColor = .lightText
+    let detailColor: UIColor = .red
     let detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-4)
     var title: String
     var subTitle: String
@@ -72,6 +73,52 @@ struct AudioViewModel {
         if let audioUrl = stream?.name,
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
+            url = urlChecked
+        }
+    }
+    
+    init(stationAm: RNAStation?) {
+        title = stationAm?.firstName ?? ""
+        subTitle = stationAm?.lastName ?? ""
+        detail = stationAm?.dialAM ?? ""
+        placeholderImage = UIImage.init(named: "RNA-256x256bb")
+        if let uriImage = stationAm?.image,
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            thumbnailUrl = urlChecked
+        }
+        if let url1 = stationAm?.url1,
+            let amUri = stationAm?.amUri,
+            amUri.count > 0,
+            let port = stationAm?.port,
+            port.count > 0,
+            let urlChecked = URL(string: "http://\(url1):\(port)\(amUri)"),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            url = urlChecked
+        }
+    }
+    
+    init(stationFm: RNAStation?) {
+        title = stationFm?.firstName ?? ""
+        subTitle = stationFm?.lastName ?? ""
+        detail = stationFm?.dialFM ?? ""
+        placeholderImage = UIImage.init(named: "RNA-256x256bb")
+        if let uriImage = stationFm?.image,
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/rna/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            thumbnailUrl = urlChecked
+        }
+        if let url1 = stationFm?.url1,
+            let fmUri = stationFm?.fmUri,
+            fmUri.count > 0,
+            let port = stationFm?.port,
+            port.count > 0,
+            let urlChecked = URL(string: "http://\(url1):\(port)\(fmUri)"),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
             url = urlChecked
         }
     }
