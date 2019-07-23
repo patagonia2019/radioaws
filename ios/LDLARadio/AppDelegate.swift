@@ -25,10 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
-        // Restore the state of the application and any running downloads.
-        StreamPersistenceManager.sharedManager.restorePersistenceManager()
-
         SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size))
+        
+        changeAppearance()
 
         return true
     }
@@ -49,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.register(defaults: appDefaults)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+    }
+    
+    private func changeAppearance() {
+        let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: 15)!,
+                          NSAttributedString.Key.foregroundColor: UIColor.gray]
+        UINavigationBar.appearance().titleTextAttributes = attributes
+
+        let headerLabel = UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
+        headerLabel.font = UIFont(name: Commons.font.name, size: 14)!
+        headerLabel.textColor = .lightGray
+        headerLabel.shadowColor = .black
+        headerLabel.shadowOffset = CGSize(width: -1, height: -1)
     }
     
     @objc func defaultsChanged() {

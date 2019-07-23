@@ -17,9 +17,9 @@ class CatalogTableViewCell : UITableViewCell {
     var model : CatalogViewModel? = nil {
         didSet {
             iconView.text = model?.iconText()
-            iconView.textColor = model?.color
+            iconView.textColor = model?.iconColor
             detailView.text = model?.title
-            detailView.textColor = model?.color
+            detailView.textColor = model?.textColor
             detailView.font = model?.font
             selectionStyle = model?.selectionStyle ?? .none
             accessoryType = model?.accessoryType ?? .none
@@ -28,8 +28,8 @@ class CatalogTableViewCell : UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.text = ""
-        detailView.text = ""
+        iconView.text = "\(Commons.symbols.showAwesome(icon: .angry))"
+        detailView.text = "No Info"
     }
     
 }

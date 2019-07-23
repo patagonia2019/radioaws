@@ -12,6 +12,11 @@ import CoreData
 import JFCore
 
 extension Stream {
+    
+    override public func awakeFromInsert() {
+        setPrimitiveValue(Date(), forKey: "updatedAt")
+    }
+
     func urlAsset() -> AVURLAsset? {
         guard let playUrl = name?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let streamPlaylistURL = URL(string: playUrl),
@@ -51,6 +56,17 @@ extension Stream {
         let array = try? context.fetch(req)
         return array
     }
+    
+    /// Function to obtain all the streams sorted by station.name
+    static func all() -> [Stream]? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "listenIsWorking = true")
+        req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+
     
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {

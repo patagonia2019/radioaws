@@ -9,125 +9,50 @@
 import Foundation
 import JFCore
 
-class RTCatalogController {
+class RTCatalogController: BaseController {
     
     var mainCatalogViewModel : CatalogViewModel? = nil
     var catalogTableViewModel = CatalogTableViewModel.init()
 
-    init() {
-    }
-    
+    override init() { }
+
     init(withCatalogViewModel catalogViewModel: CatalogViewModel?) {
         mainCatalogViewModel = catalogViewModel
     }
     
-    func numberOfSections() -> Int {
-        return catalogTableViewModel.sections.count
+    override func numberOfSections() -> Int {
+        return catalogTableViewModel.sections.count == 0 ? 1 : catalogTableViewModel.sections.count
     }
     
-    func titleForHeader(inSection section: Int) -> String? {
+    override func titleForHeader(inSection section: Int) -> String? {
         return catalogTableViewModel.titleForHeader(inSection: section)
     }
     
-    func numberOfRows(inSection section: Int) -> Int {
+    override func numberOfRows(inSection section: Int) -> Int {
         return catalogTableViewModel.numberOfRows(inSection: section)
     }
     
-    func catalog(forSection section: Int, row: Int) -> Any? {
+    override func catalog(forSection section: Int, row: Int) -> Any? {
         return catalogTableViewModel.elements(forSection: section, row: row)
     }
     
-    func heightForRow(at section: Int, row: Int) -> CGFloat {
+    override func heightForRow(at section: Int, row: Int) -> CGFloat {
         return CGFloat(catalogTableViewModel.heightForRow(at: section, row: row))
     }
     
-    func title() -> String {
-        return catalogTableViewModel.title
+    override func title() -> String {
+        var str = [String]()
+        str.append(catalogTableViewModel.title + ". ")
+        str.append(super.title())
+        return str.joined()
     }
     
-    func prompt() -> String {
+    override func prompt() -> String {
         return catalogTableViewModel.prompt
     }
-    
-    func querySections(catalogSections: [RTCatalog]?, finishClosure: ((_ error: Error?) -> Void)? = nil) {
-        var sectionsToPop = [RTCatalog]()
-        if let catalogSections = catalogSections {
-            sectionsToPop.append(contentsOf: catalogSections)
-        }
-        if catalogSections?.count == 0 {
-            finishClosure?(nil)
-            return
-        }
         
-        let mainSection = sectionsToPop.popLast()
-        
-        if let mainCatalog = mainCatalogFromDb(mainCatalog: mainSection),
-            mainCatalog.sections?.count ?? 0 > 0 {
-            if sectionsToPop.count > 0 {
-                self.querySections(catalogSections: sectionsToPop, finishClosure: finishClosure)
-            }
-            else {
-                finishClosure?(nil)
-            }
-            return
-        }
-        if let sectionUrl = mainSection?.url, (mainSection?.isLink() ?? false) {
-            RTCatalogManager.instance.setup(url: sectionUrl) { error, catalog in
-                
-                if error != nil {
-                    finishClosure?(error)
-                    return
-                }
-                catalog?.url = sectionUrl
-                
-                let audios = mainSection?.audios
-                let sections = mainSection?.sections
-                let title = mainSection?.title ?? mainSection?.text
-                let sectionCatalog = mainSection?.sectionCatalog
-                mainSection?.remove()
-                catalog?.sectionCatalog = sectionCatalog
-                if catalog?.title == nil {
-                    catalog?.title = title
-                }
-                if catalog?.sections?.count ?? 0 > 0 {
-                    if let sections = sections?.array as? [RTCatalog] {
-                        for section in sections {
-                            section.sectionCatalog = catalog
-                        }
-                    }
-                }
-                if catalog?.audios?.count ?? 0 > 0 {
-                    if let audios = audios?.array as? [RTCatalog] {
-                        for audio in audios {
-                            audio.audioCatalog = catalog
-                        }
-                    }
-                }
-                
-                if sectionsToPop.count > 0 {
-                    self.querySections(catalogSections: sectionsToPop, finishClosure: finishClosure)
-                }
-                else {
-                    finishClosure?(error)
-                }
-            }
-        }
-    }
-    
-    func refresh(isClean: Bool = false,
-                 prompt: String = "Radio Time",
-                 startClosure: (() -> Void)? = nil,
-                 finishClosure: ((_ error: Error?) -> Void)? = nil) {
-
-        startClosure?()
-
-        CoreDataManager.instance.taskContext?.performAndWait {
-            self.privateRefresh(isClean: isClean, prompt: prompt, startClosure: startClosure, finishClosure: finishClosure)
-        }
-    }
-    
-    private func privateRefresh(isClean: Bool = false,
-                 prompt: String = "Radio Time",
+    override func privateRefresh(isClean: Bool = false,
+                 prompt: String,
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: Error?) -> Void)? = nil) {
 
@@ -149,6 +74,7 @@ class RTCatalogController {
                 if let mainCatalogViewModel = mainCatalogViewModel {
                     catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
                 }
+                lastUpdated = mainCatalog?.updatedAt
                 finishClosure?(nil)
                 return
             }
@@ -167,30 +93,25 @@ class RTCatalogController {
                     }
                 }
 
-                if false /* catalogSections.count > 0 */ {
-                    self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
-                        self.mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
-                        if let mainCatalogViewModel = self.mainCatalogViewModel {
-                            self.catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
-                        }
-                        finishClosure?(nil)
-                    })
+                mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
+                if let mainCatalogViewModel = mainCatalogViewModel {
+                    catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
                 }
-                else {
-                    mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
-                    if let mainCatalogViewModel = mainCatalogViewModel {
-                        catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
-                    }
-                    finishClosure?(nil)
-                }
+                lastUpdated = mainCatalog?.updatedAt
+                finishClosure?(nil)
                 return
             }
         }
-        
-        RTCatalogManager.instance.setup(url: mainCatalog?.url ?? self.mainCatalogViewModel?.urlString()) { error, catalog in
+        let url = mainCatalog?.url ?? mainCatalogViewModel?.urlString()
+        if url == nil && (mainCatalogViewModel != nil && mainCatalogViewModel?.title != "Browse") {
+            finishClosure?(nil)
+            return
+        }
+        RTCatalogManager.instance.setup(url: url) { error, catalog in
 
             if error != nil {
                 DispatchQueue.main.async {
+                    self.lastUpdated = nil
                     finishClosure?(error)
                 }
                 return
@@ -211,10 +132,10 @@ class RTCatalogController {
             catalog?.sectionCatalog = sectionCatalog
             
             
-            if catalog?.title == nil {
+            if title != nil && catalog?.title == nil {
                 catalog?.title = title
             }
-            if catalog?.text == nil {
+            if text != nil && catalog?.text == nil {
                 catalog?.text = text
             }
             
@@ -247,31 +168,19 @@ class RTCatalogController {
                 }
             }
             
-            if false /* catalogSections.count > 0 */ {
-                self.querySections(catalogSections: catalogSections, finishClosure: { (error) in
-                    CoreDataManager.instance.save()
-                    self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
-                    if let mcvm = self.mainCatalogViewModel {
-                        self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
-                        
-                    }
-                    finishClosure?(error)
-                })
+            CoreDataManager.instance.save()
+            self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
+            if let mcvm = self.mainCatalogViewModel {
+                self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
             }
-            else {
-                CoreDataManager.instance.save()
-                self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
-                if let mcvm = self.mainCatalogViewModel {
-                    self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
-                }
-                DispatchQueue.main.async {
-                    finishClosure?(error)
-                }
+            self.lastUpdated = catalog?.updatedAt
+            DispatchQueue.main.async {
+                finishClosure?(error)
             }
         }
     }
 
-    func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
+    private func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
         if mainCVM == nil || mainCVM?.title == "Browse" {
             let catalog = RTCatalog.fetch(title: "Browse")?.first(where: { (catalog) -> Bool in
                 return catalog.sections?.count ?? 0 > 0
@@ -303,7 +212,7 @@ class RTCatalogController {
         return nil
     }
 
-    func mainCatalogFromDb(mainCatalog: RTCatalog?) -> RTCatalog? {
+    private func mainCatalogFromDb(mainCatalog: RTCatalog?) -> RTCatalog? {
         if let urlString = mainCatalog?.url {
             return RTCatalog.fetch(url: urlString)?.first
         }

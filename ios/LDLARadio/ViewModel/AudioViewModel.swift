@@ -17,14 +17,13 @@ struct AudioViewModel {
     
     /// Some constants hardcoded here
     public struct hardcode {
-        static let cellheight: CGFloat = 85
+        static let cellheight: Float = 75
         static let identifier: String = "AudioIdentifier"
     }
     
     var url: URL? = nil
     var thumbnailUrl: URL? = nil
     var detail: String
-    let height: CGFloat = hardcode.cellheight
     let titleColor: UIColor = .darkGray
     let titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
     let subTitleColor: UIColor = .lightGray
@@ -37,7 +36,7 @@ struct AudioViewModel {
 
     init(audio: RTCatalog?) {
         assert(audio?.isAudio() ?? false)
-        title = audio?.title ?? audio?.text ?? ""
+        title = audio?.titleOrText() ?? ""
         subTitle = audio?.subtext ?? ""
         if let bitrate = audio?.bitrate {
             detail = "\(bitrate) Kbps"
@@ -88,6 +87,8 @@ struct AudioViewModel {
         return url?.absoluteString
     }
     
-
+    static func height() -> Float {
+        return hardcode.cellheight
+    }
     
 }

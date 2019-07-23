@@ -12,7 +12,7 @@ import CoreGraphics
 class Commons {
     
     struct font {
-        static let name = "Farah"
+        static let name = "Arial"
         static let size : CGFloat = 12
         static let awesome = "FontAwesome"
     }
@@ -21,7 +21,6 @@ class Commons {
         static let player = "presentPlayerViewControllerSegueIdentifier"
         static let webView = "presentWebViewControllerSegueIdentifier"
         static let catalog = "recursiveCatalog"
-//        static let audio = "audioViewController"
         static let radio = "radioViewController"
     }
     
@@ -32,6 +31,7 @@ class Commons {
             case chevron_up = 0xf077
             case indent = 0xf03c
             case music = 0xf001
+            case angry = 0xf556
         }
         public static func showAwesome(icon: FontAwesome) -> Character {
             return Character(UnicodeScalar(icon.rawValue) ?? "?")

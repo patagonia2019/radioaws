@@ -1,42 +1,35 @@
 //
-//  RTCatalogViewController.swift
+//  BaseAudioViewController.swift
 //  LDLARadio
 //
-//  Created by fox on 11/07/2019.
+//  Created by fox on 22/07/2019.
 //  Copyright © 2019 Apple Inc. All rights reserved.
 //
 
 import UIKit
-import SwiftSpinner
-import JFCore
+import AVFoundation
 import AVKit
 import MediaPlayer
+import SwiftSpinner
+import JFCore
 
-class RTCatalogViewController : UIViewController {
+class BaseAudioViewController: UITableViewController {
+    // MARK: Properties
     
-    @IBOutlet weak var tableView: UITableView!
-
-    var controller = RTCatalogController()
-    fileprivate var playerViewController: AVPlayerViewController?
-
-    deinit {
-        for note in [RTCatalogManager.didLoadNotification] {
-            NotificationCenter.default.removeObserver(self, name: note, object: nil)
-        }
-    }
-
+    var controller = BaseController()
+    var playerViewController: AVPlayerViewController?
+    
+    // MARK: UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         SwiftSpinner.useContainerView(view)
         
-        // Set RadioListTableViewController as the delegate for StreamPlaybackManager to recieve playback information.
+        // Set the ViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
-
-        NotificationCenter.default.addObserver(self, selector: #selector(handleCatalogManagerDidLoadNotification(_:)), name: RTCatalogManager.didLoadNotification, object: nil)
         
         addRefreshControl()
-        
         tableView.remembersLastFocusedIndexPath = true
         
     }
@@ -51,16 +44,10 @@ class RTCatalogViewController : UIViewController {
             playerViewController?.player = nil
             playerViewController = nil
         }
-
-//        refresh()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
         refresh()
+        
     }
-    
     
     /// Refresh control to allow pull to refresh
     private func addRefreshControl() {
@@ -68,14 +55,14 @@ class RTCatalogViewController : UIViewController {
         refreshControl.accessibilityHint = "refresh"
         refreshControl.accessibilityLabel = "refresh"
         refreshControl.addTarget(self, action:
-            #selector(RTCatalogViewController.handleRefresh(_:)),
+            #selector(BaseAudioViewController.handleRefresh(_:)),
                                  for: .valueChanged)
         refreshControl.tintColor = UIColor.red
         
         tableView.addSubview(refreshControl)
         
     }
-
+    
     private func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
         controller.refresh(isClean: isClean,
@@ -92,32 +79,89 @@ class RTCatalogViewController : UIViewController {
         }
     }
     
-    /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
-    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
-        refresh(isClean: true, refreshControl: refreshControl)
-    }
-    
     private func reloadData() {
+        tableView.refreshControl?.attributedTitle = controller.title().bigRed()
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
         tableView.reloadData()
     }
     
-    /// MARK: Notification handling
+    /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        refresh(isClean: true, refreshControl: refreshControl)
+    }
     
-    @objc func handleCatalogManagerDidLoadNotification(_: Notification) {
-        self.controller.refresh(startClosure: nil, finishClosure: { (error) in
-            self.reloadData()
-        })
+    
+    // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return controller.numberOfSections()
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return controller.numberOfRows(inSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return controller.titleForHeader(inSection: section)
     }
 
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return controller.heightForRow(at: indexPath.section, row: indexPath.row)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return controller.heightForHeader(at: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        if object is AudioViewModel {
+            return indexPath
+        }
+        if let section = object as? CatalogViewModel {
+            if section.selectionStyle == .none {
+                return nil
+            }
+        }
+        return indexPath
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
+            cell.model = audio
+            return cell
+        }
+        if let section = object as? CatalogViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+            cell.model = section
+            return cell
+        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+        return cell
+    }
+        
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            if audio.useWeb {
+                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
+            } else {
+                performSegue(withIdentifier: Commons.segue.player, sender: audio)
+            }
+        }
+        if let section = object as? CatalogViewModel {
+            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
-            (segue.destination as? RTCatalogViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? RadioTimeViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
-//        else if segue.identifier == Commons.segue.audio {
-//            (segue.destination as? AudioViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
-//        }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,
                 let webViewControler = segue.destination as? WebViewController,
@@ -132,7 +176,6 @@ class RTCatalogViewController : UIViewController {
             
             // Grab a reference for the destinationViewController to use in later delegate callbacks from StreamPlaybackManager.
             playerViewController = playerViewControler
-            
             
             var nowPlayingInfo = [String : Any]()
             nowPlayingInfo[MPMediaItemPropertyTitle] = "Locos de la azotea"
@@ -155,7 +198,6 @@ class RTCatalogViewController : UIViewController {
                     iv.af_setImage(withURL: imageUrl, placeholderImage: placeholderImage)
                     if  let image = iv.image,
                         let imageCopy = image.copy() as? UIImage {
-                        //                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(image: imageCopy)
                         nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (size) -> UIImage in
                             return imageCopy
                         }
@@ -172,70 +214,10 @@ class RTCatalogViewController : UIViewController {
     }
 }
 
-
-extension RTCatalogViewController : UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return controller.heightForRow(at: indexPath.section, row: indexPath.row)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            if audio.useWeb {
-                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
-            } else {
-                performSegue(withIdentifier: Commons.segue.player, sender: audio)
-            }
-        }
-        if let section = object as? CatalogViewModel {
-            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
-        }
-    }
-}
-
-extension RTCatalogViewController : UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return controller.numberOfSections()
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return controller.numberOfRows(inSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return controller.titleForHeader(inSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
-            cell.model = audio
-            return cell
-
-        }
-        if let section = object as? CatalogViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
-            cell.model = section
-            return cell
-        }
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
-        return cell
-    }
-}
-
-
 /**
- Extend `AudioViewController` to conform to the `AssetListTableViewCellDelegate` protocol.
+ Extend `BaseAudioViewController` to conform to the `AssetListTableViewCellDelegate` protocol.
  */
-extension RTCatalogViewController: AssetListTableViewCellDelegate {
+extension BaseAudioViewController: AssetListTableViewCellDelegate {
     
     func assetListTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -245,9 +227,9 @@ extension RTCatalogViewController: AssetListTableViewCellDelegate {
 }
 
 /**
- Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
+ Extend `BaseAudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
  */
-extension RTCatalogViewController: AssetPlaybackDelegate {
+extension BaseAudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer) {
         player.play()
     }

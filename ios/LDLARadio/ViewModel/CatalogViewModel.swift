@@ -15,21 +15,29 @@ struct CatalogViewModel {
     
     /// Some constants hardcoded here
     public struct hardcode {
-        static let cellheight: CGFloat = 70
+        static let cellheight: Float = 44
         static let identifier: String = "CatalogIdentifier"
     }
     
     private var icon: Commons.symbols.FontAwesome = .indent
     private var url: URL? = nil
     var detail: String
-    let height: CGFloat = hardcode.cellheight
-    let color: UIColor = .black
-    let selectionStyle: UITableViewCell.SelectionStyle = .blue
+    let iconColor: UIColor = .darkGray
+    let textColor: UIColor = .black
+    var selectionStyle: UITableViewCell.SelectionStyle = .blue
     let font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
-    var accessoryType : UITableViewCell.AccessoryType = .none
+    var accessoryType : UITableViewCell.AccessoryType = .disclosureIndicator
     var title: String
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
+    
+    init() {
+        title = "No Info"
+        icon = .angry
+        detail = "No Info"
+        selectionStyle = .none
+        accessoryType = .none
+    }
 
     init(catalog: RTCatalog?) {
         guard let catalog = catalog else {
@@ -38,14 +46,13 @@ struct CatalogViewModel {
         if catalog.title == nil && catalog.text == nil {
             print("nil")
         }
-        title = catalog.title ?? catalog.text ?? "x-empty-x"
+        title = catalog.titleOrText() ?? ""
         
-        detail = catalog.isOnlyText() ? catalog.text ?? "-x-x-" : "-not-"
+        detail = catalog.isOnlyText() ? (catalog.text ?? catalog.subtext ?? "-") : "-"
         if let queryUrl = catalog.url,
             let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
-            accessoryType = .disclosureIndicator
         }
         else {
             print("here")
@@ -56,7 +63,6 @@ struct CatalogViewModel {
                 if section.isLink() {
                     let viewModel = CatalogViewModel(catalog: section)
                     sections.append(viewModel)
-                    accessoryType = .disclosureIndicator
                 }
                 else if section.isAudio() {
                     section.audioCatalog = section.sectionCatalog
@@ -76,7 +82,6 @@ struct CatalogViewModel {
                     audio.sectionCatalog = audio.audioCatalog
                     let viewModel = CatalogViewModel(catalog: audio)
                     sections.append(viewModel)
-                    accessoryType = .disclosureIndicator
                 }
                 else if audio.isAudio() {
                     let viewModel = AudioViewModel(audio: audio)
@@ -87,7 +92,15 @@ struct CatalogViewModel {
                     sections.append(viewModel)
                 }
             }
-        }        
+        }
+        
+        if sections.count == 0 && audios.count == 0 && urlString() == nil {
+            title = "No Info"
+            detail = "No Info"
+            icon = .angry
+            selectionStyle = .none
+            accessoryType = .none
+        }
     }
     
     func iconText() -> String {
@@ -97,5 +110,5 @@ struct CatalogViewModel {
     func urlString() -> String? {
         return url?.absoluteString
     }
-    
+        
 }

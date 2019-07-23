@@ -11,10 +11,19 @@ import CoreData
 import JFCore
 
 extension RTCatalog {
+    
+    override public func awakeFromInsert() {
+        setPrimitiveValue(Date(), forKey: "updatedAt")
+    }
+
+    func titleOrText() -> String? {
+        return title ?? text
+    }
+    
+    
     func descript() -> String {
         var str = [String]()
         if let title = title { str.append(title) }
-//        if let text = textNode { str.append(text) }
         if let url = url { str.append(url) }
         if let key = key { str.append(key) }
         if let sections = sections { str.append("\(sections) sections") }
@@ -59,7 +68,7 @@ extension RTCatalog {
     
     
     func isOnlyText() -> Bool {
-        return type == "text"
+        return type == "text" || (sections?.count == 0 && audios?.count == 0 && title != "Browse")
     }
     
     func isAudio() -> Bool {

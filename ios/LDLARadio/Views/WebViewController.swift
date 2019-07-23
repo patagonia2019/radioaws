@@ -64,11 +64,9 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
-//        Facade.instance.spinnerStart()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-//        Facade.instance.spinnerStop()
     }
     
     override func didReceiveMemoryWarning() {

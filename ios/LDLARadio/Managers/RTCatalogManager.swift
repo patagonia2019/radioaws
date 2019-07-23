@@ -16,36 +16,8 @@ struct RTCatalogManager {
     
     static var instance = RTCatalogManager()
     
-    /// Notification for when download progress has changed.
-    static let didLoadNotification = NSNotification.Name(rawValue: "RTCatalogManager.didLoadNotification")
-    
-    static let errorNotification = NSNotification.Name(rawValue: "RTCatalogManager.errorNotification")
-    
     /// The internal array of Stream structs.
     private var catalog : RTCatalog? = nil
-
-    // MARK: Initialization
-    
-//    init() {
-//        update(tryRequest: true)
-//    }
-//
-//    mutating func catalogs() -> [CatalogViewModel]? {
-//        update()
-//        return nil
-//    }
-//
-//    mutating func update(tryRequest: Bool = false) {
-//        // try memory
-//        if catalog == nil {
-//            // Try the database
-//            catalog = catalogFetch()
-//        }
-//        // try request
-//        if tryRequest && catalog == nil {
-//            setup()
-//        }
-//    }
     
     /// Function to obtain all the albums sorted by title
     func catalogFetch() -> RTCatalog? {
@@ -62,24 +34,7 @@ struct RTCatalogManager {
     // MARK: Stream access
     
     func setup(url: String? = nil, finish: ((_ error: Error?, _ catalog: RTCatalog?) -> Void)? = nil) {
-        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { error, catalog in
-            if finish == nil {
-                guard let error = error else {
-                    NotificationCenter.default.post(name: RTCatalogManager.didLoadNotification, object: nil)
-                    return
-                }
-                let jerror = JFError(code: 101,
-                                     desc: "failed to get catalog",
-                                     reason: "something get wrong on request catalog", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                    underError: error as NSError?)
-                NotificationCenter.default.post(name: RTCatalogManager.errorNotification, object: jerror)
-                return
-            }
-            if catalog?.title == nil {
-                catalog?.title = catalog?.text
-            }
-            finish?(error, catalog)
-        }
+        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self, finish: finish)
     }
     
     

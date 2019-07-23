@@ -11,7 +11,7 @@ import Foundation
 struct CatalogTableViewModel {
     var title : String = ""
     var prompt : String = ""
-    var rows : Int = 1
+//    var rows : Int = 1
     var sections = [String]()
     var elements = [String:[Any]]()
     var defaultElements = [String:[Any]]()
@@ -38,13 +38,13 @@ struct CatalogTableViewModel {
                     if let subSections = section.sections.first?.sections {
                         sectionElements.append(contentsOf: subSections)
                         for _ in subSections {
-                            heightElements.append(NSNumber(44))
+                            heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
                         }
                     }
                     if let audios = section.sections.first?.audios {
                         sectionElements.append(contentsOf: audios)
                         for _ in audios {
-                            heightElements.append(NSNumber(75))
+                            heightElements.append(NSNumber(value: AudioViewModel.hardcode.cellheight))
                         }
                     }
                     heights[section.title] = heightElements
@@ -52,7 +52,7 @@ struct CatalogTableViewModel {
                 else {
                     sectionElements.append(contentsOf: section.sections)
                     for _ in section.sections {
-                        heightElements.append(NSNumber(44))
+                        heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
                     }
                     heights[section.title] = heightElements
                 }
@@ -60,12 +60,12 @@ struct CatalogTableViewModel {
             if section.audios.count > 0 {
                 sectionElements.append(contentsOf: section.audios)
                 for _ in section.audios {
-                    heightElements.append(NSNumber(75))
+                    heightElements.append(NSNumber(value: AudioViewModel.hardcode.cellheight))
                 }
             }
             if sectionElements.count == 0 {
                 sectionDefault.append(section)
-                heightElements.append(NSNumber(75))
+                heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
             }
             elements[section.title] = sectionElements
             heights[section.title] = heightElements
@@ -78,9 +78,18 @@ struct CatalogTableViewModel {
             audioElements.append(contentsOf: catalog.audios)
             var heightElements = heights[catalog.title] ?? [NSNumber]()
             for _ in catalog.audios {
-                heightElements.append(NSNumber(75))
+                heightElements.append(NSNumber(value: AudioViewModel.hardcode.cellheight))
             }
             elements[catalog.title] = audioElements
+            heights[catalog.title] = heightElements
+        }
+        if elements.count == 0 {
+            sections.append(catalog.title)
+            var sectionDefault = defaultElements[title] ?? [Any]()
+            sectionDefault.append(CatalogViewModel())
+            defaultElements[title] = sectionDefault
+            var heightElements = heights[catalog.title] ?? [NSNumber]()
+            heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
             heights[catalog.title] = heightElements
         }
     }
@@ -126,7 +135,7 @@ struct CatalogTableViewModel {
                 }
             }
         }
-        return 44
+        return CatalogViewModel.hardcode.cellheight
     }
     
 }
