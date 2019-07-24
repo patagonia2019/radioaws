@@ -116,7 +116,7 @@ class BaseAudioViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
             return indexPath
         }
@@ -129,7 +129,7 @@ class BaseAudioViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
             cell.model = audio
@@ -145,7 +145,7 @@ class BaseAudioViewController: UITableViewController {
     }
         
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let object = controller.catalog(forSection: indexPath.section, row: indexPath.row)
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             if audio.useWeb {
                 performSegue(withIdentifier: Commons.segue.webView, sender: audio)

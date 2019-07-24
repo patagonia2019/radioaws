@@ -12,6 +12,14 @@ import JFCore
 
 extension RNAStation {
     
+    static func by(id: String) -> RNAStation? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
+        req.predicate = NSPredicate(format: "id = %@", id)
+        let station = try? context.fetch(req).first
+        return station
+    }
+    
     static func all() -> [RNAStation]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")

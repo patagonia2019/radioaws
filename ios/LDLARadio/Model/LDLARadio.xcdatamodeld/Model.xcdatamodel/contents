@@ -62,6 +62,43 @@
             <entry key="identityAttribute" value="author"/>
         </userInfo>
     </entity>
+    <entity name="RNABand" representedClassName=".RNABand" syncable="YES" codeGenerationType="class">
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amBand" inverseEntity="RNAStation" syncable="YES"/>
+        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmBand" inverseEntity="RNAStation" syncable="YES"/>
+        <relationship name="programs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data"/>
+            </userInfo>
+        </relationship>
+    </entity>
+    <entity name="RNACurrentProgram" representedClassName=".RNACurrentProgram" syncable="YES" codeGenerationType="class">
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data.imagen"/>
+            </userInfo>
+        </attribute>
+        <attribute name="imageStation" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data.imagenEmisora"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data.nombre"/>
+            </userInfo>
+        </attribute>
+        <attribute name="programName" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="data.descripcion"/>
+            </userInfo>
+        </attribute>
+        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amCurrentProgram" inverseEntity="RNAStation" syncable="YES"/>
+        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmCurrentProgram" inverseEntity="RNAStation" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="programName"/>
+        </userInfo>
+    </entity>
     <entity name="RNADial" representedClassName=".RNADial" syncable="YES" codeGenerationType="class">
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
@@ -69,6 +106,34 @@
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
         </relationship>
+    </entity>
+    <entity name="RNAProgram" representedClassName=".RNAProgram" syncable="YES" codeGenerationType="class">
+        <attribute name="end" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="0.end"/>
+            </userInfo>
+        </attribute>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="0.image"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="p.description"/>
+            </userInfo>
+        </attribute>
+        <attribute name="reporter" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="p.conductor"/>
+            </userInfo>
+        </attribute>
+        <attribute name="start" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="0.start"/>
+            </userInfo>
+        </attribute>
+        <relationship name="band" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="programs" inverseEntity="RNABand" syncable="YES"/>
     </entity>
     <entity name="RNAStation" representedClassName=".RNAStation" syncable="YES" codeGenerationType="class">
         <attribute name="amUri" optional="YES" attributeType="String" syncable="YES">
@@ -141,7 +206,11 @@
                 <entry key="JSONKeyPath" value="web"/>
             </userInfo>
         </attribute>
+        <relationship name="amBand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="amStation" inverseEntity="RNABand" syncable="YES"/>
+        <relationship name="amCurrentProgram" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNACurrentProgram" inverseName="amStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
         <relationship name="dial" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial" syncable="YES"/>
+        <relationship name="fmBand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="fmStation" inverseEntity="RNABand" syncable="YES"/>
+        <relationship name="fmCurrentProgram" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNACurrentProgram" inverseName="fmStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
@@ -366,10 +435,13 @@
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="30"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="30"/>
         <element name="RNADial" positionX="-243" positionY="-117" width="128" height="75"/>
-        <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="270"/>
+        <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="330"/>
         <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="345"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="30"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="30"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="195"/>
+        <element name="RNACurrentProgram" positionX="-234" positionY="-108" width="128" height="135"/>
+        <element name="RNABand" positionX="-225" positionY="-99" width="128" height="105"/>
+        <element name="RNAProgram" positionX="-216" positionY="-90" width="128" height="135"/>
     </elements>
 </model>

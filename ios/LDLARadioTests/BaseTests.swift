@@ -31,7 +31,7 @@ class BaseTests: XCTestCase {
         super.tearDown()
     }
 
-    func emisorasJSON() -> JSONDictionary {
+    func rnaEmisorasJSON() -> JSONDictionary {
         return [
             "data": [
                 [
@@ -68,6 +68,22 @@ class BaseTests: XCTestCase {
                 ]
             ]
         ]
+    }
+    
+    func RNACurrentProgramJSON() -> JSONDictionary {
+        return [
+            "data":
+                [
+                    "nombre":"LRA 30 Radio Nacional San Carlos de Bariloche",
+                    "descripcion":"La radio de todos",
+                    "imagenEmisora":"LRA30Bariloche.jpg",
+                    "imagen":"LRA30Bariloche.jpg"
+            ]
+        ]
+    }
+    
+    func rnaDayProgramsJSON() -> JSONDictionary {
+        return ["data":[["0":["start":"00:00","end":"02:00","image":""],"p":["conductor":"M\\u00fasica por m\\u00fasicos","description":"Nacional Rock"]],["0":["start":"02:00","end":"03:00","image":""],"p":["conductor":"Agenda deportiva","description":"Fabi\\u00e1n codevilla"]],["0":["start":"03:00","end":"06:00","image":""],"p":["conductor":"Trasnoche Nacional","description":"Sonia Ferraris"]],["0":["start":"06:00","end":"06:30","image":""],"p":["conductor":"Panorama de noticias","description":""]],["0":["start":"06:30","end":"09:00","image":""],"p":["conductor":"Nos levantamos","description":"Roberto Di Luciano, Luc\\u00eda Rodr\\u00edguez Bosch."]],["0":["start":"09:00","end":"12:00","image":""],"p":["conductor":"Mil Gracias","description":"Silvina Chediek"]],["0":["start":"12:00","end":"12:30","image":""],"p":["conductor":"Panorama de noticias","description":""]],["0":["start":"12:30","end":"13:00","image":""],"p":["conductor":"Tira nacional deportiva (primer tiempo)","description":""]],["0":["start":"13:00","end":"15:00","image":""],"p":["conductor":"Plato Fuerte","description":"Mar\\u00eda Laura Santill\\u00e1n"]],["0":["start":"15:00","end":"17:00","image":""],"p":["conductor":"Dulces y amargos","description":"Osvaldo Baz\\u00e1n"]],["0":["start":"17:00","end":"19:00","image":""],"p":["conductor":"Va de vuelta","description":"Romina Manguel"]],["0":["start":"19:00","end":"19:30","image":""],"p":["conductor":"Panorama de noticias","description":""]],["0":["start":"19:30","end":"21:00","image":""],"p":["conductor":"Tira nacional deportiva (segundo tiempo)","description":""]],["0":["start":"19:30","end":"21:00","image":""],"p":["conductor":"Tiempo compartido","description":"Rafa Hern\\u00e1ndez"]],["0":["start":"21:00","end":"22:00","image":"http://marcos.mineolo.com/rna/files/LRA1ElZorro.jpg"],"p":["conductor":"El zorro y el erizo","description":"Alejandro Katz, Luc\\u00eda Rodr\\u00edguez Bosh, Mariano Shuster, Pablo Stefanoni."]],["0":["start":"22:00","end":"23:00","image":""],"p":["conductor":"Una mujer","description":"Graciela Borges"]],["0":["start":"23:00","end":"23:59","image":""],"p":["conductor":"Mejor martes","description":"Silvia Mercado"]]]]
     }
     
     func streamsJSON() -> JSONArray {

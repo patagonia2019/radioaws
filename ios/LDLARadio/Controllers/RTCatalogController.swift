@@ -32,7 +32,7 @@ class RTCatalogController: BaseController {
         return catalogTableViewModel.numberOfRows(inSection: section)
     }
     
-    override func catalog(forSection section: Int, row: Int) -> Any? {
+    override func model(forSection section: Int, row: Int) -> Any? {
         return catalogTableViewModel.elements(forSection: section, row: row)
     }
     
@@ -50,7 +50,14 @@ class RTCatalogController: BaseController {
     override func prompt() -> String {
         return catalogTableViewModel.prompt
     }
-        
+    
+    private func updateViewModel(with mainCatalog:RTCatalog?, prompt: String?) {
+        if let mainCatalogViewModel = mainCatalogViewModel {
+            catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
+        }
+        lastUpdated = mainCatalog?.updatedAt
+    }
+    
     override func privateRefresh(isClean: Bool = false,
                  prompt: String = "Radio Time",
                  startClosure: (() -> Void)? = nil,
@@ -71,33 +78,15 @@ class RTCatalogController: BaseController {
 
         if resetInfo == false {
             if mainCatalogViewModel?.audios.count ?? 0 > 0 {
-                if let mainCatalogViewModel = mainCatalogViewModel {
-                    catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
-                }
-                lastUpdated = mainCatalog?.updatedAt
+                updateViewModel(with: mainCatalog, prompt: prompt)
                 finishClosure?(nil)
                 return
             }
 
             if  mainCatalog != nil &&
                 (mainCatalog?.sections?.count ?? 0 > 0 || mainCatalog?.audios?.count ?? 0 > 0)  {
-                var catalogSections = [RTCatalog]()
-                if let innerSections = mainCatalog?.sections?.array as? [RTCatalog] {
-                    for section in innerSections {
-                        if let mainSection = mainCatalogFromDb(mainCatalog: section),
-                            mainSection.sections?.count ?? 0 > 0 {
-                        }
-                        else if section.url?.count ?? 0 > 0 {
-                            catalogSections.append(section)
-                        }
-                    }
-                }
-
                 mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
-                if let mainCatalogViewModel = mainCatalogViewModel {
-                    catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
-                }
-                lastUpdated = mainCatalog?.updatedAt
+                updateViewModel(with: mainCatalog, prompt: prompt)
                 finishClosure?(nil)
                 return
             }
@@ -140,25 +129,11 @@ class RTCatalogController: BaseController {
                 catalog?.text = text
             }
             
-            var catalogSections = [RTCatalog]()
-            
             if catalog?.sections?.count ?? 0 > 0 {
                 if let sections = sections?.array as? [RTCatalog] {
                     for section in sections {
                         section.sectionCatalog = catalog
                     }
-                }
-                if let innerSections = catalog?.sections?.array as? [RTCatalog] {
-                    
-                    for section in innerSections {
-                        if let mainSection = self.mainCatalogFromDb(mainCatalog: section),
-                            mainSection.sections?.count ?? 0 > 0 {
-                        }
-                        else if section.url?.count ?? 0 > 0 {
-                            catalogSections.append(section)
-                        }
-                    }
-                    
                 }
             }
             if catalog?.audios?.count ?? 0 > 0 {
@@ -171,10 +146,7 @@ class RTCatalogController: BaseController {
             
             CoreDataManager.instance.save()
             self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
-            if let mcvm = self.mainCatalogViewModel {
-                self.catalogTableViewModel = CatalogTableViewModel(catalog: mcvm, parentTitle: catalog?.sectionCatalog?.title ?? prompt)
-            }
-            self.lastUpdated = catalog?.updatedAt
+            self.updateViewModel(with: catalog, prompt: prompt)
             DispatchQueue.main.async {
                 finishClosure?(error)
             }

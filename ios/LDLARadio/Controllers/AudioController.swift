@@ -25,12 +25,20 @@ class AudioController: BaseController {
         return models.count
     }
     
-    override func catalog(forSection section: Int, row: Int) -> Any? {
+    override func model(forSection section: Int, row: Int) -> Any? {
         return models[row]
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         return CGFloat(AudioViewModel.height())
+    }
+    
+    private func updateModels() {
+        if models.count == 0,
+            let streams = Stream.all() {
+            lastUpdated = streams.first?.updatedAt
+            models = streams.map({ AudioViewModel(stream: $0) })
+        }
     }
     
     override func privateRefresh(isClean: Bool = false,
@@ -46,11 +54,7 @@ class AudioController: BaseController {
         }
 
         if resetInfo == false {
-            if models.count == 0,
-                let streams = Stream.all() {
-                lastUpdated = streams.first?.updatedAt
-                models = streams.map({ AudioViewModel(stream: $0) })
-            }
+            updateModels()
             if models.count > 0 {
                 finishClosure?(nil)
                 return
@@ -70,12 +74,8 @@ class AudioController: BaseController {
                 else {
                     CoreDataManager.instance.save()
                 }
-                
-                if let streams = Stream.all() {
-                    self.lastUpdated = streams.first?.updatedAt
-                    self.models = streams.map({ AudioViewModel(stream: $0) })
-                }
-                
+                self.updateModels()
+
                 DispatchQueue.main.async {
                     finishClosure?(error)
                 }

@@ -21,22 +21,24 @@ struct AudioViewModel {
         static let identifier: String = "AudioIdentifier"
     }
     
+    var titleColor: UIColor = .darkGray
+    var titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
+    var subTitleColor: UIColor = .lightGray
+    var subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-2)
+    var detailColor: UIColor = .red
+    var detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-4)
+    var id: String? = nil
     var url: URL? = nil
     var thumbnailUrl: URL? = nil
     var placeholderImage: UIImage? = nil
-    var detail: String
-    let titleColor: UIColor = .darkGray
-    let titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
-    let subTitleColor: UIColor = .lightGray
-    let subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-2)
-    let detailColor: UIColor = .red
-    let detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size-4)
-    var title: String
-    var subTitle: String
+    var title: String = ""
+    var subTitle: String = ""
+    var detail: String = ""
     var useWeb: Bool = false
 
     init(audio: RTCatalog?) {
         assert(audio?.isAudio() ?? false)
+        id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
         title = audio?.titleOrText() ?? ""
         subTitle = audio?.subtext ?? ""
         if let bitrate = audio?.bitrate {
@@ -62,6 +64,7 @@ struct AudioViewModel {
     }
     
     init(stream: Stream?) {
+        id = "\(stream?.id ?? 0)"
         title = stream?.station?.name ?? ""
         subTitle = stream?.station?.city?.name ?? ""
         detail = stream?.station?.city?.district?.name ?? ""
@@ -77,50 +80,70 @@ struct AudioViewModel {
         }
     }
     
-    init(stationAm: RNAStation?) {
-        title = stationAm?.firstName ?? ""
-        subTitle = stationAm?.lastName ?? ""
-        detail = stationAm?.dialAM ?? ""
+    public mutating func update(station: RNAStation?, isAm: Bool) {
+        id = station?.id
+        title = station?.firstName ?? ""
+        subTitle = station?.lastName ?? ""
+        detail = (isAm ? station?.dialAM : station?.dialFM) ?? ""
+        let currentProgram = isAm ? station?.amCurrentProgram : station?.fmCurrentProgram
+        if let programName = currentProgram?.programName {
+            if detail.count > 0 {
+                detail += " "
+            }
+            detail += programName
+        }
         placeholderImage = UIImage.init(named: "RNA-256x256bb")
-        if let uriImage = stationAm?.image,
+        
+        if let uriImage = station?.image,
+            uriImage.count > 0,
             let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
             UIApplication.shared.canOpenURL(urlChecked)
         {
             thumbnailUrl = urlChecked
         }
-        if let url1 = stationAm?.url1,
-            let amUri = stationAm?.amUri,
-            amUri.count > 0,
-            let port = stationAm?.port,
+        else if let uriImage = currentProgram?.imageStation,
+            uriImage.count > 0,
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            thumbnailUrl = urlChecked
+        }
+        else if let uriImage = currentProgram?.image,
+            uriImage.count > 0,
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            thumbnailUrl = urlChecked
+        }
+        
+        if let url1 = station?.url1,
+            let uri = isAm ? station?.amUri : station?.fmUri,
+            uri.count > 0,
+            let port = station?.port,
             port.count > 0,
-            let urlChecked = URL(string: "http://\(url1):\(port)\(amUri)"),
+            let urlChecked = URL(string: "http://\(url1):\(port)\(uri)"),
+            UIApplication.shared.canOpenURL(urlChecked)
+        {
+            url = urlChecked
+        }
+        if let url2 = station?.url2,
+            let uri = isAm ? station?.amUri : station?.fmUri,
+            uri.count > 0,
+            let port = station?.port,
+            port.count > 0,
+            let urlChecked = URL(string: "http://\(url2):\(port)\(uri)"),
             UIApplication.shared.canOpenURL(urlChecked)
         {
             url = urlChecked
         }
     }
     
+    init(stationAm: RNAStation?) {
+        update(station: stationAm, isAm: true)
+    }
+    
     init(stationFm: RNAStation?) {
-        title = stationFm?.firstName ?? ""
-        subTitle = stationFm?.lastName ?? ""
-        detail = stationFm?.dialFM ?? ""
-        placeholderImage = UIImage.init(named: "RNA-256x256bb")
-        if let uriImage = stationFm?.image,
-            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/rna/\(uriImage)", baseUrl: RestApi.Constants.Service.rnaServer)),
-            UIApplication.shared.canOpenURL(urlChecked)
-        {
-            thumbnailUrl = urlChecked
-        }
-        if let url1 = stationFm?.url1,
-            let fmUri = stationFm?.fmUri,
-            fmUri.count > 0,
-            let port = stationFm?.port,
-            port.count > 0,
-            let urlChecked = URL(string: "http://\(url1):\(port)\(fmUri)"),
-            UIApplication.shared.canOpenURL(urlChecked)
-        {
-            url = urlChecked
-        }
+        update(station: stationFm, isAm: false)
     }
     
     func urlAsset() -> AVURLAsset? {

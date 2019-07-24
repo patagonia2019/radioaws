@@ -24,8 +24,8 @@ class BaseController {
         return 1
     }
     
-    func catalog(forSection section: Int, row: Int) -> Any? {
-        return nil
+    func model(forSection section: Int, row: Int) -> Any? {
+        fatalError()
     }
     
     func heightForRow(at section: Int, row: Int) -> CGFloat {

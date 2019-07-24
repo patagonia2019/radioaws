@@ -34,6 +34,9 @@
 		9808512322E6DE330013B67C /* RNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512222E6DE330013B67C /* RNAViewController.swift */; };
 		9808512522E6DE520013B67C /* RNAController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512422E6DE520013B67C /* RNAController.swift */; };
 		9808512722E6E6640013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
+		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
+		9808512B22E782C40013B67C /* RNABand+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512A22E782C40013B67C /* RNABand+.swift */; };
+		9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512C22E7A2DD0013B67C /* RNAProgram+.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -104,6 +107,9 @@
 		9808512222E6DE330013B67C /* RNAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAViewController.swift; sourceTree = "<group>"; };
 		9808512422E6DE520013B67C /* RNAController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAController.swift; sourceTree = "<group>"; };
 		9808512622E6E6640013B67C /* RNAStation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAStation+.swift"; sourceTree = "<group>"; };
+		9808512822E7513F0013B67C /* RNACurrentProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNACurrentProgram+.swift"; sourceTree = "<group>"; };
+		9808512A22E782C40013B67C /* RNABand+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNABand+.swift"; sourceTree = "<group>"; };
+		9808512C22E7A2DD0013B67C /* RNAProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAProgram+.swift"; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -157,6 +163,9 @@
 				9808511A22E6D7040013B67C /* City+.swift */,
 				9808512022E6DD370013B67C /* RNADial+.swift */,
 				9808512622E6E6640013B67C /* RNAStation+.swift */,
+				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
+				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
+				9808512A22E782C40013B67C /* RNABand+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
 				9808510A22E638D90013B67C /* Date+.swift */,
 				9808510E22E691F10013B67C /* String+.swift */,
@@ -531,10 +540,12 @@
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
+				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
 				9808512322E6DE330013B67C /* RNAViewController.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
+				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RTCatalogController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
@@ -545,6 +556,7 @@
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				9808510922E61E650013B67C /* AudioController.swift in Sources */,
 				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
+				9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */,
 				9808510F22E691F10013B67C /* String+.swift in Sources */,
 				9808511D22E6D7410013B67C /* Station+.swift in Sources */,
 			);
