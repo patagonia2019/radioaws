@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
-        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size))
+        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.S))
         
         changeAppearance()
 
@@ -51,12 +51,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func changeAppearance() {
-        let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: 15)!,
+        let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
                           NSAttributedString.Key.foregroundColor: UIColor.gray]
         UINavigationBar.appearance().titleTextAttributes = attributes
 
         let headerLabel = UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
-        headerLabel.font = UIFont(name: Commons.font.name, size: 14)!
+        headerLabel.font = UIFont(name: Commons.font.name, size: Commons.font.size.XXL)!
         headerLabel.textColor = .lightGray
         headerLabel.shadowColor = .black
         headerLabel.shadowOffset = CGSize(width: -1, height: -1)

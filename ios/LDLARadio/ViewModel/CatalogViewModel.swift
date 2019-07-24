@@ -25,16 +25,18 @@ struct CatalogViewModel {
     let iconColor: UIColor = .darkGray
     let textColor: UIColor = .black
     var selectionStyle: UITableViewCell.SelectionStyle = .blue
-    let font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size)
+    let font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.XL)
     var accessoryType : UITableViewCell.AccessoryType = .disclosureIndicator
     var title: String
+    var tree: String
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
     
     init() {
-        title = "No Info"
+        title = "No more info"
+        tree = "?"
         icon = .ban
-        detail = "No Info"
+        detail = "No more detail"
         selectionStyle = .none
         accessoryType = .none
     }
@@ -47,6 +49,7 @@ struct CatalogViewModel {
             print("nil")
         }
         title = catalog.titleOrText() ?? ""
+        tree = catalog.titleTree()
         
         detail = catalog.isOnlyText() ? (catalog.text ?? catalog.subtext ?? "-") : "-"
         if let queryUrl = catalog.url,

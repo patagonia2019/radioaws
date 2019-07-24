@@ -20,7 +20,7 @@
                 <viewControllerPlaceholder referencedIdentifier="RadioTimeViewController" id="kEF-Tm-fDg" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfA-HZ-FNB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2463" y="-29"/>
+            <point key="canvasLocation" x="2399" y="-285"/>
         </scene>
         <!--Suggestion-->
         <scene sceneID="SwC-nA-HIj">
@@ -172,7 +172,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzH-NA-Ji1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2732" y="881.10944527736137"/>
+            <point key="canvasLocation" x="1756" y="747"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -211,7 +211,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="887"/>
+            <point key="canvasLocation" x="830" y="734"/>
         </scene>
         <!--AV Player View Controller-->
         <scene sceneID="3aP-GM-lXf">
@@ -219,7 +219,7 @@
                 <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Pcj-Rn-AxA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52E-27-LQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3236" y="-486"/>
+            <point key="canvasLocation" x="3070" y="-253"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="g36-kx-4Vi">
@@ -240,7 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lh5-r5-ayq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3836" y="1024"/>
+            <point key="canvasLocation" x="3070" y="461"/>
         </scene>
         <!--Radio Time-->
         <scene sceneID="ecA-e5-0VC">
@@ -294,7 +294,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nG-ua-gwf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1" y="888"/>
+            <point key="canvasLocation" x="830" y="1413"/>
         </scene>
         <!--Radio Time-->
         <scene sceneID="tWu-fb-xyR">
@@ -442,7 +442,6 @@
                     <connections>
                         <segue destination="kEF-Tm-fDg" kind="show" identifier="recursiveCatalog" id="Jbn-VQ-sy7"/>
                         <segue destination="Pcj-Rn-AxA" kind="presentation" identifier="presentPlayerViewControllerSegueIdentifier" modalPresentationStyle="fullScreen" id="bWX-Pz-DLU"/>
-                        <segue destination="d4b-Ga-jPE" kind="show" identifier="presentWebViewControllerSegueIdentifier" id="Xcg-EG-U6q"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kXk-Cf-Eek" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -598,7 +597,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L18-PG-HYz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1735" y="-653"/>
+            <point key="canvasLocation" x="1756" y="-653"/>
         </scene>
     </scenes>
     <resources>
@@ -608,7 +607,6 @@
         <image name="f5d1-apple-alt-solid" width="17" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xcg-EG-U6q"/>
         <segue reference="tiJ-Fi-zaS"/>
     </inferredMetricsTieBreakers>
 </document>

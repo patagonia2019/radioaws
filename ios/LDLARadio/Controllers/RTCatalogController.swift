@@ -40,13 +40,6 @@ class RTCatalogController: BaseController {
         return CGFloat(catalogTableViewModel.heightForRow(at: section, row: row))
     }
     
-    override func title() -> String {
-        var str = [String]()
-        str.append(catalogTableViewModel.title + ". ")
-        str.append(super.title())
-        return str.joined()
-    }
-    
     override func prompt() -> String {
         return catalogTableViewModel.prompt
     }

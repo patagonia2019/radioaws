@@ -20,14 +20,14 @@ struct CatalogTableViewModel {
     }
 
     init(catalog: CatalogViewModel, parentTitle: String? = "Radio Time") {
-        prompt = parentTitle ?? "Radio Time"
-        title = catalog.title
+        prompt = catalog.tree
+        title = parentTitle ?? "Radio Time"
         for section in catalog.sections.sorted(by: { (c1, c2) -> Bool in
             return c1.title <= c2.title
         }) {
             sections.append(section.title)
             
-//            var sectionDefault = defaultElements[section.title] ?? [Any]()
+            var sectionDefault = defaultElements[section.title] ?? [Any]()
             var sectionElements = elements[section.title] ?? [Any]()
             var heightElements = heights[section.title] ?? [NSNumber]()
             if section.sections.count > 0 {
@@ -62,9 +62,13 @@ struct CatalogTableViewModel {
                     heightElements.append(NSNumber(value: AudioViewModel.hardcode.cellheight))
                 }
             }
+            if sectionElements.count == 0 {
+                sectionDefault.append(section)
+                heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
+            }
             elements[section.title] = sectionElements
             heights[section.title] = heightElements
-//            defaultElements[section.title] = sectionDefault
+            defaultElements[section.title] = sectionDefault
         }
         if catalog.audios.count > 0 {
             sections.append(catalog.title)
@@ -78,15 +82,15 @@ struct CatalogTableViewModel {
             elements[catalog.title] = audioElements
             heights[catalog.title] = heightElements
         }
-//        if elements.count == 0 && defaultElements.count == 0{
-//            sections.append(catalog.title)
-//            var sectionDefault = defaultElements[title] ?? [Any]()
-//            sectionDefault.append(CatalogViewModel())
-//            defaultElements[title] = sectionDefault
-//            var heightElements = heights[catalog.title] ?? [NSNumber]()
-//            heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
-//            heights[catalog.title] = heightElements
-//        }
+        if elements.count == 0 {
+            sections.append(catalog.title)
+            var sectionDefault = defaultElements[title] ?? [Any]()
+            sectionDefault.append(CatalogViewModel())
+            defaultElements[title] = sectionDefault
+            var heightElements = heights[catalog.title] ?? [NSNumber]()
+            heightElements.append(NSNumber(value: CatalogViewModel.hardcode.cellheight))
+            heights[catalog.title] = heightElements
+        }
     }
     
     func titleForHeader(inSection section: Int) -> String {

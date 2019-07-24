@@ -199,11 +199,10 @@
 			children = (
 				428139F81CE44B7300972264 /* Assets.xcassets */,
 				428139FD1CE44B7300972264 /* Info.plist */,
+				9808512F22E8B2730013B67C /* Main */,
 				4285E1701CF5623E0080B60C /* Managers */,
 				425DD0A11D0CF18200F96325 /* Model */,
 				9824386B22DD189200B418F9 /* ViewModel */,
-				428139F11CE44B7300972264 /* AppDelegate.swift */,
-				98195FA222D81B55006E7961 /* Commons.swift */,
 				9824386C22DD18CE00B418F9 /* Views */,
 				9824386D22DD18DF00B418F9 /* Controllers */,
 				9824386E22DD1A0A00B418F9 /* Resources */,
@@ -232,6 +231,15 @@
 				BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9808512F22E8B2730013B67C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				428139F11CE44B7300972264 /* AppDelegate.swift */,
+				98195FA222D81B55006E7961 /* Commons.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		9824386B22DD189200B418F9 /* ViewModel */ = {

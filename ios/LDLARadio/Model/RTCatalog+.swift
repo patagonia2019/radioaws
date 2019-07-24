@@ -20,6 +20,20 @@ extension RTCatalog {
         return title ?? text
     }
     
+    func titleTree() -> String {
+        var str = ArraySlice<String>()
+        if let t0 = sectionCatalog?.titleTree() {
+            str.append(t0 + "> ")
+        }
+        if let t1 = titleOrText() {
+            str.append(t1)
+        }
+        while str.joined().count > 30 && str.count > 1 {
+            _ = str.popFirst()
+        }
+        return str.joined()
+    }
+    
     
     func descript() -> String {
         var str = [String]()
