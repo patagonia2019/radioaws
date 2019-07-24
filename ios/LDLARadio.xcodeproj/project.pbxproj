@@ -201,10 +201,7 @@
 				428139FD1CE44B7300972264 /* Info.plist */,
 				9808512F22E8B2730013B67C /* Main */,
 				4285E1701CF5623E0080B60C /* Managers */,
-				425DD0A11D0CF18200F96325 /* Model */,
-				9824386B22DD189200B418F9 /* ViewModel */,
-				9824386C22DD18CE00B418F9 /* Views */,
-				9824386D22DD18DF00B418F9 /* Controllers */,
+				9808513222E8DF2B0013B67C /* MVC-MVVM */,
 				9824386E22DD1A0A00B418F9 /* Resources */,
 			);
 			path = LDLARadio;
@@ -242,6 +239,27 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		9808513122E8DEE50013B67C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
+				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		9808513222E8DF2B0013B67C /* MVC-MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				425DD0A11D0CF18200F96325 /* Model */,
+				9824386B22DD189200B418F9 /* ViewModel */,
+				9808513122E8DEE50013B67C /* Cells */,
+				9824386C22DD18CE00B418F9 /* Views */,
+				9824386D22DD18DF00B418F9 /* Controllers */,
+			);
+			path = "MVC-MVVM";
+			sourceTree = "<group>";
+		};
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,8 +278,6 @@
 				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
 				9808511422E6A7910013B67C /* RadioTimeViewController.swift */,
 				9808512222E6DE330013B67C /* RNAViewController.swift */,
-				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
-				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 			);
 			path = Views;
