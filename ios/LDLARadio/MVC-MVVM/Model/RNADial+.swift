@@ -19,7 +19,7 @@ extension RNADial {
 
     /// Fetch all the instances of the entity from DB
     static func all() -> [RNADial]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNADial>(entityName: "RNADial")
         let array = try? context.fetch(req)
         return array
@@ -27,7 +27,7 @@ extension RNADial {
 
     /// Fetch the most recent updatedAt date
     static func lastUpdated() -> Date? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNADial>(entityName: "RNADial")
         req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
         return try? context.fetch(req).first?.updatedAt
@@ -35,7 +35,7 @@ extension RNADial {
 
     /// Remove all the instances of the entity from DB
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<RNADial>(entityName: "RNADial")

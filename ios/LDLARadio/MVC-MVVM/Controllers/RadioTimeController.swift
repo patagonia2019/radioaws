@@ -48,6 +48,7 @@ class RadioTimeController: BaseController {
         if let mainCatalogViewModel = mainCatalogViewModel {
             catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
         }
+        lastUpdated = mainCatalog?.updatedAt
     }
     
     override func privateRefresh(isClean: Bool = false,
@@ -71,7 +72,6 @@ class RadioTimeController: BaseController {
         if resetInfo == false {
             if mainCatalogViewModel?.audios.count ?? 0 > 0 {
                 updateViewModel(with: mainCatalog, prompt: prompt)
-                lastUpdated = RTCatalog.lastUpdated()
                 finishClosure?(nil)
                 return
             }

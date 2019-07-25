@@ -63,7 +63,7 @@ class RNAController: BaseController {
         guard let dial = dial else {
             return
         }
-        lastUpdated = RNADial.lastUpdated()
+        lastUpdated = dial.updatedAt
         
         amModels = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).map({ AudioViewModel(stationAm: $0 as? RNAStation) }) ?? [AudioViewModel]()
         fmModels = dial.stations?.filtered(using: NSPredicate(format: "fmUri.length > 0")).map({ AudioViewModel(stationFm: $0 as? RNAStation) }) ?? [AudioViewModel]()
@@ -93,7 +93,7 @@ class RNAController: BaseController {
             }
         }
         
-        CoreDataManager.instance.taskContext?.performAndWait {
+        RestApi.instance.context?.performAndWait {
             
             RNABand.clean()
             RNAProgram.clean()
@@ -119,7 +119,7 @@ class RNAController: BaseController {
             return
         }
 
-        CoreDataManager.instance.taskContext?.performAndWait {
+        RestApi.instance.context?.performAndWait {
 
             guard let amStations = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).array as? [RNAStation] else {
                 self.updateModels()

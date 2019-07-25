@@ -31,7 +31,7 @@ extension Quote {
     private static func create() {
         do {
             guard let array = fromJsonFile(name: "quotes2"),
-                let context = CoreDataManager.instance.taskContext else {
+                let context = RestApi.instance.context else {
                 return
             }
             for obj in array {
@@ -46,7 +46,7 @@ extension Quote {
     
     /// Use a quote randomly
     private static func queryRandomly() -> Quote? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<Quote>(entityName: "Quote")
         let array = try? context.fetch(req)
         let n = array?.count ?? 0

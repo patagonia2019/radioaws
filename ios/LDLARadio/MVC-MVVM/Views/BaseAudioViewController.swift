@@ -69,7 +69,7 @@ class BaseAudioViewController: UITableViewController {
         
         controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
-                            CoreDataManager.instance.taskContext?.performAndWait {
+                            RestApi.instance.context?.performAndWait {
                                 SwiftSpinner.show(Quote.randomQuote())
                             }
                             self.reloadData()

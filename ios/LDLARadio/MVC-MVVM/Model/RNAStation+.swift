@@ -17,7 +17,7 @@ extension RNAStation {
 
     /// Fetch an instance using the id
     static func by(id: String) -> RNAStation? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
         req.predicate = NSPredicate(format: "id = %@", id)
         let station = try? context.fetch(req).first
@@ -26,7 +26,7 @@ extension RNAStation {
     
     /// Fetch all the instances of the entity from DB
     static func all() -> [RNAStation]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
         req.sortDescriptors = [NSSortDescriptor.init(key: "lastName", ascending: true)]
         let array = try? context.fetch(req)
@@ -35,7 +35,7 @@ extension RNAStation {
     
     /// Remove all the instances of the entity from DB
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")

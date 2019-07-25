@@ -63,7 +63,7 @@ class BaseController {
         
         startClosure?()
         
-        CoreDataManager.instance.taskContext?.performAndWait {
+        RestApi.instance.context?.performAndWait {
             self.privateRefresh(isClean: isClean, prompt: prompt, startClosure: startClosure, finishClosure: finishClosure)
         }
     }
@@ -82,7 +82,7 @@ class BaseController {
             return
         }
         
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         

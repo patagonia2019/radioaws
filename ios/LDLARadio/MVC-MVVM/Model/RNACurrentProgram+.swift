@@ -14,7 +14,7 @@ extension RNACurrentProgram {
     
     /// Fetch all the instances of the entity from DB
     static func all() -> [RNACurrentProgram]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNACurrentProgram>(entityName: "RNACurrentProgram")
         req.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: true)]
         let array = try? context.fetch(req)
@@ -23,7 +23,7 @@ extension RNACurrentProgram {
     
     /// Remove the current instance of the entity from DB
     func remove() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         context.delete(self)
@@ -32,7 +32,7 @@ extension RNACurrentProgram {
     
     /// Remove all the instances of the entity from DB
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<RNACurrentProgram>(entityName: "RNACurrentProgram")

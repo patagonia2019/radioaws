@@ -43,7 +43,7 @@ extension Stream {
     
     /// Fetch the most recent updatedAt date
     static func lastUpdated() -> Date? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
         req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
         return try? context.fetch(req).first?.updatedAt
@@ -51,7 +51,7 @@ extension Stream {
     
     /// Returns the streams for a given name.
     static func stream(byName name: String?) -> Stream? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
         req.predicate = NSPredicate(format: "name = %@", name)
@@ -61,7 +61,7 @@ extension Stream {
     
     /// Returns the streams for a given station id.
     static func stream(byStation stationId: Int16?) -> [Stream]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         guard let stationId = stationId else { return nil }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
         req.predicate = NSPredicate(format: "station.id = %d", stationId)
@@ -72,7 +72,7 @@ extension Stream {
     
     /// Function to obtain all the streams sorted by station.name
     static func all() -> [Stream]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
         req.predicate = NSPredicate(format: "listenIsWorking = true")
         req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
@@ -82,7 +82,7 @@ extension Stream {
 
     /// Remove all the instances of the entity
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<Stream>(entityName: "Stream")

@@ -62,7 +62,7 @@ class RadioController: BaseController {
             }
         }
         
-        CoreDataManager.instance.taskContext?.performAndWait {
+        RestApi.instance.context?.performAndWait {
 
             StreamListManager.instance.clean()
             StationListManager.instance.clean()

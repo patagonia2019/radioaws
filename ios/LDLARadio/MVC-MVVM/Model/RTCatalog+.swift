@@ -54,7 +54,7 @@ extension RTCatalog {
     
     /// Remove all the instances
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
@@ -68,7 +68,7 @@ extension RTCatalog {
     
     /// Remove current instance
     func remove() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         context.delete(self)
@@ -91,7 +91,7 @@ extension RTCatalog {
     
     /// Fetch all the objects in DB
     static func all() -> [RTCatalog]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]
         let array = try? context.fetch(req)
@@ -100,7 +100,7 @@ extension RTCatalog {
     
     /// Fetch the most recent updatedAt date
     static func lastUpdated() -> Date? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
         req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
         return try? context.fetch(req).first?.updatedAt
@@ -108,7 +108,7 @@ extension RTCatalog {
 
     /// Fetch an object by title
     static func fetch(title: String) -> [RTCatalog]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
         req.predicate = NSPredicate(format: "title = %@", title)
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]
@@ -118,7 +118,7 @@ extension RTCatalog {
 
     /// Fetch an object by text
     static func fetch(text: String) -> [RTCatalog]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
         req.predicate = NSPredicate(format: "text = %@", text)
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]
@@ -128,7 +128,7 @@ extension RTCatalog {
     
     /// Fetch an object by url
     static func fetch(url: String) -> [RTCatalog]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
         req.predicate = NSPredicate(format: "url = %@", url)
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]

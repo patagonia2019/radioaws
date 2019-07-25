@@ -26,18 +26,29 @@ class AudioTableViewCell: UITableViewCell {
     
     var model : AudioViewModel? = nil {
         didSet {
-            downloadStateLabel.text = model?.detail
-            downloadStateLabel.textColor = model?.detailColor
-            downloadStateLabel.font = model?.detailFont
-            subtitleLabel.text = model?.subTitle
-            subtitleLabel.textColor = model?.subTitleColor
-            subtitleLabel.font = model?.subTitleFont
+            if let detail = model?.detail, detail.count > 0 {
+                downloadStateLabel.text = detail
+                downloadStateLabel.textColor = model?.detailColor
+                downloadStateLabel.font = model?.detailFont
+            }
+            else {
+                downloadStateLabel.isHidden = true
+                titleLabel.numberOfLines = 3
+            }
+            if let subTitle = model?.subTitle, subTitle.count > 0 {
+                subtitleLabel.text = subTitle
+                subtitleLabel.textColor = model?.subTitleColor
+                subtitleLabel.font = model?.subTitleFont
+            }
+            else {
+                subtitleLabel.isHidden = true
+                titleLabel.numberOfLines += 2
+            }
             titleLabel.text = model?.title
             titleLabel.textColor = model?.titleColor
             titleLabel.font = model?.titleFont
             logoView.image = model?.placeholderImage
             if let thumbnailUrl = model?.thumbnailUrl {
-//                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage)
                 logoView.alpha = 0.5
                 logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (response) in
                     if response.error != nil {
@@ -56,13 +67,17 @@ class AudioTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        subtitleLabel.text = ""
-        titleLabel.text = ""
+        for label in [ downloadStateLabel, subtitleLabel, titleLabel] {
+            label?.text = ""
+            label?.isHidden = false
+            label?.numberOfLines = 1
+        }
+        
         logoView.image = nil
-        downloadStateLabel.text = ""
         downloadProgressView.isHidden = true
         playButton.isHighlighted = false
         bookmarkButton.isHighlighted = false
+
     }
     
     @IBAction func playAction(_ sender: UIButton?) {

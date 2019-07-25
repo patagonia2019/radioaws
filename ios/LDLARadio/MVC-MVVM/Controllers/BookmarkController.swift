@@ -51,10 +51,18 @@ class BookmarkController: BaseController {
         
         startClosure?()
         
-        CoreDataManager.instance.taskContext?.performAndWait {
+        RestApi.instance.context?.performAndWait {
             let all = Bookmark.all()
             models = all?.map({ AudioViewModel(bookmark: $0) }) ?? [AudioViewModel]()
-            lastUpdated = Bookmark.lastUpdated()
+            if let bDate = Bookmark.lastUpdated(),
+                let lastDate = lastUpdated {
+                if bDate > lastDate {
+                    self.lastUpdated = bDate
+                }
+            }
+            else {
+                self.lastUpdated = Date()
+            }
             finishClosure?(nil)
         }
     }

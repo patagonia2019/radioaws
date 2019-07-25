@@ -25,17 +25,23 @@ struct AudioViewModel {
     var title: String = ""
     var titleColor: UIColor = .darkGray
     var titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.L)
-    
+    var titleHide: Bool = false
+    var titleLines: Int = 1
+
     /// subtitle spec
     var subTitle: String = ""
     var subTitleColor: UIColor = .lightGray
     var subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.M)
-    
+    var subTitleHide: Bool = false
+    var subTitleLines: Int = 1
+
     /// detail spec
     var detail: String = ""
     var detailColor: UIColor = UIColor(white: 0.4, alpha: 0.8)
     var detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.S)
-    
+    var detailHide: Bool = false
+    var detailLines: Int = 1
+
     /// convenient id
     var id: String? = nil
     
@@ -91,25 +97,32 @@ struct AudioViewModel {
     }
     
     private mutating func reFillTitles() {
-        if detail.count == 0 {
-            if subTitle.count == 0 {
-                if title.count > 0 {
-                    var str = ArraySlice<String>()
-                    let arrayOfContent = title.components(separatedBy: CharacterSet(["-", "|", ",", ".", "("]))
-                    str.append(contentsOf: arrayOfContent)
-                    title = str.popFirst()?.trimmingCharacters(in: [")", " "]) ?? ""
-                    subTitle = str.popFirst()?.trimmingCharacters(in: [")", " "])  ?? ""
-                    detail = str.joined(separator: " ").trimmingCharacters(in: [")", " "])
-                }
-            }
-            else if title.count > 0 {
-                var str = ArraySlice<String>()
-                let arrayOfContent = title.components(separatedBy: CharacterSet(["-", "|", ",", "("]))
-                str.append(contentsOf: arrayOfContent)
-                title = str.popFirst()?.trimmingCharacters(in: [")", " "]) ?? ""
-                detail = subTitle
-                subTitle = str.joined(separator: " ").trimmingCharacters(in: [")", " "])
-            }
+        if title.count > 0 && subTitle.count > 0 && detail.count > 0 {
+            return
+        }
+        var titles = [String]()
+        if title.count > 0 {
+            titles.append(title)
+        }
+        if subTitle.count > 0 {
+            titles.append(subTitle)
+        }
+        if detail.count > 0 {
+            titles.append(detail)
+        }
+        detail = ""
+        detailHide = true
+        if titles.count == 2 {
+            title = titles[0]
+            subTitle = titles[1]
+            detailHide = true
+            titleLines = 2
+        }
+        else if titles.count == 1 {
+            title = titles[0]
+            subTitle = ""
+            subTitleHide = true
+            titleLines = 3
         }
     }
     

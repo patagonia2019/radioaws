@@ -14,7 +14,7 @@ extension Station {
    
     /// Fetch all the instances of the entity from DB
     static func all() -> [Station]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<Station>(entityName: "Station")
         req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let array = try? context.fetch(req)
@@ -23,7 +23,7 @@ extension Station {
     
     /// Remove all the instances of the entity from DB
     static func clean() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         let req = NSFetchRequest<Station>(entityName: "Station")

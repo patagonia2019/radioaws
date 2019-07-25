@@ -75,7 +75,7 @@ struct StreamListManager {
     
     /// Function to obtain all the albums sorted by title
     func streamsFetch() -> [Stream]? {
-        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
         req.predicate = NSPredicate(format: "listenIsWorking = true")
         req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
@@ -86,7 +86,7 @@ struct StreamListManager {
     // MARK: Stream access
     
     private func save() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         try? context.save()
@@ -95,7 +95,7 @@ struct StreamListManager {
     
 
     private func rollback() {
-        guard let context = CoreDataManager.instance.taskContext else {
+        guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         context.rollback()

@@ -277,9 +277,9 @@
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
 				98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */,
 				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
-				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
