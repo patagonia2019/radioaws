@@ -41,9 +41,14 @@ class RNAController: BaseController {
     
     override func model(forSection section: Int, row: Int) -> Any? {
         if section == 0 {
-            return amModels[row]
+            if row < amModels.count {
+                return amModels[row]
+            }
         }
-        return fmModels[row]
+        if row < fmModels.count {
+            return fmModels[row]
+        }
+        return nil
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -58,7 +63,7 @@ class RNAController: BaseController {
         guard let dial = dial else {
             return
         }
-        lastUpdated = dial.updatedAt
+        lastUpdated = RNADial.lastUpdated()
         
         amModels = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).map({ AudioViewModel(stationAm: $0 as? RNAStation) }) ?? [AudioViewModel]()
         fmModels = dial.stations?.filtered(using: NSPredicate(format: "fmUri.length > 0")).map({ AudioViewModel(stationFm: $0 as? RNAStation) }) ?? [AudioViewModel]()

@@ -1,5 +1,5 @@
 //
-//  AudioController.swift
+//  RadioController.swift
 //  LDLARadio
 //
 //  Created by fox on 22/07/2019.
@@ -9,7 +9,7 @@
 import Foundation
 import JFCore
 
-class AudioController: BaseController {
+class RadioController: BaseController {
     
     var models = [AudioViewModel]()
     
@@ -18,7 +18,6 @@ class AudioController: BaseController {
     init(withStreams streams: [Stream]?) {
         super.init()
         models = streams?.map({ AudioViewModel(stream: $0) }) ?? [AudioViewModel]()
-        lastUpdated = streams?.first?.updatedAt
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
@@ -26,7 +25,10 @@ class AudioController: BaseController {
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
-        return models[row]
+        if row < models.count {
+            return models[row]
+        }
+        return nil
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -34,11 +36,10 @@ class AudioController: BaseController {
     }
     
     private func updateModels() {
-        if models.count == 0,
-            let streams = Stream.all() {
-            lastUpdated = streams.first?.updatedAt
+        if let streams = Stream.all() {
             models = streams.map({ AudioViewModel(stream: $0) })
         }
+        lastUpdated = Stream.lastUpdated()
     }
     
     override func privateRefresh(isClean: Bool = false,

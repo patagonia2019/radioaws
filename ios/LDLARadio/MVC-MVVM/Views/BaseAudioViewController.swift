@@ -29,7 +29,9 @@ class BaseAudioViewController: UITableViewController {
         // Set the ViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
         
-        addRefreshControl()
+        if controller.useRefresh {
+            addRefreshControl()
+        }
         tableView.remembersLastFocusedIndexPath = true
         
     }
@@ -63,7 +65,7 @@ class BaseAudioViewController: UITableViewController {
         
     }
     
-    private func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
+    func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
         controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
@@ -84,6 +86,21 @@ class BaseAudioViewController: UITableViewController {
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
         tableView.reloadData()
+    }
+    
+    private func play(indexPath: IndexPath) {
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            if audio.useWeb {
+                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
+            } else {
+                performSegue(withIdentifier: Commons.segue.player, sender: audio)
+            }
+        }
+        if let section = object as? CatalogViewModel {
+            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+        }
+
     }
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
@@ -132,6 +149,7 @@ class BaseAudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
+            cell.delegate = self
             cell.model = audio
             return cell
         }
@@ -145,22 +163,12 @@ class BaseAudioViewController: UITableViewController {
     }
         
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            if audio.useWeb {
-                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
-            } else {
-                performSegue(withIdentifier: Commons.segue.player, sender: audio)
-            }
-        }
-        if let section = object as? CatalogViewModel {
-            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
-        }
+        play(indexPath: indexPath)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
-            (segue.destination as? RadioTimeViewController)?.controller = RTCatalogController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? RadioTimeViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,
@@ -215,11 +223,22 @@ class BaseAudioViewController: UITableViewController {
 }
 
 /**
- Extend `BaseAudioViewController` to conform to the `AssetListTableViewCellDelegate` protocol.
+ Extend `BaseAudioViewController` to conform to the `AudioTableViewCellDelegate` protocol.
  */
-extension BaseAudioViewController: AssetListTableViewCellDelegate {
+extension BaseAudioViewController: AudioTableViewCellDelegate {
+    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        play(indexPath: indexPath)
+    }
     
-    func assetListTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
+    func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        tableView.reloadRows(at: [indexPath], with: .none)
+        controller.changeBookmark(at: indexPath.section, row: indexPath.row)
+    }
+    
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         tableView.reloadRows(at: [indexPath], with: .automatic)

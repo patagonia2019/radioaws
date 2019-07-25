@@ -12,6 +12,10 @@ import JFCore
 
 extension RNAStation {
     
+    /// placeholder for thumbnails in streams
+    static let placeholderImageName: String = "RNA-256x256bb"
+
+    /// Fetch an instance using the id
     static func by(id: String) -> RNAStation? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
@@ -20,6 +24,7 @@ extension RNAStation {
         return station
     }
     
+    /// Fetch all the instances of the entity from DB
     static func all() -> [RNAStation]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
@@ -28,6 +33,7 @@ extension RNAStation {
         return array
     }
     
+    /// Remove all the instances of the entity from DB
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")

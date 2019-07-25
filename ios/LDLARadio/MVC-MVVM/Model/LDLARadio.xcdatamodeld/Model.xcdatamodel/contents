@@ -7,6 +7,7 @@
         <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="useWeb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
@@ -76,7 +77,7 @@
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amBand" inverseEntity="RNAStation" syncable="YES"/>
         <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmBand" inverseEntity="RNAStation" syncable="YES"/>
-        <relationship name="programs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram" syncable="YES">
+        <relationship name="programs" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
@@ -111,7 +112,7 @@
     </entity>
     <entity name="RNADial" representedClassName=".RNADial" syncable="YES" codeGenerationType="class">
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
@@ -216,11 +217,11 @@
                 <entry key="JSONKeyPath" value="web"/>
             </userInfo>
         </attribute>
-        <relationship name="amBand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="amStation" inverseEntity="RNABand" syncable="YES"/>
-        <relationship name="amCurrentProgram" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNACurrentProgram" inverseName="amStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
-        <relationship name="dial" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial" syncable="YES"/>
-        <relationship name="fmBand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="fmStation" inverseEntity="RNABand" syncable="YES"/>
-        <relationship name="fmCurrentProgram" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNACurrentProgram" inverseName="fmStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
+        <relationship name="amBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="amStation" inverseEntity="RNABand" syncable="YES"/>
+        <relationship name="amCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="amStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
+        <relationship name="dial" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial" syncable="YES"/>
+        <relationship name="fmBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="fmStation" inverseEntity="RNABand" syncable="YES"/>
+        <relationship name="fmCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="fmStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
@@ -441,18 +442,18 @@
         </userInfo>
     </entity>
     <elements>
+        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="180"/>
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="30"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="30"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="30"/>
+        <element name="RNABand" positionX="-225" positionY="-99" width="128" height="105"/>
+        <element name="RNACurrentProgram" positionX="-234" positionY="-108" width="128" height="135"/>
         <element name="RNADial" positionX="-243" positionY="-117" width="128" height="75"/>
+        <element name="RNAProgram" positionX="-216" positionY="-90" width="128" height="135"/>
         <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="330"/>
         <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="345"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="30"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="30"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="195"/>
-        <element name="RNACurrentProgram" positionX="-234" positionY="-108" width="128" height="135"/>
-        <element name="RNABand" positionX="-225" positionY="-99" width="128" height="105"/>
-        <element name="RNAProgram" positionX="-216" positionY="-90" width="128" height="135"/>
-        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="165"/>
     </elements>
 </model>

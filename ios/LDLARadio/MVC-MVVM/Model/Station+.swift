@@ -11,7 +11,8 @@ import CoreData
 import JFCore
 
 extension Station {
-    
+   
+    /// Fetch all the instances of the entity from DB
     static func all() -> [Station]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<Station>(entityName: "Station")
@@ -20,6 +21,7 @@ extension Station {
         return array
     }
     
+    /// Remove all the instances of the entity from DB
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")

@@ -12,14 +12,20 @@ import JFCore
 
 extension RTCatalog {
     
+    /// placeholder for thumbnails in streams
+    static let placeholderImageName: String = "f0001-music"
+
+    /// Update the `updatedAt` field in the entity when the model is created
     override public func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")
     }
-
+    
+    /// returns the title or text of the catalog
     func titleOrText() -> String? {
         return title ?? text
     }
     
+    /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse > Europe > Radios"
     func titleTree() -> String {
         var str = ArraySlice<String>()
         if let t0 = sectionCatalog?.titleTree() {
@@ -28,13 +34,14 @@ extension RTCatalog {
         if let t1 = titleOrText() {
             str.append(t1)
         }
+        /// Does not allow more than 30 characters in prompt
         while str.joined().count > 30 && str.count > 1 {
             _ = str.popFirst()
         }
         return str.joined()
     }
     
-    
+    /// convenient for debug or print info about catalog
     func descript() -> String {
         var str = [String]()
         if let title = title { str.append(title) }
@@ -45,6 +52,7 @@ extension RTCatalog {
         return str.joined(separator: ", ")
     }
     
+    /// Remove all the instances
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
@@ -58,6 +66,7 @@ extension RTCatalog {
         }
     }
     
+    /// Remove current instance
     func remove() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
@@ -65,19 +74,22 @@ extension RTCatalog {
         context.delete(self)
     }
     
-    
+    /// Determine if the catalog is about text information
     func isOnlyText() -> Bool {
         return type == "text" || (sections?.count == 0 && audios?.count == 0 && title != "Browse")
     }
     
+    /// Determine if the catalog is about audio information
     func isAudio() -> Bool {
         return type == "audio"
     }
     
+    /// Determine if the catalog is about link information
     func isLink() -> Bool {
         return type == nil || type == "link"
     }
     
+    /// Fetch all the objects in DB
     static func all() -> [RTCatalog]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
@@ -86,6 +98,15 @@ extension RTCatalog {
         return array
     }
     
+    /// Fetch the most recent updatedAt date
+    static func lastUpdated() -> Date? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
+        req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
+        return try? context.fetch(req).first?.updatedAt
+    }
+
+    /// Fetch an object by title
     static func fetch(title: String) -> [RTCatalog]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
@@ -95,6 +116,7 @@ extension RTCatalog {
         return array
     }
 
+    /// Fetch an object by text
     static func fetch(text: String) -> [RTCatalog]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
@@ -104,6 +126,7 @@ extension RTCatalog {
         return array
     }
     
+    /// Fetch an object by url
     static func fetch(url: String) -> [RTCatalog]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")

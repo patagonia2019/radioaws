@@ -9,15 +9,11 @@
 import Foundation
 
 extension Date {
-    func toJsonString() -> String? {
-        let df = DateFormatter.init()
-        df.timeZone = TimeZone.init(identifier: "UTC")
-        df.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        return df.string(from: self)
-    }
-
+    
+    /// Conversion from date into more human readable time ago:
+    /// years/monts/days/hours/an hour/minutes/seconds ago, or
+    /// last year/month/yesterday/now
     func toInfo() -> String? {
-        
         let calendar = Calendar.current
         let now = Date()
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: self, to: now)
@@ -66,7 +62,6 @@ extension Date {
                 return "\(second) seconds ago"
             }
         }
-            
         return "Just now"
     }
 }

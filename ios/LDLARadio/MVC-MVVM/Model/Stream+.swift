@@ -13,10 +13,15 @@ import JFCore
 
 extension Stream {
     
+    /// placeholder for thumbnails in streams
+    static let placeholderImageName: String = "f0001-music"
+
+    /// Update the `updatedAt` field in the entity when the model is created
     override public func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")
     }
 
+    /// Returns the urlAsset of the stream
     func urlAsset() -> AVURLAsset? {
         guard let playUrl = name?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let streamPlaylistURL = URL(string: playUrl),
@@ -24,6 +29,7 @@ extension Stream {
         return AVURLAsset(url: streamPlaylistURL)
     }
     
+    /// Returns the path of the downloaded stream
     func downloadedStream() -> URL? {
         let userDefaults = UserDefaults.standard
         guard let name = name,
@@ -35,13 +41,20 @@ extension Stream {
         return url
     }
     
+    /// Fetch the most recent updatedAt date
+    static func lastUpdated() -> Date? {
+        guard let context = CoreDataManager.instance.taskContext else { fatalError() }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
+        return try? context.fetch(req).first?.updatedAt
+    }
     
-    /// Returns the streams for a given station id.
+    /// Returns the streams for a given name.
     static func stream(byName name: String?) -> Stream? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "name = %s", name)
+        req.predicate = NSPredicate(format: "name = %@", name)
         let array = try? context.fetch(req)
         return array?.first
     }
@@ -67,7 +80,7 @@ extension Stream {
         return array
     }
 
-    
+    /// Remove all the instances of the entity
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")

@@ -33,7 +33,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>weathericons-regular-webfont.ttf</string>
+		<string>fontawesome-webfont.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

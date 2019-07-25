@@ -1,5 +1,5 @@
 //
-//  RTCatalogController.swift
+//  RadioTimeController.swift
 //  LDLARadio
 //
 //  Created by fox on 13/07/2019.
@@ -9,7 +9,7 @@
 import Foundation
 import JFCore
 
-class RTCatalogController: BaseController {
+class RadioTimeController: BaseController {
     
     var mainCatalogViewModel : CatalogViewModel? = nil
     var catalogTableViewModel = CatalogTableViewModel.init()
@@ -48,7 +48,6 @@ class RTCatalogController: BaseController {
         if let mainCatalogViewModel = mainCatalogViewModel {
             catalogTableViewModel = CatalogTableViewModel(catalog: mainCatalogViewModel, parentTitle: mainCatalog?.sectionCatalog?.title ?? prompt)
         }
-        lastUpdated = mainCatalog?.updatedAt
     }
     
     override func privateRefresh(isClean: Bool = false,
@@ -72,6 +71,7 @@ class RTCatalogController: BaseController {
         if resetInfo == false {
             if mainCatalogViewModel?.audios.count ?? 0 > 0 {
                 updateViewModel(with: mainCatalog, prompt: prompt)
+                lastUpdated = RTCatalog.lastUpdated()
                 finishClosure?(nil)
                 return
             }
@@ -80,12 +80,14 @@ class RTCatalogController: BaseController {
                 (mainCatalog?.sections?.count ?? 0 > 0 || mainCatalog?.audios?.count ?? 0 > 0)  {
                 mainCatalogViewModel = CatalogViewModel(catalog: mainCatalog)
                 updateViewModel(with: mainCatalog, prompt: prompt)
+                lastUpdated = RTCatalog.lastUpdated()
                 finishClosure?(nil)
                 return
             }
         }
         let url = mainCatalog?.url ?? mainCatalogViewModel?.urlString()
         if url == nil && (mainCatalogViewModel != nil && mainCatalogViewModel?.title != "Browse") {
+            lastUpdated = RTCatalog.lastUpdated()
             finishClosure?(nil)
             return
         }
@@ -93,8 +95,8 @@ class RTCatalogController: BaseController {
         RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { error, catalog in
 
             if error != nil {
+                self.lastUpdated = RTCatalog.lastUpdated()
                 DispatchQueue.main.async {
-                    self.lastUpdated = nil
                     finishClosure?(error)
                 }
                 return
@@ -140,6 +142,8 @@ class RTCatalogController: BaseController {
             CoreDataManager.instance.save()
             self.mainCatalogViewModel = CatalogViewModel(catalog: catalog)
             self.updateViewModel(with: catalog, prompt: prompt)
+            self.lastUpdated = RTCatalog.lastUpdated()
+
             DispatchQueue.main.async {
                 finishClosure?(error)
             }

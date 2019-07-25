@@ -12,6 +12,7 @@ import JFCore
 
 extension RNAProgram {
     
+    /// Fetch all the instances of the entity from DB
     static func all() -> [RNAProgram]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RNAProgram>(entityName: "RNAProgram")
@@ -20,7 +21,7 @@ extension RNAProgram {
         return array
     }
     
-    
+    /// Remove the current instance of the entity from DB
     func remove() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
@@ -28,7 +29,7 @@ extension RNAProgram {
         context.delete(self)
     }
     
-    
+    /// Remove all the instances of the entity from DB
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")

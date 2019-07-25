@@ -21,21 +21,39 @@ struct AudioViewModel {
         static let identifier: String = "AudioIdentifier"
     }
     
+    /// title specification
+    var title: String = ""
     var titleColor: UIColor = .darkGray
     var titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.L)
+    
+    /// subtitle spec
+    var subTitle: String = ""
     var subTitleColor: UIColor = .lightGray
     var subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.M)
+    
+    /// detail spec
+    var detail: String = ""
     var detailColor: UIColor = UIColor(white: 0.4, alpha: 0.8)
     var detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.S)
+    
+    /// convenient id
     var id: String? = nil
+    
+    /// url of the audio / stream / http /etc
     var url: URL? = nil
+    
+    /// thumbnail url and placeholders
     var thumbnailUrl: URL? = nil
+    var placeholderImageName: String? = nil
     var placeholderImage: UIImage? = nil
-    var title: String = ""
-    var subTitle: String = ""
-    var detail: String = ""
+    let selectionStyle: UITableViewCell.SelectionStyle = .none
+    
+    /// to know if the player will work or it's a webkit only play recommendation (like to play the stream in safari)
     var useWeb: Bool = false
-
+    
+    var isBookmarked: Bool = false
+    
+    /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
         assert(audio?.isAudio() ?? false)
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
@@ -51,6 +69,13 @@ struct AudioViewModel {
             subTitle != currentTrack {
                 detail = "\(detail) \(currentTrack)"
         }
+        
+        
+        placeholderImageName = Stream.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
         if let imageUrl = audio?.image,
             let urlChecked = URL(string: imageUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -61,14 +86,54 @@ struct AudioViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
         }
-        
+        isBookmarked = checkIfBookmarked()
+        reFillTitles()
     }
     
+    private mutating func reFillTitles() {
+        if detail.count == 0 {
+            if subTitle.count == 0 {
+                if title.count > 0 {
+                    var str = ArraySlice<String>()
+                    let arrayOfContent = title.components(separatedBy: CharacterSet(["-", "|", ",", ".", "("]))
+                    str.append(contentsOf: arrayOfContent)
+                    title = str.popFirst()?.trimmingCharacters(in: [")", " "]) ?? ""
+                    subTitle = str.popFirst()?.trimmingCharacters(in: [")", " "])  ?? ""
+                    detail = str.joined(separator: " ").trimmingCharacters(in: [")", " "])
+                }
+            }
+            else if title.count > 0 {
+                var str = ArraySlice<String>()
+                let arrayOfContent = title.components(separatedBy: CharacterSet(["-", "|", ",", "("]))
+                str.append(contentsOf: arrayOfContent)
+                title = str.popFirst()?.trimmingCharacters(in: [")", " "]) ?? ""
+                detail = subTitle
+                subTitle = str.joined(separator: " ").trimmingCharacters(in: [")", " "])
+            }
+        }
+    }
+    
+    /// to know if the model is in bookmark
+    func checkIfBookmarked() -> Bool {
+        if let id = id, let url = url?.absoluteString {
+            return Bookmark.fetch(id: id, url: url) != nil
+        }
+        return false
+    }
+
+    
+    /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
         id = "\(stream?.id ?? 0)"
         title = stream?.station?.name ?? ""
         subTitle = stream?.station?.city?.name ?? ""
         detail = stream?.station?.city?.district?.name ?? ""
+    
+        placeholderImageName = Stream.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
         if let imageUrl = stream?.station?.imageUrl,
             let urlChecked = URL(string: imageUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -79,9 +144,65 @@ struct AudioViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
         }
+        isBookmarked = checkIfBookmarked()
+        reFillTitles()
+
     }
     
     
+    /// initialization of the view model for RNA audios
+    init(stationAm: RNAStation?) {
+        update(station: stationAm, isAm: true)
+    }
+    
+    init(stationFm: RNAStation?) {
+        update(station: stationFm, isAm: false)
+    }
+    
+    /// initialization of the view model for bookmarked audios
+    init(bookmark: Bookmark?) {
+        detail = bookmark?.detail ?? ""
+        id = bookmark?.id
+        placeholderImageName = bookmark?.placeholder
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+        subTitle = bookmark?.subTitle ?? ""
+        if let imageUrl = bookmark?.thumbnailUrl,
+            let urlChecked = URL(string: imageUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            thumbnailUrl = urlChecked
+        }
+        if let audioUrl = bookmark?.url,
+            let urlChecked = URL(string: audioUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            url = urlChecked
+        }
+        title = bookmark?.title ?? ""
+        useWeb = bookmark?.useWeb ?? false
+        isBookmarked = true
+    }
+    
+    func urlString() -> String? {
+        return url?.absoluteString
+    }
+    
+    static func height() -> Float {
+        return hardcode.cellheight
+    }
+    
+    /// Use the url of the stream/audio as an AVURLAsset
+    func urlAsset() -> AVURLAsset? {
+        guard let playUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let streamPlaylistURL = URL(string: playUrl) else { return nil }
+        print("play = \(streamPlaylistURL)")
+        return AVURLAsset(url: streamPlaylistURL)
+    }
+    
+}
+
+/// RNA Station method for update
+extension AudioViewModel {
     public mutating func update(station: RNAStation?, isAm: Bool) {
         id = station?.id
         title = station?.firstName ?? ""
@@ -94,7 +215,10 @@ struct AudioViewModel {
             }
             detail += programName
         }
-        placeholderImage = UIImage.init(named: "RNA-256x256bb")
+        placeholderImageName = RNAStation.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
         
         thumbnailUrl = imageUrl(usingUri: station?.image)
             ?? imageUrl(usingUri: currentProgram?.image)
@@ -102,30 +226,16 @@ struct AudioViewModel {
         
         url = streamUrl(usingBaseUrl: station?.url1, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
+        
+        isBookmarked = checkIfBookmarked()
+        reFillTitles()
     }
-    
-    init(stationAm: RNAStation?) {
-        update(station: stationAm, isAm: true)
-    }
-    
-    init(stationFm: RNAStation?) {
-        update(station: stationFm, isAm: false)
-    }
-    
-    func urlAsset() -> AVURLAsset? {
-        guard let playUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let streamPlaylistURL = URL(string: playUrl) else { return nil }
-        print("play = \(streamPlaylistURL)")
-        return AVURLAsset(url: streamPlaylistURL)
-    }
-    
-    func urlString() -> String? {
-        return url?.absoluteString
-    }
-    
-    static func height() -> Float {
-        return hardcode.cellheight
-    }
+
+}
+
+
+/// some private stuff for the view model
+extension AudioViewModel {
     
     private func imageUrl(usingUri uri: String?) -> URL? {
         if let uri = uri, uri.count > 0,

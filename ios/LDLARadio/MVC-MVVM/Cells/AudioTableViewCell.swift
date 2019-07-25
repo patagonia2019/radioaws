@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import JFCore
 
 class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
@@ -19,8 +20,9 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
-    
-    weak var delegate: AssetListTableViewCellDelegate?
+    @IBOutlet weak var bookmarkButton: UIButton!
+    @IBOutlet weak var playButton: UIButton!
+    weak var delegate: AudioTableViewCellDelegate?
     
     var model : AudioViewModel? = nil {
         didSet {
@@ -35,8 +37,19 @@ class AudioTableViewCell: UITableViewCell {
             titleLabel.font = model?.titleFont
             logoView.image = model?.placeholderImage
             if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage)
+//                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage)
+                logoView.alpha = 0.5
+                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (response) in
+                    if response.error != nil {
+                        self.logoView.alpha = 0.5
+                    }
+                    else {
+                        self.logoView.alpha = 1.0
+                    }
+                }
             }
+            bookmarkButton.isHighlighted = model?.isBookmarked ?? false
+            selectionStyle = model?.selectionStyle ?? .none
         }
     }
     
@@ -48,10 +61,37 @@ class AudioTableViewCell: UITableViewCell {
         logoView.image = nil
         downloadStateLabel.text = ""
         downloadProgressView.isHidden = true
-    }    
+        playButton.isHighlighted = false
+        bookmarkButton.isHighlighted = false
+    }
+    
+    @IBAction func playAction(_ sender: UIButton?) {
+        if sender == playButton {
+            delegate?.audioTableViewCell(self, didPlay: true)
+        }
+        else {
+            fatalError()
+        }
+    }
+
+    @IBAction func bookmarkAction(_ sender: UIButton?) {
+    
+        if sender == bookmarkButton {
+            bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
+            delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
+        }
+        else {
+            fatalError()
+        }
+    }
+
 }
 
-protocol AssetListTableViewCellDelegate: class {
+protocol AudioTableViewCellDelegate: class {
     
-    func assetListTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
+    func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
 }

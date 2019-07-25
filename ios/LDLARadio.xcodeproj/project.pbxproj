@@ -21,7 +21,7 @@
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
 		70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC071E3064EA008DE753 /* LDLARadio.html */; };
 		73D37F61E3762F655B440C11 /* Pods_LDLARadioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */; };
-		9808510922E61E650013B67C /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510822E61E650013B67C /* AudioController.swift */; };
+		9808510922E61E650013B67C /* RadioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510822E61E650013B67C /* RadioController.swift */; };
 		9808510B22E638D90013B67C /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510A22E638D90013B67C /* Date+.swift */; };
 		9808510F22E691F10013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808511122E69D990013B67C /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511022E69D990013B67C /* BaseController.swift */; };
@@ -37,6 +37,15 @@
 		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
 		9808512B22E782C40013B67C /* RNABand+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512A22E782C40013B67C /* RNABand+.swift */; };
 		9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512C22E7A2DD0013B67C /* RNAProgram+.swift */; };
+		9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513322E8F4E40013B67C /* BookmarkTests.swift */; };
+		9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
+		9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
+		9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
+		9808513922E8FBC80013B67C /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
+		9808513A22E8FBE80013B67C /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
+		9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
+		9808513D22E903730013B67C /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513C22E903730013B67C /* BookmarkController.swift */; };
+		9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513E22E9040D0013B67C /* BookmarkViewController.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -44,7 +53,7 @@
 		98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */; };
 		98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */; };
 		98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
-		98195FB522DA658D006E7961 /* RTCatalogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB422DA658D006E7961 /* RTCatalogController.swift */; };
+		98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB422DA658D006E7961 /* RadioTimeController.swift */; };
 		98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB622DB7C21006E7961 /* RTCatalogTests.swift */; };
 		98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBB22DBB944006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
@@ -94,7 +103,7 @@
 		70D4EC031E304A9B008DE753 /* common.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = common.css; sourceTree = "<group>"; };
 		7A6DA202209754560004126A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/LDLARadio.html; sourceTree = "<group>"; };
 		7EAAF7AFF51F030A534694AA /* Pods-LDLARadio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.release.xcconfig"; sourceTree = "<group>"; };
-		9808510822E61E650013B67C /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		9808510822E61E650013B67C /* RadioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioController.swift; sourceTree = "<group>"; };
 		9808510A22E638D90013B67C /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		9808510E22E691F10013B67C /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		9808511022E69D990013B67C /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
@@ -110,6 +119,10 @@
 		9808512822E7513F0013B67C /* RNACurrentProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNACurrentProgram+.swift"; sourceTree = "<group>"; };
 		9808512A22E782C40013B67C /* RNABand+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNABand+.swift"; sourceTree = "<group>"; };
 		9808512C22E7A2DD0013B67C /* RNAProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAProgram+.swift"; sourceTree = "<group>"; };
+		9808513322E8F4E40013B67C /* BookmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTests.swift; sourceTree = "<group>"; };
+		9808513622E8FAA00013B67C /* Bookmark+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+.swift"; sourceTree = "<group>"; };
+		9808513C22E903730013B67C /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
+		9808513E22E9040D0013B67C /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -117,7 +130,7 @@
 		98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewCell.swift; sourceTree = "<group>"; };
 		98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 		98195FB222DA2F53006E7961 /* RTCatalog+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RTCatalog+.swift"; sourceTree = "<group>"; };
-		98195FB422DA658D006E7961 /* RTCatalogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogController.swift; sourceTree = "<group>"; };
+		98195FB422DA658D006E7961 /* RadioTimeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTimeController.swift; sourceTree = "<group>"; };
 		98195FB622DB7C21006E7961 /* RTCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogTests.swift; sourceTree = "<group>"; };
 		98195FBC22DBFBFE006E7961 /* BaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTests.swift; sourceTree = "<group>"; };
 		9824386922DCFD6400B418F9 /* AudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewModel.swift; sourceTree = "<group>"; };
@@ -164,6 +177,7 @@
 				9808512022E6DD370013B67C /* RNADial+.swift */,
 				9808512622E6E6640013B67C /* RNAStation+.swift */,
 				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
+				9808513622E8FAA00013B67C /* Bookmark+.swift */,
 				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
 				9808512A22E782C40013B67C /* RNABand+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
@@ -278,6 +292,7 @@
 				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
 				9808511422E6A7910013B67C /* RadioTimeViewController.swift */,
 				9808512222E6DE330013B67C /* RNAViewController.swift */,
+				9808513E22E9040D0013B67C /* BookmarkViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 			);
 			path = Views;
@@ -287,9 +302,10 @@
 			isa = PBXGroup;
 			children = (
 				9808511022E69D990013B67C /* BaseController.swift */,
-				98195FB422DA658D006E7961 /* RTCatalogController.swift */,
-				9808510822E61E650013B67C /* AudioController.swift */,
+				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
+				9808510822E61E650013B67C /* RadioController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
+				9808513C22E903730013B67C /* BookmarkController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -313,6 +329,7 @@
 				987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */,
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
+				9808513322E8F4E40013B67C /* BookmarkTests.swift */,
 				987DA0C022D663E700F34BD3 /* Info.plist */,
 			);
 			path = LDLARadioTests;
@@ -570,15 +587,18 @@
 				9808512322E6DE330013B67C /* RNAViewController.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
+				9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
-				98195FB522DA658D006E7961 /* RTCatalogController.swift in Sources */,
+				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
 				9808511122E69D990013B67C /* BaseController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
+				9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				9808512722E6E6640013B67C /* RNAStation+.swift in Sources */,
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
-				9808510922E61E650013B67C /* AudioController.swift in Sources */,
+				9808513D22E903730013B67C /* BookmarkController.swift in Sources */,
+				9808510922E61E650013B67C /* RadioController.swift in Sources */,
 				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
 				9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */,
 				9808510F22E691F10013B67C /* String+.swift in Sources */,
@@ -591,12 +611,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
+				9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */,
+				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
+				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
+				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
+				9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */,
+				9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

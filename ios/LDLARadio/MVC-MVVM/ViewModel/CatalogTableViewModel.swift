@@ -9,16 +9,27 @@
 import Foundation
 
 struct CatalogTableViewModel {
+    
+    /// Title information
     var title : String = ""
+    
+    /// Prompt information
     var prompt : String = ""
+    
+    /// Sections in the table
     var sections = [String]()
+    
+    /// Rows in the table
     var elements = [String:[Any]]()
     var defaultElements = [String:[Any]]()
+    
+    /// heights for rows
     var heights = [String:[NSNumber]]()
 
     init() {
     }
 
+    /// Using a CatalogViewModel to fill information inside the view
     init(catalog: CatalogViewModel, parentTitle: String? = "Radio Time") {
         prompt = catalog.tree
         title = parentTitle ?? "Radio Time"

@@ -12,6 +12,7 @@ import Groot
 
 extension Quote {
     
+    /// Converstion between json file into a Dictionary
     private static func fromJsonFile(name: String) -> [[String: Any]]? {
         // Parse and insert media
         if let path = Bundle.main.path(forResource: name, ofType: "json") {
@@ -26,7 +27,7 @@ extension Quote {
         return nil
     }
     
-    
+    /// Create the instances using a json file
     private static func create() {
         do {
             guard let array = fromJsonFile(name: "quotes2"),
@@ -43,7 +44,7 @@ extension Quote {
         }
     }
     
-    
+    /// Use a quote randomly
     private static func queryRandomly() -> Quote? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<Quote>(entityName: "Quote")
@@ -56,6 +57,7 @@ extension Quote {
         return array?[rnd]
     }
 
+    /// Returns or creates a quote
     private static func random() -> Quote? {
         if let quote = queryRandomly() {
             return quote
@@ -64,6 +66,7 @@ extension Quote {
         return queryRandomly()
     }
     
+    /// Show the quote as string
     static func randomQuote() -> String {
         guard let quote = random(),
             let text = quote.text else {

@@ -11,6 +11,8 @@ import CoreData
 import JFCore
 
 extension RNABand {
+    
+    /// Fetch all the instances of the entity from DB
     static func all() -> [RNABand]? {
         guard let context = CoreDataManager.instance.taskContext else { fatalError() }
         let req = NSFetchRequest<RNABand>(entityName: "RNABand")
@@ -18,7 +20,7 @@ extension RNABand {
         return array
     }
     
-    
+    /// Remove the current instance of the entity from DB
     func remove() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
@@ -26,7 +28,7 @@ extension RNABand {
         context.delete(self)
     }
     
-    
+    /// Remove all the instances of the entity from DB
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")

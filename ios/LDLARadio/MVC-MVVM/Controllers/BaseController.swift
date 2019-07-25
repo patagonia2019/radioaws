@@ -11,7 +11,12 @@ import JFCore
 
 class BaseController {
     var lastUpdated : Date? = nil
+    var finishBlock: ((_ error: Error?) -> ())? = nil
 
+    var useRefresh : Bool {
+        return true
+    }
+    
     func numberOfSections() -> Int {
         return 1
     }
@@ -50,9 +55,11 @@ class BaseController {
     }
     
     func refresh(isClean: Bool = false,
-                 prompt: String,
+                 prompt: String = "",
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: Error?) -> Void)? = nil) {
+        
+        finishBlock = finishClosure
         
         startClosure?()
         
@@ -68,6 +75,34 @@ class BaseController {
         
         startClosure?()
         finishClosure?(nil)
+    }
+    
+    func changeBookmark(at section: Int, row: Int) {
+        guard var model = model(forSection: section, row: row) as? AudioViewModel else {
+            return
+        }
+        
+        guard let context = CoreDataManager.instance.taskContext else {
+            fatalError("fatal: no core data context manager")
+        }
+        
+        context.performAndWait {
+            if let id = model.id,
+                let url = model.url?.absoluteString {
+                if let bookmark = Bookmark.fetch(id: id, url: url) {
+                    bookmark.remove()
+                }
+                else {
+                    if var
+                        bookmark = Bookmark.create() {
+                        bookmark += model
+                    }
+                }
+                model.isBookmarked = !model.isBookmarked
+                CoreDataManager.instance.save()
+                refresh(finishClosure: finishBlock)
+            }
+        }
     }
 }
 

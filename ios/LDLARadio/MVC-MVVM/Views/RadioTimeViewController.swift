@@ -11,14 +11,14 @@ import UIKit
 class RadioTimeViewController: BaseAudioViewController {
     // MARK: Properties
     
-    var catalogController = RTCatalogController()
+    var catalogController = RadioTimeController()
     override var controller: BaseController {
         get {
             return catalogController
         }
         set {
-            if newValue is RTCatalogController {
-                catalogController = newValue as! RTCatalogController
+            if newValue is RadioTimeController {
+                catalogController = newValue as! RadioTimeController
             } else {
                 print("incorrect controller type")
             }

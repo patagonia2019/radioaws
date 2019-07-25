@@ -21,6 +21,7 @@ extension City {
         return array
     }
 
+    /// Remove all the instances of the entity
     static func clean() {
         guard let context = CoreDataManager.instance.taskContext else {
             fatalError("fatal: no core data context manager")
