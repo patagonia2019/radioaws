@@ -46,7 +46,7 @@ struct CityListManager {
     // MARK: City access
     
 
-    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
+    func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/cities.json", type: Many<City>.self) { error, _ in
             if let finish = finish {
                 finish(error)
@@ -56,11 +56,7 @@ struct CityListManager {
                 NotificationCenter.default.post(name: CityListManager.didLoadNotification, object: nil)
                 return
             }
-            let jerror = JFError(code: 101,
-                                 desc: "failed to get cities.json",
-                                 reason: "something get wrong on request cities.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                underError: error as NSError?)
-            NotificationCenter.default.post(name: CityListManager.errorNotification, object: jerror)
+            NotificationCenter.default.post(name: CityListManager.errorNotification, object: error)
         }
     }
     

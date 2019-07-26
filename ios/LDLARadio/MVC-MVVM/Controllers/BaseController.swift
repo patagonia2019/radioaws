@@ -11,7 +11,7 @@ import JFCore
 
 class BaseController {
     var lastUpdated : Date? = nil
-    var finishBlock: ((_ error: Error?) -> ())? = nil
+    var finishBlock: ((_ error: JFError?) -> ())? = nil
 
     var useRefresh : Bool {
         return true
@@ -57,7 +57,7 @@ class BaseController {
     func refresh(isClean: Bool = false,
                  prompt: String = "",
                  startClosure: (() -> Void)? = nil,
-                 finishClosure: ((_ error: Error?) -> Void)? = nil) {
+                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         finishBlock = finishClosure
         
@@ -71,7 +71,7 @@ class BaseController {
     func privateRefresh(isClean: Bool = false,
                                 prompt: String,
                                 startClosure: (() -> Void)? = nil,
-                                finishClosure: ((_ error: Error?) -> Void)? = nil) {
+                                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         startClosure?()
         finishClosure?(nil)

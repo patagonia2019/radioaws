@@ -42,18 +42,14 @@ struct StreamListManager {
         }
     }
     
-    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
+    func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/streams.json", type: Many<Stream>.self) { error1, _ in
             if finish == nil {
                 guard let error = error1 else {
                     NotificationCenter.default.post(name: StreamListManager.didLoadNotification, object: nil)
                     return
                 }
-                let jerror = JFError(code: 101,
-                                     desc: "failed to get stations.json",
-                                     reason: "something get wrong on request stations.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                    underError: error as NSError?)
-                NotificationCenter.default.post(name: StreamListManager.errorNotification, object: jerror)
+                NotificationCenter.default.post(name: StreamListManager.errorNotification, object: error)
                 return
             }
             guard let error1 = error1 else {

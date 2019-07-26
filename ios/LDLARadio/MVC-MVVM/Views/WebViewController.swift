@@ -50,7 +50,6 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if navigationType == .linkClicked {
             if let url = request.url {
-//                UIApplication.shared.open(url, options: [], completionHandler: nil)
                 return false
             }
         }
@@ -59,8 +58,12 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
     
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-//        SCLAlertView().showError(Global.title.error, subTitle: error.localizedDescription)
-        print(error)
+        let jferror = JFError(code: Int(errno),
+                            desc: "Error",
+                            reason: "Player failed",
+                            suggestion: "Please check your internet connection",
+                            underError: error as NSError?)
+        showAlert(error: jferror)
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
@@ -75,4 +78,5 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
         Analytics.logMemoryWarning(function: #function, line: #line)
     }
     
+
 }

@@ -45,7 +45,7 @@ class RadioController: BaseController {
     override func privateRefresh(isClean: Bool = false,
                                 prompt: String,
                                 startClosure: (() -> Void)? = nil,
-                                finishClosure: ((_ error: Error?) -> Void)? = nil) {
+                                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         startClosure?()
         

@@ -62,7 +62,7 @@ class RestApi {
     func requestRNA<T: Insertable>(
         usingQuery query: String,
         type: T.Type,
-        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rnaServer)
         request(usingUrl: url, method: .get, type: type, finish: finish)
@@ -76,7 +76,7 @@ class RestApi {
     func requestLDLA<T: Insertable>(
         usingQuery query: String,
         type: T.Type,
-        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.ldlaServer)
         request(usingUrl: url, method: .get, type: type, finish: finish)
@@ -90,7 +90,7 @@ class RestApi {
     func requestRT<T: Insertable>(
         usingQuery query: String? = "",
         type: T.Type,
-        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rtServer)
         requestRT(usingUrl: url, type: type, finish: finish)
@@ -104,7 +104,7 @@ class RestApi {
     func requestRT<T: Insertable>(
         usingUrl url: String?,
         type: T.Type,
-        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         var urlJson : String = url ?? Constants.Service.rtServer
         if urlJson.contains("?") {
@@ -127,7 +127,7 @@ class RestApi {
         usingUrl url: String,
         method: HTTPMethod = .get,
         type: T.Type,
-        finish: ((_ error: Error?, _ value: T?) -> Void)? = nil)
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
         let request = self.alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
@@ -135,7 +135,23 @@ class RestApi {
         request.responseInsert(context: context, type: T.self) { response in
             context.performAndWait({
                 print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")
-                finish?(response.error, response.value)
+                var error : JFError? = nil
+                if response.error != nil {
+                    var desc = "Error"
+                    var suggestion = "Please try again later"
+                    var reason = response.dataAsString()
+                    if reason.count == 0 {
+                        desc = "The server is not responding the request"
+                        suggestion = "Please check your internet connection"
+                        reason = "Empty response"
+                    }
+                    error = JFError(code: Int(errno),
+                                     desc: desc,
+                                     reason: reason,
+                                     suggestion: suggestion,
+                        underError: response.error as NSError?)
+                }
+                finish?(error, response.value)
             })
         }
     }
@@ -145,7 +161,7 @@ class RestApi {
 extension DataResponse {
     func dataAsString() -> String {
         if let data = data,
-            let str = String.init(data: data, encoding: .ascii) {
+            let str = String.init(data: data, encoding: .ascii)?.html2String() {
             return str
         }
         return ""

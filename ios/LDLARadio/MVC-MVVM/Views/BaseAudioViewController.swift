@@ -75,6 +75,9 @@ class BaseAudioViewController: UITableViewController {
                             self.reloadData()
                             
         }) { (error) in
+            if let error = error {
+                self.showAlert(error: error)
+            }
             refreshControl?.endRefreshing()
             SwiftSpinner.hide()
             self.reloadData()
@@ -220,6 +223,7 @@ class BaseAudioViewController: UITableViewController {
         }
         SwiftSpinner.hide()
     }
+    
 }
 
 /**
@@ -249,6 +253,10 @@ extension BaseAudioViewController: AudioTableViewCellDelegate {
  Extend `BaseAudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
  */
 extension BaseAudioViewController: AssetPlaybackDelegate {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
+        showAlert(error: error)
+    }
+    
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer) {
         player.play()
     }

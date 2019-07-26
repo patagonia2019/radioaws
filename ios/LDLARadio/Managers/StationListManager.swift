@@ -43,7 +43,7 @@ struct StationListManager {
         }
     }
     
-    func setup(finish: ((_ error: Error?) -> Void)? = nil) {
+    func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/stations.json", type: Many<Station>.self) { error, _ in
             if let finish = finish {
                 finish(error)
@@ -53,11 +53,7 @@ struct StationListManager {
                 NotificationCenter.default.post(name: StationListManager.didLoadNotification, object: nil)
                 return
             }
-            let jerror = JFError(code: 101,
-                                 desc: "failed to get stations.json",
-                                 reason: "something get wrong on request stations.json", suggestion: "\(#file):\(#line):\(#column):\(#function)",
-                underError: error as NSError?)
-            NotificationCenter.default.post(name: StationListManager.errorNotification, object: jerror)
+            NotificationCenter.default.post(name: StationListManager.errorNotification, object: error)
         }
     }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import JFCore
 
 class StreamPlaybackManager: NSObject {
     // MARK: Properties
@@ -112,7 +113,14 @@ class StreamPlaybackManager: NSObject {
                 }
             }
             else if playerItem.status == .failed {
-                print ("error = ", playerItem.error ?? "some error")
+                let error = JFError(code: Int(errno),
+                                desc: "Error",
+                                reason: "Player failed",
+                                suggestion: "Please check your internet connection",
+                                underError: playerItem.error as NSError?)
+
+                delegate?.streamPlaybackManager(self, playerError: error)
+                return
             }
             
         case #keyPath(AVPlayer.currentItem):
@@ -131,5 +139,9 @@ protocol AssetPlaybackDelegate: class {
     
     /// This is called when the internal AVPlayer's currentItem has changed.
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer)
+    
+    /// This is called when the internal AVPlayer in StreamPlaybackManager finds an error.
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError)
+
 }
 

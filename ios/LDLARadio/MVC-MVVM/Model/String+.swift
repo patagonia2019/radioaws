@@ -16,4 +16,12 @@ extension String {
                           NSAttributedString.Key.font:font as Any]
         return NSAttributedString(string: self, attributes: attributes)
     }
+
+    var html2AttributedString: NSAttributedString? {
+        return Data(utf8).html2AttributedString
+    }
+    func html2String() -> String {
+        return html2AttributedString?.string ?? self
+    }
+
 }

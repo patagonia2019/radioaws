@@ -80,7 +80,7 @@ class RNAController: BaseController {
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Radio Nacional Argentina",
                                  startClosure: (() -> Void)? = nil,
-                                 finishClosure: ((_ error: Error?) -> Void)? = nil)
+                                 finishClosure: ((_ error: JFError?) -> Void)? = nil)
     {
         
         startClosure?()
@@ -104,10 +104,10 @@ class RNAController: BaseController {
             RestApi.instance.requestRNA(usingQuery: "/api/listar_emisoras.json", type: RNADial.self) { (error, dial) in
                 if error != nil {
                     CoreDataManager.instance.rollback()
-                    return
+                } else {
+                    self.updateModels()
+                    CoreDataManager.instance.save()
                 }
-                self.updateModels()
-                CoreDataManager.instance.save()
                 finishClosure?(error)
             }
         }
