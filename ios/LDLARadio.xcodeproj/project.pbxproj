@@ -64,6 +64,7 @@
 		9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
 		9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */; };
 		9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
+		9825BDD022EB45C900E418F2 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -461,6 +462,7 @@
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
+				9825BDD022EB45C900E418F2 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */,
