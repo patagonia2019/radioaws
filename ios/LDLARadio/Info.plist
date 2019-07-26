@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -31,6 +31,12 @@
 		<key>NSIncludesSubdomains</key>
 		<true/>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is to radios, podcasts and streams  for your immediate area.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is to radios, podcasts and streams  for your immediate area.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is to radios, podcasts and streams  for your immediate area.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>fontawesome-webfont.ttf</string>
