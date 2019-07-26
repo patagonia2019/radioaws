@@ -51,7 +51,7 @@ class BaseController {
     }
     
     func prompt() -> String {
-        return "Locos de la Azotea"
+        return "Los Locos de la Azotea"
     }
     
     func refresh(isClean: Bool = false,

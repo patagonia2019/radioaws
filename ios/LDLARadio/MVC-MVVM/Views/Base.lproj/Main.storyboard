@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="FontAwesome.ttf">
+        <array key="fontawesome-webfont.ttf">
             <string>FontAwesome</string>
         </array>
     </customFonts>
@@ -209,7 +209,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzH-NA-Ji1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="747"/>
+            <point key="canvasLocation" x="2695.1999999999998" y="746.17691154422789"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -225,11 +225,46 @@
                         <segue destination="yP0-ZM-hBA" kind="relationship" relationship="viewControllers" id="ee6-JZ-46k"/>
                         <segue destination="fVC-zH-29d" kind="relationship" relationship="viewControllers" id="yOf-b0-aYg"/>
                         <segue destination="vN1-ue-gmt" kind="relationship" relationship="viewControllers" id="zMt-8o-R9a"/>
+                        <segue destination="CkX-7p-g86" kind="relationship" relationship="viewControllers" id="VX0-hZ-168"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e2p-bw-EhN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="53"/>
+        </scene>
+        <!--Developer: Javier Fuchs-->
+        <scene sceneID="Jhz-mH-VsQ">
+            <objects>
+                <viewController id="bdU-c5-6zL" customClass="AboutViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tXE-lV-jp8"/>
+                        <viewControllerLayoutGuide type="bottom" id="gx4-DB-AYm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="U8I-aF-VpI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXi-X8-PLZ" customClass="PDFView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="height" secondItem="U8I-aF-VpI" secondAttribute="height" id="r5Y-he-Qct"/>
+                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="centerY" secondItem="U8I-aF-VpI" secondAttribute="centerY" id="unF-0c-W5j"/>
+                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="width" secondItem="U8I-aF-VpI" secondAttribute="width" id="wWf-Cu-7mY"/>
+                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="centerX" secondItem="U8I-aF-VpI" secondAttribute="centerX" id="yIe-TY-So1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Developer: Javier Fuchs" prompt="Los Locos de la Azotea" id="hmp-Q2-wgr"/>
+                    <connections>
+                        <outlet property="pdfView" destination="EXi-X8-PLZ" id="AGA-qF-Vw2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VXy-jF-VnN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="580" y="814.54272863568224"/>
         </scene>
         <!--Suggestion-->
         <scene sceneID="zkN-5i-EbQ">
@@ -248,7 +283,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qZJ-lz-sEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="830" y="734"/>
+            <point key="canvasLocation" x="1768.8" y="733.5832083958021"/>
         </scene>
         <!--AV Player View Controller-->
         <scene sceneID="3aP-GM-lXf">
@@ -277,7 +312,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lh5-r5-ayq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3070" y="461"/>
+            <point key="canvasLocation" x="4008.8000000000002" y="460.11994002998506"/>
         </scene>
         <!--Radio Time-->
         <scene sceneID="ecA-e5-0VC">
@@ -334,7 +369,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nG-ua-gwf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="830" y="1413"/>
+            <point key="canvasLocation" x="1768.8" y="1412.7436281859073"/>
         </scene>
         <!--Radio Time-->
         <scene sceneID="tWu-fb-xyR">
@@ -891,7 +926,26 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hch-1a-SVD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1756" y="1413"/>
+            <point key="canvasLocation" x="2695.1999999999998" y="1412.7436281859073"/>
+        </scene>
+        <!--About-->
+        <scene sceneID="RAk-Ah-28I">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CkX-7p-g86" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="About" image="icons8-user-30" id="egc-oe-8z4"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="evi-0a-wTl">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="bdU-c5-6zL" kind="relationship" relationship="rootViewController" id="5Tp-fb-3Ew"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DCU-8v-jpU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-359.19999999999999" y="814.54272863568224"/>
         </scene>
     </scenes>
     <resources>
@@ -900,6 +954,7 @@
         <image name="f0ce-catalog" width="13" height="16"/>
         <image name="f557-archway-solid" width="16" height="14"/>
         <image name="f5d1-apple-alt-solid" width="17" height="20"/>
+        <image name="icons8-user-30" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ClR-VP-3ZM"/>
