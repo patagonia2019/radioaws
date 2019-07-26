@@ -66,6 +66,7 @@
 		9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		9825BDD022EB45C900E418F2 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD122EB6EA800E418F2 /* Controllable.swift */; };
+		9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD322EB710B00E418F2 /* Modellable.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -147,6 +148,7 @@
 		9824386922DCFD6400B418F9 /* AudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewModel.swift; sourceTree = "<group>"; };
 		9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9825BDD122EB6EA800E418F2 /* Controllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controllable.swift; sourceTree = "<group>"; };
+		9825BDD322EB710B00E418F2 /* Modellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modellable.swift; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -279,6 +281,7 @@
 		9808513222E8DF2B0013B67C /* MVC-MVVM */ = {
 			isa = PBXGroup;
 			children = (
+				9825BDD522EB712B00E418F2 /* Protocol */,
 				425DD0A11D0CF18200F96325 /* Model */,
 				9824386B22DD189200B418F9 /* ViewModel */,
 				9808513122E8DEE50013B67C /* Cells */,
@@ -317,7 +320,6 @@
 		9824386D22DD18DF00B418F9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9808511022E69D990013B67C /* BaseController.swift */,
 				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
@@ -339,6 +341,15 @@
 				703373A31E28343600E6D458 /* Settings.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		9825BDD522EB712B00E418F2 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
+				9825BDD322EB710B00E418F2 /* Modellable.swift */,
+			);
+			name = Protocol;
 			sourceTree = "<group>";
 		};
 		987DA0BD22D663E700F34BD3 /* LDLARadioTests */ = {
@@ -415,7 +426,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Apple Inc.";
+				ORGANIZATIONNAME = "Mobile Patagonia";
 				TargetAttributes = {
 					428139ED1CE44B7300972264 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -611,6 +622,7 @@
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */,
+				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,

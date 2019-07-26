@@ -3,7 +3,7 @@
 //  LDLARadio
 //
 //  Created by fox on 25/07/2019.
-//  Copyright © 2019 Apple Inc. All rights reserved.
+//  Copyright © 2019 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation

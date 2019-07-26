@@ -3,7 +3,7 @@
 //  LDLARadio
 //
 //  Created by javierfuchs on 1/13/17.
-//  Copyright © 2017 Apple Inc. All rights reserved.
+//  Copyright © 2017 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation
