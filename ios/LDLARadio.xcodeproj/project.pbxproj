@@ -15,7 +15,6 @@
 		428139F71CE44B7300972264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428139F51CE44B7300972264 /* Main.storyboard */; };
 		428139F91CE44B7300972264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428139F81CE44B7300972264 /* Assets.xcassets */; };
 		42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42813A051CE44F9700972264 /* StreamPersistenceManager.swift */; };
-		703373A41E28343600E6D458 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 703373A31E28343600E6D458 /* Settings.bundle */; };
 		703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A91E291DF600E6D458 /* WebViewController.swift */; };
 		7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7073F3B61E155C05004DBB59 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
@@ -50,6 +49,7 @@
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
 		9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
+		9808514C22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -130,6 +130,7 @@
 		9808514022EA49C60013B67C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		9808514322EAC0350013B67C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javier.fuchs.about.pdf; sourceTree = "<group>"; };
+		9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = com.mobilepatagonia.LDLARadio.sqlite3; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -322,6 +323,7 @@
 		9824386E22DD1A0A00B418F9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */,
 				9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */,
 				70D4EC031E304A9B008DE753 /* common.css */,
 				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
@@ -454,8 +456,8 @@
 			files = (
 				428139F91CE44B7300972264 /* Assets.xcassets in Resources */,
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
-				703373A41E28343600E6D458 /* Settings.bundle in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
+				9808514C22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */,

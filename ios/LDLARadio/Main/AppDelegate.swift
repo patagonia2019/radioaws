@@ -20,9 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UserDefaults.standard.setValue(["en"], forKey: "AppleLanguages")
         RestApi.instance.context = CoreDataManager.instance.taskContext
-
-        registerSettingsBundle()
-        
+//        registerSettingsBundle()
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
         SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.S))
@@ -39,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-//        CoreDataManager.instance.save()
     }
     
     private func registerSettingsBundle() {
