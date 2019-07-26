@@ -42,17 +42,11 @@ struct CatalogViewModel {
     }
 
     init(catalog: RTCatalog?) {
-        guard let catalog = catalog else {
-            assert(false)
-        }
-        if catalog.title == nil && catalog.text == nil {
-            print("nil")
-        }
-        title = catalog.titleOrText() ?? ""
-        tree = catalog.titleTree()
+        title = catalog?.titleOrText() ?? "No more info"
+        tree = catalog?.titleTree() ?? "?"
         
-        detail = catalog.isOnlyText() ? (catalog.text ?? catalog.subtext ?? "-") : "-"
-        if let queryUrl = catalog.url,
+        detail = (catalog?.isOnlyText() ?? false) ? (catalog?.text ?? catalog?.subtext ?? "No more detail") : "No more detail"
+        if let queryUrl = catalog?.url,
             let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
@@ -61,7 +55,7 @@ struct CatalogViewModel {
             print("here")
         }
         let sortBy = [NSSortDescriptor(key: "text", ascending: true)]
-        if let innerSections = catalog.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
+        if let innerSections = catalog?.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
             for section in innerSections {
                 if section.isLink() {
                     let viewModel = CatalogViewModel(catalog: section)
@@ -79,7 +73,7 @@ struct CatalogViewModel {
             }
         }
 
-        if let innerAudios = catalog.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
+        if let innerAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
             for audio in innerAudios {
                 if audio.isLink() {
                     audio.sectionCatalog = audio.audioCatalog
