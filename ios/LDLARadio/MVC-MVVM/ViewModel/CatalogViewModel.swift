@@ -64,7 +64,9 @@ struct CatalogViewModel {
                 else if section.isAudio(), section.url?.count ?? 0 > 0 {
                     section.audioCatalog = section.sectionCatalog
                     let viewModel = AudioViewModel(audio: section)
-                    audios.append(viewModel)
+                    if viewModel.url?.absoluteString.count ?? 0 > 0 {
+                        audios.append(viewModel)
+                    }
                 }
                 else if section.isOnlyText() && section.title?.count ?? 0 > 0 {
                     let viewModel = CatalogViewModel(catalog: section)
@@ -82,7 +84,9 @@ struct CatalogViewModel {
                 }
                 else if audio.isAudio(), audio.url?.count ?? 0 > 0 {
                     let viewModel = AudioViewModel(audio: audio)
-                    audios.append(viewModel)
+                    if viewModel.url?.absoluteString.count ?? 0 > 0 {
+                        audios.append(viewModel)
+                    }
                 }
                 else if audio.isOnlyText() && audio.title?.count ?? 0 > 0 {
                     let viewModel = CatalogViewModel(catalog: audio)

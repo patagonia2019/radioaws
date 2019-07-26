@@ -17,7 +17,9 @@ class RadioController: BaseController {
 
     init(withStreams streams: [Stream]?) {
         super.init()
-        models = streams?.map({ AudioViewModel(stream: $0) }) ?? [AudioViewModel]()
+        models = streams?.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
+            return model.url?.absoluteString.count ?? 0 > 0
+        }) ?? [AudioViewModel]()
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
@@ -39,7 +41,9 @@ class RadioController: BaseController {
         if let streams = Stream.all()?.filter({ (stream) -> Bool in
             return stream.url?.count ?? 0 > 0
         }) {
-            models = streams.map({ AudioViewModel(stream: $0) })
+            models = streams.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
+                return model.url?.absoluteString.count ?? 0 > 0
+            })
         }
         lastUpdated = Stream.lastUpdated()
     }
