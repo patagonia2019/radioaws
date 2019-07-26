@@ -9,7 +9,7 @@
 import Foundation
 import JFCore
 
-class BaseController {
+class BaseController : Controllable {
     var lastUpdated : Date? = nil
     var finishBlock: ((_ error: JFError?) -> ())? = nil
 
