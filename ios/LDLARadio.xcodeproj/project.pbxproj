@@ -49,7 +49,6 @@
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
 		9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
-		9808514C22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -63,6 +62,8 @@
 		98195FBB22DBB944006E7961 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B622D6465600F34BD3 /* RestApi.swift */; };
 		98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FBC22DBFBFE006E7961 /* BaseTests.swift */; };
 		9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
+		9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */; };
+		9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -142,6 +143,7 @@
 		98195FB622DB7C21006E7961 /* RTCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogTests.swift; sourceTree = "<group>"; };
 		98195FBC22DBFBFE006E7961 /* BaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTests.swift; sourceTree = "<group>"; };
 		9824386922DCFD6400B418F9 /* AudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewModel.swift; sourceTree = "<group>"; };
+		9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -298,6 +300,7 @@
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
 				9808511222E6A1C10013B67C /* BaseAudioViewController.swift */,
+				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
 				9808511422E6A7910013B67C /* RadioTimeViewController.swift */,
 				9808512222E6DE330013B67C /* RNAViewController.swift */,
@@ -457,7 +460,7 @@
 				428139F91CE44B7300972264 /* Assets.xcassets in Resources */,
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
-				9808514C22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
+				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */,
@@ -637,6 +640,7 @@
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
 				9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */,
+				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,
 				9808514222EA70B60013B67C /* String+.swift in Sources */,
 				9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */,
 			);

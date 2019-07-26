@@ -23,7 +23,7 @@ extension Stream {
 
     /// Returns the urlAsset of the stream
     func urlAsset() -> AVURLAsset? {
-        guard let playUrl = name?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+        guard let playUrl = url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let streamPlaylistURL = URL(string: playUrl),
             listenIsWorking else { return nil }
         return AVURLAsset(url: streamPlaylistURL)
@@ -32,13 +32,13 @@ extension Stream {
     /// Returns the path of the downloaded stream
     func downloadedStream() -> URL? {
         let userDefaults = UserDefaults.standard
-        guard let name = name,
-            let localFileLocation = userDefaults.value(forKey: name) as? String else { return nil }
+        guard let urlString = url,
+            let localFileLocation = userDefaults.value(forKey: urlString) as? String else { return nil }
         let baseDownloadURL = URL(fileURLWithPath: NSHomeDirectory())
 
-        let url = baseDownloadURL.appendingPathComponent(localFileLocation)
+        let urlPath = baseDownloadURL.appendingPathComponent(localFileLocation)
         
-        return url
+        return urlPath
     }
     
     /// Fetch the most recent updatedAt date

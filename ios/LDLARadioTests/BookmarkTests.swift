@@ -26,7 +26,7 @@ class BookmarkTests: BaseTests {
             XCTAssert(stream != nil)
             XCTAssertNotNil(stream?.id)
             XCTAssertEqual(stream?.id, 7)
-            XCTAssertEqual(stream?.name, "http://200.58.118.108:8304/stream")
+            XCTAssertEqual(stream?.url, "http://200.58.118.108:8304/stream")
             
             let audioViewModel = AudioViewModel(stream: stream)
             

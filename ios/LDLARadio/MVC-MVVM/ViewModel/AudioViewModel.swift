@@ -126,15 +126,6 @@ struct AudioViewModel {
         }
     }
     
-    /// to know if the model is in bookmark
-    func checkIfBookmarked() -> Bool {
-        if let id = id, let url = url?.absoluteString {
-            return Bookmark.fetch(id: id, url: url) != nil
-        }
-        return false
-    }
-
-    
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
         id = "\(stream?.id ?? 0)"
@@ -152,7 +143,7 @@ struct AudioViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             thumbnailUrl = urlChecked
         }
-        if let audioUrl = stream?.name,
+        if let audioUrl = stream?.url,
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
@@ -202,6 +193,14 @@ struct AudioViewModel {
     
     static func height() -> Float {
         return hardcode.cellheight
+    }
+    
+    /// to know if the model is in bookmark
+    func checkIfBookmarked() -> Bool {
+        if let id = id, let url = url?.absoluteString {
+            return Bookmark.fetch(id: id, url: url) != nil
+        }
+        return false
     }
     
     /// Use the url of the stream/audio as an AVURLAsset

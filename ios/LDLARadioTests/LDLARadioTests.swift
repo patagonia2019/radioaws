@@ -26,7 +26,7 @@ class LDLARadioTests: BaseTests {
             XCTAssert(stream != nil)
             XCTAssertNotNil(stream?.id)
             XCTAssertEqual(stream?.id, 7)
-            XCTAssertEqual(stream?.name, "http://200.58.118.108:8304/stream")
+            XCTAssertEqual(stream?.url, "http://200.58.118.108:8304/stream")
         } catch {
             XCTFail("error: \(error)")
         }

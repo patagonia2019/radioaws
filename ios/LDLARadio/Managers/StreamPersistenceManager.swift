@@ -103,7 +103,7 @@ class StreamPersistenceManager: NSObject {
          */
         let assetDownloadTask: AVAssetDownloadTask?
         
-        guard let name = asset.name,
+        guard let name = asset.url,
             let urlAsset = asset.urlAsset() else { return }
         
         assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 265000])
@@ -113,14 +113,14 @@ class StreamPersistenceManager: NSObject {
         }
         
         // To better track the AVAssetDownloadTask we set the taskDescription to something unique for our sample.
-        task.taskDescription = asset.name
+        task.taskDescription = asset.url
         
         activeDownloadsMap[task] = asset
         
         task.resume()
         
         var userInfo = [String: Any]()
-        userInfo[Stream.Keys.name] = asset.name
+        userInfo[Stream.Keys.name] = asset.url
         userInfo[Stream.Keys.downloadState] = Stream.DownloadState.downloading.rawValue
         
         NotificationCenter.default.post(name: StreamDownloadStateChangedNotification, object: nil, userInfo:  userInfo)
@@ -131,7 +131,7 @@ class StreamPersistenceManager: NSObject {
         var asset: Stream?
         
         for (_, assetValue) in activeDownloadsMap {
-            if name == assetValue.name {
+            if name == assetValue.url {
                 asset = assetValue
                 break
             }
@@ -151,7 +151,7 @@ class StreamPersistenceManager: NSObject {
         let userDefaults = UserDefaults.standard
         
         // Check if there is a file URL stored for this asset.
-        guard let name = asset.name else { return .notDownloaded}
+        guard let name = asset.url else { return .notDownloaded}
 
         if let localFileLocation = userDefaults.value(forKey: name) as? String{
             // Check if the file exists on disk
@@ -168,7 +168,7 @@ class StreamPersistenceManager: NSObject {
         
         // Check if there are any active downloads in flight.
         for (_, assetValue) in activeDownloadsMap {
-            if asset.name == assetValue.name {
+            if asset.url == assetValue.url {
                 return .downloading
             }
         }
@@ -181,7 +181,7 @@ class StreamPersistenceManager: NSObject {
         let userDefaults = UserDefaults.standard
         
         do {
-            guard let name = asset.name else { return }
+            guard let name = asset.url else { return }
 
             if let localFileLocation = userDefaults.value(forKey: name) as? String {
                 let localFileLocation = baseDownloadURL.appendingPathComponent(localFileLocation)
@@ -190,7 +190,7 @@ class StreamPersistenceManager: NSObject {
                 userDefaults.removeObject(forKey: name)
                 
                 var userInfo = [String: Any]()
-                userInfo[Stream.Keys.name] = asset.name
+                userInfo[Stream.Keys.name] = asset.url
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.notDownloaded.rawValue
                 
                 NotificationCenter.default.post(name: StreamDownloadStateChangedNotification, object: nil, userInfo:  userInfo)
@@ -267,7 +267,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
         
         // Prepare the basic userInfo dictionary that will be posted as part of our notification.
         var userInfo = [String: Any]()
-        userInfo[Stream.Keys.name] = asset.name
+        userInfo[Stream.Keys.name] = asset.url
         
         if let error = error as NSError? {
             switch (error.domain, error.code) {
@@ -276,7 +276,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                  This task was canceled, you should perform cleanup using the
                  URL saved from AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didFinishDownloadingTo:).
                  */
-                guard   let name = asset.name,
+                guard   let name = asset.url,
                         let localFileLocation = userDefaults.value(forKey: name) as? String else { return }
                 
                 do {
@@ -285,7 +285,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                     
                     userDefaults.removeObject(forKey: name)
                 } catch {
-                    print("An error occured trying to delete the contents on disk for \(String(describing: asset.name)): \(error)")
+                    print("An error occured trying to delete the contents on disk for \(String(describing: asset.url)): \(error)")
                 }
                 
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.notDownloaded.rawValue
@@ -332,14 +332,14 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                 
                 let assetDownloadTask: AVAssetDownloadTask?
                 
-                guard let name = asset.name else { return }
+                guard let name = asset.url else { return }
                 assetDownloadTask = assetDownloadURLSession.makeAssetDownloadTask(asset: task.urlAsset, assetTitle: name, assetArtworkData: nil, options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 2000000, AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
 
                 guard let task = assetDownloadTask else {
                     return
                 }
                 
-                task.taskDescription = asset.name
+                task.taskDescription = asset.url
                 
                 activeDownloadsMap[task] = asset
                 
@@ -367,7 +367,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
          `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
          */
         if let asset = activeDownloadsMap[assetDownloadTask] {
-            guard let name = asset.name else { return }
+            guard let name = asset.url else { return }
             userDefaults.set(location.relativePath, forKey: name)
         }
     }
@@ -383,7 +383,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
         }
         
         var userInfo = [String: Any]()
-        userInfo[Stream.Keys.name] = asset.name
+        userInfo[Stream.Keys.name] = asset.url
         userInfo[Stream.Keys.percentDownloaded] = percentComplete
         
         NotificationCenter.default.post(name: StreamDownloadProgressNotification, object: nil, userInfo:  userInfo)

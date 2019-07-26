@@ -406,11 +406,6 @@
                 <entry key="JSONKeyPath" value="listen_is_working"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="name"/>
-            </userInfo>
-        </attribute>
         <attribute name="sourceType" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="source_type"/>
@@ -419,7 +414,7 @@
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="value"/>
+                <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
         <attribute name="urlType" optional="YES" attributeType="String" syncable="YES">
@@ -454,6 +449,6 @@
         <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="345"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="30"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="30"/>
-        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="195"/>
+        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
     </elements>
 </model>

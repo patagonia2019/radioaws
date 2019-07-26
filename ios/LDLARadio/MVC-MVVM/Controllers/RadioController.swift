@@ -36,7 +36,9 @@ class RadioController: BaseController {
     }
     
     private func updateModels() {
-        if let streams = Stream.all() {
+        if let streams = Stream.all()?.filter({ (stream) -> Bool in
+            return stream.url?.count ?? 0 > 0
+        }) {
             models = streams.map({ AudioViewModel(stream: $0) })
         }
         lastUpdated = Stream.lastUpdated()
