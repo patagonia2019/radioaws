@@ -12,7 +12,7 @@ gem 'bootstrap-will_paginate', '0.0.10'
 gem 'bootstrap-sass', '3.4.1'
 
 gem 'carrierwave',             '0.11.2'
-gem 'mini_magick',             '4.5.1'
+gem 'mini_magick',             '4.9.4'
 gem 'fog',                     '1.38.0'
 
 
@@ -66,4 +66,8 @@ gem 'wkhtmltopdf-binary'
 
 gem 'rest-client'
 gem 'thin'
+gem "rack", ">= 2.0.6"
+gem "ffi", ">= 1.9.24"
+gem "sprockets", ">= 3.7.2"
+gem "nokogiri", ">= 1.8.5"
 
