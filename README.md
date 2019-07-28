@@ -10,29 +10,45 @@ Available version 1.0 in Apple Store [https://apps.apple.com/us/app/los-locos-de
 
 ### Ruby On Rails
 
-Rails 5.0
-sqlite3 1.3.13
-OS: Darwin 17.7.0 x86_64
+* Rails 5.0
+
+* sqlite3 1.3.13
+
+* OS: Darwin 17.7.0 x86_64
+
 
 #### Install
- \curl -L https://get.rvm.io | bash -s stable --ruby
 
-### iOS
+* \curl -L https://get.rvm.io | bash -s stable --ruby
 
-Xcode Build Version 10.2.1 (10E1001)
+### [iOS](ios)
 
-Deployment target: iOS 12.0
+* Xcode Build Version 10.2.1 (10E1001)
 
-Devices: Universal (iPhone / iPad)
+* Deployment target: iOS 12.0
 
-Rotation: all.
+* Devices: Universal (iPhone / iPad)
 
-Published version 1.0 in Apple Store [https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1](https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1)
+* Rotation: all.
 
-##### Libraries & Frameworks
+* [ios/LDLA-Model.jpg](Data Model in Core Data Graph)
+
+
+#### External resources
+
+* Using a ios-icon-launch-generator.sh thanks to [smallmuou](https://github.com/smallmuou)/[ios-icon-generator](https://github.com/smallmuou/ios-icon-generator), it's a script to generate iOS/macOS/watchOS app icons more easier. I've added `Launch Images`, and a more customizable way to generate Landscape launch images for iPhone/iPad.
+
+* [FontAwesome](fontawesome.com). *Font Awesome Free* is free, open source, and GPL friendly. You can use it for commercial projects, open source projects, or really almost whatever you want.
+
+* [Quotes](https://github.com/JamesFT/Database-Quotes-JSON/blob/master/quotes.json). Thanks to [JameFT](https://github.com/JamesFT)/[Database-Quotes-JSON](https://github.com/JamesFT/Database-Quotes-JSON)
+
+##### My Own Library 
 
 [JFCore](https://github.com/patagonia2019/jfcore)
 _Some interesting Core elements to reuse in my own projects in iOS / macOS / tvOS / watchOS: CoreDataManager, Location Manager and others._
+
+
+##### External Libraries / Frameworks
 
 [Alamofire](https://cocoapods.org/pods/Alamofire)
 _Alamofire is an HTTP networking library written in Swift._
