@@ -1,0 +1,1 @@
+json.partial! "desconciertos/desconcierto", desconcierto: @desconcierto

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  at_date: 2019-07-25
+  url1: MyString
+  url2: MyString
+  url3: MyString
+
+two:
+  at_date: 2019-07-25
+  url1: MyString
+  url2: MyString
+  url3: MyString

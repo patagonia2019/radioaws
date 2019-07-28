@@ -1,0 +1,1 @@
+json.array! @desconciertos, partial: 'desconciertos/desconcierto', as: :desconcierto

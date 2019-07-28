@@ -1,0 +1,2 @@
+class Desconcierto < ApplicationRecord
+end
