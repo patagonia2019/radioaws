@@ -31,7 +31,7 @@ Available version 1.0 in Apple Store [https://apps.apple.com/us/app/los-locos-de
 
 * Rotation: all.
 
-* [ios/LDLA-Model.jpg](Data Model in Core Data Graph)
+* [Data Model in Core Data Graph](ios/LDLA-Model.jpg)
 
 
 #### External resources
