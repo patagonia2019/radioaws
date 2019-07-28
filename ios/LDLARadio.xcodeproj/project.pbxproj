@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421AAB651CE4FCCB007444CA /* RadioViewController.swift */; };
 		424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */; };
 		425DD0A51D0D146900F96325 /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */; };
@@ -25,12 +24,10 @@
 		9808510F22E691F10013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808511122E69D990013B67C /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511022E69D990013B67C /* BaseController.swift */; };
 		9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511222E6A1C10013B67C /* BaseAudioViewController.swift */; };
-		9808511522E6A7910013B67C /* RadioTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511422E6A7910013B67C /* RadioTimeViewController.swift */; };
 		9808511B22E6D7040013B67C /* City+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511A22E6D7040013B67C /* City+.swift */; };
 		9808511D22E6D7410013B67C /* Station+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511C22E6D7410013B67C /* Station+.swift */; };
 		9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511E22E6DA950013B67C /* StreamListManager.swift */; };
 		9808512122E6DD370013B67C /* RNADial+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512022E6DD370013B67C /* RNADial+.swift */; };
-		9808512322E6DE330013B67C /* RNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512222E6DE330013B67C /* RNAViewController.swift */; };
 		9808512522E6DE520013B67C /* RNAController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512422E6DE520013B67C /* RNAController.swift */; };
 		9808512722E6E6640013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
 		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
@@ -44,7 +41,6 @@
 		9808513A22E8FBE80013B67C /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
 		9808513D22E903730013B67C /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513C22E903730013B67C /* BookmarkController.swift */; };
-		9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513E22E9040D0013B67C /* BookmarkViewController.swift */; };
 		9808514122EA49C60013B67C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
@@ -94,7 +90,6 @@
 /* Begin PBXFileReference section */
 		0FE7D9B5057B5AF2DC72259D /* Pods-LDLARadioTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41A5E03699C4A53519AD1FFC /* Pods-LDLARadioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.release.xcconfig"; sourceTree = "<group>"; };
-		421AAB651CE4FCCB007444CA /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RadioViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StreamPlaybackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		42554D4B1D09EEDC0040BD4F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		425DD0A41D0D146900F96325 /* Stream+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stream+.swift"; sourceTree = "<group>"; };
@@ -119,12 +114,10 @@
 		9808510E22E691F10013B67C /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		9808511022E69D990013B67C /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
 		9808511222E6A1C10013B67C /* BaseAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAudioViewController.swift; sourceTree = "<group>"; };
-		9808511422E6A7910013B67C /* RadioTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTimeViewController.swift; sourceTree = "<group>"; };
 		9808511A22E6D7040013B67C /* City+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+.swift"; sourceTree = "<group>"; };
 		9808511C22E6D7410013B67C /* Station+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Station+.swift"; sourceTree = "<group>"; };
 		9808511E22E6DA950013B67C /* StreamListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamListManager.swift; sourceTree = "<group>"; };
 		9808512022E6DD370013B67C /* RNADial+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNADial+.swift"; sourceTree = "<group>"; };
-		9808512222E6DE330013B67C /* RNAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAViewController.swift; sourceTree = "<group>"; };
 		9808512422E6DE520013B67C /* RNAController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAController.swift; sourceTree = "<group>"; };
 		9808512622E6E6640013B67C /* RNAStation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAStation+.swift"; sourceTree = "<group>"; };
 		9808512822E7513F0013B67C /* RNACurrentProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNACurrentProgram+.swift"; sourceTree = "<group>"; };
@@ -133,7 +126,6 @@
 		9808513322E8F4E40013B67C /* BookmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTests.swift; sourceTree = "<group>"; };
 		9808513622E8FAA00013B67C /* Bookmark+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+.swift"; sourceTree = "<group>"; };
 		9808513C22E903730013B67C /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
-		9808513E22E9040D0013B67C /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		9808514022EA49C60013B67C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		9808514322EAC0350013B67C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javier.fuchs.about.pdf; sourceTree = "<group>"; };
@@ -312,12 +304,8 @@
 			isa = PBXGroup;
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
-				9808511222E6A1C10013B67C /* BaseAudioViewController.swift */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
-				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
-				9808511422E6A7910013B67C /* RadioTimeViewController.swift */,
-				9808512222E6DE330013B67C /* RNAViewController.swift */,
-				9808513E22E9040D0013B67C /* BookmarkViewController.swift */,
+				9808511222E6A1C10013B67C /* BaseAudioViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 			);
@@ -614,13 +602,11 @@
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
-				9808511522E6A7910013B67C /* RadioTimeViewController.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
-				421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */,
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
@@ -629,10 +615,8 @@
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
 				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
-				9808512322E6DE330013B67C /* RNAViewController.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
-				9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,

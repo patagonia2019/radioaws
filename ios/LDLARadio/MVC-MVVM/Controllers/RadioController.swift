@@ -33,6 +33,10 @@ class RadioController: BaseController {
         return nil
     }
     
+    override func heightForHeader(at section: Int) -> CGFloat {
+        return 0
+    }
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         return CGFloat(AudioViewModel.height())
     }

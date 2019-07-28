@@ -15,9 +15,58 @@ import JFCore
 
 class BaseAudioViewController: UITableViewController {
     // MARK: Properties
-    
-    var controller = BaseController()
+    enum ControllerName : String {
+        case suggestion = "Suggestion"
+        case radioTime = "Radio Time"
+        case rna = "RNA"
+        case bookmark = "Bookmark"
+    }
     var playerViewController: AVPlayerViewController?
+    
+    var radioController = RadioController()
+    var radioTimeController = RadioTimeController()
+    var rnaController = RNAController()
+    var bookmarkController = BookmarkController()
+
+    var controller: BaseController {
+        get {
+            switch self.navigationController?.tabBarItem.title {
+                case ControllerName.suggestion.rawValue:
+                    return radioController
+                case ControllerName.radioTime.rawValue:
+                    return radioTimeController
+                case ControllerName.rna.rawValue:
+                    return rnaController
+                case ControllerName.bookmark.rawValue:
+                    return bookmarkController
+                default:
+                    fatalError()
+                }
+        }
+        set {
+            if newValue is RadioController {
+                switch self.navigationController?.tabBarItem.title {
+                case ControllerName.suggestion.rawValue:
+                    radioController = newValue as! RadioController
+                    break
+                case ControllerName.radioTime.rawValue:
+                    radioTimeController = newValue as! RadioTimeController
+                    break
+                case ControllerName.rna.rawValue:
+                    rnaController = newValue as! RNAController
+                    break
+                case ControllerName.bookmark.rawValue:
+                    bookmarkController = newValue as! BookmarkController
+                    break
+                default:
+                    fatalError()
+                }
+            } else {
+                fatalError()
+            }
+        }
+    }
+    
     
     // MARK: UIViewController
     
@@ -171,7 +220,7 @@ class BaseAudioViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
-            (segue.destination as? RadioTimeViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? BaseAudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,

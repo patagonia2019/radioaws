@@ -36,6 +36,10 @@ class RadioTimeController: BaseController {
         return catalogTableViewModel.elements(forSection: section, row: row)
     }
     
+    override func heightForHeader(at section: Int) -> CGFloat {
+        return 44
+    }
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         return CGFloat(catalogTableViewModel.heightForRow(at: section, row: row))
     }
