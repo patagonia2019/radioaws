@@ -22,7 +22,7 @@ class BaseController : Controllable {
     }
     
     func titleForHeader(inSection section: Int) -> String? {
-        return "Section"
+        return ""
     }
     
     func numberOfRows(inSection section: Int) -> Int {

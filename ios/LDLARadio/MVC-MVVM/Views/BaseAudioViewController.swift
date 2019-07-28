@@ -30,7 +30,8 @@ class BaseAudioViewController: UITableViewController {
 
     var controller: BaseController {
         get {
-            switch self.navigationController?.tabBarItem.title {
+            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title
+            switch title {
                 case ControllerName.suggestion.rawValue:
                     return radioController
                 case ControllerName.radioTime.rawValue:
@@ -44,8 +45,10 @@ class BaseAudioViewController: UITableViewController {
                 }
         }
         set {
-            if newValue is RadioController {
-                switch self.navigationController?.tabBarItem.title {
+            if newValue is BaseController {
+                let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title
+
+                switch title {
                 case ControllerName.suggestion.rawValue:
                     radioController = newValue as! RadioController
                     break
@@ -220,6 +223,7 @@ class BaseAudioViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
+            segue.destination.tabBarItem.title = self.navigationController?.tabBarItem.title
             (segue.destination as? BaseAudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.webView {
