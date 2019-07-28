@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :desconciertos
   resources :sessions
   resources :thefts
   resources :stations
