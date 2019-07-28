@@ -184,6 +184,7 @@
 			children = (
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
+				9808513622E8FAA00013B67C /* Bookmark+.swift */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
 				98195FA822D83664006E7961 /* Quote+.swift */,
 				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
@@ -191,7 +192,6 @@
 				9808512022E6DD370013B67C /* RNADial+.swift */,
 				9808512622E6E6640013B67C /* RNAStation+.swift */,
 				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
-				9808513622E8FAA00013B67C /* Bookmark+.swift */,
 				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
 				9808512A22E782C40013B67C /* RNABand+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,

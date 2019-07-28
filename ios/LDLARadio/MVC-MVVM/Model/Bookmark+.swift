@@ -20,7 +20,7 @@ extension Bookmark : Modellable {
 
 extension Bookmark : Searchable {
     
-    /// Fetch an object by id
+    /// Fetch an object by url
     static func search(byUrl url: String?) -> Bookmark? {
         guard let url = url else { return nil }
         guard let context = RestApi.instance.context else { fatalError() }

@@ -66,9 +66,6 @@ extension Stream : Downloadable {
 
 extension Stream {
     
-    /// placeholder for thumbnails in streams
-    static let placeholderImageName: String = "f0001-music"
-
     /// Returns the streams for a given station id.
     static func stream(byStation stationId: Int16?) -> [Stream]? {
         guard let context = RestApi.instance.context else { fatalError() }

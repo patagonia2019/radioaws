@@ -36,9 +36,6 @@ extension RTCatalog : Searchable {
 
 extension RTCatalog {
     
-    /// placeholder for thumbnails in streams
-    static let placeholderImageName: String = "f0001-music"
-
     /// Update the `updatedAt` field in the entity when the model is created
     override public func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")

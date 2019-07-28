@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import JFCore
 
+/// Protocol is a very powerful feature of the Swift programming language. Protocols are used to define a “blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality.”
 protocol Controllable {
     associatedtype ModelType
 
