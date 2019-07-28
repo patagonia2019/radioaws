@@ -3,13 +3,13 @@
 //  LDLARadio
 //
 //  Created by fox on 22/07/2019.
-//  Copyright © 2019 Apple Inc. All rights reserved.
+//  Copyright © 2019 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation
 import JFCore
 
-class BaseController {
+class BaseController : Controllable {
     var lastUpdated : Date? = nil
     var finishBlock: ((_ error: JFError?) -> ())? = nil
 
@@ -87,21 +87,18 @@ class BaseController {
         }
         
         context.performAndWait {
-            if let id = model.id,
-                let url = model.url?.absoluteString {
-                if let bookmark = Bookmark.fetch(id: id, url: url) {
-                    bookmark.remove()
-                }
-                else {
-                    if var
-                        bookmark = Bookmark.create() {
-                        bookmark += model
-                    }
-                }
-                model.isBookmarked = !model.isBookmarked
-                CoreDataManager.instance.save()
-                refresh(finishClosure: finishBlock)
+            if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
+                bookmark.remove()
             }
+            else if var bookmark = Bookmark.create() {
+                bookmark += model
+            }
+            else {
+                fatalError()
+            }
+            model.isBookmarked = !model.isBookmarked
+            CoreDataManager.instance.save()
+            refresh(finishClosure: finishBlock)
         }
     }
 }

@@ -3,7 +3,7 @@
 //  LDLARadio
 //
 //  Created by fox on 13/07/2019.
-//  Copyright © 2019 Apple Inc. All rights reserved.
+//  Copyright © 2019 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation
@@ -152,21 +152,19 @@ class RadioTimeController: BaseController {
 
     private func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
         if mainCVM == nil || mainCVM?.title == "Browse" {
-            let catalog = RTCatalog.fetch(title: "Browse")?.first(where: { (catalog) -> Bool in
-                return catalog.sections?.count ?? 0 > 0
-            })
+            let catalog = RTCatalog.search(byName: "Browse")
             if catalog?.url == nil {
                 catalog?.url = RestApi.Constants.Service.rtServer
             }
             return catalog
         }
         if let urlString = mainCVM?.urlString() {
-            return RTCatalog.fetch(url: urlString)?.first
+            return RTCatalog.search(byUrl: urlString)
         }
         if let section = mainCVM?.sections.first(where: { (section) -> Bool in
             return section.urlString()?.count ?? 0 > 0}),
             let urlString = section.urlString(),
-            let superCatalog = RTCatalog.fetch(url: urlString)?.first,
+            let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
             
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
@@ -174,7 +172,7 @@ class RadioTimeController: BaseController {
         else if let section = mainCVM?.audios.first(where: { (section) -> Bool in
             return section.urlString()?.count ?? 0 > 0}),
             let urlString = section.urlString(),
-            let superCatalog = RTCatalog.fetch(url: urlString)?.first,
+            let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
             
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
@@ -184,12 +182,12 @@ class RadioTimeController: BaseController {
 
     private func mainCatalogFromDb(mainCatalog: RTCatalog?) -> RTCatalog? {
         if let urlString = mainCatalog?.url {
-            return RTCatalog.fetch(url: urlString)?.first
+            return RTCatalog.search(byUrl: urlString)
         }
         if let section = mainCatalog?.sections?.first(where: { (section) -> Bool in
             return (section as? RTCatalog)?.url?.count ?? 0 > 0}),
             let urlString = (section as? RTCatalog)?.url,
-            let superCatalog = RTCatalog.fetch(url: urlString)?.first,
+            let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
         
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
@@ -197,7 +195,7 @@ class RadioTimeController: BaseController {
         else if let section = mainCatalog?.audios?.first(where: { (section) -> Bool in
             return (section as? RTCatalog)?.url?.count ?? 0 > 0}),
             let urlString = (section as? RTCatalog)?.url,
-            let superCatalog = RTCatalog.fetch(url: urlString)?.first,
+            let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
         }

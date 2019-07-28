@@ -3,12 +3,22 @@
 //  LDLARadio
 //
 //  Created by fox on 12/07/2019.
-//  Copyright © 2019 Apple Inc. All rights reserved.
+//  Copyright © 2019 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation
-import JFCore
 import Groot
+
+extension Quote : Modellable {
+    
+    /// Function to obtain all the quotes
+    static func all() -> [Quote]? {
+        return all(predicate: nil,
+                   sortDescriptors: nil)
+            as? [Quote]
+    }
+
+}
 
 extension Quote {
     
@@ -46,9 +56,7 @@ extension Quote {
     
     /// Use a quote randomly
     private static func queryRandomly() -> Quote? {
-        guard let context = RestApi.instance.context else { fatalError() }
-        let req = NSFetchRequest<Quote>(entityName: "Quote")
-        let array = try? context.fetch(req)
+        let array = all()
         let n = array?.count ?? 0
         if n == 0 {
             return nil

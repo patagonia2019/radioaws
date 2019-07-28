@@ -3,7 +3,7 @@
 //  LDLARadio
 //
 //  Created by fox on 15/07/2019.
-//  Copyright © 2019 Apple Inc. All rights reserved.
+//  Copyright © 2019 Mobile Patagonia. All rights reserved.
 //
 
 import Foundation
@@ -197,10 +197,7 @@ struct AudioViewModel {
     
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool {
-        if let id = id, let url = url?.absoluteString {
-            return Bookmark.fetch(id: id, url: url) != nil
-        }
-        return false
+        return Bookmark.search(byUrl: url?.absoluteString) != nil
     }
     
     /// Use the url of the stream/audio as an AVURLAsset
