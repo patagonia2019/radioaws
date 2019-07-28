@@ -11,14 +11,15 @@ import UIKit
 import JFCore
 
 protocol Controllable {
-    
+    associatedtype ModelType
+
     func numberOfSections() -> Int
 
     func titleForHeader(inSection section: Int) -> String?
     
     func numberOfRows(inSection section: Int) -> Int
     
-    func model(forSection section: Int, row: Int) -> Any?
+    func model(forSection section: Int, row: Int) -> ModelType?
     
     func heightForRow(at section: Int, row: Int) -> CGFloat
     

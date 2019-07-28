@@ -48,7 +48,6 @@
 		9808514122EA49C60013B67C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
-		9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -64,9 +63,13 @@
 		9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
 		9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */; };
 		9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
-		9825BDD022EB45C900E418F2 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD122EB6EA800E418F2 /* Controllable.swift */; };
 		9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD322EB710B00E418F2 /* Modellable.swift */; };
+		9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD622EB758D00E418F2 /* Downloadable.swift */; };
+		9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD822ECE5AB00E418F2 /* Model+.swift */; };
+		9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD822ECE5AB00E418F2 /* Model+.swift */; };
+		9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
+		9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -149,6 +152,9 @@
 		9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9825BDD122EB6EA800E418F2 /* Controllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controllable.swift; sourceTree = "<group>"; };
 		9825BDD322EB710B00E418F2 /* Modellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modellable.swift; sourceTree = "<group>"; };
+		9825BDD622EB758D00E418F2 /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
+		9825BDD822ECE5AB00E418F2 /* Model+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+.swift"; sourceTree = "<group>"; };
+		9825BDDB22ECEF4900E418F2 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
+				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
 				98195FA822D83664006E7961 /* Quote+.swift */,
 				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
@@ -348,6 +355,8 @@
 			children = (
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
+				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
+				9825BDD622EB758D00E418F2 /* Downloadable.swift */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -476,11 +485,10 @@
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
-				9825BDD022EB45C900E418F2 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
-				9808514A22EACDDF0013B67C /* javier.fuchs.about.pdf in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
+				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,9 +609,11 @@
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
 				9808511B22E6D7040013B67C /* City+.swift in Sources */,
 				9808514122EA49C60013B67C /* Data+.swift in Sources */,
+				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
 				9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
+				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
 				9808511522E6A7910013B67C /* RadioTimeViewController.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
@@ -617,6 +627,7 @@
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
+				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
 				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
 				9808512322E6DE330013B67C /* RNAViewController.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
@@ -649,6 +660,7 @@
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
 				9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */,
 				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
+				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,

@@ -13,24 +13,28 @@ import JFCore
 
 protocol Modellable {
     
-    func awakeFromInsert()
-    
-    /// Returns the urlAsset of the stream
-    func urlAsset() -> AVURLAsset?
-    
-    /// Returns the path of the downloaded instance of model (normaly podcast/audio/stream)
-    func downloadedStream() -> URL?
+    associatedtype ModelType
+
+    /// Update the `updatedAt` field in the entity when the model is created
+    func awakeFromInsert() // -> normally implemented in Model+ extension
     
     /// Fetch the most recent updatedAt date
-    static func lastUpdated() -> Date?
-    
-    /// Returns the streams for a given name.
-    static func search(byName name: String?) -> NSManagedObject?
-    
+    static func lastUpdated() -> Date? // -> normally implemented in Model+ extension
+
     /// Function to obtain all the instance of the model
-    static func all() -> [NSManagedObject]?
+    static func all() -> [ModelType]?
     
     /// Remove all the instances of the entity
     static func clean()
+    
+    /// Remove the current instance of the Entity
+    func remove() // -> normally implemented in Model+ extension
+}
+
+protocol Creational : Modellable {
+    
+    /// Create entity programatically
+    static func create() -> ModelType?
+    
 }
 

@@ -8,38 +8,13 @@
 
 import Foundation
 import CoreData
-import JFCore
 
-extension RNABand {
+
+extension RNABand : Modellable {
     
-    /// Fetch all the instances of the entity from DB
+    /// Function to obtain all the albums sorted by title
     static func all() -> [RNABand]? {
-        guard let context = RestApi.instance.context else { fatalError() }
-        let req = NSFetchRequest<RNABand>(entityName: "RNABand")
-        let array = try? context.fetch(req)
-        return array
+        return all(predicate: nil, sortDescriptors: nil) as? [RNABand]
     }
     
-    /// Remove the current instance of the entity from DB
-    func remove() {
-        guard let context = RestApi.instance.context else {
-            fatalError("fatal: no core data context manager")
-        }
-        context.delete(self)
-    }
-    
-    /// Remove all the instances of the entity from DB
-    static func clean() {
-        guard let context = RestApi.instance.context else {
-            fatalError("fatal: no core data context manager")
-        }
-        let req = NSFetchRequest<RNABand>(entityName: "RNABand")
-        req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-            for obj in array {
-                context.delete(obj)
-            }
-        }
-    }
-
 }

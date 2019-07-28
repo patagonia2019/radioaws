@@ -197,10 +197,7 @@ struct AudioViewModel {
     
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool {
-        if let id = id, let url = url?.absoluteString {
-            return Bookmark.fetch(id: id, url: url) != nil
-        }
-        return false
+        return Bookmark.search(byUrl: url?.absoluteString) != nil
     }
     
     /// Use the url of the stream/audio as an AVURLAsset

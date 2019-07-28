@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES" codeGenerationType="class">
+    <entity name="Bookmark" representedClassName=".Bookmark" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="placeholder" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="useWeb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="City" representedClassName=".City" syncable="YES" codeGenerationType="class">
+    <entity name="City" representedClassName=".City" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
@@ -20,11 +19,6 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
-            </userInfo>
-        </attribute>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="url"/>
             </userInfo>
         </attribute>
         <relationship name="district" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="District" inverseName="cities" inverseEntity="District" syncable="YES">
@@ -37,7 +31,7 @@
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
-    <entity name="District" representedClassName=".District" syncable="YES" codeGenerationType="class">
+    <entity name="District" representedClassName=".District" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
@@ -48,17 +42,15 @@
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="url"/>
-            </userInfo>
-        </attribute>
         <relationship name="cities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="City" inverseName="district" inverseEntity="City" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
-    <entity name="Quote" representedClassName=".Quote" syncable="YES" codeGenerationType="class">
+    <entity name="Model" representedClassName=".Model" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
+    <entity name="Quote" representedClassName=".Quote" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="quoteAuthor"/>
@@ -73,8 +65,7 @@
             <entry key="identityAttribute" value="author"/>
         </userInfo>
     </entity>
-    <entity name="RNABand" representedClassName=".RNABand" syncable="YES" codeGenerationType="class">
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    <entity name="RNABand" representedClassName=".RNABand" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amBand" inverseEntity="RNAStation" syncable="YES"/>
         <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmBand" inverseEntity="RNAStation" syncable="YES"/>
         <relationship name="programs" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram" syncable="YES">
@@ -83,7 +74,7 @@
             </userInfo>
         </relationship>
     </entity>
-    <entity name="RNACurrentProgram" representedClassName=".RNACurrentProgram" syncable="YES" codeGenerationType="class">
+    <entity name="RNACurrentProgram" representedClassName=".RNACurrentProgram" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="data.imagen"/>
@@ -110,15 +101,14 @@
             <entry key="identityAttribute" value="programName"/>
         </userInfo>
     </entity>
-    <entity name="RNADial" representedClassName=".RNADial" syncable="YES" codeGenerationType="class">
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    <entity name="RNADial" representedClassName=".RNADial" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
         </relationship>
     </entity>
-    <entity name="RNAProgram" representedClassName=".RNAProgram" syncable="YES" codeGenerationType="class">
+    <entity name="RNAProgram" representedClassName=".RNAProgram" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="end" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="0.end"/>
@@ -146,7 +136,7 @@
         </attribute>
         <relationship name="band" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="programs" inverseEntity="RNABand" syncable="YES"/>
     </entity>
-    <entity name="RNAStation" representedClassName=".RNAStation" syncable="YES" codeGenerationType="class">
+    <entity name="RNAStation" representedClassName=".RNAStation" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="amUri" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="am"/>
@@ -302,7 +292,6 @@
                 <entry key="JSONKeyPath" value="head.title"/>
             </userInfo>
         </attribute>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="audioCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="audios" inverseEntity="RTCatalog" syncable="YES"/>
         <relationship name="audios" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog" syncable="YES">
             <userInfo>
@@ -319,7 +308,7 @@
             <entry key="identityAttribute" value="url"/>
         </userInfo>
     </entity>
-    <entity name="RTNode" representedClassName=".RTNode" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="RTNode" representedClassName=".RTNode" isAbstract="YES" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="element" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="element"/>
@@ -344,7 +333,7 @@
             <entry key="identityAttribute" value="url"/>
         </userInfo>
     </entity>
-    <entity name="Station" representedClassName=".Station" syncable="YES" codeGenerationType="class">
+    <entity name="Station" representedClassName=".Station" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
@@ -390,7 +379,7 @@
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
-    <entity name="Stream" representedClassName=".Stream" syncable="YES" codeGenerationType="class">
+    <entity name="Stream" representedClassName=".Stream" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="headIsWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="head_is_working"/>
@@ -411,7 +400,6 @@
                 <entry key="JSONKeyPath" value="source_type"/>
             </userInfo>
         </attribute>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
@@ -437,18 +425,19 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="180"/>
-        <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="30"/>
-        <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="30"/>
-        <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="30"/>
-        <element name="RNABand" positionX="-225" positionY="-99" width="128" height="105"/>
+        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="165"/>
+        <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
+        <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="90"/>
+        <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
+        <element name="RNABand" positionX="-225" positionY="-99" width="128" height="90"/>
         <element name="RNACurrentProgram" positionX="-234" positionY="-108" width="128" height="135"/>
-        <element name="RNADial" positionX="-243" positionY="-117" width="128" height="75"/>
+        <element name="RNADial" positionX="-243" positionY="-117" width="128" height="30"/>
         <element name="RNAProgram" positionX="-216" positionY="-90" width="128" height="135"/>
         <element name="RNAStation" positionX="-234" positionY="-108" width="128" height="330"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="345"/>
-        <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="30"/>
-        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="30"/>
-        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="180"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="330"/>
+        <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
+        <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
+        <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>
+        <element name="Model" positionX="-243" positionY="-117" width="128" height="60"/>
     </elements>
 </model>

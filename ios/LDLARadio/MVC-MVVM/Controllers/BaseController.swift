@@ -87,21 +87,18 @@ class BaseController : Controllable {
         }
         
         context.performAndWait {
-            if let id = model.id,
-                let url = model.url?.absoluteString {
-                if let bookmark = Bookmark.fetch(id: id, url: url) {
-                    bookmark.remove()
-                }
-                else {
-                    if var
-                        bookmark = Bookmark.create() {
-                        bookmark += model
-                    }
-                }
-                model.isBookmarked = !model.isBookmarked
-                CoreDataManager.instance.save()
-                refresh(finishClosure: finishBlock)
+            if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
+                bookmark.remove()
             }
+            else if var bookmark = Bookmark.create() {
+                bookmark += model
+            }
+            else {
+                fatalError()
+            }
+            model.isBookmarked = !model.isBookmarked
+            CoreDataManager.instance.save()
+            refresh(finishClosure: finishBlock)
         }
     }
 }

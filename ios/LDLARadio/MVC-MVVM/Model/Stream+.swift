@@ -9,17 +9,38 @@
 import Foundation
 import AVFoundation
 import CoreData
-import JFCore
 
-extension Stream {
+extension Stream : Modellable {
     
-    /// placeholder for thumbnails in streams
-    static let placeholderImageName: String = "f0001-music"
-
-    /// Update the `updatedAt` field in the entity when the model is created
-    override public func awakeFromInsert() {
-        setPrimitiveValue(Date(), forKey: "updatedAt")
+    /// Function to obtain all the streams sorted by station.name
+    static func all() -> [Stream]? {
+        return all(predicate: NSPredicate(format: "listenIsWorking = true"),
+                   sortDescriptors: [NSSortDescriptor(key: "station.name",
+                                                      ascending: true)])
+            as? [Stream]
     }
+}
+
+extension Stream : Searchable {
+    
+    /// Returns the entities for a given name.
+    static func search(byName name: String?) -> Stream? {
+        return search(byUrl: name)
+    }
+    
+    /// Fetch an object by url
+    static func search(byUrl url: String?) -> Stream? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let url = url else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "url = %@", url)
+        let array = try? context.fetch(req)
+        return array?.first
+    }
+
+}
+
+extension Stream : Downloadable {
 
     /// Returns the urlAsset of the stream
     func urlAsset() -> AVURLAsset? {
@@ -28,37 +49,26 @@ extension Stream {
             listenIsWorking else { return nil }
         return AVURLAsset(url: streamPlaylistURL)
     }
-    
+
     /// Returns the path of the downloaded stream
     func downloadedStream() -> URL? {
         let userDefaults = UserDefaults.standard
         guard let urlString = url,
             let localFileLocation = userDefaults.value(forKey: urlString) as? String else { return nil }
         let baseDownloadURL = URL(fileURLWithPath: NSHomeDirectory())
-
+        
         let urlPath = baseDownloadURL.appendingPathComponent(localFileLocation)
         
         return urlPath
     }
     
-    /// Fetch the most recent updatedAt date
-    static func lastUpdated() -> Date? {
-        guard let context = RestApi.instance.context else { fatalError() }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.sortDescriptors = [NSSortDescriptor(key: "updatedAt", ascending: false)]
-        return try? context.fetch(req).first?.updatedAt
-    }
+}
+
+extension Stream {
     
-    /// Returns the streams for a given name.
-    static func stream(byName name: String?) -> Stream? {
-        guard let context = RestApi.instance.context else { fatalError() }
-        guard let name = name else { return nil }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "name = %@", name)
-        let array = try? context.fetch(req)
-        return array?.first
-    }
-    
+    /// placeholder for thumbnails in streams
+    static let placeholderImageName: String = "f0001-music"
+
     /// Returns the streams for a given station id.
     static func stream(byStation stationId: Int16?) -> [Stream]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -68,30 +78,6 @@ extension Stream {
         req.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let array = try? context.fetch(req)
         return array
-    }
-    
-    /// Function to obtain all the streams sorted by station.name
-    static func all() -> [Stream]? {
-        guard let context = RestApi.instance.context else { fatalError() }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.predicate = NSPredicate(format: "listenIsWorking = true")
-        req.sortDescriptors = [NSSortDescriptor(key: "station.name", ascending: true)]
-        let array = try? context.fetch(req)
-        return array
-    }
-
-    /// Remove all the instances of the entity
-    static func clean() {
-        guard let context = RestApi.instance.context else {
-            fatalError("fatal: no core data context manager")
-        }
-        let req = NSFetchRequest<Stream>(entityName: "Stream")
-        req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
-            for obj in array {
-                context.delete(obj)
-            }
-        }
     }
 }
 

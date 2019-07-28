@@ -80,9 +80,9 @@ class StreamPersistenceManager: NSObject {
             assetDownloadURLSession.getAllTasks { tasksArray in
                 // For each task, restore the state in the app by recreating Stream structs and reusing existing AVURLAsset objects.
                 for task in tasksArray {
-                    guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetName = task.taskDescription else { break }
+                    guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetUrl = task.taskDescription else { break }
                     
-                    guard let asset = Stream.stream(byName: assetName) else { break }
+                    guard let asset = Stream.search(byUrl: assetUrl) else { break }
                     self.activeDownloadsMap[assetDownloadTask] = asset
                 }
                 
@@ -142,8 +142,8 @@ class StreamPersistenceManager: NSObject {
     
     
     /// Returns an Stream pointing to a file on disk if it exists.
-    func localAssetForStream(withName name: String) -> Stream? {
-        return Stream.stream(byName: name)
+    func localAssetForStream(withUrl url: String) -> Stream? {
+        return Stream.search(byUrl: url)
     }
     
     /// Returns the current download state for a given Stream.
