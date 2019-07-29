@@ -3,6 +3,10 @@
     {
       "idiom" : "universal",
       "filename" : "broadcast-tower-solid.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "broadcast-tower-solid-small.png"
     }
   ],
   "info" : {

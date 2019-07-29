@@ -155,7 +155,6 @@ class RestApi {
             })
         }
     }
-
 }
 
 extension DataResponse {

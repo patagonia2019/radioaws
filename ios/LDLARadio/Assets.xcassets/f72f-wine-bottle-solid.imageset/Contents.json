@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "music-1.png"
+      "filename" : "f72f-wine-bottle-solid.png"
     },
     {
       "idiom" : "ipad",
-      "filename" : "music.png"
+      "filename" : "wine-bottle-solid-small.png"
     }
   ],
   "info" : {

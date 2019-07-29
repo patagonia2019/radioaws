@@ -52,7 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
                           NSAttributedString.Key.foregroundColor: UIColor.gray]
         UINavigationBar.appearance().titleTextAttributes = attributes
-
+        
+        UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .normal)
+        
         let headerLabel = UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
         headerLabel.font = UIFont(name: Commons.font.name, size: Commons.font.size.XXL)!
         headerLabel.textColor = .lightGray
@@ -64,4 +66,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefault = UserDefaults.standard
     }
     
+}
+
+extension UITabBar {
+    
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 80 : 44 // adjust your size here
+        return sizeThatFits
+    }
 }

@@ -8,17 +8,18 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 class Commons {
     
     struct font {
         static let name = "Arial"
         struct size {
-            static let XXL : CGFloat = 20
-            static let XL : CGFloat = 18
-            static let L : CGFloat = 16
-            static let M : CGFloat = 14
-            static let S : CGFloat = 12
+            static let XXL : CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 32 : 20
+            static let XL : CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 24 : 18
+            static let L : CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 20 : 16
+            static let M : CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 18 : 14
+            static let S : CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 16 : 12
         }
         static let awesome = "FontAwesome"
     }

@@ -15,7 +15,7 @@ struct CatalogViewModel {
     
     /// Some constants hardcoded here
     public struct hardcode {
-        static let cellheight: Float = 44
+        static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
         static let identifier: String = "CatalogIdentifier"
     }
     
@@ -97,6 +97,28 @@ struct CatalogViewModel {
         
         if sections.count == 0 && audios.count == 0 && urlString() == nil {
             sections.append(CatalogViewModel())
+        }
+    }
+    
+    init(desconcierto: Desconcierto?) {
+        title = desconcierto?.date ?? ""
+        tree = ""
+        detail = ""
+        let queryUrl = "http://adminradio.serveftp.com:35111/desconciertos/\(desconcierto?.id ?? 0).json"
+        if let urlChecked = URL(string: queryUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            url = urlChecked
+        }
+        else {
+            print("here")
+        }
+        var order : Int = 0
+        for streamUrl in [desconcierto?.streamUrl1, desconcierto?.streamUrl2, desconcierto?.streamUrl3] {
+            order = order + 1
+            let audio = AudioViewModel(desconcierto: desconcierto, audioUrl: streamUrl, order: order)
+            if audio.url?.absoluteString.count ?? 0 > 0 {
+                audios.append(audio)
+            }
         }
     }
     

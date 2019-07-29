@@ -17,7 +17,7 @@ struct AudioViewModel {
     
     /// Some constants hardcoded here
     public struct hardcode {
-        static let cellheight: Float = 75
+        static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
         static let identifier: String = "AudioIdentifier"
     }
     
@@ -132,18 +132,51 @@ struct AudioViewModel {
         title = stream?.station?.name ?? ""
         subTitle = stream?.station?.city?.name ?? ""
         detail = stream?.station?.city?.district?.name ?? ""
-    
+        
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-
+        
         if let imageUrl = stream?.station?.imageUrl,
             let urlChecked = URL(string: imageUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             thumbnailUrl = urlChecked
         }
         if let audioUrl = stream?.url,
+            let urlChecked = URL(string: audioUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            url = urlChecked
+        }
+        isBookmarked = checkIfBookmarked()
+        reFillTitles()
+        
+    }
+    
+    /// initialization of the view model for LDLA stream audios
+    init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
+        id = "\(desconcierto?.id ?? 0)"
+        if let name = audioUrl?.components(separatedBy: "/").last?.removingPercentEncoding,
+            name.contains("mp3") {
+            title = name
+        }
+        else {
+            title = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
+            useWeb = true
+        }
+        subTitle = ""
+        detail = ""
+    
+        placeholderImageName = Stream.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
+        if let urlChecked = URL(string: "http://www.eldesconcierto.com.ar/wp-content/uploads/2018/03/logo-quique-pesoa-app-200.png"),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            thumbnailUrl = urlChecked
+        }
+        if let audioUrl = audioUrl,
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked

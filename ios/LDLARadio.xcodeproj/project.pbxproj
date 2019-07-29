@@ -23,7 +23,7 @@
 		9808510B22E638D90013B67C /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510A22E638D90013B67C /* Date+.swift */; };
 		9808510F22E691F10013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808511122E69D990013B67C /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511022E69D990013B67C /* BaseController.swift */; };
-		9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511222E6A1C10013B67C /* BaseAudioViewController.swift */; };
+		9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511222E6A1C10013B67C /* AudioViewController.swift */; };
 		9808511B22E6D7040013B67C /* City+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511A22E6D7040013B67C /* City+.swift */; };
 		9808511D22E6D7410013B67C /* Station+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511C22E6D7410013B67C /* Station+.swift */; };
 		9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511E22E6DA950013B67C /* StreamListManager.swift */; };
@@ -66,6 +66,8 @@
 		9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD822ECE5AB00E418F2 /* Model+.swift */; };
 		9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
 		9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
+		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
+		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
@@ -113,7 +115,7 @@
 		9808510A22E638D90013B67C /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		9808510E22E691F10013B67C /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		9808511022E69D990013B67C /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
-		9808511222E6A1C10013B67C /* BaseAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAudioViewController.swift; sourceTree = "<group>"; };
+		9808511222E6A1C10013B67C /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		9808511A22E6D7040013B67C /* City+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+.swift"; sourceTree = "<group>"; };
 		9808511C22E6D7410013B67C /* Station+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Station+.swift"; sourceTree = "<group>"; };
 		9808511E22E6DA950013B67C /* StreamListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamListManager.swift; sourceTree = "<group>"; };
@@ -147,6 +149,9 @@
 		9825BDD622EB758D00E418F2 /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		9825BDD822ECE5AB00E418F2 /* Model+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+.swift"; sourceTree = "<group>"; };
 		9825BDDB22ECEF4900E418F2 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
+		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
+		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
+		986EBCC822EE49CF001AAF0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,22 +187,21 @@
 		425DD0A11D0CF18200F96325 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				980DA23B22EE77FA00B32154 /* SDK */,
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
 				9808513622E8FAA00013B67C /* Bookmark+.swift */,
-				425DD0A41D0D146900F96325 /* Stream+.swift */,
-				98195FA822D83664006E7961 /* Quote+.swift */,
-				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
 				9808511A22E6D7040013B67C /* City+.swift */,
-				9808512022E6DD370013B67C /* RNADial+.swift */,
-				9808512622E6E6640013B67C /* RNAStation+.swift */,
-				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
-				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
+				986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */,
+				98195FA822D83664006E7961 /* Quote+.swift */,
 				9808512A22E782C40013B67C /* RNABand+.swift */,
+				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
+				9808512022E6DD370013B67C /* RNADial+.swift */,
+				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
+				9808512622E6E6640013B67C /* RNAStation+.swift */,
+				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
-				9808510A22E638D90013B67C /* Date+.swift */,
-				9808514022EA49C60013B67C /* Data+.swift */,
-				9808510E22E691F10013B67C /* String+.swift */,
+				425DD0A41D0D146900F96325 /* Stream+.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -290,6 +294,16 @@
 			path = "MVC-MVVM";
 			sourceTree = "<group>";
 		};
+		980DA23B22EE77FA00B32154 /* SDK */ = {
+			isa = PBXGroup;
+			children = (
+				9808514022EA49C60013B67C /* Data+.swift */,
+				9808510A22E638D90013B67C /* Date+.swift */,
+				9808510E22E691F10013B67C /* String+.swift */,
+			);
+			path = SDK;
+			sourceTree = "<group>";
+		};
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,7 +319,7 @@
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
-				9808511222E6A1C10013B67C /* BaseAudioViewController.swift */,
+				9808511222E6A1C10013B67C /* AudioViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 			);
@@ -316,8 +330,9 @@
 			isa = PBXGroup;
 			children = (
 				9808511022E69D990013B67C /* BaseController.swift */,
-				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
+				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
+				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
 				9808513C22E903730013B67C /* BookmarkController.swift */,
 			);
@@ -597,8 +612,9 @@
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
 				9808511B22E6D7040013B67C /* City+.swift in Sources */,
 				9808514122EA49C60013B67C /* Data+.swift in Sources */,
+				986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */,
 				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
-				9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */,
+				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
@@ -621,6 +637,7 @@
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
+				986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */,
 				9808511122E69D990013B67C /* BaseController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
 				9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */,
@@ -683,6 +700,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				7A6DA202209754560004126A /* en */,
+				986EBCC822EE49CF001AAF0A /* Base */,
 			);
 			name = LDLARadio.html;
 			sourceTree = "<group>";

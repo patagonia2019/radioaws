@@ -1,5 +1,5 @@
 //
-//  BaseAudioViewController.swift
+//  AudioViewController.swift
 //  LDLARadio
 //
 //  Created by fox on 22/07/2019.
@@ -13,13 +13,14 @@ import MediaPlayer
 import SwiftSpinner
 import JFCore
 
-class BaseAudioViewController: UITableViewController {
+class AudioViewController: UITableViewController {
     // MARK: Properties
     enum ControllerName : String {
         case suggestion = "Suggestion"
         case radioTime = "Radio Time"
         case rna = "RNA"
         case bookmark = "Bookmark"
+        case desconcierto = "El Desconcierto"
     }
     var playerViewController: AVPlayerViewController?
     
@@ -27,10 +28,11 @@ class BaseAudioViewController: UITableViewController {
     var radioTimeController = RadioTimeController()
     var rnaController = RNAController()
     var bookmarkController = BookmarkController()
+    var desconciertoController = ElDesconciertoController()
 
     var controller: BaseController {
         get {
-            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title
+            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
             switch title {
                 case ControllerName.suggestion.rawValue:
                     return radioController
@@ -40,31 +42,32 @@ class BaseAudioViewController: UITableViewController {
                     return rnaController
                 case ControllerName.bookmark.rawValue:
                     return bookmarkController
+                case ControllerName.desconcierto.rawValue:
+                    return desconciertoController
                 default:
                     fatalError()
                 }
         }
         set {
-            if newValue is BaseController {
-                let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title
+            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
 
-                switch title {
-                case ControllerName.suggestion.rawValue:
-                    radioController = newValue as! RadioController
-                    break
-                case ControllerName.radioTime.rawValue:
-                    radioTimeController = newValue as! RadioTimeController
-                    break
-                case ControllerName.rna.rawValue:
-                    rnaController = newValue as! RNAController
-                    break
-                case ControllerName.bookmark.rawValue:
-                    bookmarkController = newValue as! BookmarkController
-                    break
-                default:
-                    fatalError()
-                }
-            } else {
+            switch title {
+            case ControllerName.suggestion.rawValue:
+                radioController = newValue as! RadioController
+                break
+            case ControllerName.radioTime.rawValue:
+                radioTimeController = newValue as! RadioTimeController
+                break
+            case ControllerName.rna.rawValue:
+                rnaController = newValue as! RNAController
+                break
+            case ControllerName.bookmark.rawValue:
+                bookmarkController = newValue as! BookmarkController
+                break
+            case ControllerName.desconcierto.rawValue:
+                desconciertoController = newValue as! ElDesconciertoController
+                break
+            default:
                 fatalError()
             }
         }
@@ -109,7 +112,7 @@ class BaseAudioViewController: UITableViewController {
         refreshControl.accessibilityHint = "refresh"
         refreshControl.accessibilityLabel = "refresh"
         refreshControl.addTarget(self, action:
-            #selector(BaseAudioViewController.handleRefresh(_:)),
+            #selector(AudioViewController.handleRefresh(_:)),
                                  for: .valueChanged)
         refreshControl.tintColor = UIColor.red
         
@@ -224,7 +227,7 @@ class BaseAudioViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
             segue.destination.tabBarItem.title = self.navigationController?.tabBarItem.title
-            (segue.destination as? BaseAudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,
@@ -233,6 +236,9 @@ class BaseAudioViewController: UITableViewController {
                 else { return }
             webViewControler.title = "\(model.title) \(model.subTitle)"
             webViewControler.urlLink = streamLink
+//            webViewControler.fileName = "en.lproj/LDLARadio.html"
+//            webViewControler.tokens = ["RADIO_URL" : streamLink,
+//                                       "RADIO_TYPE": "audio/mpeg"] as? [String : String]
         }
         else if segue.identifier == Commons.segue.player {
             guard let model = sender as? AudioViewModel,
@@ -280,9 +286,9 @@ class BaseAudioViewController: UITableViewController {
 }
 
 /**
- Extend `BaseAudioViewController` to conform to the `AudioTableViewCellDelegate` protocol.
+ Extend `AudioViewController` to conform to the `AudioTableViewCellDelegate` protocol.
  */
-extension BaseAudioViewController: AudioTableViewCellDelegate {
+extension AudioViewController: AudioTableViewCellDelegate {
     func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         play(indexPath: indexPath)
@@ -303,9 +309,9 @@ extension BaseAudioViewController: AudioTableViewCellDelegate {
 }
 
 /**
- Extend `BaseAudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
+ Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
  */
-extension BaseAudioViewController: AssetPlaybackDelegate {
+extension AudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
         showAlert(error: error)
     }

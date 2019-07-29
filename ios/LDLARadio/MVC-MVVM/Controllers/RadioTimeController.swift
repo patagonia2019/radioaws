@@ -37,7 +37,7 @@ class RadioTimeController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        return 44
+        return CGFloat(CatalogViewModel.hardcode.cellheight)
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {

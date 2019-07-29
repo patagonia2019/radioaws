@@ -2,7 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icons8-user-30.png"
+      "filename" : "user-solid-1.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "user-solid.png"
     }
   ],
   "info" : {
