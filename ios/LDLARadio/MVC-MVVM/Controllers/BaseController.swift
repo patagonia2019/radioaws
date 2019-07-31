@@ -68,7 +68,7 @@ class BaseController : Controllable {
         }
     }
 
-    func privateRefresh(isClean: Bool = false,
+    internal func privateRefresh(isClean: Bool = false,
                                 prompt: String,
                                 startClosure: (() -> Void)? = nil,
                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
@@ -76,15 +76,31 @@ class BaseController : Controllable {
         startClosure?()
         finishClosure?(nil)
     }
-    
-    func changeBookmark(at section: Int, row: Int) {
-        guard var model = model(forSection: section, row: row) as? AudioViewModel else {
+
+    func changeCatalogBookmark(model: CatalogViewModel?) {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let model = model else {
             return
         }
-        
-        guard let context = RestApi.instance.context else {
-            fatalError("fatal: no core data context manager")
+        for audio in model.audios {
+            changeAudioBookmark(model: audio, useRefresh: false, section: model.tree)
         }
+        context.performAndWait {
+            CoreDataManager.instance.save()
+            refresh(finishClosure: finishBlock)
+        }
+
+    }
+    
+
+    func changeCatalogBookmark(at section: Int, row: Int) {
+        changeCatalogBookmark(model: model(forSection: section, row: row) as? CatalogViewModel)
+    }
+
+    func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true, section: String? = nil) {
+
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard var model = model else { return }
         
         context.performAndWait {
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
@@ -92,14 +108,21 @@ class BaseController : Controllable {
             }
             else if var bookmark = Bookmark.create() {
                 bookmark += model
+                bookmark.section = section
             }
             else {
                 fatalError()
             }
             model.isBookmarked = !model.isBookmarked
-            CoreDataManager.instance.save()
-            refresh(finishClosure: finishBlock)
+            if useRefresh {
+                CoreDataManager.instance.save()
+                refresh(finishClosure: finishBlock)
+            }
         }
+    }
+
+    func changeAudioBookmark(at section: Int, row: Int) {
+        changeAudioBookmark(model: model(forSection: section, row: row) as? AudioViewModel)
     }
 }
 

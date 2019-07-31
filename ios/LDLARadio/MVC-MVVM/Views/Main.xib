@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="LDLARadio" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="330" height="87"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMn-wc-ut7">
+                    <rect key="frame" x="0.0" y="10" width="330" height="87"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="m8n-iJ-bl2">
+                            <rect key="frame" x="0.0" y="0.0" width="330" height="87"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dF4-BY-pyl">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="87"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="XBy-LK-99C"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="24"/>
+                                    <color key="tintColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="-"/>
+                                    <state key="highlighted" title="+">
+                                        <color key="titleColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="7U4-Lx-xdq"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7tK-mz-lq8">
+                                    <rect key="frame" x="64" y="0.0" width="190" height="87"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Y-oK-ri8">
+                                    <rect key="frame" x="258" y="0.0" width="72" height="87"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="72" id="eas-g1-Aek">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                                        </constraint>
+                                    </constraints>
+                                    <state key="normal" image="apple-alt-line"/>
+                                    <state key="highlighted" image="f5d1-apple-alt-solid"/>
+                                    <connections>
+                                        <action selector="bookmarkAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="yn8-u2-Bq4"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="top" secondItem="bMn-wc-ut7" secondAttribute="top" id="Ccc-1y-ycc"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="leading" secondItem="bMn-wc-ut7" secondAttribute="leading" id="Tiq-dV-9r0"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="dTb-Xx-mMe"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="l5q-GT-u36"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerX" secondItem="PBz-vr-rax" secondAttribute="centerX" id="GMR-ss-frX"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="height" secondItem="OUZ-ye-H4L" secondAttribute="height" id="dPk-rh-eXX"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerY" secondItem="PBz-vr-rax" secondAttribute="centerY" id="lPX-Bh-d6P"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="width" secondItem="OUZ-ye-H4L" secondAttribute="width" id="o6r-Pb-X9J"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="PBz-vr-rax"/>
+            <connections>
+                <outlet property="bookmarkButton" destination="r1Y-oK-ri8" id="zly-ow-6G1"/>
+                <outlet property="expandButton" destination="dF4-BY-pyl" id="vKB-lD-NrL"/>
+                <outlet property="titleLabel" destination="7tK-mz-lq8" id="NVR-Mv-zoG"/>
+            </connections>
+            <point key="canvasLocation" x="650.625" y="124.11971830985915"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="apple-alt-line" width="17" height="19"/>
+        <image name="f5d1-apple-alt-solid" width="17" height="20"/>
+    </resources>
+</document>

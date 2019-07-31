@@ -75,7 +75,9 @@
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
-		98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */; };
+		98D7148D22EF252300983818 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
+		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
+		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -158,7 +160,8 @@
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
-		98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewModel.swift; sourceTree = "<group>"; };
+		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
+		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
 		BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -276,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
+				98D7148E22EF876C00983818 /* HeaderTableView.swift */,
 				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
 			);
 			path = Cells;
@@ -308,7 +312,6 @@
 			isa = PBXGroup;
 			children = (
 				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
-				98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */,
 				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
 			);
 			path = ViewModel;
@@ -318,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
+				98D7149022EF937F00983818 /* Main.xib */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				9808511222E6A1C10013B67C /* AudioViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
@@ -488,7 +492,9 @@
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
+				98D7148D22EF252300983818 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
+				98D7149122EF938000983818 /* Main.xib in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
@@ -630,7 +636,6 @@
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
-				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
@@ -648,6 +653,7 @@
 				9808510922E61E650013B67C /* RadioController.swift in Sources */,
 				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
 				9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */,
+				98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */,
 				9808510F22E691F10013B67C /* String+.swift in Sources */,
 				9808514422EAC0350013B67C /* AboutViewController.swift in Sources */,
 				9808511D22E6D7410013B67C /* Station+.swift in Sources */,

@@ -18,7 +18,6 @@ struct AudioViewModel {
     /// Some constants hardcoded here
     public struct hardcode {
         static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
-        static let identifier: String = "AudioIdentifier"
     }
     
     /// title specification
@@ -130,8 +129,8 @@ struct AudioViewModel {
     init(stream: Stream?) {
         id = "\(stream?.id ?? 0)"
         title = stream?.station?.name ?? ""
-        subTitle = stream?.station?.city?.name ?? ""
-        detail = stream?.station?.city?.district?.name ?? ""
+        subTitle = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
+        detail = stream?.station?.tuningDial ?? ""
         
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {

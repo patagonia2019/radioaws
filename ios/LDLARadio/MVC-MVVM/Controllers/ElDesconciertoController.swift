@@ -10,6 +10,16 @@ import Foundation
 import JFCore
 import AlamofireCoreData
 
+extension Controllable where Self : ElDesconciertoController {
+    func model(inSection section: Int) -> CatalogViewModel? {
+        if section < models.count {
+            let model = models[section]
+            return model
+        }
+        return nil
+    }
+}
+
 class ElDesconciertoController: BaseController {
     
     var models = [CatalogViewModel]()
@@ -27,7 +37,9 @@ class ElDesconciertoController: BaseController {
     override func numberOfRows(inSection section: Int) -> Int {
         if section < models.count {
             let model = models[section]
-            return model.audios.count
+            if model.isExpanded == true {
+                return model.audios.count
+            }
         }
         return 0
     }
@@ -61,7 +73,12 @@ class ElDesconciertoController: BaseController {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
             return stream.streamUrl1?.count ?? 0 > 0
         }) {
-            models = streams.map({ CatalogViewModel(desconcierto: $0) }).filter({ (model) -> Bool in
+            func isExpanded(des: Desconcierto?) -> Bool {
+                return models.filter { (catalog) -> Bool in
+                    return catalog.isExpanded && des?.date == catalog.title
+                }.count > 0
+            }
+            models = streams.map({ CatalogViewModel(desconcierto: $0, isAlreadyExpanded: isExpanded(des: $0)) }).filter({ (model) -> Bool in
                 return model.urlString()?.count ?? 0 > 0
             })
         }
@@ -108,4 +125,28 @@ class ElDesconciertoController: BaseController {
             }
         }
     }
+    
+    func changeCatalogBookmark(section: Int) {
+        if section < models.count {
+            let model = models[section]
+            changeCatalogBookmark(model: model)
+        }
+    }
+    
+    func expand(model: CatalogViewModel?, section: Int,
+                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        RestApi.instance.context?.performAndWait {
+            self.expanding(model: model, section: section, finishClosure: finishClosure)
+        }
+    }
+    
+    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if let isExpanded = model?.isExpanded {
+            models[section].isExpanded = !isExpanded
+        }
+        
+        finishClosure?(nil)
+    }
+
 }

@@ -73,53 +73,147 @@ _SwiftSpinner is an extra beautiful activity indicator with plain and bold style
 
 ## Proposal: 
 
-* Cocoapod integration in the project
+### Cocoapod integration in the project
+
+CocoaPodss built with Ruby and is installable with the default Ruby available on macOS. 
 
 CocoaPods is the popular dependency manager for Cocoa projects. 2 alternatives: Carthage and the Swift Package Manager. CocoaPods makes managing dependencies easy and transparent.
 
 It's hard configuring Podfile dependencies for a modular project structure
-When it comes to a mixed project, having% of Swift and rest Objective-C code, CocoaPods forces all dependencies to be dynamic frameworks, even though more than a half of them are written in Objective-C. With more than 50 dynamic frameworks, our app’s startup time became very slow due to slow dynamic library loading during app startup.
+When it comes to a mixed project, having of Swift and rest Objective-C code, CocoaPods forces all dependencies to be dynamic frameworks, even though more than a half of them are written in Objective-C. With more than 50 dynamic frameworks, our app’s startup time became very slow due to slow dynamic library loading during app startup.
 
 Another issue was our slow build time. The root cause came via including a pods’ source code into the workspace, which often forces recompilation of the same files that very rarely change.
 
 Probably will be good a manual approach. As it turns out, that  just with a few simple scripts that support the most common tasks for dependency management. Namely, downloading source code, compiling it into a static library or dynamic framework and integrating those products into our project. The rest of the work is done via Xcode build configuration files.
 
-* Using Swift 5 + Storyboards + Asset Catalog 
+### Using Swift 5
 
-* MVC & MVVM: Separated Logics and avoid Massive View Controller
+#### Reference type vs Value type
+Reference types share a single copy of their data while value types keep a unique copy of their data. Swift represents a reference type as a class, and a value type as a struct, enum, and tuples.
 
-* Completion/Closure Parameters – Implement any asynchronous task with a “completion” parameter 
+##### Copy semantics
+In Swift, we have reference types(Classes) and value types (Structs, Tuples, enums). The value types have a copy semantic. That means if you assign a value type to a variable or pass it as a parameter to a function(unless it is an inout parameter), the underlying data of this value is going to be copied.
 
-* CocoaPods: CocoaPods is built with Ruby and is installable with the default Ruby available on macOS. 
+#### Access control levels: open, public, internal, fileprivate and private
 
-* Recycling: github/fork for any needed change in a pod that is not available for tvOS but could be customized 
+* open and public — (least restrictive) Enable an entity to be used outside the defining module (target). ...
+_Enable an entity to be used outside the defining module (target). You typically use open or public access when specifying the public interface to a framework._
 
-* Minimalism: use the SDK. Keeping and use only the features the code actually needs.
+* Public. ...
+_Like open access level, public access level enable an entity to be used outside the defining module (target). But open access level allows us to subclass it from another module where in public access level, we can only subclass or overridde it from within the module it is defined_
+`
+//module 1
+public func A(){}
+open func B(){}
+//module 2
+override func A(){} // error
+override func B(){} // success
+`
 
-* *Core Data* is an object graph and persistence framework provided by Apple in the macOS and iOS operating systems. It was introduced in Mac OS X 10.4 Tiger and iOS with iPhone SDK 3.0. It allows data organized by the relational entity–attribute model to be serialized into XML, binary, or SQLite stores. In this aplication the persistence is done using SQLite.
+* internal (default access level) ...
+_internal is the default access level. Internal classes and members can be accessed anywhere within the same module(target) they are defined. You typically use internalaccess when defining an app’s or a framework’s internal structure._
 
-* Unit tests: automatically exercise the features of your application and check the results, like JSON parsing and test asynchronous calls for REST API using expectation.
+* fileprivate. ...
+_Restricts the use of an entity to its defining source file._
 
-* Singleton for RestAPI and model & network management.
+* private — (most restrictive)
+_Private access restricts the use of an entity to the enclosing declaration, and to extensions of that declaration that are in the same file._
+__Before swift 4, private access level didn’t allow the use of a class member inside the extension of same class.__
 
-* Observers: KVO and Notifications
+_Ex: If you are creating a framework for facebook login in swift. The developer will import the framework you created and try to call the login() function. if you want the developer to call this method, it should be declared as public inside the framework. If you want the developer to call the function and override the login() function, it should be declared as open. Simple!!_
 
-* Protocols: a very powerful feature of the Swift programming language. Protocols are used to define a “blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality.”
+### Storyboards
+### Asset Catalog 
 
-* *Extensions* add new functionality to an existing class, structure, enumeration, or protocol type. This includes the ability to extend types for which you do not have access to the original source code (known as retroactive modeling). Extensions are similar to categories in Objective-C. (Unlike Objective-C categories, Swift extensions do not have names.). Extensions in Swift can: add computed instance properties and computed type properties, define instance methods and type methods, provide new initializers, define subscripts, define and use new nested types, make an existing type conform to a protocol.
+### MVC & MVVM: Separated Logics and avoid Massive View Controller
 
-* *Grand Central Dispatch* or *GCD* is a low-level API for managing concurrent operations. It will make your application smooth and more responsive. Also helps for improving application performance. Sometimes we are trying to perform multiple tasks at the same time that time most of the developer-facing application hang or freezing issue this is the common issue. That’s why we are using GCD to manage multiple tasks at the same time.
+### Completion/Closure Parameters
+Implement any asynchronous task with a “completion” parameter 
 
-* Why not using NSOperationQueue instead of DispatchQueue in the threading solution?
-_NSOperationQueue uses regular background threads which have a little more overhead than GCD dispatch queues. On the other hand, NSOperationQueue gives you a lot more control over how your operations are executed. You can define dependencies between individual operations for example, which isn't possible with plain GCD queues. GCD is a low-level C API that enables developers to execute tasks concurrently. Operation queues, on the other hand, are high level abstraction of the queue model, and is built on top of GCD. Operation queues are instances of class NSOperationQueue and its tasks are encapsulated in instances of NSOperation._
+### Recycling
+
+Github/fork for any needed change in a pod that is not available for tvOS but could be customized 
+
+### Minimalism
+
+Use the SDK. Keeping and use only the features the code actually needs.
+
+### Core Data
+
+It is an object graph and persistence framework provided by Apple in the macOS and iOS operating systems. It was introduced in Mac OS X 10.4 Tiger and iOS with iPhone SDK 3.0. It allows data organized by the relational entity–attribute model to be serialized into XML, binary, or SQLite stores. In this aplication the persistence is done using SQLite.
+
+### Code testint
+
+Automatically exercise the features of the application and check the results, like JSON parsing and test asynchronous calls for REST API using expectation.
+Code testing serves as great documentation, confidence to constantly refactor, architecture health, perspective on the API design, but it is not realistic to achieve high coverage.
+Here there are 4 classes to make Unit Testing: __LDLARadioTests__, __RTCatalogTests__, __RNATests__ and __BookmarkTests__. They inherit setup and json helpers from __BaseTests__ class.
 
 
+### Singleton for RestAPI and model & network management.
 
-### License
+### Observers: KVO and Notifications
 
-MIT License
+### Protocols
 
-Copyright (c) 2019 Mobile Patagonia. All rights reserved.
+A very powerful feature of the Swift programming language. Protocols are used to define a “blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality.”
+
+### Extensions
+
+They add new functionality to an existing class, structure, enumeration, or protocol type. This includes the ability to extend types for which you do not have access to the original source code (known as retroactive modeling). Extensions are similar to categories in Objective-C. (Unlike Objective-C categories, Swift extensions do not have names.). Extensions in Swift can: add computed instance properties and computed type properties, define instance methods and type methods, provide new initializers, define subscripts, define and use new nested types, make an existing type conform to a protocol.
+
+### Grand Central Dispatch or GCD
+
+GCD is a low-level API for managing concurrent operations. It will make your application smooth and more responsive. Also helps for improving application performance. Sometimes we are trying to perform multiple tasks at the same time that time most of the developer-facing application hang or freezing issue this is the common issue. That’s why we are using GCD to manage multiple tasks at the same time.
+
+#### Why not using NSOperationQueue instead of DispatchQueue in the threading solution?
+
+NSOperationQueue uses regular background threads which have a little more overhead than GCD dispatch queues. On the other hand, NSOperationQueue gives you a lot more control over how your operations are executed. You can define dependencies between individual operations for example, which isn't possible with plain GCD queues. GCD is a low-level C API that enables developers to execute tasks concurrently. Operation queues, on the other hand, are high level abstraction of the queue model, and is built on top of GCD. Operation queues are instances of class NSOperationQueue and its tasks are encapsulated in instances of NSOperation.
+
+## Don't Repeat Yourself
+Don’t Repeat Yourself (DRY) is a principle in software development that helps you reduce the amount of repetition in your code and apps. This has a number of advantages, for example, code that’s easier to maintain.
+
+## GRASP (object-oriented design)
+_General Responsibility Assignment Software Patterns: controller, creator, indirection, information expert, high cohesion, low coupling, polymorphism, protected variations, and pure fabrication._
+## KISS
+It's a principle of design. The phrase has been associated with aircraft engineer Kelly Johnson. The term "KISS principle" was in popular use by 1970. Variations on the phrase include: "Keep it simple, silly", "keep it short and simple", "keep it simple and straightforward", "keep it small and simple", or "keep it stupid simple".
+## YAGNI
+_You aren't gonna need it. Not add functionality until deemed necessary_
+
+## SOLID
+_ 6 principles for OOP_:
+### SRP: Single responsibility principle
+_A class should only have a single responsibility, that is, only changes to one part of the software's specification should be able to affect the specification of the class._
+### OCP: Open/closed principle
+_"Software entities ... should be open for extension, but closed for modification."_
+### L: Liskov substitution principle
+_"Objects in a program should be replaceable with instances of their subtypes without altering the correctness of that program." ._
+### Interface segregation principle
+_"Many client-specific interfaces are better than one general-purpose interface."_
+### Dependency inversion principle
+_One should "depend upon abstractions, [not] concretions."_
+#### Dependency injection principle
+
+
+## Code Reuse
+### Inheritance
+_Inheritance is the mechanism of basing an object or class upon another object (prototype-based inheritance) or class (class-based inheritance), retaining similar implementation_
+### Package principles
+_Package principles are a way of organizing classes in larger systems to make them more organized and manageable_
+### Design Patterns
+### Frameworks
+### High-order Functions
+### Retrocomputing
+### Computer security
+### Components
+### Outside computers
+### single source of truth (SSOT)
+_The practice of structuring information models and associated data schema such that every data element is mastered (or edited) in only one place_
+### NIH Syndorme
+_"NIH syndrome" as the tendency towards reinventing the wheel, here for example is included the `SwiftSpinner` framework to show a nice spinner instead of create animations and write a lot of innecessary code when you already find that in framework available by MIT or GPL license.
+
+# MIT License
+
+## Copyright (c) 2019 Mobile Patagonia. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -140,5 +234,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-[Contact me](https://mobilepatagonia.wixsite.com/website)
+### [Contact me](https://mobilepatagonia.wixsite.com/website)
 

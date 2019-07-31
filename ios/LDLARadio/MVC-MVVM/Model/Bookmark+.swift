@@ -64,7 +64,15 @@ extension Bookmark {
         bookmark.thumbnailUrl = audioViewModel.thumbnailUrl?.absoluteString
         bookmark.title = audioViewModel.title
         bookmark.url = audioViewModel.url?.absoluteString
-        bookmark.useWeb = audioViewModel.useWeb        
+        bookmark.useWeb = audioViewModel.useWeb
+    }
+    
+    /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
+    static func +=(bookmark: inout Bookmark, catalogViewModel: CatalogViewModel) {
+        bookmark.detail = catalogViewModel.detail
+        bookmark.subTitle = catalogViewModel.title
+        bookmark.title = catalogViewModel.tree
+        bookmark.url = catalogViewModel.urlString()
     }
     
 }

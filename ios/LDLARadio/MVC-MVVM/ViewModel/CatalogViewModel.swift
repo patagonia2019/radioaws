@@ -16,7 +16,6 @@ struct CatalogViewModel {
     /// Some constants hardcoded here
     public struct hardcode {
         static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
-        static let identifier: String = "CatalogIdentifier"
     }
     
     private var icon: Commons.symbols.FontAwesome = .indent
@@ -31,7 +30,9 @@ struct CatalogViewModel {
     var tree: String
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
-    
+    var isExpanded : Bool = false
+    var isBookmarked: Bool? = nil
+
     init() {
         title = "No more info"
         tree = "?"
@@ -44,15 +45,13 @@ struct CatalogViewModel {
     init(catalog: RTCatalog?) {
         title = catalog?.titleOrText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
+        isExpanded = catalog?.isExpanded ?? false
         
         detail = (catalog?.isOnlyText() ?? false) ? (catalog?.text ?? catalog?.subtext ?? "No more detail") : "No more detail"
         if let queryUrl = catalog?.url,
             let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
-        }
-        else {
-            print("here")
         }
         let sortBy = [NSSortDescriptor(key: "text", ascending: true)]
         if let innerSections = catalog?.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
@@ -98,19 +97,18 @@ struct CatalogViewModel {
         if sections.count == 0 && audios.count == 0 && urlString() == nil {
             sections.append(CatalogViewModel())
         }
+        isBookmarked = checkIfBookmarked()
+
     }
     
-    init(desconcierto: Desconcierto?) {
+    init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
         title = desconcierto?.date ?? ""
         tree = ""
         detail = ""
-        let queryUrl = "http://adminradio.serveftp.com:35111/desconciertos/\(desconcierto?.id ?? 0).json"
+        let queryUrl = "\(RestApi.Constants.Service.ldlaServer)/desconciertos/\(desconcierto?.id ?? 0).json"
         if let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
-        }
-        else {
-            print("here")
         }
         var order : Int = 0
         for streamUrl in [desconcierto?.streamUrl1, desconcierto?.streamUrl2, desconcierto?.streamUrl3] {
@@ -120,8 +118,35 @@ struct CatalogViewModel {
                 audios.append(audio)
             }
         }
+        isBookmarked = checkIfBookmarked()
+        isExpanded = isAlreadyExpanded
     }
     
+    /// initialization of the view model for bookmarked audios
+    init(bookmark: Bookmark?) {
+        title = bookmark?.subTitle ?? ""
+        tree = bookmark?.title ?? ""
+        detail = bookmark?.detail ?? ""
+        if let catalogUrl = bookmark?.url,
+            let urlChecked = URL(string: catalogUrl),
+            UIApplication.shared.canOpenURL(urlChecked) {
+            url = urlChecked
+        }
+        isBookmarked = true
+    }
+
+    /// to know if the model is in bookmark
+    func checkIfBookmarked() -> Bool? {
+        if audios.count > 0 {
+            return audios.filter({ (audio) -> Bool in
+                return audio.isBookmarked
+            }).count == audios.count
+        }
+        else {
+            return nil
+        }
+    }
+
     func iconText() -> String {
         return "\(Commons.symbols.showAwesome(icon: icon))"
     }
@@ -129,5 +154,4 @@ struct CatalogViewModel {
     func urlString() -> String? {
         return url?.absoluteString
     }
-        
 }

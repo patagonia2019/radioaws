@@ -32,3 +32,4 @@ protocol Controllable {
     
     func privateRefresh(isClean: Bool, prompt: String, startClosure: (() -> Void)?, finishClosure: ((_ error: JFError?) -> Void)?)
 }
+

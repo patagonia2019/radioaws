@@ -55,10 +55,10 @@ extension RTCatalog {
         if let t1 = titleOrText() {
             str.append(t1)
         }
-        /// Does not allow more than 30 characters in prompt
-        while str.joined().count > 30 && str.count > 1 {
-            _ = str.popFirst()
-        }
+//        /// Does not allow more than 30 characters in prompt
+//        while str.joined().count > 30 && str.count > 1 {
+//            _ = str.popFirst()
+//        }
         return str.joined()
     }
     

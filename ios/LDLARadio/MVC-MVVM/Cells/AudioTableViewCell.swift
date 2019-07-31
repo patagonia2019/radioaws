@@ -13,8 +13,8 @@ import JFCore
 class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
     
-    static let reuseIdentifier = "AudioTableViewCellIdentifier"
-    
+    static let reuseIdentifier: String = "AudioTableViewCell"
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var logoView: UIImageView!

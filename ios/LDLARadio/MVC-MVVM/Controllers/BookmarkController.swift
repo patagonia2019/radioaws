@@ -26,6 +26,10 @@ class BookmarkController: BaseController {
     override func prompt() -> String {
         return "Bookmarks"
     }
+    
+    override func numberOfSections() -> Int {
+        return 1
+    }
 
     override func numberOfRows(inSection section: Int) -> Int {
         return models.count

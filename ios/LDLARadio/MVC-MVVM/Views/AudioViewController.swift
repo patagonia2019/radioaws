@@ -88,7 +88,8 @@ class AudioViewController: UITableViewController {
             addRefreshControl()
         }
         tableView.remembersLastFocusedIndexPath = true
-        
+        HeaderTableView.setup(tableView: tableView)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,8 +128,6 @@ class AudioViewController: UITableViewController {
                             RestApi.instance.context?.performAndWait {
                                 SwiftSpinner.show(Quote.randomQuote())
                             }
-                            self.reloadData()
-                            
         }) { (error) in
             if let error = error {
                 self.showAlert(error: error)
@@ -156,9 +155,36 @@ class AudioViewController: UITableViewController {
             }
         }
         if let section = object as? CatalogViewModel {
-            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+//            if section.sections.count == 0 {
+//                expand(model: section, section: indexPath.section)
+//            }
+//            else {
+                performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+//            }
         }
 
+    }
+    
+    private func expand(model: CatalogViewModel?, section: Int) {
+        // Reusing the same model, but focus in this section
+        if controller is RadioTimeController {
+            (controller as? RadioTimeController)?.expand(model: model, section: section, startClosure: {
+                RestApi.instance.context?.performAndWait {
+                    SwiftSpinner.show(Quote.randomQuote())
+                }
+            }, finishClosure: { (error) in
+                if let error = error {
+                    self.showAlert(error: error)
+                }
+                SwiftSpinner.hide()
+                self.reloadData()
+            })
+        }
+        else if controller is ElDesconciertoController {
+            (controller as? ElDesconciertoController)?.expand(model: model, section: section, finishClosure: { (error) in
+                self.reloadData()
+            })
+        }
     }
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
@@ -180,7 +206,31 @@ class AudioViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return controller.titleForHeader(inSection: section)
     }
-
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
+        if controller is RadioTimeController {
+            headerView?.actionExpandBlock = { model, isHighlighted in
+                self.expand(model:model, section:section)
+            }
+            headerView?.actionBookmarkBlock = { model, isHighlighted in
+                (self.controller as? RadioTimeController)?.changeCatalogBookmark(section: section)
+            }
+            headerView?.model = (controller as? RadioTimeController)?.model(inSection: section)
+            return headerView
+        }
+        else if controller is ElDesconciertoController {
+            headerView?.actionExpandBlock = { model, isHighlighted in
+                self.expand(model:model, section:section)
+            }
+            headerView?.actionBookmarkBlock = { model, isHighlighted in
+                (self.controller as? ElDesconciertoController)?.changeCatalogBookmark(section: section)
+            }
+            headerView?.model = (controller as? ElDesconciertoController)?.model(inSection: section)
+            return headerView
+        }
+        return nil
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return controller.heightForRow(at: indexPath.section, row: indexPath.row)
@@ -206,17 +256,20 @@ class AudioViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioViewModel.hardcode.identifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
             cell.delegate = self
             cell.model = audio
             return cell
         }
         if let section = object as? CatalogViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
             cell.model = section
+            cell.actionBookmarkBlock = { catalog, isBookmarking in
+                self.controller.changeCatalogBookmark(at: indexPath.section, row: indexPath.row)
+            }
             return cell
         }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogViewModel.hardcode.identifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
         return cell
     }
         
@@ -226,7 +279,7 @@ class AudioViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
-            segue.destination.tabBarItem.title = self.navigationController?.tabBarItem.title
+            segue.destination.tabBarItem.title = ControllerName.radioTime.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.webView {
@@ -236,9 +289,6 @@ class AudioViewController: UITableViewController {
                 else { return }
             webViewControler.title = "\(model.title) \(model.subTitle)"
             webViewControler.urlLink = streamLink
-//            webViewControler.fileName = "en.lproj/LDLARadio.html"
-//            webViewControler.tokens = ["RADIO_URL" : streamLink,
-//                                       "RADIO_TYPE": "audio/mpeg"] as? [String : String]
         }
         else if segue.identifier == Commons.segue.player {
             guard let model = sender as? AudioViewModel,
@@ -296,8 +346,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        tableView.reloadRows(at: [indexPath], with: .none)
-        controller.changeBookmark(at: indexPath.section, row: indexPath.row)
+        controller.changeAudioBookmark(at: indexPath.section, row: indexPath.row)
     }
     
     
