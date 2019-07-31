@@ -190,7 +190,7 @@
 		425DD0A11D0CF18200F96325 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				980DA23B22EE77FA00B32154 /* SDK */,
+				980DA23B22EE77FA00B32154 /* Extensions */,
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
 				9808513622E8FAA00013B67C /* Bookmark+.swift */,
@@ -298,14 +298,14 @@
 			path = "MVC-MVVM";
 			sourceTree = "<group>";
 		};
-		980DA23B22EE77FA00B32154 /* SDK */ = {
+		980DA23B22EE77FA00B32154 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				9808514022EA49C60013B67C /* Data+.swift */,
 				9808510A22E638D90013B67C /* Date+.swift */,
 				9808510E22E691F10013B67C /* String+.swift */,
 			);
-			path = SDK;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		9824386B22DD189200B418F9 /* ViewModel */ = {

@@ -60,7 +60,6 @@ struct AudioViewModel {
     
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
-        assert(audio?.isAudio() ?? false)
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
         title = audio?.titleOrText() ?? ""
         subTitle = audio?.subtext ?? ""
@@ -234,10 +233,8 @@ struct AudioViewModel {
     
     /// Use the url of the stream/audio as an AVURLAsset
     func urlAsset() -> AVURLAsset? {
-        guard let playUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let streamPlaylistURL = URL(string: playUrl) else { return nil }
-        print("play = \(streamPlaylistURL)")
-        return AVURLAsset(url: streamPlaylistURL)
+        guard let url = url else { return nil }
+        return AVURLAsset(url: url)
     }
     
 }

@@ -10,12 +10,12 @@ import Foundation
 import JFCore
 
 extension Controllable where Self : RadioTimeController {
-    func model(inSection section: Int) -> CatalogViewModel? {
+    func modelInstance(inSection section: Int) -> CatalogViewModel? {
         if let model = mainModel,
             section < model.sections.count {
             return model.sections[section]
         }
-        return nil
+        return mainModel
     }
 }
 
@@ -82,10 +82,7 @@ class RadioTimeController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        if model(inSection: section) != nil {
-            return CGFloat(CatalogViewModel.hardcode.cellheight)
-        }
-        return 0
+        return CGFloat(CatalogViewModel.hardcode.cellheight)
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -203,7 +200,8 @@ class RadioTimeController: BaseController {
     }
     
     func changeCatalogBookmark(section: Int) {
-        changeCatalogBookmark(model: mainModel?.sections[section])
+        
+        changeCatalogBookmark(model: modelInstance(inSection: section))
     }
 
     
@@ -220,13 +218,13 @@ class RadioTimeController: BaseController {
         let dbCatalog = mainCatalogFromDb(mainCVM: model)
         dbCatalog?.isExpanded = !(dbCatalog?.isExpanded ?? false)
 
-        let mainCatalog = self.mainCatalogFromDb(mainCVM: mainModel)
+        let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
         mainModel = CatalogViewModel(catalog: mainCatalog)
+        var sectionModel = modelInstance(inSection: section)
         if let isExpanded = model?.isExpanded {
-            mainModel?.sections[section].isExpanded = !isExpanded
+            sectionModel?.isExpanded = !isExpanded
         }
         
-        let sectionModel = mainModel?.sections[section]
         if sectionModel?.audios.count ?? 0 > 0 || sectionModel?.sections.count ?? 0 > 0 {
             lastUpdated = RTCatalog.lastUpdated()
             finishClosure?(nil)
@@ -294,7 +292,8 @@ class RadioTimeController: BaseController {
             let mainCatalog = self.mainCatalogFromDb(mainCVM: self.mainModel)
             catalog?.isExpanded = true
             self.mainModel = CatalogViewModel(catalog: mainCatalog)
-            self.mainModel?.sections[section].isExpanded = true
+            var sectionModel = self.modelInstance(inSection: section)
+            sectionModel?.isExpanded = true
 
             self.lastUpdated = RTCatalog.lastUpdated()
             

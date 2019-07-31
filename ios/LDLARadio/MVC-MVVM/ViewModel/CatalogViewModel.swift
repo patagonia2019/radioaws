@@ -53,50 +53,54 @@ struct CatalogViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
         }
-        let sortBy = [NSSortDescriptor(key: "text", ascending: true)]
-        if let innerSections = catalog?.sections?.sortedArray(using: sortBy) as? [RTCatalog] {
-            for section in innerSections {
-                if section.isLink() {
-                    let viewModel = CatalogViewModel(catalog: section)
-                    sections.append(viewModel)
-                }
-                else if section.isAudio(), section.url?.count ?? 0 > 0 {
-                    section.audioCatalog = section.sectionCatalog
-                    let viewModel = AudioViewModel(audio: section)
-                    if viewModel.url?.absoluteString.count ?? 0 > 0 {
-                        audios.append(viewModel)
-                    }
-                }
-                else if section.isOnlyText() && section.title?.count ?? 0 > 0 {
-                    let viewModel = CatalogViewModel(catalog: section)
-                    sections.append(viewModel)
-                }
-            }
+        var all = [RTCatalog]()
+        if let sectionsOfCatalog = catalog?.sections?.array as? [RTCatalog] {
+            all.append(contentsOf: sectionsOfCatalog)
         }
+        if let audiosOfCatalog = catalog?.audios?.array as? [RTCatalog] {
+            all.append(contentsOf: audiosOfCatalog)
+        }
+        var sectionsTmp = [CatalogViewModel]()
+        var audiosTmp = [AudioViewModel]()
 
-        if let innerAudios = catalog?.audios?.sortedArray(using: sortBy) as? [RTCatalog] {
-            for audio in innerAudios {
-                if audio.isLink() {
-                    audio.sectionCatalog = audio.audioCatalog
-                    let viewModel = CatalogViewModel(catalog: audio)
-                    sections.append(viewModel)
-                }
-                else if audio.isAudio(), audio.url?.count ?? 0 > 0 {
-                    let viewModel = AudioViewModel(audio: audio)
-                    if viewModel.url?.absoluteString.count ?? 0 > 0 {
-                        audios.append(viewModel)
+        for element in all {
+            if element.image?.count ?? 0 > 0, element.url?.count ?? 0 > 0 {
+                if element.audioCatalog == nil {
+                    if element.sectionCatalog == nil {
+                        element.audioCatalog = catalog
+                    }
+                    else {
+                        element.audioCatalog = element.sectionCatalog
+                        element.sectionCatalog = nil
                     }
                 }
-                else if audio.isOnlyText() && audio.title?.count ?? 0 > 0 {
-                    let viewModel = CatalogViewModel(catalog: audio)
-                    sections.append(viewModel)
-                }
+                let viewModel = AudioViewModel(audio: element)
+                audiosTmp.append(viewModel)
             }
+            else {
+                if element.sectionCatalog == nil {
+                    if element.audioCatalog == nil {
+                        element.sectionCatalog = catalog
+                    }
+                    else {
+                        element.sectionCatalog = element.audioCatalog
+                        element.audioCatalog = nil
+                    }
+                }
+                let viewModel = CatalogViewModel(catalog: element)
+                sectionsTmp.append(viewModel)
+            }
+            sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
+                return c1.title < c2.title
+            })
+            audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
+                return c1.title < c2.title
+            })
         }
         
-        if sections.count == 0 && audios.count == 0 && urlString() == nil {
-            sections.append(CatalogViewModel())
-        }
+//        if sections.count == 0 && audios.count == 0 && urlString() == nil {
+//            sections.append(CatalogViewModel())
+//        }
         isBookmarked = checkIfBookmarked()
 
     }

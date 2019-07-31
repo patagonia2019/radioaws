@@ -216,7 +216,7 @@ class AudioViewController: UITableViewController {
             headerView?.actionBookmarkBlock = { model, isHighlighted in
                 (self.controller as? RadioTimeController)?.changeCatalogBookmark(section: section)
             }
-            headerView?.model = (controller as? RadioTimeController)?.model(inSection: section)
+            headerView?.model = (controller as? RadioTimeController)?.modelInstance(inSection: section)
             return headerView
         }
         else if controller is ElDesconciertoController {
