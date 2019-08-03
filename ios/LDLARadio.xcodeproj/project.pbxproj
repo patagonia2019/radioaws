@@ -66,6 +66,12 @@
 		9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD822ECE5AB00E418F2 /* Model+.swift */; };
 		9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
 		9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
+		983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */; };
+		983E01F022F459D2008370BA /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01EF22F459D2008370BA /* LabelViewModel.swift */; };
+		983E01F122F45C59008370BA /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01EF22F459D2008370BA /* LabelViewModel.swift */; };
+		983E01F722F5E845008370BA /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 703373A31E28343600E6D458 /* Settings.bundle */; };
+		983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01F822F5EBCC008370BA /* LaunchViewController.swift */; };
+		983E01FA22F5F06A008370BA /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
 		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
@@ -75,7 +81,6 @@
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
-		98D7148D22EF252300983818 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
@@ -151,6 +156,9 @@
 		9825BDD622EB758D00E418F2 /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		9825BDD822ECE5AB00E418F2 /* Model+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+.swift"; sourceTree = "<group>"; };
 		9825BDDB22ECEF4900E418F2 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
+		983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelProtocol.swift; sourceTree = "<group>"; };
+		983E01EF22F459D2008370BA /* LabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
+		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
 		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
 		986EBCC822EE49CF001AAF0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
@@ -311,6 +319,7 @@
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				983E01EF22F459D2008370BA /* LabelViewModel.swift */,
 				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
 				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
 			);
@@ -325,6 +334,7 @@
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				9808511222E6A1C10013B67C /* AudioViewController.swift */,
 				703373A91E291DF600E6D458 /* WebViewController.swift */,
+				983E01F822F5EBCC008370BA /* LaunchViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 			);
 			path = Views;
@@ -360,6 +370,7 @@
 		9825BDD522EB712B00E418F2 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */,
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
 				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
@@ -490,13 +501,14 @@
 			files = (
 				428139F91CE44B7300972264 /* Assets.xcassets in Resources */,
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
+				983E01F722F5E845008370BA /* Settings.bundle in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
-				98D7148D22EF252300983818 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
+				983E01FA22F5F06A008370BA /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,6 +628,7 @@
 			files = (
 				98195FBB22DBB944006E7961 /* RestApi.swift in Sources */,
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
+				983E01F022F459D2008370BA /* LabelViewModel.swift in Sources */,
 				9808511B22E6D7040013B67C /* City+.swift in Sources */,
 				9808514122EA49C60013B67C /* Data+.swift in Sources */,
 				986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */,
@@ -630,6 +643,7 @@
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
+				983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
@@ -639,6 +653,7 @@
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
+				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
@@ -669,6 +684,7 @@
 				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
 				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
+				983E01F122F45C59008370BA /* LabelViewModel.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,

@@ -22,18 +22,12 @@ class CatalogTableViewCell : UITableViewCell {
         didSet {
             iconView.text = model?.iconText()
             iconView.textColor = model?.iconColor
-            detailView.text = model?.title
-            detailView.textColor = model?.textColor
-            detailView.font = model?.font
+            detailView.text = model?.title.text
+            detailView.textColor = model?.title.color
+            detailView.font = model?.title.font
             selectionStyle = model?.selectionStyle ?? .none
             accessoryType = model?.accessoryType ?? .none
-//            if let isBookmarked = model?.isBookmarked {
-//                bookmarkButton.isHidden = false
-//                bookmarkButton.isHighlighted = isBookmarked
-//            }
-//            else {
-                bookmarkButton.isHidden = true
-//            }
+            bookmarkButton.isHidden = true
         }
     }
     

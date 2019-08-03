@@ -11,43 +11,46 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Catalog info
-struct CatalogViewModel {
+struct CatalogViewModel : BaseViewModelProtocol {
     
-    /// Some constants hardcoded here
-    public struct hardcode {
-        static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
-    }
-    
-    private var icon: Commons.symbols.FontAwesome = .indent
-    private var url: URL? = nil
-    var detail: String
-    let iconColor: UIColor = .darkGray
-    let textColor: UIColor = .black
-    var selectionStyle: UITableViewCell.SelectionStyle = .blue
-    let font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.XL)
-    var accessoryType : UITableViewCell.AccessoryType = .disclosureIndicator
-    var title: String
-    var tree: String
+    let icon: Commons.symbols.FontAwesome = .indent
+    let iconColor = UIColor.darkGray
+
+    var url: URL? = nil
+    static let cellheight : Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
+
+    var selectionStyle = UITableViewCell.SelectionStyle.blue
+    var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
+
+    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor(white: 0.4, alpha: 0.8), font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+
+    var isBookmarked: Bool? = nil
+    var title : LabelViewModel = LabelViewModel(text: "No more info", color: .black, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
+
+    var tree: String = "?"
+
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
-    var isExpanded : Bool = false
-    var isBookmarked: Bool? = nil
+
+    var isExpanded : Bool? = nil
 
     init() {
-        title = "No more info"
+        title.text = "No more info"
         tree = "?"
-        icon = .ban
-        detail = "No more detail"
+        detail.text = "No more detail"
         selectionStyle = .none
         accessoryType = .none
     }
 
     init(catalog: RTCatalog?) {
-        title = catalog?.titleOrText() ?? "No more info"
+        title.text = catalog?.titleAndText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
-        isExpanded = catalog?.isExpanded ?? false
+        isExpanded = catalog?.isExpanded
         
-        detail = (catalog?.isOnlyText() ?? false) ? (catalog?.text ?? catalog?.subtext ?? "No more detail") : "No more detail"
+        if let catalog = catalog,
+            let text = catalog.text ?? catalog.subtext {
+            detail.text = catalog.isOnlyText() ? text : ""
+        }
         if let queryUrl = catalog?.url,
             let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -64,7 +67,7 @@ struct CatalogViewModel {
         var audiosTmp = [AudioViewModel]()
 
         for element in all {
-            if element.image?.count ?? 0 > 0, element.url?.count ?? 0 > 0 {
+            if element.bitrate?.count ?? 0 > 0, element.url?.count ?? 0 > 0 {
                 if element.audioCatalog == nil {
                     if element.sectionCatalog == nil {
                         element.audioCatalog = catalog
@@ -91,10 +94,10 @@ struct CatalogViewModel {
                 sectionsTmp.append(viewModel)
             }
             sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
-                return c1.title < c2.title
+                return c1.title.text < c2.title.text
             })
             audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
-                return c1.title < c2.title
+                return c1.title.text < c2.title.text
             })
         }
         
@@ -106,9 +109,9 @@ struct CatalogViewModel {
     }
     
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
-        title = desconcierto?.date ?? ""
+        title.text = desconcierto?.date ?? ""
         tree = ""
-        detail = ""
+        detail.text = ""
         let queryUrl = "\(RestApi.Constants.Service.ldlaServer)/desconciertos/\(desconcierto?.id ?? 0).json"
         if let urlChecked = URL(string: queryUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -128,9 +131,9 @@ struct CatalogViewModel {
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
-        title = bookmark?.subTitle ?? ""
+        title.text = bookmark?.subTitle ?? ""
         tree = bookmark?.title ?? ""
-        detail = bookmark?.detail ?? ""
+        detail.text = bookmark?.detail ?? ""
         if let catalogUrl = bookmark?.url,
             let urlChecked = URL(string: catalogUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -143,7 +146,7 @@ struct CatalogViewModel {
     func checkIfBookmarked() -> Bool? {
         if audios.count > 0 {
             return audios.filter({ (audio) -> Bool in
-                return audio.isBookmarked
+                return audio.isBookmarked ?? false
             }).count == audios.count
         }
         else {

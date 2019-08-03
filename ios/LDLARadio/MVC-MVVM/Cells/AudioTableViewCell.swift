@@ -26,27 +26,26 @@ class AudioTableViewCell: UITableViewCell {
     
     var model : AudioViewModel? = nil {
         didSet {
-            if let detail = model?.detail, detail.count > 0 {
-                downloadStateLabel.text = detail
-                downloadStateLabel.textColor = model?.detailColor
-                downloadStateLabel.font = model?.detailFont
+            let labels = [downloadStateLabel, subtitleLabel, titleLabel]
+            let texts = [model?.detail, model?.subTitle, model?.title]
+            for i in 0..<3 {
+                if let text = texts[i]?.text, text.count > 0 {
+                    labels[i]?.isHidden = false
+                    labels[i]?.text = text
+                    labels[i]?.textColor = texts[i]?.color
+                    labels[i]?.font = texts[i]?.font
+                }
+                else {
+                    labels[i]?.isHidden = true
+                    if i == 0 {
+                        titleLabel.numberOfLines = 3
+                    }
+                    else if i == 1 {
+                        titleLabel.numberOfLines += 2
+                    }
+                }
             }
-            else {
-                downloadStateLabel.isHidden = true
-                titleLabel.numberOfLines = 3
-            }
-            if let subTitle = model?.subTitle, subTitle.count > 0 {
-                subtitleLabel.text = subTitle
-                subtitleLabel.textColor = model?.subTitleColor
-                subtitleLabel.font = model?.subTitleFont
-            }
-            else {
-                subtitleLabel.isHidden = true
-                titleLabel.numberOfLines += 2
-            }
-            titleLabel.text = model?.title
-            titleLabel.textColor = model?.titleColor
-            titleLabel.font = model?.titleFont
+
             logoView.image = model?.placeholderImage
             if let thumbnailUrl = model?.thumbnailUrl {
                 logoView.alpha = 0.5

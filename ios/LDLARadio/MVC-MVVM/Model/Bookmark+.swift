@@ -57,20 +57,20 @@ extension Bookmark : Creational {
 extension Bookmark {
     /// Using += as a overloading assignment operator for AudioViewModel's in Bookmark entities
     static func +=(bookmark: inout Bookmark, audioViewModel: AudioViewModel) {
-        bookmark.detail = audioViewModel.detail
+        bookmark.detail = audioViewModel.detail.text
         bookmark.id = audioViewModel.id
         bookmark.placeholder = audioViewModel.placeholderImageName
-        bookmark.subTitle = audioViewModel.subTitle
+        bookmark.subTitle = audioViewModel.subTitle.text
         bookmark.thumbnailUrl = audioViewModel.thumbnailUrl?.absoluteString
-        bookmark.title = audioViewModel.title
+        bookmark.title = audioViewModel.title.text
         bookmark.url = audioViewModel.url?.absoluteString
         bookmark.useWeb = audioViewModel.useWeb
     }
     
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
     static func +=(bookmark: inout Bookmark, catalogViewModel: CatalogViewModel) {
-        bookmark.detail = catalogViewModel.detail
-        bookmark.subTitle = catalogViewModel.title
+        bookmark.detail = catalogViewModel.detail.text
+        bookmark.subTitle = catalogViewModel.title.text
         bookmark.title = catalogViewModel.tree
         bookmark.url = catalogViewModel.urlString()
     }

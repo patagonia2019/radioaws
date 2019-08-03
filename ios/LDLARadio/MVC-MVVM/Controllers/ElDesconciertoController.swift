@@ -56,17 +56,17 @@ class ElDesconciertoController: BaseController {
     
     override func titleForHeader(inSection section: Int) -> String? {
         if section < models.count {
-            return models[section].title
+            return models[section].title.text
         }
         return nil
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.hardcode.cellheight)
+        return CGFloat(CatalogViewModel.cellheight)
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        return CGFloat(AudioViewModel.hardcode.cellheight)
+        return CGFloat(AudioViewModel.cellheight)
     }
     
     private func updateModels() {
@@ -75,7 +75,7 @@ class ElDesconciertoController: BaseController {
         }) {
             func isExpanded(des: Desconcierto?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    return catalog.isExpanded && des?.date == catalog.title
+                    return (catalog.isExpanded ?? false) && des?.date == catalog.title.text
                 }.count > 0
             }
             models = streams.map({ CatalogViewModel(desconcierto: $0, isAlreadyExpanded: isExpanded(des: $0)) }).filter({ (model) -> Bool in

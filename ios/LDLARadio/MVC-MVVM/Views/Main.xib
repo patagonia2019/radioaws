@@ -19,33 +19,17 @@
                     <rect key="frame" x="0.0" y="10" width="330" height="87"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="m8n-iJ-bl2">
-                            <rect key="frame" x="0.0" y="0.0" width="330" height="87"/>
+                            <rect key="frame" x="33" y="0.0" width="297" height="87"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dF4-BY-pyl">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="87"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="XBy-LK-99C"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="24"/>
-                                    <color key="tintColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
-                                    <state key="normal" title="-"/>
-                                    <state key="highlighted" title="+">
-                                        <color key="titleColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="7U4-Lx-xdq"/>
-                                    </connections>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7tK-mz-lq8">
-                                    <rect key="frame" x="64" y="0.0" width="190" height="87"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="221" height="87"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Y-oK-ri8">
-                                    <rect key="frame" x="258" y="0.0" width="72" height="87"/>
+                                    <rect key="frame" x="225" y="0.0" width="72" height="87"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="72" id="eas-g1-Aek">
                                             <variation key="heightClass=regular-widthClass=regular" constant="100"/>
@@ -59,13 +43,31 @@
                                 </button>
                             </subviews>
                         </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dF4-BY-pyl">
+                            <rect key="frame" x="0.0" y="0.0" width="264" height="87"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="24"/>
+                            <color key="tintColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="-"/>
+                            <state key="highlighted" title="+">
+                                <color key="titleColor" red="0.1764705882" green="0.41568627450000001" blue="0.43529411759999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="7U4-Lx-xdq"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="top" secondItem="bMn-wc-ut7" secondAttribute="top" id="Ccc-1y-ycc"/>
-                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="leading" secondItem="bMn-wc-ut7" secondAttribute="leading" id="Tiq-dV-9r0"/>
+                        <constraint firstItem="dF4-BY-pyl" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" multiplier="0.8" id="1mv-i3-Ui7"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="3ej-bv-GYU"/>
+                        <constraint firstItem="dF4-BY-pyl" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="6uD-NU-6WA"/>
+                        <constraint firstItem="dF4-BY-pyl" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="blN-k2-3ZW"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="dTb-Xx-mMe"/>
-                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="l5q-GT-u36"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" multiplier="1.1" id="irT-1B-nFL"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" multiplier="0.9" id="l5q-GT-u36"/>
+                        <constraint firstItem="dF4-BY-pyl" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" multiplier="0.8" id="w5Q-v3-Cy9"/>
                     </constraints>
                 </view>
             </subviews>

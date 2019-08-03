@@ -21,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // force english
         UserDefaults.standard.setValue(["en"], forKey: "AppleLanguages")
         RestApi.instance.context = CoreDataManager.instance.taskContext
-//        registerSettingsBundle()
+        #if DEBUG
+        registerSettingsBundle()
+        #endif
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
         SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.S))

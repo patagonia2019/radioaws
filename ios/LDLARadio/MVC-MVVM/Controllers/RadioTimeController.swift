@@ -47,7 +47,7 @@ class RadioTimeController: BaseController {
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
-                print ("\(subModel.title) \(subModel.isExpanded ? "-" : "+")")
+                print ("\(subModel.title) \((subModel.isExpanded ?? false) ? "-" : "+")")
                 if subModel.isExpanded == false {
                     return 0
                 }
@@ -82,19 +82,19 @@ class RadioTimeController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.hardcode.cellheight)
+        return CGFloat(CatalogViewModel.cellheight)
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if subModel is AudioViewModel {
-            return CGFloat(AudioViewModel.hardcode.cellheight)
+            return CGFloat(AudioViewModel.cellheight)
         }
-        return CGFloat(CatalogViewModel.hardcode.cellheight)
+        return CGFloat(CatalogViewModel.cellheight)
     }
     
     override func prompt() -> String {
-        return mainModel?.tree ?? mainModel?.title ?? "Browse"
+        return mainModel?.tree ?? mainModel?.title.text ?? "Browse"
     }
     
     override func privateRefresh(isClean: Bool = false,
@@ -106,7 +106,7 @@ class RadioTimeController: BaseController {
 
         var resetInfo = false
         if isClean {
-            if (mainModel == nil || mainModel?.title == "Browse") && mainCatalog?.title == "Browse" {
+            if (mainModel == nil || mainModel?.title.text == "Browse") && mainCatalog?.title == "Browse" {
                 resetInfo = true
             }
             else if (mainCatalog?.url ?? mainModel?.urlString()) != nil {
@@ -134,7 +134,7 @@ class RadioTimeController: BaseController {
             }
         }
         let url = mainCatalog?.url ?? mainModel?.urlString()
-        if url == nil && (mainModel != nil && mainModel?.title != "Browse") {
+        if url == nil && (mainModel != nil && mainModel?.title.text != "Browse") {
             lastUpdated = RTCatalog.lastUpdated()
             finishClosure?(nil)
             return
@@ -150,7 +150,7 @@ class RadioTimeController: BaseController {
                 return
             }
             
-            if (self.mainModel == nil || self.mainModel?.title == "Browse") && catalog?.title == "Browse" {
+            if (self.mainModel == nil || self.mainModel?.title.text == "Browse") && catalog?.title == "Browse" {
                 catalog?.url = RestApi.Constants.Service.rtServer
             }
             else {
@@ -239,7 +239,7 @@ class RadioTimeController: BaseController {
             return
         }
         let url = dbCatalog?.url ?? sectionModel?.urlString()
-        if url == nil && (sectionModel?.title != "Browse") {
+        if url == nil && (sectionModel?.title.text != "Browse") {
             lastUpdated = RTCatalog.lastUpdated()
             finishClosure?(nil)
             return
@@ -305,7 +305,7 @@ class RadioTimeController: BaseController {
     
 
     private func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
-        if mainCVM == nil || mainCVM?.title == "Browse" {
+        if mainCVM == nil || mainCVM?.title.text == "Browse" {
             let catalog = RTCatalog.search(byName: "Browse")
             if catalog?.url == nil {
                 catalog?.url = RestApi.Constants.Service.rtServer

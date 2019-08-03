@@ -13,68 +13,54 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Audio info
-struct AudioViewModel {
-    
-    /// Some constants hardcoded here
-    public struct hardcode {
-        static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
-    }
-    
-    /// title specification
-    var title: String = ""
-    var titleColor: UIColor = .darkGray
-    var titleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.L)
-    var titleHide: Bool = false
-    var titleLines: Int = 1
+struct AudioViewModel : BaseViewModelProtocol {
 
-    /// subtitle spec
-    var subTitle: String = ""
-    var subTitleColor: UIColor = .lightGray
-    var subTitleFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.M)
-    var subTitleHide: Bool = false
-    var subTitleLines: Int = 1
+    let icon = Commons.symbols.FontAwesome.music
+    let iconColor = UIColor.darkGray
 
-    /// detail spec
-    var detail: String = ""
-    var detailColor: UIColor = UIColor(white: 0.4, alpha: 0.8)
-    var detailFont: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.S)
-    var detailHide: Bool = false
-    var detailLines: Int = 1
+    var url: URL? = nil
+    
+    static let cellheight : Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
+    
+    var selectionStyle = UITableViewCell.SelectionStyle.blue
+    var accessoryType = UITableViewCell.AccessoryType.none
+    
+    var detail : LabelViewModel = LabelViewModel(text: "", color: UIColor(white: 0.4, alpha: 0.8), font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    
+    var isBookmarked: Bool? = nil
+    
+    var title = LabelViewModel()
+
+    var subTitle = LabelViewModel(text: "", color: .lightGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String? = nil
-    
-    /// url of the audio / stream / http /etc
-    var url: URL? = nil
     
     /// thumbnail url and placeholders
     var thumbnailUrl: URL? = nil
     var placeholderImageName: String? = nil
     var placeholderImage: UIImage? = nil
-    let selectionStyle: UITableViewCell.SelectionStyle = .none
     
     /// to know if the player will work or it's a webkit only play recommendation (like to play the stream in safari)
     var useWeb: Bool = false
     
-    var isBookmarked: Bool = false
-    
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
-        title = audio?.titleOrText() ?? ""
-        subTitle = audio?.subtext ?? ""
+        title.text = audio?.titleAndText() ?? ""
+        subTitle.text = audio?.subtext ?? ""
         if let bitrate = audio?.bitrate {
-            detail = "\(bitrate) Kbps"
+            detail.color = UIColor(white: 0.4, alpha: 0.8)
+            detail.text = "\(bitrate) Kbps"
         }
         else {
-            detail = ""
+            detail.text = ""
         }
         if let currentTrack = audio?.currentTrack,
-            subTitle != currentTrack {
-                detail = "\(detail) \(currentTrack)"
+            subTitle.text != currentTrack {
+                detail.text = "\(detail.text) \(currentTrack)"
         }
-        
-        
+
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -100,36 +86,36 @@ struct AudioViewModel {
         }
         var titles = [String]()
         if title.count > 0 {
-            titles.append(title)
+            titles.append(title.text)
         }
         if subTitle.count > 0 {
-            titles.append(subTitle)
+            titles.append(subTitle.text)
         }
         if detail.count > 0 {
-            titles.append(detail)
+            titles.append(detail.text)
         }
-        detail = ""
-        detailHide = true
+        detail.text = ""
+        detail.isHidden = true
         if titles.count == 2 {
-            title = titles[0]
-            subTitle = titles[1]
-            detailHide = true
-            titleLines = 2
+            title.text = titles[0]
+            subTitle.text = titles[1]
+            detail.isHidden = true
+            title.lines = 2
         }
         else if titles.count == 1 {
-            title = titles[0]
-            subTitle = ""
-            subTitleHide = true
-            titleLines = 3
+            title.text = titles[0]
+            subTitle.text = ""
+            subTitle.isHidden = true
+            title.lines = 3
         }
     }
     
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
         id = "\(stream?.id ?? 0)"
-        title = stream?.station?.name ?? ""
-        subTitle = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
-        detail = stream?.station?.tuningDial ?? ""
+        title.text = stream?.station?.name ?? ""
+        subTitle.text = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
+        detail.text = stream?.station?.tuningDial ?? ""
         
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -156,14 +142,14 @@ struct AudioViewModel {
         id = "\(desconcierto?.id ?? 0)"
         if let name = audioUrl?.components(separatedBy: "/").last?.removingPercentEncoding,
             name.contains("mp3") {
-            title = name
+            title.text = name
         }
         else {
-            title = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
+            title.text = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
             useWeb = true
         }
-        subTitle = ""
-        detail = ""
+        subTitle.text = ""
+        detail.text = ""
     
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -196,13 +182,13 @@ struct AudioViewModel {
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
-        detail = bookmark?.detail ?? ""
+        detail.text = bookmark?.detail ?? ""
         id = bookmark?.id
         placeholderImageName = bookmark?.placeholder
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-        subTitle = bookmark?.subTitle ?? ""
+        subTitle.text = bookmark?.subTitle ?? ""
         if let imageUrl = bookmark?.thumbnailUrl,
             let urlChecked = URL(string: imageUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
@@ -213,7 +199,7 @@ struct AudioViewModel {
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
         }
-        title = bookmark?.title ?? ""
+        title.text = bookmark?.title ?? ""
         useWeb = bookmark?.useWeb ?? false
         isBookmarked = true
     }
@@ -223,7 +209,7 @@ struct AudioViewModel {
     }
     
     static func height() -> Float {
-        return hardcode.cellheight
+        return cellheight
     }
     
     /// to know if the model is in bookmark
@@ -243,15 +229,15 @@ struct AudioViewModel {
 extension AudioViewModel {
     public mutating func update(station: RNAStation?, isAm: Bool) {
         id = station?.id
-        title = station?.firstName ?? ""
-        subTitle = station?.lastName ?? ""
-        detail = (isAm ? station?.dialAM : station?.dialFM) ?? ""
+        title.text = station?.firstName ?? ""
+        subTitle.text = station?.lastName ?? ""
+        detail.text = (isAm ? station?.dialAM : station?.dialFM) ?? ""
         let currentProgram = isAm ? station?.amCurrentProgram : station?.fmCurrentProgram
         if let programName = currentProgram?.programName {
             if detail.count > 0 {
-                detail += " "
+                detail.text += " "
             }
-            detail += programName
+            detail.text += programName
         }
         placeholderImageName = RNAStation.placeholderImageName
         if let imageName = placeholderImageName {

@@ -42,8 +42,15 @@ extension RTCatalog {
     }
     
     /// returns the title or text of the catalog
-    func titleOrText() -> String? {
-        return title ?? text
+    func titleAndText() -> String? {
+        var str = [String]()
+        if let text = text {
+            str.append(text)
+        }
+        if let title = title, !str.contains(title) {
+            str.append(title)
+        }
+        return str.joined(separator: ". ")
     }
     
     /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse > Europe > Radios"
@@ -52,7 +59,7 @@ extension RTCatalog {
         if let t0 = sectionCatalog?.titleTree() {
             str.append(t0 + "> ")
         }
-        if let t1 = titleOrText() {
+        if let t1 = titleAndText() {
             str.append(t1)
         }
 //        /// Does not allow more than 30 characters in prompt

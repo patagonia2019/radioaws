@@ -15,22 +15,28 @@ class HeaderTableView : UITableViewHeaderFooterView {
 
     @IBOutlet weak var expandButton: UIButton?
     @IBOutlet weak var titleLabel: UILabel?
-    @IBOutlet weak var bookmarkButton: UIButton!
+    @IBOutlet weak var bookmarkButton: UIButton?
     
     var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
     var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> ())? = nil
     
     var model : CatalogViewModel? {
         didSet {
-            titleLabel?.text = model?.title
+            titleLabel?.text = model?.title.text
             if let model = model {
-                expandButton?.isHighlighted = !model.isExpanded
-                if let isBookmarked = model.isBookmarked {
-                    bookmarkButton.isHidden = false
-                    bookmarkButton.isHighlighted = isBookmarked
+                if let isExpanded = model.isExpanded {
+                    expandButton?.isHidden = false
+                    expandButton?.isHighlighted = isExpanded
                 }
                 else {
-                    bookmarkButton.isHidden = true
+                    expandButton?.isHidden = false
+                }
+                if let isBookmarked = model.isBookmarked {
+                    bookmarkButton?.isHidden = false
+                    bookmarkButton?.isHighlighted = isBookmarked
+                }
+                else {
+                    bookmarkButton?.isHidden = true
                 }
             }
         }
@@ -38,9 +44,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        expandButton?.isHidden = true
         expandButton?.isHighlighted = false
-        bookmarkButton.isHidden = true
-        bookmarkButton.isHighlighted = false
+        bookmarkButton?.isHidden = true
+        bookmarkButton?.isHighlighted = false
     }
     
     static func setup(tableView: UITableView?) {
@@ -61,7 +68,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
 
     @IBAction func bookmarkAction(_ sender: UIButton?) {
         
-        if sender == bookmarkButton {
+        if let bookmarkButton = bookmarkButton  {
             bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
             actionBookmarkBlock?(model, bookmarkButton.isHighlighted)
         }

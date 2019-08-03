@@ -113,7 +113,7 @@ class BaseController : Controllable {
             else {
                 fatalError()
             }
-            model.isBookmarked = !model.isBookmarked
+            model.isBookmarked = !(model.isBookmarked ?? false)
             if useRefresh {
                 CoreDataManager.instance.save()
                 refresh(finishClosure: finishBlock)

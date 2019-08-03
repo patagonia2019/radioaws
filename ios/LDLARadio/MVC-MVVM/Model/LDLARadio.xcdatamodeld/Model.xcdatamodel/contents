@@ -278,7 +278,7 @@
                 <entry key="JSONKeyPath" value="image"/>
             </userInfo>
         </attribute>
-        <attribute name="isExpanded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isExpanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="item" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="item"/>

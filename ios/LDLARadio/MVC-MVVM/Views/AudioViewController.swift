@@ -299,7 +299,7 @@ class AudioViewController: UITableViewController {
             
             var nowPlayingInfo = [String : Any]()
             nowPlayingInfo[MPMediaItemPropertyTitle] = "Locos de la azotea"
-            playerViewControler.title = model.title
+            playerViewControler.title = model.title.text
             nowPlayingInfo[MPMediaItemPropertyTitle] = model.subTitle
             nowPlayingInfo[MPMediaItemPropertyArtist] = model.detail
             
