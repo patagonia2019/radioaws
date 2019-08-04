@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 import AVFoundation
 import JFCore
 
@@ -64,11 +65,21 @@ class StreamPlaybackManager: NSObject {
     override private init() {
         super.init()
         
+        let audioSession = AVAudioSession.sharedInstance()
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-            try AVAudioSession.sharedInstance().setActive(true)
+            try audioSession.setCategory(.multiRoute, options: .mixWithOthers)
+            try audioSession.setActive(true)
         }
-        catch let error as NSError { print(error) }
+        catch let error as NSError {
+            let error = JFError(code: Int(errno),
+                                desc: "Error",
+                                reason: "Audio Session failed",
+                                suggestion: "Please check the audio in your device",
+                                underError: error)
+            
+            delegate?.streamPlaybackManager(self, playerError: error)
+            return
+        }
 
         player.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
     }
@@ -100,7 +111,16 @@ class StreamPlaybackManager: NSObject {
         switch keyPath {
         case #keyPath(AVURLAsset.isPlayable):
             guard let urlAsset = urlAsset,
-                urlAsset.isPlayable == true else { return }
+                urlAsset.isPlayable == true else {
+                    let error = JFError(code: Int(errno),
+                                        desc: "Error",
+                                        reason: "Player cannot play",
+                                        suggestion: "Please check your internet connection",
+                                        underError: nil)
+                    
+                    delegate?.streamPlaybackManager(self, playerError: error)
+                    return
+            }
             
             playerItem = AVPlayerItem(asset: urlAsset)
             player.replaceCurrentItem(with: playerItem)

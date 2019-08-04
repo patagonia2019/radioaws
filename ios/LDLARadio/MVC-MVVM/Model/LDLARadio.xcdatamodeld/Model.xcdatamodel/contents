@@ -248,11 +248,6 @@
         </userInfo>
     </entity>
     <entity name="RTCatalog" representedClassName=".RTCatalog" parentEntity="RTNode" syncable="YES" codeGenerationType="class">
-        <attribute name="bitrate" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="bitrate"/>
-            </userInfo>
-        </attribute>
         <attribute name="currentTrack" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="current_track"/>
@@ -278,10 +273,25 @@
                 <entry key="JSONKeyPath" value="image"/>
             </userInfo>
         </attribute>
+        <attribute name="isDirect" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="is_direct"/>
+            </userInfo>
+        </attribute>
         <attribute name="isExpanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isHlsAdvanced" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="is_hls_advanced"/>
+            </userInfo>
+        </attribute>
         <attribute name="item" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="item"/>
+            </userInfo>
+        </attribute>
+        <attribute name="itemToken" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="item_token"/>
             </userInfo>
         </attribute>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES">
@@ -289,9 +299,39 @@
                 <entry key="JSONKeyPath" value="key"/>
             </userInfo>
         </attribute>
+        <attribute name="liveSeekStream" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="live_seek_stream"/>
+            </userInfo>
+        </attribute>
+        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="media_type"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nextAction" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="next_action"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nextGuideId" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="next_guide_id"/>
+            </userInfo>
+        </attribute>
         <attribute name="nowPlayingId" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="now_playing_id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="playerHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="player_height"/>
+            </userInfo>
+        </attribute>
+        <attribute name="playerWidth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="player_width"/>
             </userInfo>
         </attribute>
         <attribute name="playing" optional="YES" attributeType="String" syncable="YES">
@@ -304,14 +344,14 @@
                 <entry key="JSONKeyPath" value="playing_image"/>
             </userInfo>
         </attribute>
+        <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="position"/>
+            </userInfo>
+        </attribute>
         <attribute name="presetId" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="preset_id"/>
-            </userInfo>
-        </attribute>
-        <attribute name="reliability" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="reliability"/>
             </userInfo>
         </attribute>
         <attribute name="subtext" optional="YES" attributeType="String" syncable="YES">
@@ -468,7 +508,7 @@
         <element name="RNADial" positionX="-699.24609375" positionY="-153.71484375" width="128" height="30"/>
         <element name="RNAProgram" positionX="-214.1015625" positionY="248.921875" width="128" height="135"/>
         <element name="RNAStation" positionX="-859.12109375" positionY="96.828125" width="128" height="330"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="345"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="465"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>

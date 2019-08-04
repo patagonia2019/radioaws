@@ -15,13 +15,6 @@ import JFCore
 
 class AudioViewController: UITableViewController {
     // MARK: Properties
-    enum ControllerName : String {
-        case suggestion = "Suggestion"
-        case radioTime = "Radio Time"
-        case rna = "RNA"
-        case bookmark = "Bookmark"
-        case desconcierto = "El Desconcierto"
-    }
     var playerViewController: AVPlayerViewController?
     
     var radioController = RadioController()
@@ -29,43 +22,49 @@ class AudioViewController: UITableViewController {
     var rnaController = RNAController()
     var bookmarkController = BookmarkController()
     var desconciertoController = ElDesconciertoController()
+    var searchController = SearchController()
 
     var controller: BaseController {
         get {
-            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
+            let title = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
             switch title {
-                case ControllerName.suggestion.rawValue:
+                case AudioViewModel.ControllerName.suggestion.rawValue:
                     return radioController
-                case ControllerName.radioTime.rawValue:
+                case AudioViewModel.ControllerName.radioTime.rawValue:
                     return radioTimeController
-                case ControllerName.rna.rawValue:
+                case AudioViewModel.ControllerName.rna.rawValue:
                     return rnaController
-                case ControllerName.bookmark.rawValue:
+                case AudioViewModel.ControllerName.bookmark.rawValue:
                     return bookmarkController
-                case ControllerName.desconcierto.rawValue:
+                case AudioViewModel.ControllerName.desconcierto.rawValue:
                     return desconciertoController
+                case AudioViewModel.ControllerName.search.rawValue:
+                    return searchController
                 default:
                     fatalError()
                 }
         }
         set {
-            let title = self.navigationController?.tabBarItem.title ?? self.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
+            let title = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
 
             switch title {
-            case ControllerName.suggestion.rawValue:
+            case AudioViewModel.ControllerName.suggestion.rawValue:
                 radioController = newValue as! RadioController
                 break
-            case ControllerName.radioTime.rawValue:
+            case AudioViewModel.ControllerName.radioTime.rawValue:
                 radioTimeController = newValue as! RadioTimeController
                 break
-            case ControllerName.rna.rawValue:
+            case AudioViewModel.ControllerName.rna.rawValue:
                 rnaController = newValue as! RNAController
                 break
-            case ControllerName.bookmark.rawValue:
+            case AudioViewModel.ControllerName.bookmark.rawValue:
                 bookmarkController = newValue as! BookmarkController
                 break
-            case ControllerName.desconcierto.rawValue:
+            case AudioViewModel.ControllerName.desconcierto.rawValue:
                 desconciertoController = newValue as! ElDesconciertoController
+                break
+            case AudioViewModel.ControllerName.search.rawValue:
+                searchController = newValue as! SearchController
                 break
             default:
                 fatalError()
@@ -90,6 +89,10 @@ class AudioViewController: UITableViewController {
         tableView.remembersLastFocusedIndexPath = true
         HeaderTableView.setup(tableView: tableView)
 
+        if (controller is SearchController) {
+            refresh(isClean: true)
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,8 +106,9 @@ class AudioViewController: UITableViewController {
             playerViewController = nil
         }
         
-        refresh()
-        
+        if !(controller is SearchController) {            
+            refresh()
+        }
     }
     
     /// Refresh control to allow pull to refresh
@@ -155,12 +159,7 @@ class AudioViewController: UITableViewController {
             }
         }
         if let section = object as? CatalogViewModel {
-//            if section.sections.count == 0 {
-//                expand(model: section, section: indexPath.section)
-//            }
-//            else {
-                performSegue(withIdentifier: Commons.segue.catalog, sender: section)
-//            }
+            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
         }
 
     }
@@ -192,6 +191,36 @@ class AudioViewController: UITableViewController {
         refresh(isClean: true, refreshControl: refreshControl)
     }
     
+    @IBAction func refreshAction(_ sender: Any) {
+        refresh(isClean: true)
+    }
+    
+    @IBAction func searchAction(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Search", message: "What do you need to search?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addTextField { (textfield) in
+            textfield.placeholder = "Search"
+            textfield.autocorrectionType = .no
+            textfield.autocapitalizationType = .none
+        }
+        let search = UIAlertAction.init(title: "Search", style: .default) { action in
+            guard let textToSearch = alert.textFields?[0],
+                let text = textToSearch.text,
+                text.count > 0 else {
+                return
+            }
+            if self.controller is SearchController {
+                (self.controller as? SearchController)?.textToSearch = text
+                self.refresh(isClean: true)
+            }
+            else {
+                self.performSegue(withIdentifier: Commons.segue.search, sender: text)
+            }
+        }
+        alert.addAction(search)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     // MARK: - Table view data source
     
@@ -279,8 +308,12 @@ class AudioViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
-            segue.destination.tabBarItem.title = ControllerName.radioTime.rawValue
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
+        }
+        else if segue.identifier == Commons.segue.search {
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
+            (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
         }
         else if segue.identifier == Commons.segue.webView {
             guard let model = sender as? AudioViewModel,
@@ -298,14 +331,11 @@ class AudioViewController: UITableViewController {
             playerViewController = playerViewControler
             
             var nowPlayingInfo = [String : Any]()
-            nowPlayingInfo[MPMediaItemPropertyTitle] = "Locos de la azotea"
-            playerViewControler.title = model.title.text
-            nowPlayingInfo[MPMediaItemPropertyTitle] = model.subTitle
-            nowPlayingInfo[MPMediaItemPropertyArtist] = model.detail
-            
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = model.detail
+            nowPlayingInfo[MPMediaItemPropertyTitle] = model.playing
+            playerViewControler.title = model.playing
+            nowPlayingInfo[MPMediaItemPropertyArtist] = model.playing
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = model.playing
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
-            
             
             if let placeholderImage = UIImage.init(named: "Locos_de_la_azotea") {
                 nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (size) -> UIImage in

@@ -24,9 +24,15 @@ extension Stream : Modellable {
 extension Stream : Searchable {
     
     /// Returns the entities for a given name.
-    static func search(byName name: String?) -> Stream? {
-        return search(byUrl: name)
+    static func search(byName name: String?) -> [Stream]? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let name = name else { return nil }
+        let req = NSFetchRequest<Stream>(entityName: "Stream")
+        req.predicate = NSPredicate(format: "station.name == %@ OR station.name CONTAINS[cd] %@ OR station.city.name == %@ OR station.city.name CONTAINS[cd] %@ OR station.city.district.name == %@ OR station.city.district.name CONTAINS[cd] %@", name, name, name, name, name, name)
+        let array = try? context.fetch(req)
+        return array
     }
+
     
     /// Fetch an object by url
     static func search(byUrl url: String?) -> Stream? {

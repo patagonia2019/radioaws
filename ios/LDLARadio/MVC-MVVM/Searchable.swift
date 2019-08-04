@@ -11,7 +11,7 @@ import Foundation
 internal protocol Searchable : Modellable {
     
     /// Returns the entities for a given name.
-    static func search(byName name: String?) -> ModelType?
+    static func search(byName name: String?) -> [ModelType]?
     
     /// Fetch an object by url
     static func search(byUrl url: String?) -> ModelType?
@@ -29,7 +29,6 @@ extension Modellable where Self : RNAStation {
     
     internal static var placeholderImageName: String { get { return "RNA-256x256bb"} }
 }
-
 
 extension Modellable where Self : Stream {
     

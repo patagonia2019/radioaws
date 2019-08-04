@@ -10,6 +10,7 @@ import Foundation
 import JFCore
 
 class BaseController : Controllable {
+    
     var lastUpdated : Date? = nil
     var finishBlock: ((_ error: JFError?) -> ())? = nil
 
@@ -60,9 +61,7 @@ class BaseController : Controllable {
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         finishBlock = finishClosure
-        
-        startClosure?()
-        
+
         RestApi.instance.context?.performAndWait {
             self.privateRefresh(isClean: isClean, prompt: prompt, startClosure: startClosure, finishClosure: finishClosure)
         }
@@ -83,7 +82,7 @@ class BaseController : Controllable {
             return
         }
         for audio in model.audios {
-            changeAudioBookmark(model: audio, useRefresh: false, section: model.tree)
+            changeAudioBookmark(model: audio, useRefresh: false)
         }
         context.performAndWait {
             CoreDataManager.instance.save()
@@ -97,7 +96,7 @@ class BaseController : Controllable {
         changeCatalogBookmark(model: model(forSection: section, row: row) as? CatalogViewModel)
     }
 
-    func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true, section: String? = nil) {
+    func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
 
         guard let context = RestApi.instance.context else { fatalError() }
         guard var model = model else { return }
@@ -108,7 +107,6 @@ class BaseController : Controllable {
             }
             else if var bookmark = Bookmark.create() {
                 bookmark += model
-                bookmark.section = section
             }
             else {
                 fatalError()
@@ -116,7 +114,7 @@ class BaseController : Controllable {
             model.isBookmarked = !(model.isBookmarked ?? false)
             if useRefresh {
                 CoreDataManager.instance.save()
-                refresh(finishClosure: finishBlock)
+                refresh(isClean: false, finishClosure: finishBlock)
             }
         }
     }
@@ -124,6 +122,6 @@ class BaseController : Controllable {
     func changeAudioBookmark(at section: Int, row: Int) {
         changeAudioBookmark(model: model(forSection: section, row: row) as? AudioViewModel)
     }
+    
 }
-
 

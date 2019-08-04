@@ -64,4 +64,14 @@ extension Date {
         }
         return "Just now"
     }
+    
+    func year() -> String? {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.year], from: self, to: now)
+        if let year = components.year {
+            return "\(year)"
+        }
+        return nil
+    }
 }

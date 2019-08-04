@@ -33,6 +33,8 @@ struct CatalogViewModel : BaseViewModelProtocol {
     var audios = [AudioViewModel]()
 
     var isExpanded : Bool? = nil
+    
+    var section : String = ""
 
     init() {
         title.text = "No more info"
@@ -43,6 +45,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
     }
 
     init(catalog: RTCatalog?) {
+        section = AudioViewModel.ControllerName.radioTime.rawValue
         title.text = catalog?.titleAndText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
         isExpanded = catalog?.isExpanded
@@ -67,7 +70,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
         var audiosTmp = [AudioViewModel]()
 
         for element in all {
-            if element.bitrate?.count ?? 0 > 0, element.url?.count ?? 0 > 0 {
+            if element.isAudio(), element.url?.count ?? 0 > 0 {
                 if element.audioCatalog == nil {
                     if element.sectionCatalog == nil {
                         element.audioCatalog = catalog
@@ -109,6 +112,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
     }
     
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
+        section = AudioViewModel.ControllerName.desconcierto.rawValue
         title.text = desconcierto?.date ?? ""
         tree = ""
         detail.text = ""
@@ -131,6 +135,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
+        section = bookmark?.section ?? AudioViewModel.ControllerName.bookmark.rawValue
         title.text = bookmark?.subTitle ?? ""
         tree = bookmark?.title ?? ""
         detail.text = bookmark?.detail ?? ""

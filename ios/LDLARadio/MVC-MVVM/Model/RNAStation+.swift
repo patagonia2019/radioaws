@@ -25,22 +25,20 @@ extension RNAStation : Searchable {
         guard let url = url else { return nil }
         guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
-        req.predicate = NSPredicate(format: "url1 = %@", url)
+        req.predicate = NSPredicate(format: "url1 = %@ OR url2 = %@", url, url)
         let object = try? context.fetch(req).first
         return object
     }
-
+    
     /// Returns the streams for a given name.
-    static func search(byName name: String?) -> RNAStation? {
+    static func search(byName name: String?) -> [RNAStation]? {
         guard let context = RestApi.instance.context else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
-        req.predicate = NSPredicate(format: "lastName = %@", name)
-        req.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: false), NSSortDescriptor(key: "fristName", ascending: true)]
+        req.predicate = NSPredicate(format: "lastName = %@ OR lastName CONTAINS[cd] %@ OR firstName = %@ OR firstName CONTAINS[cd] %@", name, name, name, name)
         let array = try? context.fetch(req)
-        return array?.first
-    }    
+        return array
+    }
     
+
 }
-
-

@@ -26,10 +26,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
             if let model = model {
                 if let isExpanded = model.isExpanded {
                     expandButton?.isHidden = false
-                    expandButton?.isHighlighted = isExpanded
+                    expandButton?.isHighlighted = !isExpanded
                 }
                 else {
-                    expandButton?.isHidden = false
+                    expandButton?.isHidden = true
                 }
                 if let isBookmarked = model.isBookmarked {
                     bookmarkButton?.isHidden = false

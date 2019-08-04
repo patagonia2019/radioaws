@@ -71,7 +71,12 @@
 		983E01F122F45C59008370BA /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01EF22F459D2008370BA /* LabelViewModel.swift */; };
 		983E01F722F5E845008370BA /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 703373A31E28343600E6D458 /* Settings.bundle */; };
 		983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01F822F5EBCC008370BA /* LaunchViewController.swift */; };
-		983E01FA22F5F06A008370BA /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
+		983E01FB22F65E6E008370BA /* Modellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD322EB710B00E418F2 /* Modellable.swift */; };
+		983E01FC22F65E70008370BA /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
+		983E01FD22F65E73008370BA /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD622EB758D00E418F2 /* Downloadable.swift */; };
+		983E01FE22F65E79008370BA /* BaseViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */; };
+		983E01FF22F65EB1008370BA /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */; };
+		983E020122F6775E008370BA /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E020022F6775E008370BA /* SearchController.swift */; };
 		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
 		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
@@ -159,6 +164,7 @@
 		983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelProtocol.swift; sourceTree = "<group>"; };
 		983E01EF22F459D2008370BA /* LabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
 		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		983E020022F6775E008370BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
 		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
 		986EBCC822EE49CF001AAF0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
@@ -349,6 +355,7 @@
 				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
 				9808513C22E903730013B67C /* BookmarkController.swift */,
+				983E020022F6775E008370BA /* SearchController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -508,7 +515,6 @@
 				98D7149122EF938000983818 /* Main.xib in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
-				983E01FA22F5F06A008370BA /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,6 +641,7 @@
 				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
 				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
+				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
@@ -679,6 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				983E01FF22F65EB1008370BA /* CatalogViewModel.swift in Sources */,
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
 				9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */,
 				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
@@ -690,7 +698,11 @@
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
+				983E01FC22F65E70008370BA /* Searchable.swift in Sources */,
+				983E01FE22F65E79008370BA /* BaseViewModelProtocol.swift in Sources */,
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
+				983E01FD22F65E73008370BA /* Downloadable.swift in Sources */,
+				983E01FB22F65E6E008370BA /* Modellable.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
 				9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */,
 				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,

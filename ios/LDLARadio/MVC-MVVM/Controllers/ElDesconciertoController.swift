@@ -31,7 +31,7 @@ class ElDesconciertoController: BaseController {
     }
     
     override func prompt() -> String {
-        return "El Desconcierto"
+        return AudioViewModel.ControllerName.desconcierto.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {

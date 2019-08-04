@@ -52,7 +52,7 @@ class RNAController: BaseController {
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        return CGFloat(AudioViewModel.height())
+        return CGFloat(AudioViewModel.cellheight)
     }
     
     override func prompt() -> String {

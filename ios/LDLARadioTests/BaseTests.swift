@@ -191,7 +191,7 @@ class BaseTests: XCTestCase {
                     "type": "audio",
                     "text": "Drive home show-CHON-FM (Whitehorse, Canada)",
                     "URL": "http://opml.radiotime.com/Tune.ashx?id=s12582&sid=p334299&filter=l169",
-                    "bitrate": "160",
+//                    "bitrate": "160",
                     "guide_id": "s12582",
                     "subtext": "The Beat of a different Drummer",
                     "image": "http://cdn-radiotime-logos.tunein.com/s12582q.png",
@@ -199,7 +199,31 @@ class BaseTests: XCTestCase {
                 ]
             ]
         ]
-
+    }
+    
+    func audio1JSON() -> JSONDictionary {
+        return [
+            "head": [
+                    "status": "200"
+            ],
+            "body": [
+                    "element": "audio",
+                    "url": "http://radiobox2.omroep.nl/broadcaststream/file/404815.mp3",
+//                    "reliability": 100,
+//                    "bitrate": 192,
+                    "media_type": "mp3",
+                    "position": 0,
+                    "player_width": 0,
+                    "player_height": 0,
+                    "is_hls_advanced": "false",
+                    "live_seek_stream": "false",
+                    "guide_id": "e45012133",
+                    "item_token": "BhcXAAAAAAAAAAAAAAADoxjbBAEXAAA",
+                    "next_guide_id": "t100222107",
+                    "next_action": "play",
+                    "is_direct": true
+            ]
+        ]
     }
 
     func stationsJSON() -> JSONDictionary {
@@ -223,8 +247,8 @@ class BaseTests: XCTestCase {
                                         "type": "audio",
                                         "text": "1.FM- Top Hits 2000 Radio (Switzerland)",
                                         "URL": "http://opml.radiotime.com/Tune.ashx?id=s306583",
-                                        "bitrate": "45",
-                                        "reliability": "87",
+//                                        "bitrate": "45",
+//                                        "reliability": "87",
                                         "guide_id": "s306583",
                                         "subtext": "Jessie J Ft. B.O.B - Laserlight",
                                         "genre_id": "g2754",
@@ -240,8 +264,8 @@ class BaseTests: XCTestCase {
                                         "type": "audio",
                                         "text": "Hotmixradio 2000 (France)",
                                         "URL": "http://opml.radiotime.com/Tune.ashx?id=s216185",
-                                        "bitrate": "320",
-                                        "reliability": "66",
+//                                        "bitrate": "320",
+//                                        "reliability": "66",
                                         "guide_id": "s216185",
                                         "subtext": "POWTER - Bad Day",
                                         "genre_id": "g2754",
@@ -304,8 +328,8 @@ class BaseTests: XCTestCase {
                     "type": "audio",
                     "text": "FM Milenium",
                     "URL": "http://opml.radiotime.com/Tune.ashx?id=s26027&filter=g3",
-                    "bitrate": "128",
-                    "reliability": "91",
+//                    "bitrate": "128",
+//                    "reliability": "91",
                     "guide_id": "s26027",
                     "subtext": "DE PUNTÃN",
                     "genre_id": "g3",
@@ -322,8 +346,8 @@ class BaseTests: XCTestCase {
                             "type": "audio",
                             "text": "Radio Cooperativa",
                             "URL": "http://opml.radiotime.com/Tune.ashx?id=s101604&filter=g3",
-                            "bitrate": "64",
-                            "reliability": "99",
+//                            "bitrate": "64",
+//                            "reliability": "99",
                             "guide_id": "s101604",
                             "subtext": "Ultima Parada",
                             "genre_id": "g3",
@@ -340,8 +364,8 @@ class BaseTests: XCTestCase {
                             "type": "audio",
                             "text": "Radio FM Aire",
                             "URL": "http://opml.radiotime.com/Tune.ashx?id=s160002&filter=g3",
-                            "bitrate": "32",
-                            "reliability": "10",
+//                            "bitrate": "32",
+//                            "reliability": "10",
                             "guide_id": "s160002",
                             "subtext": "TemÃ¡tico",
                             "genre_id": "g3",
@@ -358,8 +382,8 @@ class BaseTests: XCTestCase {
                             "type": "audio",
                             "text": "Radio Rebelde",
                             "URL": "http://opml.radiotime.com/Tune.ashx?id=s171847&filter=g3",
-                            "bitrate": "24",
-                            "reliability": "98",
+//                            "bitrate": "24",
+//                            "reliability": "98",
                             "guide_id": "s171847",
                             "subtext": "Rebelde se nace, no se hace",
                             "genre_id": "g3",
@@ -374,8 +398,8 @@ class BaseTests: XCTestCase {
                             "type": "audio",
                             "text": "RSC Radio",
                             "URL": "http://opml.radiotime.com/Tune.ashx?id=s137841&filter=g3",
-                            "bitrate": "96",
-                            "reliability": "100",
+//                            "bitrate": "96",
+//                            "reliability": "100",
                             "guide_id": "s137841",
                             "subtext": "Te habla de cosas buenas",
                             "genre_id": "g3",

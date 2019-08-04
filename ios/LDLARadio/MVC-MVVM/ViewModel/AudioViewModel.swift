@@ -14,6 +14,24 @@ import AVFoundation
 
 // This view model will be responsible of render out information in the views for Audio info
 struct AudioViewModel : BaseViewModelProtocol {
+    
+    enum Section : Int {
+        case model0 = 0
+        case model1
+        case model2
+        case model3
+        case count
+    }
+    
+    enum ControllerName : String {
+        case suggestion = "Suggestion"
+        case radioTime = "Radio Time"
+        case rna = "RNA"
+        case bookmark = "Bookmark"
+        case desconcierto = "El Desconcierto"
+        case search = "Search"
+    }
+
 
     let icon = Commons.symbols.FontAwesome.music
     let iconColor = UIColor.darkGray
@@ -44,14 +62,18 @@ struct AudioViewModel : BaseViewModelProtocol {
     /// to know if the player will work or it's a webkit only play recommendation (like to play the stream in safari)
     var useWeb: Bool = false
     
+    var playing: String = ""
+    
+    var section : String = ""
+    
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
+        section = ControllerName.radioTime.rawValue
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
         title.text = audio?.titleAndText() ?? ""
         subTitle.text = audio?.subtext ?? ""
-        if let bitrate = audio?.bitrate {
-            detail.color = UIColor(white: 0.4, alpha: 0.8)
-            detail.text = "\(bitrate) Kbps"
+        if let playing = audio?.playing {
+            detail.text = playing
         }
         else {
             detail.text = ""
@@ -60,6 +82,8 @@ struct AudioViewModel : BaseViewModelProtocol {
             subTitle.text != currentTrack {
                 detail.text = "\(detail.text) \(currentTrack)"
         }
+        
+        playing = title.text + " " + subTitle.text + " " + detail.text
 
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -112,6 +136,7 @@ struct AudioViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
+        section = "Suggestion"
         id = "\(stream?.id ?? 0)"
         title.text = stream?.station?.name ?? ""
         subTitle.text = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
@@ -139,6 +164,7 @@ struct AudioViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
+        section = ControllerName.desconcierto.rawValue
         id = "\(desconcierto?.id ?? 0)"
         if let name = audioUrl?.components(separatedBy: "/").last?.removingPercentEncoding,
             name.contains("mp3") {
@@ -182,6 +208,7 @@ struct AudioViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
+        section = bookmark?.section ?? ControllerName.bookmark.rawValue
         detail.text = bookmark?.detail ?? ""
         id = bookmark?.id
         placeholderImageName = bookmark?.placeholder
@@ -207,11 +234,7 @@ struct AudioViewModel : BaseViewModelProtocol {
     func urlString() -> String? {
         return url?.absoluteString
     }
-    
-    static func height() -> Float {
-        return cellheight
-    }
-    
+        
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool {
         return Bookmark.search(byUrl: url?.absoluteString) != nil
@@ -228,6 +251,7 @@ struct AudioViewModel : BaseViewModelProtocol {
 /// RNA Station method for update
 extension AudioViewModel {
     public mutating func update(station: RNAStation?, isAm: Bool) {
+        section = ControllerName.rna.rawValue
         id = station?.id
         title.text = station?.firstName ?? ""
         subTitle.text = station?.lastName ?? ""

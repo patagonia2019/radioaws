@@ -22,4 +22,6 @@ protocol BaseViewModelProtocol {
     var title : LabelViewModel { get set }
     var detail : LabelViewModel { get set }
     var isBookmarked: Bool? { get set }
+    var section : String { get set }
 }
+

@@ -99,7 +99,6 @@ class BookmarkTests: BaseTests {
             XCTAssertTrue(audio?.isAudio() ?? false)
             
             audio?.subtext = nil
-            audio?.bitrate = nil
             audio?.currentTrack = nil
             
             let audioViewModel2 = AudioViewModel(audio: audio)

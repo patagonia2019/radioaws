@@ -21,14 +21,14 @@ extension RTCatalog : Modellable {
 extension RTCatalog : Searchable {
     
     /// Returns the streams for a given name.
-    static func search(byName name: String?) -> RTCatalog? {
+    static func search(byName name: String?) -> [RTCatalog]? {
         guard let context = RestApi.instance.context else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<RTCatalog>(entityName: "RTCatalog")
-        req.predicate = NSPredicate(format: "title = %@", name)
+        req.predicate = NSPredicate(format: "title = %@ OR title CONTAINS[cd] %@ OR text = %@ OR text CONTAINS[cd] %@ OR currentTrack = %@ OR currentTrack CONTAINS[cd] %@ OR currentTrack = %@ OR currentTrack CONTAINS[cd] %@", name, name, name, name, name, name, name, name)
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]
         let array = try? context.fetch(req)
-        return array?.first
+        return array
     }
 
 }
@@ -87,7 +87,7 @@ extension RTCatalog {
     
     /// Determine if the catalog is about audio information
     func isAudio() -> Bool {
-        return type == "audio"
+        return type == "audio" || element == "audio" || formats == "mp3"
     }
     
     /// Determine if the catalog is about link information
@@ -95,12 +95,6 @@ extension RTCatalog {
         return type == nil || type == "link"
     }
     
-
-    /// Fetch an object by title
-    static func fetch(title: String) -> RTCatalog? {
-        return search(byName: title)
-    }
-
     /// Fetch an object by url
     static func search(byUrl url: String?) -> RTCatalog? {
         guard let context = RestApi.instance.context else { fatalError() }

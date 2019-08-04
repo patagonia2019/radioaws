@@ -31,13 +31,13 @@ extension Bookmark : Searchable {
     }
     
     /// Returns the streams for a given name.
-    static func search(byName name: String?) -> Bookmark? {
+    static func search(byName name: String?) -> [Bookmark]? {
         guard let context = RestApi.instance.context else { fatalError() }
         guard let name = name else { return nil }
         let req = NSFetchRequest<Bookmark>(entityName: "Bookmark")
-        req.predicate = NSPredicate(format: "title = %@", name)
+        req.predicate = NSPredicate(format: "title = %@ OR title CONTAINS[cd] %@ OR subTitle = %@ OR subTitle CONTAINS[cd] %@ OR detail = %@ OR detail CONTAINS[cd] %@", name, name, name, name, name, name)
         let array = try? context.fetch(req)
-        return array?.first
+        return array
     }
     
 }
@@ -65,6 +65,7 @@ extension Bookmark {
         bookmark.title = audioViewModel.title.text
         bookmark.url = audioViewModel.url?.absoluteString
         bookmark.useWeb = audioViewModel.useWeb
+        bookmark.section = audioViewModel.section
     }
     
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
@@ -73,6 +74,7 @@ extension Bookmark {
         bookmark.subTitle = catalogViewModel.title.text
         bookmark.title = catalogViewModel.tree
         bookmark.url = catalogViewModel.urlString()
+        bookmark.section = catalogViewModel.section
     }
     
 }

@@ -98,7 +98,7 @@ class RadioTimeController: BaseController {
     }
     
     override func privateRefresh(isClean: Bool = false,
-                 prompt: String = "Radio Time",
+                 prompt: String = AudioViewModel.ControllerName.radioTime.rawValue,
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
@@ -303,10 +303,38 @@ class RadioTimeController: BaseController {
         }
     }
     
+    static func search(text: String = "",
+                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if text.count == 0 {
+            finishClosure?(nil)
+            return
+        }
+        
+        guard let text2Search = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
+            finishClosure?(nil)
+            return
+        }
+        let query = "/Search.ashx?query=\(text2Search)&formats=ogg,aac,mp3"
+        RestApi.instance.requestRT(usingQuery: query, type: RTCatalog.self) { error, catalog in
+            
+            if error != nil {
+                DispatchQueue.main.async {
+                    finishClosure?(error)
+                }
+                return
+            }
+            CoreDataManager.instance.save()
+            
+            DispatchQueue.main.async {
+                finishClosure?(error)
+            }
+        }
+    }
 
     private func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
         if mainCVM == nil || mainCVM?.title.text == "Browse" {
-            let catalog = RTCatalog.search(byName: "Browse")
+            let catalog = RTCatalog.search(byName: "Browse")?.first
             if catalog?.url == nil {
                 catalog?.url = RestApi.Constants.Service.rtServer
             }

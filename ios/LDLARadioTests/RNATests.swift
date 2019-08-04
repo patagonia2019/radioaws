@@ -118,13 +118,8 @@ class RNATests: BaseTests {
             
             XCTAssertNil(error)
             XCTAssertNotNil(band)
-            XCTAssertEqual(band?.programs?.count, 17)
+            XCTAssertEqual(band?.programs?.count, 21)
             
-            let program = band?.programs?.first(where: { (program) -> Bool in
-                return (program as? RNAProgram)?.name == "Sonia Ferraris"
-            }) as? RNAProgram
-            XCTAssertEqual(program?.reporter, "Trasnoche Nacional")
-
             expect.fulfill()
         }
         waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
