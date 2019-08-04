@@ -104,8 +104,19 @@ class BaseController : Controllable {
         context.performAndWait {
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
                 bookmark.remove()
+                Analytics.logFunction(function: "bookmark",
+                                      parameters: ["action": "-" as AnyObject,
+                                                   "title": model.title.text as AnyObject,
+                                                   "section": model.section as AnyObject,
+                                                   "url": model.urlString() as AnyObject])
+
             }
             else if var bookmark = Bookmark.create() {
+                Analytics.logFunction(function: "bookmark",
+                                      parameters: ["action": "+" as AnyObject,
+                                                   "title": model.title.text as AnyObject,
+                                                   "section": model.section as AnyObject,
+                                                   "url": model.urlString() as AnyObject])
                 bookmark += model
             }
             else {

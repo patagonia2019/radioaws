@@ -63,6 +63,7 @@ class WebViewController: BaseViewController, UIWebViewDelegate {
                             reason: "Player failed",
                             suggestion: "Please check your internet connection",
                             underError: error as NSError?)
+        Analytics.logError(error: jferror)
         showAlert(error: jferror)
     }
     

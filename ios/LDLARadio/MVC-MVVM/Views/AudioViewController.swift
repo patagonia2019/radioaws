@@ -26,7 +26,7 @@ class AudioViewController: UITableViewController {
 
     var controller: BaseController {
         get {
-            let title = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
+            let title = titleForController()
             switch title {
                 case AudioViewModel.ControllerName.suggestion.rawValue:
                     return radioController
@@ -45,7 +45,7 @@ class AudioViewController: UITableViewController {
                 }
         }
         set {
-            let title = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
+            let title = titleForController()
 
             switch title {
             case AudioViewModel.ControllerName.suggestion.rawValue:
@@ -111,6 +111,11 @@ class AudioViewController: UITableViewController {
         }
     }
     
+    private func titleForController() -> String? {
+        let titleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
+        return titleName
+    }
+    
     /// Refresh control to allow pull to refresh
     private func addRefreshControl() {
         let refreshControl = UIRefreshControl()
@@ -135,6 +140,7 @@ class AudioViewController: UITableViewController {
         }) { (error) in
             if let error = error {
                 self.showAlert(error: error)
+                Analytics.logError(error: error)
             }
             refreshControl?.endRefreshing()
             SwiftSpinner.hide()
@@ -153,12 +159,24 @@ class AudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             if audio.useWeb {
+                Analytics.logFunction(function: "play",
+                                      parameters: ["isWeb": "YES" as AnyObject,
+                                                   "audio": audio.title.text as AnyObject,
+                                                   "section": audio.section as AnyObject,
+                                                   "url": audio.urlString() as AnyObject,
+                                                    "controller": titleForController() as AnyObject])
                 performSegue(withIdentifier: Commons.segue.webView, sender: audio)
             } else {
+                Analytics.logFunction(function: "play",
+                                      parameters: ["isWeb": "NO" as AnyObject,
+                                                   "audio": audio.title.text as AnyObject,
+                                                   "section": audio.section as AnyObject,
+                                                   "url": audio.urlString() as AnyObject,
+                                                   "controller": titleForController() as AnyObject])
                 performSegue(withIdentifier: Commons.segue.player, sender: audio)
             }
         }
-        if let section = object as? CatalogViewModel {
+        else if let section = object as? CatalogViewModel {
             performSegue(withIdentifier: Commons.segue.catalog, sender: section)
         }
 
@@ -174,6 +192,7 @@ class AudioViewController: UITableViewController {
             }, finishClosure: { (error) in
                 if let error = error {
                     self.showAlert(error: error)
+                    Analytics.logError(error: error)
                 }
                 SwiftSpinner.hide()
                 self.reloadData()
@@ -188,6 +207,10 @@ class AudioViewController: UITableViewController {
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        Analytics.logFunction(function: "refresh",
+                              parameters: ["method": "control" as AnyObject,
+                                           "controller": titleForController() as AnyObject])
+
         refresh(isClean: true, refreshControl: refreshControl)
     }
     
@@ -392,6 +415,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
  */
 extension AudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
+        Analytics.logError(error: error)
         showAlert(error: error)
     }
     

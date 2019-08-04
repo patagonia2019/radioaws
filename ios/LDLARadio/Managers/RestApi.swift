@@ -132,6 +132,7 @@ class RestApi {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
         let request = self.alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\n")
+        Analytics.logFunction(function: "request", parameters: ["url": url as AnyObject])
         request.responseInsert(context: context, type: T.self) { response in
             context.performAndWait({
                 print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")

@@ -11,6 +11,7 @@ end
 def iosPods
   pod 'AlamofireImage'
   pod 'SwiftSpinner'
+  pod 'Firebase/Analytics'
 end
 
 target 'LDLARadio' do

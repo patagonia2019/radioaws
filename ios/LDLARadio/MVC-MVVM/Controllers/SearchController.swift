@@ -103,6 +103,7 @@ class SearchController: BaseController {
             finishClosure?(nil)
             return
         }
+    
         
         finishBlock = finishClosure
         
@@ -175,6 +176,10 @@ class SearchController: BaseController {
         }
         
         if isClean {
+            
+            Analytics.logFunction(function: "search",
+                                  parameters: ["text": textToSearch as AnyObject])
+            
             RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
                 RestApi.instance.context?.performAndWait {
                     closure()

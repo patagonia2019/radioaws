@@ -29,5 +29,13 @@ class AboutViewController: BaseViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Analytics.logFunction(function: "about",
+                              parameters: ["action": "check" as AnyObject])
+
+    }
+    
 }
 

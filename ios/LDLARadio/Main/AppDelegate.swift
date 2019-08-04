@@ -20,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // force english
         UserDefaults.standard.setValue(["en"], forKey: "AppleLanguages")
+        
+        FirebaseManager.start()
+    
+
         RestApi.instance.context = CoreDataManager.instance.taskContext
         #if DEBUG
         registerSettingsBundle()
@@ -34,12 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        Analytics.start()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        Analytics.stop()
     }
     
     private func registerSettingsBundle() {

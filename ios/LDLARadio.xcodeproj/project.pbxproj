@@ -45,6 +45,8 @@
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
 		980AA85D22F6B43400A30AAC /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
+		980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */; };
+		980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980AA86022F6BA4100A30AAC /* FirebaseManager.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -145,6 +147,8 @@
 		9808514322EAC0350013B67C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javier.fuchs.about.pdf; sourceTree = "<group>"; };
 		9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = com.mobilepatagonia.LDLARadio.sqlite3; sourceTree = "<group>"; };
+		980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		980AA86022F6BA4100A30AAC /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 				9808511E22E6DA950013B67C /* StreamListManager.swift */,
 				708AAD9F1E27B586004D88C3 /* StationListManager.swift */,
 				703373A71E284C1800E6D458 /* CityListManager.swift */,
+				980AA86022F6BA4100A30AAC /* FirebaseManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -364,6 +369,7 @@
 		9824386E22DD1A0A00B418F9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */,
 				9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */,
 				9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */,
 				70D4EC031E304A9B008DE753 /* common.css */,
@@ -511,6 +517,7 @@
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				983E01F722F5E845008370BA /* Settings.bundle in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
+				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
@@ -563,18 +570,22 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireCoreData.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -646,6 +657,7 @@
 				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
+				980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
