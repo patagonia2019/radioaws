@@ -67,8 +67,7 @@ extension Date {
     
     func year() -> String? {
         let calendar = Calendar.current
-        let now = Date()
-        let components = calendar.dateComponents([.year], from: self, to: now)
+        let components = calendar.dateComponents([.year], from: Date())
         if let year = components.year {
             return "\(year)"
         }

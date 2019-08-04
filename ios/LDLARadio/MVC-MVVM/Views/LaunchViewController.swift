@@ -21,6 +21,6 @@ class LaunchViewController : UIViewController {
             else {
                 fatalError()
         }
-        versionLabel.text = "Los Locos de la Azotea v\(bundleShortVersion).b\(bundleVersion). Copyright © \(Date().year() ?? "2019") Mobile Patagonia. All rights reserved."
+        versionLabel.text = "Copyright © \(Date().year() ?? "2019") Mobile Patagonia. All rights reserved - v\(bundleShortVersion).b\(bundleVersion)"
     }
 }
