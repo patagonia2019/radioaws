@@ -20,21 +20,25 @@ class CatalogTableViewCell : UITableViewCell {
 
     var model : CatalogViewModel? = nil {
         didSet {
-            iconView.text = model?.iconText()
-            iconView.textColor = model?.iconColor
-            detailView.text = model?.title.text
-            detailView.textColor = model?.title.color
-            detailView.font = model?.title.font
-            selectionStyle = model?.selectionStyle ?? .none
-            accessoryType = model?.accessoryType ?? .none
+            if let model = model {
+                iconView.text = model.iconText()
+                iconView.textColor = model.iconColor
+                detailView.text = model.title.text
+                detailView.textColor = model.title.color
+                detailView.font = model.title.font
+                selectionStyle = model.selectionStyle
+                accessoryType = model.accessoryType
+            }
             bookmarkButton.isHidden = true
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.text = "\(Commons.symbols.showAwesome(icon: .ban))"
+        iconView.text = "\(Commons.symbols.showAwesome(icon: .battery_empty))"
+        iconView.textColor = .red
         detailView.text = "No Info"
+        detailView.textColor = .red
         selectionStyle = .none
         accessoryType = .none
         bookmarkButton.isHidden = true
@@ -51,6 +55,4 @@ class CatalogTableViewCell : UITableViewCell {
             fatalError()
         }
     }
-    
-
 }

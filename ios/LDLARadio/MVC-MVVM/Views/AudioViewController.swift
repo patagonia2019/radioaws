@@ -134,9 +134,7 @@ class AudioViewController: UITableViewController {
         
         controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
-                            RestApi.instance.context?.performAndWait {
-                                SwiftSpinner.show(Quote.randomQuote())
-                            }
+                            SwiftSpinner.show(Quote.randomQuote())
         }) { (error) in
             if let error = error {
                 self.showAlert(error: error)
@@ -214,6 +212,10 @@ class AudioViewController: UITableViewController {
         refresh(isClean: true, refreshControl: refreshControl)
     }
     
+    @IBAction func shareAction(_ sender: Any) {
+        share(indexPath: nil, controller: controller, tableView: tableView)
+    }
+
     @IBAction func refreshAction(_ sender: Any) {
         refresh(isClean: true)
     }
@@ -224,6 +226,7 @@ class AudioViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addTextField { (textfield) in
             textfield.placeholder = "Search"
+            textfield.text = (self.controller as? SearchController)?.textToSearch
             textfield.autocorrectionType = .no
             textfield.autocapitalizationType = .none
         }
@@ -305,6 +308,49 @@ class AudioViewController: UITableViewController {
         return indexPath
     }
 
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        var actions = [UITableViewRowAction]()
+        
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        var isBookmarked : Bool? = false
+        if let audio = object as? AudioViewModel {
+            let playAction = UITableViewRowAction(style: .normal, title: "🎵\nPlay") { (action, indexPath) in
+                self.play(indexPath: indexPath)
+            }
+            playAction.backgroundColor = .red
+            actions.append(playAction)
+            
+            isBookmarked = audio.isBookmarked
+        }
+
+        if let section = object as? CatalogViewModel {
+            isBookmarked = section.isBookmarked
+        }
+        if let isBookmarked = isBookmarked {
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "- 💔\nBook" : "+ 💝\nBook") { (action, indexPath) in
+                let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
+                if let audio = object as? AudioViewModel {
+                    self.controller.changeAudioBookmark(model: audio)
+                }
+                if let section = object as? CatalogViewModel {
+                    self.controller.changeCatalogBookmark(model: section)
+                }
+            }
+            bookmarkAction.backgroundColor = isBookmarked ? .green : .blue
+            actions.append(bookmarkAction)
+        }
+        
+        let shareAction = UITableViewRowAction(style: .normal, title: "📨\nShare") { (action, indexPath) in
+            self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
+        }
+        shareAction.backgroundColor = .orange
+        actions.append(shareAction)
+        
+        return actions
+        
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
@@ -322,6 +368,13 @@ class AudioViewController: UITableViewController {
             return cell
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+        cell.model = nil
+        if controller is BookmarkController {
+            cell.detailTextLabel?.text = "You should tap on the Apple button to get some."
+        }
+        else if controller is SearchController {
+            cell.detailTextLabel?.text = "Please try again with another search term."
+        }
         return cell
     }
         
@@ -405,7 +458,6 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
@@ -429,3 +481,4 @@ extension AudioViewController: AssetPlaybackDelegate {
         playerViewController.player = player
     }
 }
+

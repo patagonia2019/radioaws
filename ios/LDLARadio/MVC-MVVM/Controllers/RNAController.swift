@@ -11,8 +11,8 @@ import JFCore
 
 class RNAController: BaseController {
     
-    var amModels = [AudioViewModel]()
-    var fmModels = [AudioViewModel]()
+    private var amModels = [AudioViewModel]()
+    private var fmModels = [AudioViewModel]()
 
     override init() { }
     
@@ -33,10 +33,8 @@ class RNAController: BaseController {
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
-        if section == 0 {
-            return amModels.count
-        }
-        return fmModels.count
+        let count : Int = (section == 0) ? amModels.count : fmModels.count
+        return count > 0 ? count : 1
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -79,12 +77,9 @@ class RNAController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Radio Nacional Argentina",
-                                 startClosure: (() -> Void)? = nil,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil)
     {
-        
-        startClosure?()
-        
+                
         if isClean == false {
             updateModels()
             if fmModels.count > 0 && amModels.count > 0 {

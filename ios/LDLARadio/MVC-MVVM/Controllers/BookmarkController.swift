@@ -15,7 +15,7 @@ class BookmarkController: BaseController {
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "BookmarkController.didRefreshNotification")
         
-    var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
+    private var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
 
     override var useRefresh : Bool {
         return false
@@ -28,11 +28,22 @@ class BookmarkController: BaseController {
         return "Bookmarks"
     }
     
+    private func count() -> Int {
+        var count : Int = 0
+        for n in 0..<AudioViewModel.Section.count.rawValue {
+            count += models[n].count
+        }
+        return count
+    }
+
     override func numberOfSections() -> Int {
-        return AudioViewModel.Section.count.rawValue
+        return count() > 0 ? AudioViewModel.Section.count.rawValue : 1
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
+        if count() == 0 && section == 0 {
+            return 1
+        }
         if section < models.count {
             return models[section].count
         }
@@ -50,23 +61,27 @@ class BookmarkController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        if section < models.count, models[section].count > 0 {
-            return CGFloat(CatalogViewModel.cellheight)
+        if count() == 0 {
+            if section == 0 {
+                return CGFloat(CatalogViewModel.cellheight)
+            }
+            else {
+                return 0
+            }
         }
-        return 0
-    }
-
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
         if section < models.count {
             let modelSection = models[section]
-            if row < modelSection.count {
-                return CGFloat(AudioViewModel.cellheight)
+            if modelSection.count > 0 {
+                return CGFloat(CatalogViewModel.cellheight)
             }
         }
         return 0
     }
-    
+
     override func titleForHeader(inSection section: Int) -> String? {
+        if count() == 0 && section == 0 {
+            return "No bookmarks"
+        }
         if section < models.count {
             let n = models[section].count
             if n == 0 {
@@ -75,27 +90,36 @@ class BookmarkController: BaseController {
             var str = [String]()
             str.append(models[section].first?.section ?? "")
             if n > 1 {
-                str.append("\(n) audios")
+                str.append("\(n) Items")
             }
             else {
-                str.append("Only one audio")
+                str.append("1 Item")
             }
             return str.joined(separator: ": ")
         }
         return nil
     }
-
+    
+    override func heightForRow(at section: Int, row: Int) -> CGFloat {
+        if count() == 0 && section == 0 {
+            return CGFloat(AudioViewModel.cellheight)
+        }
+        if section < models.count {
+            let modelSection = models[section]
+            if row < modelSection.count {
+                return CGFloat(AudioViewModel.cellheight)
+            }
+        }
+        return 0
+    }
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 startClosure: (() -> Void)? = nil,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
 
         finishBlock = finishClosure
-        
-        startClosure?()
-        
+                
         RestApi.instance.context?.performAndWait {
             let all = Bookmark.all()
             

@@ -36,7 +36,9 @@ class Commons {
         // Use https://fontawesome.com/cheatsheet?from=io
         enum FontAwesome : Int {
             case angry = 0xf556
+            case apple_alt = 0xf5d1
             case ban = 0xf05e
+            case battery_empty = 0xf244
             case cat = 0xf6be
             case certificate = 0xf0a3
             case chevron_up = 0xf077

@@ -21,7 +21,7 @@ extension Controllable where Self : RadioTimeController {
 
 class RadioTimeController: BaseController {
     
-    var mainModel : CatalogViewModel? = nil
+    fileprivate var mainModel : CatalogViewModel? = nil
 
     override init() { }
 
@@ -44,6 +44,7 @@ class RadioTimeController: BaseController {
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
+        var count : Int = 0
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
@@ -51,11 +52,13 @@ class RadioTimeController: BaseController {
                 if subModel.isExpanded == false {
                     return 0
                 }
-                return subModel.sections.count + subModel.audios.count
+                count = subModel.sections.count + subModel.audios.count
             }
-            return model.audios.count
+            else {
+                count = model.audios.count
+            }
         }
-        return 0
+        return count > 0 ? count : 1
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -99,7 +102,6 @@ class RadioTimeController: BaseController {
     
     override func privateRefresh(isClean: Bool = false,
                  prompt: String = AudioViewModel.ControllerName.radioTime.rawValue,
-                 startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)

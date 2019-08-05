@@ -61,19 +61,19 @@ class BaseController : Controllable {
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         finishBlock = finishClosure
-
+        
+        
         RestApi.instance.context?.performAndWait {
-            self.privateRefresh(isClean: isClean, prompt: prompt, startClosure: startClosure, finishClosure: finishClosure)
+            startClosure?()
+            self.privateRefresh(isClean: isClean, prompt: prompt, finishClosure: finishClosure)
         }
     }
 
     internal func privateRefresh(isClean: Bool = false,
                                 prompt: String,
-                                startClosure: (() -> Void)? = nil,
                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
-        startClosure?()
-        finishClosure?(nil)
+        fatalError()
     }
 
     func changeCatalogBookmark(model: CatalogViewModel?) {

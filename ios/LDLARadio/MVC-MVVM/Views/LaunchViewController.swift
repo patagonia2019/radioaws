@@ -39,6 +39,9 @@ class LaunchViewController : UIViewController {
                               parameters: ["version": "v\(bundleShortVersion).b\(bundleVersion)" as AnyObject])
         
     }
-    
+   
+    @IBAction func shareAction(_ sender: Any) {
+        share(indexPath: nil)
+    }
 
 }

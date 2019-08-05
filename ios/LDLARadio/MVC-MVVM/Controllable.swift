@@ -30,6 +30,6 @@ protocol Controllable {
     
     func prompt() -> String
     
-    func privateRefresh(isClean: Bool, prompt: String, startClosure: (() -> Void)?, finishClosure: ((_ error: JFError?) -> Void)?)
+    func privateRefresh(isClean: Bool, prompt: String, finishClosure: ((_ error: JFError?) -> Void)?)
 }
 

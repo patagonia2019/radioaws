@@ -68,8 +68,14 @@ _SwiftSpinner is an extra beautiful activity indicator with plain and bold style
 #### Endpoints 
 
 * The Rails server with Suggestions.
+
 * Radio Time: it's the RestAPI used by [TuneIn](https://tunein.com)
+
 * Radio Nacional Argentina
+
+* Archive Org: [JSON](https://archive.org/help/json.php)
+_Using [JSON api example](https://archive.org/advancedsearch.php?q=harry+potter+audiobook&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw)_
+
 
 ## Proposal: 
 
@@ -100,7 +106,7 @@ In Swift, we have reference types(Classes) and value types (Structs, Tuples, enu
 _Enable an entity to be used outside the defining module (target). You typically use open or public access when specifying the public interface to a framework._
 
 * Public. ...
-_Like open access level, public access level enable an entity to be used outside the defining module (target). But open access level allows us to subclass it from another module where in public access level, we can only subclass or overridde it from within the module it is defined_
+_Like open access level, public access level enable an entity to be used outside the defining module (target). But open access level allows us to subclass it from another module where in public access level, we can only subclass or override it from within the module it is defined_
 `
 //module 1
 public func A(){}
@@ -142,9 +148,9 @@ Use the SDK. Keeping and use only the features the code actually needs.
 
 It is an object graph and persistence framework provided by Apple in the macOS and iOS operating systems. It was introduced in Mac OS X 10.4 Tiger and iOS with iPhone SDK 3.0. It allows data organized by the relational entity–attribute model to be serialized into XML, binary, or SQLite stores. In this aplication the persistence is done using SQLite.
 
-### Code testint
+### Code Testing
 
-Automatically exercise the features of the application and check the results, like JSON parsing and test asynchronous calls for REST API using expectation.
+Automatically exercise the features of the application and check the results, like JSON parsing and test asynchronous calls for REST API using expectations.
 Code testing serves as great documentation, confidence to constantly refactor, architecture health, perspective on the API design, but it is not realistic to achieve high coverage.
 Here there are 4 classes to make Unit Testing: __LDLARadioTests__, __RTCatalogTests__, __RNATests__ and __BookmarkTests__. They inherit setup and json helpers from __BaseTests__ class.
 

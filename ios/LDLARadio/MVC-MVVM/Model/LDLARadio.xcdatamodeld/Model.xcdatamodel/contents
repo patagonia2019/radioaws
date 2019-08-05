@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ArchiveDoc" representedClassName="ArchiveDoc" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="avg_rating" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="backup_location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="btih" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downloads" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="item_size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mediatype" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicdate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="docs" inverseEntity="ArchiveResponse" syncable="YES"/>
+        <userInfo>
+            <entry key="key" value="description"/>
+        </userInfo>
+    </entity>
+    <entity name="ArchiveMeta" representedClassName="ArchiveMeta" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader" syncable="YES"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="meta" inverseEntity="ArchiveResponse" syncable="YES"/>
+    </entity>
+    <entity name="ArchiveResponse" representedClassName="ArchiveResponse" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="numFound" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="start" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="docs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ArchiveDoc" inverseName="response" inverseEntity="ArchiveDoc" syncable="YES"/>
+        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="response" inverseEntity="ArchiveMeta" syncable="YES"/>
+    </entity>
+    <entity name="ArchiveResponseHeader" representedClassName="ArchiveResponseHeader" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="qTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta" syncable="YES"/>
+    </entity>
     <entity name="Bookmark" representedClassName=".Bookmark" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
@@ -512,5 +546,9 @@
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>
+        <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="75"/>
+        <element name="ArchiveResponseHeader" positionX="-657" positionY="-99" width="128" height="90"/>
+        <element name="ArchiveResponse" positionX="-648" positionY="-81" width="128" height="105"/>
+        <element name="ArchiveDoc" positionX="-639" positionY="-72" width="128" height="255"/>
     </elements>
 </model>

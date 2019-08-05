@@ -14,8 +14,14 @@ class SearchController: BaseController {
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "SearchController.didRefreshNotification")
     
-    var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
-    var textToSearch = String()
+    private var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
+    private var textList = [String]()
+    private var isAlreadyDone : Bool = false
+    var textToSearch = String() {
+        willSet {
+            isAlreadyDone = textList.contains(textToSearch)
+        }
+    }
     
     override var useRefresh : Bool {
         return true
@@ -25,18 +31,31 @@ class SearchController: BaseController {
     }
 
     init(withText text: String?) {
-        textToSearch = text ?? ""
+        if let text = text, text.count > 0 {
+            textToSearch = text
+        }
     }
     
     override func prompt() -> String {
         return "Search: \(textToSearch)"
     }
     
+    private func count() -> Int {
+        var count : Int = 0
+        for n in 0..<AudioViewModel.Section.count.rawValue {
+            count += models[n].count
+        }
+        return count
+    }
+    
     override func numberOfSections() -> Int {
-        return AudioViewModel.Section.count.rawValue
+        return count() > 0 ? AudioViewModel.Section.count.rawValue : 1
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
+        if count() == 0 && section == 0 {
+            return 1
+        }
         if section < models.count {
             return models[section].count
         }
@@ -54,6 +73,14 @@ class SearchController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
+        if count() == 0 {
+            if section == 0 {
+                return CGFloat(CatalogViewModel.cellheight)
+            }
+            else {
+                return 0
+            }
+        }
         if section < models.count {
             let modelSection = models[section]
             if modelSection.count > 0 {
@@ -64,6 +91,9 @@ class SearchController: BaseController {
     }
     
     override func titleForHeader(inSection section: Int) -> String? {
+        if count() == 0 && section == 0 {
+            return "No results for \(textToSearch)"
+        }
         if section < models.count {
             let n = models[section].count
             if n == 0 {
@@ -72,10 +102,10 @@ class SearchController: BaseController {
             var str = [String]()
             str.append(models[section].first?.section ?? "")
             if n > 1 {
-                str.append("\(n) audios")
+                str.append("\(n) Items")
             }
             else {
-                str.append("Only one audio")
+                str.append("1 Item")
             }
             return str.joined(separator: ": ")
         }
@@ -83,6 +113,9 @@ class SearchController: BaseController {
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
+        if count() == 0 && section == 0 {
+            return CGFloat(AudioViewModel.cellheight)
+        }
         if section < models.count {
             let modelSection = models[section]
             if row < modelSection.count {
@@ -94,7 +127,6 @@ class SearchController: BaseController {
     
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 startClosure: (() -> Void)? = nil,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
@@ -106,9 +138,7 @@ class SearchController: BaseController {
     
         
         finishBlock = finishClosure
-        
-        startClosure?()
-        
+                
         RestApi.instance.context?.performAndWait {
             if let rnaStations = RNAStation.search(byName: textToSearch), rnaStations.count > 0 {
                 let amModels = rnaStations.filter({ (station) -> Bool in
@@ -175,16 +205,18 @@ class SearchController: BaseController {
             finishClosure?(nil)
         }
         
-        if isClean {
+        if isClean && isAlreadyDone == false {
             
             Analytics.logFunction(function: "search",
                                   parameters: ["text": textToSearch as AnyObject])
             
             RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
                 RestApi.instance.context?.performAndWait {
+                    self.textList.append(self.textToSearch)
                     closure()
                 }
             })
+            
         }
         else {
             closure()

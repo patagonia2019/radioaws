@@ -22,7 +22,7 @@ extension Controllable where Self : ElDesconciertoController {
 
 class ElDesconciertoController: BaseController {
     
-    var models = [CatalogViewModel]()
+    fileprivate var models = [CatalogViewModel]()
     
     override init() { }
     
@@ -35,13 +35,15 @@ class ElDesconciertoController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
+        var count : Int = 0
         if section < models.count {
             let model = models[section]
-            if model.isExpanded == true {
-                return model.audios.count
+            if model.isExpanded == false {
+                return 0
             }
+            count = model.audios.count
         }
-        return 0
+        return count > 0 ? count : 1
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -87,11 +89,8 @@ class ElDesconciertoController: BaseController {
     
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 startClosure: (() -> Void)? = nil,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
-        startClosure?()
-        
+                
         var resetInfo = false
         if isClean {
             resetInfo = true

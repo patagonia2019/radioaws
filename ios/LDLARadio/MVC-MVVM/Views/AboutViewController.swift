@@ -37,5 +37,9 @@ class AboutViewController: BaseViewController {
 
     }
     
+    @IBAction func shareAction(_ sender: Any) {
+        share(indexPath: nil)
+    }
+
 }
 

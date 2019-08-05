@@ -11,7 +11,7 @@ import JFCore
 
 class RadioController: BaseController {
     
-    var models = [AudioViewModel]()
+    private var models = [AudioViewModel]()
     
     override init() { }
 
@@ -23,7 +23,8 @@ class RadioController: BaseController {
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
-        return models.count
+        let count : Int = models.count
+        return count > 0 ? count : 1
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -54,11 +55,8 @@ class RadioController: BaseController {
     
     override func privateRefresh(isClean: Bool = false,
                                 prompt: String,
-                                startClosure: (() -> Void)? = nil,
                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
-        startClosure?()
-        
+                
         var resetInfo = false
         if isClean {
             resetInfo = true
