@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JFCore
 
 extension UIViewController {
     func share(indexPath: IndexPath?, controller: BaseController? = nil, tableView: UITableView? = nil) {
@@ -23,7 +24,7 @@ extension UIViewController {
                 text.append("Play \"\(audio.title.text)\" Enjoy! ;)")
                 let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell
                 image = cell?.logoView.image ?? audio.placeholderImage
-                shareUrl = audio.url
+                shareUrl = audio.urlAsset()?.url
             }
             else if let section = object as? CatalogViewModel {
                 text.append("Play \"\(section.title.text)\" Enjoy! ;)")
@@ -39,6 +40,10 @@ extension UIViewController {
         }
         let items: [Any] = [img, text.joined(separator: " "), url]
         
+        Analytics.logFunction(function: "share",
+                              parameters: ["text": text as AnyObject,
+                                           "url": url.absoluteString as AnyObject])
+
         let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = view
         
