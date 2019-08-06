@@ -67,7 +67,7 @@ class StreamPlaybackManager: NSObject {
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(.multiRoute, options: .mixWithOthers)
+            try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowBluetooth, .allowAirPlay, .allowBluetoothA2DP, .defaultToSpeaker, .duckOthers])
             try audioSession.setActive(true)
         }
         catch let error as NSError {

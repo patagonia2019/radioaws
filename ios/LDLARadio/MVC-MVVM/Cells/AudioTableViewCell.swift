@@ -21,7 +21,6 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
     weak var delegate: AudioTableViewCellDelegate?
     
     var model : AudioViewModel? = nil {
@@ -74,20 +73,10 @@ class AudioTableViewCell: UITableViewCell {
         
         logoView.image = nil
         downloadProgressView.isHidden = true
-        playButton.isHighlighted = false
         bookmarkButton.isHighlighted = false
 
     }
     
-    @IBAction func playAction(_ sender: UIButton?) {
-        if sender == playButton {
-            delegate?.audioTableViewCell(self, didPlay: true)
-        }
-        else {
-            fatalError()
-        }
-    }
-
     @IBAction func bookmarkAction(_ sender: UIButton?) {
     
         if sender == bookmarkButton {
@@ -107,5 +96,4 @@ protocol AudioTableViewCellDelegate: class {
 
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
 
-    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
 }

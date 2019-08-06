@@ -409,6 +409,7 @@ class AudioViewController: UITableViewController {
             var nowPlayingInfo = [String : Any]()
             nowPlayingInfo[MPMediaItemPropertyTitle] = model.playing
             playerViewControler.title = model.playing
+            playerViewControler.updatesNowPlayingInfoCenter = false
             nowPlayingInfo[MPMediaItemPropertyArtist] = model.playing
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = model.playing
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
@@ -445,10 +446,6 @@ class AudioViewController: UITableViewController {
  Extend `AudioViewController` to conform to the `AudioTableViewCellDelegate` protocol.
  */
 extension AudioViewController: AudioTableViewCellDelegate {
-    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        play(indexPath: indexPath)
-    }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }

@@ -20,6 +20,9 @@ Available version 1.0 in Apple Store [https://apps.apple.com/us/app/los-locos-de
 
 * [Data Model in Core Data Graph](LDLA-Model.jpg)
 
+* Screenshots: 
+
+
 
 #### External resources
 
@@ -199,23 +202,6 @@ _"Many client-specific interfaces are better than one general-purpose interface.
 _One should "depend upon abstractions, [not] concretions."_
 #### Dependency injection principle
 
-
-## Code Reuse
-### Inheritance
-_Inheritance is the mechanism of basing an object or class upon another object (prototype-based inheritance) or class (class-based inheritance), retaining similar implementation_
-### Package principles
-_Package principles are a way of organizing classes in larger systems to make them more organized and manageable_
-### Design Patterns
-### Frameworks
-### High-order Functions
-### Retrocomputing
-### Computer security
-### Components
-### Outside computers
-### single source of truth (SSOT)
-_The practice of structuring information models and associated data schema such that every data element is mastered (or edited) in only one place_
-### NIH Syndorme
-_"NIH syndrome" as the tendency towards reinventing the wheel, here for example is included the `SwiftSpinner` framework to show a nice spinner instead of create animations and write a lot of innecessary code when you already find that in framework available by MIT or GPL license.
 
 # MIT License
 

@@ -14,7 +14,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     static let reuseIdentifier: String = "HeaderTableView"
 
     @IBOutlet weak var expandButton: UIButton?
-    @IBOutlet weak var titleLabel: UILabel?
+    @IBOutlet weak var titleButton: UIButton?
     @IBOutlet weak var bookmarkButton: UIButton?
     
     var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
@@ -22,7 +22,9 @@ class HeaderTableView : UITableViewHeaderFooterView {
     
     var model : CatalogViewModel? {
         didSet {
-            titleLabel?.text = model?.title.text
+            titleButton?.setTitle(model?.title.text, for: .normal)
+            titleButton?.setTitleColor(model?.title.color, for: .normal)
+            titleButton?.titleLabel?.font = model?.title.font
             if let model = model {
                 if let isExpanded = model.isExpanded {
                     expandButton?.isHidden = false
@@ -44,6 +46,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        titleButton?.setTitle("", for: .normal)
         expandButton?.isHidden = true
         expandButton?.isHighlighted = false
         bookmarkButton?.isHidden = true
