@@ -14,14 +14,17 @@ class BookmarkController: BaseController {
     
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "BookmarkController.didRefreshNotification")
-        
+    
+    let cloudKit: CloudKitManager = CloudKitManager.instance
+
     private var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
 
     override var useRefresh : Bool {
-        return false
+        return true
     }
 
     override init() {
+        super.init()
     }
     
     override func prompt() -> String {
@@ -121,50 +124,71 @@ class BookmarkController: BaseController {
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
-        models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
-
-        finishBlock = finishClosure
-                
-        RestApi.instance.context?.performAndWait {
-            let all = Bookmark.all()
+        let closure = {
+          
+            self.models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
             
-            if let suggestions = all?.filter({ (bookmark) -> Bool in
-                return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
-            }), suggestions.count > 0 {
-                let sugModels = suggestions.map({ AudioViewModel(bookmark: $0) })
-                if sugModels.count > 0 {
-                    models[AudioViewModel.Section.model0.rawValue].append(contentsOf: sugModels)
+            
+            RestApi.instance.context?.performAndWait {
+                let all = Bookmark.all()
+                
+                if let suggestions = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
+                }), suggestions.count > 0 {
+                    let sugModels = suggestions.map({ AudioViewModel(bookmark: $0) })
+                    if sugModels.count > 0 {
+                        self.models[AudioViewModel.Section.model0.rawValue].append(contentsOf: sugModels)
+                    }
+                }
+                
+                if let rnas = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
+                }), rnas.count > 0 {
+                    let rnaModels = rnas.map({ AudioViewModel(bookmark: $0) })
+                    if rnaModels.count > 0 {
+                        self.models[AudioViewModel.Section.model1.rawValue].append(contentsOf: rnaModels)
+                    }
+                }
+                
+                if let rts = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
+                }), rts.count > 0 {
+                    let rtsModels = rts.map({ AudioViewModel(bookmark: $0) })
+                    if rtsModels.count > 0 {
+                        self.models[AudioViewModel.Section.model2.rawValue].append(contentsOf: rtsModels)
+                    }
+                }
+                
+                if let eds = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
+                }), eds.count > 0 {
+                    let edsModels = eds.map({ AudioViewModel(bookmark: $0) })
+                    if edsModels.count > 0 {
+                        self.models[AudioViewModel.Section.model3.rawValue].append(contentsOf: edsModels)
+                    }
+                }
+                finishClosure?(nil)
+            }
+        }
+       
+        if isClean {
+            
+            RestApi.instance.context?.performAndWait {
+                Bookmark.clean()
+                cloudKit.refresh { (error) in
+                    if error != nil {
+                        CoreDataManager.instance.rollback()
+                    } else {
+                        CoreDataManager.instance.save()
+                    }
+                    closure()
                 }
             }
-
-            if let rnas = all?.filter({ (bookmark) -> Bool in
-                return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
-            }), rnas.count > 0 {
-                let rnaModels = rnas.map({ AudioViewModel(bookmark: $0) })
-                if rnaModels.count > 0 {
-                    models[AudioViewModel.Section.model1.rawValue].append(contentsOf: rnaModels)
-                }
-            }
-
-            if let rts = all?.filter({ (bookmark) -> Bool in
-                return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
-            }), rts.count > 0 {
-                let rtsModels = rts.map({ AudioViewModel(bookmark: $0) })
-                if rtsModels.count > 0 {
-                    models[AudioViewModel.Section.model2.rawValue].append(contentsOf: rtsModels)
-                }
-            }
-
-            if let eds = all?.filter({ (bookmark) -> Bool in
-                return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
-            }), eds.count > 0 {
-                let edsModels = eds.map({ AudioViewModel(bookmark: $0) })
-                if edsModels.count > 0 {
-                    models[AudioViewModel.Section.model3.rawValue].append(contentsOf: edsModels)
-                }
-            }
-            finishClosure?(nil)
+        }
+        else {
+            closure()
         }
     }
-
 }
+
+

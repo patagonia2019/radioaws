@@ -59,7 +59,7 @@ extension Model {
     }
     
     /// Remove current instance of the entity
-    func remove() {
+    @objc func remove() {
         guard let context = RestApi.instance.context else { fatalError() }
         context.delete(self)
     }

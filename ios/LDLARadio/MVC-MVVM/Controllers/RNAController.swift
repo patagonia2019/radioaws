@@ -91,6 +91,7 @@ class RNAController: BaseController {
             }
         }
         
+        
         RestApi.instance.context?.performAndWait {
             
             RNABand.clean()

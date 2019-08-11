@@ -43,7 +43,6 @@
 		9808514122EA49C60013B67C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
-		980AA85D22F6B43400A30AAC /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */; };
 		980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980AA86022F6BA4100A30AAC /* FirebaseManager.swift */; };
 		980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */; };
@@ -87,6 +86,9 @@
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
+		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
+		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
@@ -179,6 +181,10 @@
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
+		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
+		98B53CE622FFAB8D003F50EE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
 		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
 		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
@@ -192,6 +198,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */,
 				7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */,
 				DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */,
 			);
@@ -226,6 +233,7 @@
 				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
+				98B53CE622FFAB8D003F50EE /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -254,6 +262,7 @@
 		428139F01CE44B7300972264 /* LDLARadio */ = {
 			isa = PBXGroup;
 			children = (
+				98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */,
 				428139F81CE44B7300972264 /* Assets.xcassets */,
 				428139FD1CE44B7300972264 /* Info.plist */,
 				9808512F22E8B2730013B67C /* Main */,
@@ -271,6 +280,7 @@
 				424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */,
 				987DA0B622D6465600F34BD3 /* RestApi.swift */,
 				9808511E22E6DA950013B67C /* StreamListManager.swift */,
+				98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */,
 				708AAD9F1E27B586004D88C3 /* StationListManager.swift */,
 				703373A71E284C1800E6D458 /* CityListManager.swift */,
 				980AA86022F6BA4100A30AAC /* FirebaseManager.swift */,
@@ -281,6 +291,7 @@
 		7073F3B51E155C05004DBB59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				98B53CE222FFA106003F50EE /* CloudKit.framework */,
 				7073F3B61E155C05004DBB59 /* AVFoundation.framework */,
 				EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */,
 				BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */,
@@ -479,7 +490,19 @@
 						LastSwiftUpdateCheck = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.Siri = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -526,7 +549,6 @@
 				98D7149122EF938000983818 /* Main.xib in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
-				980AA85D22F6B43400A30AAC /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -652,6 +674,7 @@
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
 				983E01F022F459D2008370BA /* LabelViewModel.swift in Sources */,
 				9808511B22E6D7040013B67C /* City+.swift in Sources */,
+				98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */,
 				9808514122EA49C60013B67C /* Data+.swift in Sources */,
 				986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */,
 				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
@@ -675,6 +698,7 @@
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
+				98B53CE722FFAB8D003F50EE /* User.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
 				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
@@ -879,6 +903,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
@@ -903,6 +928,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 27XTSJS68A;

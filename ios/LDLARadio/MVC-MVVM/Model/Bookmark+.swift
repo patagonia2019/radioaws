@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 
 extension Bookmark : Modellable {
     
@@ -16,6 +17,11 @@ extension Bookmark : Modellable {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "title", ascending: true)]) as? [Bookmark]
     }
     
+    override func remove() {
+        CloudKitManager.instance.remove(bookmark: self)
+        super.remove()
+    }
+
 }
 
 extension Bookmark : Searchable {
@@ -52,6 +58,32 @@ extension Bookmark : Creational {
         let bookmark = NSManagedObject(entity: entity, insertInto: context) as? Bookmark
         return bookmark
     }
+    
+    static func create(record: CKRecord) -> Bookmark? {
+        
+        var bookmark : Bookmark? = Bookmark.search(byUrl: record["url"])
+
+        if bookmark == nil {
+            bookmark = Bookmark.create()
+        }
+        
+        if bookmark == nil {
+            return nil
+        }
+        
+        bookmark?.detail = record["detail"] as? String
+        bookmark?.id = record["id"] as? String
+        bookmark?.placeholder = record["placeholder"] as? String
+        bookmark?.subTitle = record["subTitle"] as? String
+        bookmark?.thumbnailUrl = record["thumbnailUrl"] as? String
+        bookmark?.title = record["title"] as? String
+        bookmark?.url = record["url"] as? String
+        bookmark?.section = record["section"] as? String
+        bookmark?.recordID = record.recordID.recordName
+
+        return bookmark
+    }
+
 }
 
 extension Bookmark {
@@ -64,8 +96,9 @@ extension Bookmark {
         bookmark.thumbnailUrl = audioViewModel.thumbnailUrl?.absoluteString
         bookmark.title = audioViewModel.title.text
         bookmark.url = audioViewModel.url?.absoluteString
-        bookmark.useWeb = audioViewModel.useWeb
         bookmark.section = audioViewModel.section
+        
+        CloudKitManager.instance.save(bookmark: bookmark)
     }
     
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
@@ -75,6 +108,8 @@ extension Bookmark {
         bookmark.title = catalogViewModel.tree
         bookmark.url = catalogViewModel.urlString()
         bookmark.section = catalogViewModel.section
+        
+        CloudKitManager.instance.save(bookmark: bookmark)
     }
     
 }

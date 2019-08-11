@@ -140,9 +140,6 @@ class SearchController: BaseController {
             return
         }
     
-        
-        finishBlock = finishClosure
-                
         RestApi.instance.context?.performAndWait {
             if let rnaStations = RNAStation.search(byName: textToSearch), rnaStations.count > 0 {
                 let amModels = rnaStations.filter({ (station) -> Bool in

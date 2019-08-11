@@ -66,9 +66,6 @@ class AudioViewModel : BaseViewModelProtocol {
     var placeholderImageName: String? = nil
     var placeholderImage: UIImage? = nil
     var image: UIImage? = nil
-
-    /// to know if the player will work or it's a webkit only play recommendation (like to play the stream in safari)
-    var useWeb: Bool = false
     
     var playing: String = ""
     
@@ -97,13 +94,11 @@ class AudioViewModel : BaseViewModelProtocol {
         }
 
         if let imageUrl = audio?.image,
-            let urlChecked = URL(string: imageUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
         if let audioUrl = audio?.url,
-            let urlChecked = URL(string: audioUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
@@ -128,13 +123,11 @@ class AudioViewModel : BaseViewModelProtocol {
         }
         
         if let imageUrl = stream?.station?.imageUrl,
-            let urlChecked = URL(string: imageUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
         if let audioUrl = stream?.url,
-            let urlChecked = URL(string: audioUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
@@ -159,13 +152,11 @@ class AudioViewModel : BaseViewModelProtocol {
             placeholderImage = UIImage.init(named: imageName)
         }
 
-        if let urlChecked = URL(string: "http://www.eldesconcierto.com.ar/wp-content/uploads/2018/03/logo-quique-pesoa-app-200.png"),
-            UIApplication.shared.canOpenURL(urlChecked) {
+        if let urlChecked = URL(string: "http://www.eldesconcierto.com.ar/wp-content/uploads/2018/03/logo-quique-pesoa-app-200.png") {
             thumbnailUrl = urlChecked
         }
         if let audioUrl = audioUrl,
-            let urlChecked = URL(string: audioUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
@@ -195,18 +186,15 @@ class AudioViewModel : BaseViewModelProtocol {
         }
         subTitle.text = bookmark?.subTitle ?? ""
         if let imageUrl = bookmark?.thumbnailUrl,
-            let urlChecked = URL(string: imageUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
         if let audioUrl = bookmark?.url,
-            let urlChecked = URL(string: audioUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         title.text = bookmark?.title ?? ""
-        useWeb = bookmark?.useWeb ?? false
         isBookmarked = true
     }
     
@@ -294,8 +282,7 @@ extension AudioViewModel {
     
     private func imageUrl(usingUri uri: String?) -> URL? {
         if let uri = uri, uri.count > 0,
-            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer)),
-            UIApplication.shared.canOpenURL(urlChecked)
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer))
         {
             return urlChecked
         }
@@ -306,8 +293,7 @@ extension AudioViewModel {
         if let baseUrl = baseUrl, baseUrl.count > 0,
             let bandUri = bandUri, bandUri.count > 0,
             let port = port, port.count > 0,
-            let urlChecked = URL(string: "http://\(baseUrl):\(port)\(bandUri)"),
-            UIApplication.shared.canOpenURL(urlChecked)
+            let urlChecked = URL(string: "http://\(baseUrl):\(port)\(bandUri)")
         {
             return urlChecked
         }

@@ -48,14 +48,14 @@ struct CatalogViewModel : BaseViewModelProtocol {
         section = AudioViewModel.ControllerName.radioTime.rawValue
         title.text = catalog?.titleAndText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
+        isExpanded = catalog?.isExpanded
         
         if let catalog = catalog,
             let text = catalog.text ?? catalog.subtext {
             detail.text = catalog.isOnlyText() ? text : ""
         }
         if let queryUrl = catalog?.url,
-            let urlChecked = URL(string: queryUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
         var all = [RTCatalog]()
@@ -101,18 +101,6 @@ struct CatalogViewModel : BaseViewModelProtocol {
             audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
                 return c1.title.text < c2.title.text
             })
-            
-            if let expand = catalog?.isExpanded {
-                isExpanded = expand
-            }
-            else {
-                if element.sectionCatalog?.sections?.count ?? element.audioCatalog?.sections?.count ?? 0 > 0 {
-                    isExpanded = false
-                }
-                else {
-                    isExpanded = nil
-                }
-            }
         }
         
         isBookmarked = checkIfBookmarked()
@@ -125,8 +113,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
         tree = ""
         detail.text = ""
         let queryUrl = "\(RestApi.Constants.Service.ldlaServer)/desconciertos/\(desconcierto?.id ?? 0).json"
-        if let urlChecked = URL(string: queryUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+        if let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
         var order : Int = 0
@@ -148,8 +135,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
         tree = bookmark?.title ?? ""
         detail.text = bookmark?.detail ?? ""
         if let catalogUrl = bookmark?.url,
-            let urlChecked = URL(string: catalogUrl),
-            UIApplication.shared.canOpenURL(urlChecked) {
+            let urlChecked = URL(string: catalogUrl) {
             url = urlChecked
         }
         isBookmarked = true
