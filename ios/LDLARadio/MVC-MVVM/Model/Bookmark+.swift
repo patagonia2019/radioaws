@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import CloudKit
+import JFCore
 
 extension Bookmark : Modellable {
     
@@ -17,9 +18,9 @@ extension Bookmark : Modellable {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "title", ascending: true)]) as? [Bookmark]
     }
     
-    override func remove() {
-        CloudKitManager.instance.remove(bookmark: self)
-        super.remove()
+    func remove(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        CloudKitManager.instance.remove(bookmark: self, finishClosure: finishClosure)
+        remove()
     }
 
 }
@@ -98,7 +99,6 @@ extension Bookmark {
         bookmark.url = audioViewModel.url?.absoluteString
         bookmark.section = audioViewModel.section
         
-        CloudKitManager.instance.save(bookmark: bookmark)
     }
     
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
@@ -109,7 +109,6 @@ extension Bookmark {
         bookmark.url = catalogViewModel.urlString()
         bookmark.section = catalogViewModel.section
         
-        CloudKitManager.instance.save(bookmark: bookmark)
     }
     
 }

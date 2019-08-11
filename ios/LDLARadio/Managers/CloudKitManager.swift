@@ -32,6 +32,10 @@ class CloudKitManager {
                     if error == nil {
                         self.loggedIn = true
                         self.refresh()
+                        Analytics.logFunction(function: "cloudkit",
+                                              parameters: ["action": "login" as AnyObject,
+                                                           "user": userRecord?.recordName as AnyObject])
+
                     }
                 }
             }
@@ -76,7 +80,7 @@ class CloudKitManager {
         }
     }
     
-    func remove(bookmark: Bookmark?) {
+    func remove(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if loggedIn == false {
             return
         }
@@ -87,15 +91,20 @@ class CloudKitManager {
         let recordId = CKRecord.ID.init(recordName: recordName)
         privateDB.delete(withRecordID: recordId) { (id, error) in
             guard error == nil else {
-                print("error setting up record \(error)")
+                let jferror = JFError(code: Int(errno),
+                                      desc: "Error",
+                                      reason: "Cannot remove bookmark",
+                                      suggestion: "Please check your internet connection",
+                                      underError: error as NSError?)
+                finishClosure?(jferror)
                 return
             }
             
-            print("deleted: \(id)")
+            finishClosure?(nil)
         }
     }
     
-    func save(bookmark: Bookmark?) {
+    func save(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if loggedIn == false {
             return
@@ -124,12 +133,17 @@ class CloudKitManager {
             
             
             guard error == nil else {
-                print("error setting up record \(error)")
+                
+                let jferror = JFError(code: Int(errno),
+                                      desc: "Error",
+                                      reason: "Cannot save Bookmark",
+                                      suggestion: "Please check your internet connection",
+                                      underError: error as NSError?)
+                finishClosure?(jferror)
                 return
             }
             bookmark.recordID = record?.recordID.recordName
-
-            print("saved: \(record)")
+            finishClosure?(nil)
             
         })
     }

@@ -125,11 +125,13 @@ class BaseController : Controllable {
             var action : String = "*"
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
                 bookmark.remove()
+                CloudKitManager.instance.remove(bookmark: bookmark, finishClosure: finishBlock)
                 action = "-"
             }
             else if var bookmark = Bookmark.create() {
                 action = "+"
                 bookmark += model
+                CloudKitManager.instance.save(bookmark: bookmark, finishClosure: finishBlock)
             }
             else {
                 fatalError()
@@ -142,7 +144,6 @@ class BaseController : Controllable {
 
             if useRefresh {
                 CoreDataManager.instance.save()
-//                refresh(isClean: false, finishClosure: finishBlock)
             }
         }
     }
