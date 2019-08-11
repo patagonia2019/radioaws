@@ -25,8 +25,6 @@ class Commons {
     }
     
     struct segue {
-        static let player = "presentPlayerViewControllerSegueIdentifier"
-        static let webView = "presentWebViewControllerSegueIdentifier"
         static let catalog = "recursiveCatalog"
         static let search = "searchAudio"
         static let radio = "radioViewController"

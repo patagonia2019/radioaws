@@ -22,12 +22,12 @@ struct CatalogViewModel : BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor(white: 0.4, alpha: 0.8), font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: .green, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
 
     var isBookmarked: Bool? = nil
-    var title : LabelViewModel = LabelViewModel(text: "No more info", color: .black, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
+    var title : LabelViewModel = LabelViewModel(text: "No more info", color: .blue, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
 
-    var tree: String = "?"
+    var tree: String = ""
 
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
@@ -48,7 +48,6 @@ struct CatalogViewModel : BaseViewModelProtocol {
         section = AudioViewModel.ControllerName.radioTime.rawValue
         title.text = catalog?.titleAndText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
-        isExpanded = catalog?.isExpanded
         
         if let catalog = catalog,
             let text = catalog.text ?? catalog.subtext {
@@ -102,11 +101,20 @@ struct CatalogViewModel : BaseViewModelProtocol {
             audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
                 return c1.title.text < c2.title.text
             })
+            
+            if let expand = catalog?.isExpanded {
+                isExpanded = expand
+            }
+            else {
+                if element.sectionCatalog?.sections?.count ?? element.audioCatalog?.sections?.count ?? 0 > 0 {
+                    isExpanded = false
+                }
+                else {
+                    isExpanded = nil
+                }
+            }
         }
         
-//        if sections.count == 0 && audios.count == 0 && urlString() == nil {
-//            sections.append(CatalogViewModel())
-//        }
         isBookmarked = checkIfBookmarked()
 
     }

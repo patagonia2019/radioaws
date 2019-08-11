@@ -38,6 +38,9 @@ class RestApi {
             /// RNA Server
             static let rnaServer: String = "http://marcos.mineolo.com/rna"
             
+            /// Archive Server
+            static let archServer: String = "https://archive.org"
+            
             /// Function to build the url used in the requests.
             static func url(with query: String?, baseUrl: String = ldlaServer) -> String {
                 return "\(baseUrl)\(query ?? "")"
@@ -116,6 +119,28 @@ class RestApi {
         urlJson += "render=json"
         request(usingUrl: urlJson, method: .get, type: type, finish: finish)
     }
+    
+    /// Request in Archive server with Insert in Core Data using RTServer
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// url: the url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    func requestARCH<T: Insertable>(
+        usingUrl url: String?,
+        type: T.Type,
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
+    {
+        var urlJson : String = url ?? Constants.Service.archServer
+        
+        if urlJson.contains("?") {
+            urlJson += "&"
+        }
+        else {
+            urlJson += "?"
+        }
+        urlJson += "output=json"
+        request(usingUrl: urlJson, method: .get, type: type, finish: finish)
+    }
 
     /// Request with Insert in Core Data
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
@@ -130,7 +155,7 @@ class RestApi {
         finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
     {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
-        let request = self.alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
+        let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\n")
         Analytics.logFunction(function: "request", parameters: ["url": url as AnyObject])
         request.responseInsert(context: context, type: T.self) { response in
@@ -155,6 +180,34 @@ class RestApi {
                 finish?(error, response.value)
             })
         }
+    }
+    
+    func download(usingUrl url: String,
+                  localFilePath: String,
+                  progressFraction: ((_ fraction: Int) -> Void)? = nil,
+                  finish: ((_ error: JFError?, _ filePath: String?) -> Void)? = nil)
+    {
+        let fm = FileManager.default
+        if fm.fileExists(atPath: localFilePath),
+            let fileSize = try? fm.attributesOfItem(atPath: localFilePath)[.size] as? NSNumber,
+            Double(truncating: fileSize) > 0 {
+            finish?(nil, localFilePath)
+            return
+        }
+        
+        let destination = DownloadRequest.suggestedDownloadDestination(for: .documentDirectory)
+        alamofire.download(
+            url,
+            method: .get,
+            encoding: PropertyListEncoding.default,
+            headers: nil,
+            to: destination)
+            .downloadProgress(closure: { (progressDownload) in
+                let value = Int(progressDownload.fractionCompleted * 100)
+                progressFraction?(value)
+            }).response(completionHandler: { (downloadResponse) in
+                finish?(nil, localFilePath)
+            })
     }
 }
 

@@ -39,7 +39,10 @@ class RadioController: BaseController {
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        return CGFloat(AudioViewModel.cellheight)
+        if let model = model(forSection: section, row: row) as? AudioViewModel {
+            return CGFloat(model.height())
+        }
+        return 0
     }
     
     private func updateModels() {

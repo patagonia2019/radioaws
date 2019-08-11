@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.setValue(["en"], forKey: "AppleLanguages")
         
         FirebaseManager.start()
-    
 
         RestApi.instance.context = CoreDataManager.instance.taskContext
         #if DEBUG

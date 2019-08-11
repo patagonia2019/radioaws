@@ -77,7 +77,7 @@ _SwiftSpinner is an extra beautiful activity indicator with plain and bold style
 * Radio Nacional Argentina
 
 * Archive Org: [JSON](https://archive.org/help/json.php)
-_Using [JSON api example](https://archive.org/advancedsearch.php?q=harry+potter+audiobook&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw)_
+_Using JSON api example: [https://archive.org/advancedsearch.php?q=<TEXT_TO_SEARCH>&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw](https://archive.org/advancedsearch.php?q=harry+potter+audiobook&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw). And access a particular metadata of the search using the identifier: [https://archive.org/details/HarryPotterAndThePhilosophersStoneAudiobookSample&output=json](https://archive.org/details/<IDENTIFIER>&output=json). We can query by meditype audio: [https://archive.org/services/collection-rss.php?mediatype=audio&output=json](https://archive.org/services/collection-rss.php?mediatype=audio&output=json). More info: https://archive.readme.io/docs/getting-started_
 
 
 ## Proposal: 

@@ -15,7 +15,8 @@ import JFCore
 
 class AudioViewController: UITableViewController {
     // MARK: Properties
-    var playerViewController: AVPlayerViewController?
+    
+    var isFullScreen : Bool = false
     
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
@@ -97,17 +98,12 @@ class AudioViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if playerViewController != nil {
-            // The view reappeared as a results of dismissing an AVPlayerViewController.
-            // Perform cleanup.
-            StreamPlaybackManager.sharedManager.setAssetForPlayback(nil)
-            playerViewController?.player = nil
-            playerViewController = nil
-        }
-        
+                
         if !(controller is SearchController) {            
             refresh()
+        }
+        else {
+            reloadData()
         }
     }
     
@@ -151,27 +147,54 @@ class AudioViewController: UITableViewController {
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
         tableView.reloadData()
+        if let navigationBar = self.navigationController?.navigationBar,
+            let tabBar = self.navigationController?.tabBarController?.tabBar ??
+            self.tabBarController?.tabBar {
+            
+            if isFullScreen {
+                navigationBar.isHidden = true
+                tabBar.isHidden = true
+            }
+            else {
+                navigationBar.isHidden = false
+                tabBar.isHidden = false
+            }
+        }
     }
     
-    private func play(indexPath: IndexPath) {
+    private func bookmark(indexPath: IndexPath, isReload: Bool = true) {
+        let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            controller.changeAudioBookmark(model: audio)
+            audio.isBookmarked = !(audio.isBookmarked ?? false)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+        if let section = object as? CatalogViewModel {
+            self.controller.changeCatalogBookmark(model: section)
+        }
+    }
+    
+    private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
-            if audio.useWeb {
-                Analytics.logFunction(function: "play",
-                                      parameters: ["isWeb": "YES" as AnyObject,
-                                                   "audio": audio.title.text as AnyObject,
-                                                   "section": audio.section as AnyObject,
-                                                   "url": audio.urlString() as AnyObject,
-                                                    "controller": titleForController() as AnyObject])
-                performSegue(withIdentifier: Commons.segue.webView, sender: audio)
-            } else {
-                Analytics.logFunction(function: "play",
-                                      parameters: ["isWeb": "NO" as AnyObject,
-                                                   "audio": audio.title.text as AnyObject,
-                                                   "section": audio.section as AnyObject,
-                                                   "url": audio.urlString() as AnyObject,
-                                                   "controller": titleForController() as AnyObject])
-                performSegue(withIdentifier: Commons.segue.player, sender: audio)
+            Analytics.logFunction(function: "embeddedplay",
+                                  parameters: ["audio": audio.title.text as AnyObject,
+                                               "section": audio.section as AnyObject,
+                                               "url": audio.urlString() as AnyObject,
+                                               "controller": titleForController() as AnyObject])
+            controller.play(forSection: indexPath.section, row: indexPath.row)
+            if audio.isPlaying {
+                StreamPlaybackManager.sharedManager.setAssetForPlayback(audio)
+            }
+            else {
+                StreamPlaybackManager.sharedManager.pause()
+            }
+            UIView.animate(withDuration: 0.5, animations: {
+                self.reloadData()
+            }) { (finished) in
+                if finished {
+                    self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                }
             }
         }
         else if let section = object as? CatalogViewModel {
@@ -315,10 +338,10 @@ class AudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         var isBookmarked : Bool? = false
         if let audio = object as? AudioViewModel {
-            let playAction = UITableViewRowAction(style: .normal, title: "🎵\nPlay") { (action, indexPath) in
+            let playAction = UITableViewRowAction(style: .normal, title: audio.isPlaying ? "Pause" : "Play") { (action, indexPath) in
                 self.play(indexPath: indexPath)
             }
-            playAction.backgroundColor = .red
+            playAction.backgroundColor = audio.isPlaying ? .red : .green
             actions.append(playAction)
             
             isBookmarked = audio.isBookmarked
@@ -328,20 +351,14 @@ class AudioViewController: UITableViewController {
             isBookmarked = section.isBookmarked
         }
         if let isBookmarked = isBookmarked {
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "- 💔\nBook" : "+ 💝\nBook") { (action, indexPath) in
-                let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
-                if let audio = object as? AudioViewModel {
-                    self.controller.changeAudioBookmark(model: audio)
-                }
-                if let section = object as? CatalogViewModel {
-                    self.controller.changeCatalogBookmark(model: section)
-                }
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Del.\nBook" : "Add\nBook") { (action, indexPath) in
+                self.bookmark(indexPath: indexPath)
             }
-            bookmarkAction.backgroundColor = isBookmarked ? .green : .blue
+            bookmarkAction.backgroundColor = isBookmarked ? .purple : .blue
             actions.append(bookmarkAction)
         }
         
-        let shareAction = UITableViewRowAction(style: .normal, title: "📨\nShare") { (action, indexPath) in
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
         }
         shareAction.backgroundColor = .orange
@@ -391,52 +408,6 @@ class AudioViewController: UITableViewController {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
         }
-        else if segue.identifier == Commons.segue.webView {
-            guard let model = sender as? AudioViewModel,
-                let webViewControler = segue.destination as? WebViewController,
-                let streamLink = model.url
-                else { return }
-            webViewControler.title = "\(model.title) \(model.subTitle)"
-            webViewControler.urlLink = streamLink
-        }
-        else if segue.identifier == Commons.segue.player {
-            guard let model = sender as? AudioViewModel,
-                let playerViewControler = segue.destination as? AVPlayerViewController else { return }
-            
-            // Grab a reference for the destinationViewController to use in later delegate callbacks from StreamPlaybackManager.
-            playerViewController = playerViewControler
-            
-            var nowPlayingInfo = [String : Any]()
-            nowPlayingInfo[MPMediaItemPropertyTitle] = model.playing
-            playerViewControler.title = model.playing
-            playerViewControler.updatesNowPlayingInfoCenter = false
-            nowPlayingInfo[MPMediaItemPropertyArtist] = model.playing
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = model.playing
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
-            
-            if let placeholderImage = UIImage.init(named: "Locos_de_la_azotea") {
-                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (size) -> UIImage in
-                    return placeholderImage
-                }
-                
-                let iv = UIImageView.init(image: placeholderImage)
-                
-                if let imageUrl = model.thumbnailUrl {
-                    iv.af_setImage(withURL: imageUrl, placeholderImage: placeholderImage)
-                    if  let image = iv.image,
-                        let imageCopy = image.copy() as? UIImage {
-                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (size) -> UIImage in
-                            return imageCopy
-                        }
-                    }
-                }
-            }
-            
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            
-            // Load the new Stream to playback into StreamPlaybackManager.
-            StreamPlaybackManager.sharedManager.setAssetForPlayback(model.urlAsset())
-        }
         SwiftSpinner.hide()
     }
     
@@ -449,7 +420,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        controller.changeAudioBookmark(at: indexPath.section, row: indexPath.row)
+        bookmark(indexPath: indexPath)
     }
     
     
@@ -457,6 +428,62 @@ extension AudioViewController: AudioTableViewCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        play(indexPath: indexPath)
+    }
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            Analytics.logFunction(function: "resize",
+                                  parameters: ["audio": audio.title.text as AnyObject,
+                                               "isPlaying": audio.isPlaying as AnyObject,
+                                               "didResize": newState as AnyObject,
+                                               "url": audio.urlString() as AnyObject,
+                                               "controller": titleForController() as AnyObject])
+            isFullScreen = audio.isFullScreen
+            reloadData()
+        }
+
+    }
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeTargetSound newState: Bool) {
+        
+    }
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool) {
+        StreamPlaybackManager.sharedManager.seekEnd()
+    }
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeOffset isBackward: Bool) {
+        if isBackward {
+            StreamPlaybackManager.sharedManager.backward()
+        }
+        else {
+            StreamPlaybackManager.sharedManager.forward()
+        }
+    }
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newValue: Float) {
+        StreamPlaybackManager.sharedManager.playPosition(position: Double(newValue))
+    }
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool) {
+        
+    }
+    
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool) {
+        
+    }
+
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool) {
+        
+    }
+    
+    
 }
 
 /**
@@ -468,14 +495,17 @@ extension AudioViewController: AssetPlaybackDelegate {
         showAlert(error: error)
     }
     
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer) {
-        player.play()
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
+        if isPlaying {
+            player.play()
+        }
+        else {
+            player.pause()
+        }
+        reloadData()
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
-        guard let playerViewController = playerViewController, player.currentItem != nil else { return }
-        
-        playerViewController.player = player
     }
 }
 

@@ -83,15 +83,15 @@ class RadioTimeController: BaseController {
         }
         return nil
     }
-    
+        
     override func heightForHeader(at section: Int) -> CGFloat {
         return CGFloat(CatalogViewModel.cellheight)
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
-        if subModel is AudioViewModel {
-            return CGFloat(AudioViewModel.cellheight)
+        if let audioModel = subModel as? AudioViewModel {
+            return CGFloat(audioModel.height())
         }
         return CGFloat(CatalogViewModel.cellheight)
     }

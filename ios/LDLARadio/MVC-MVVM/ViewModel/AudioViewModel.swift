@@ -13,7 +13,7 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Audio info
-struct AudioViewModel : BaseViewModelProtocol {
+class AudioViewModel : BaseViewModelProtocol {
     
     enum Section : Int {
         case model0 = 0
@@ -38,18 +38,25 @@ struct AudioViewModel : BaseViewModelProtocol {
 
     var url: URL? = nil
     
-    static let cellheight : Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
-    
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.none
     
-    var detail : LabelViewModel = LabelViewModel(text: "", color: UIColor(white: 0.4, alpha: 0.8), font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail : LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
     
     var isBookmarked: Bool? = nil
     
+    var isPlaying: Bool = false
+
+    var isDownloading: Bool = false
+    
+    var downloadTask: URLSessionDownloadTask? = nil
+    var downloadFiles : [String]? = nil
+
+    var isFullScreen: Bool = false
+
     var title = LabelViewModel()
 
-    var subTitle = LabelViewModel(text: "", color: .lightGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
+    var subTitle = LabelViewModel(text: "", color: .red, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String? = nil
@@ -58,7 +65,8 @@ struct AudioViewModel : BaseViewModelProtocol {
     var thumbnailUrl: URL? = nil
     var placeholderImageName: String? = nil
     var placeholderImage: UIImage? = nil
-    
+    var image: UIImage? = nil
+
     /// to know if the player will work or it's a webkit only play recommendation (like to play the stream in safari)
     var useWeb: Bool = false
     
@@ -83,8 +91,6 @@ struct AudioViewModel : BaseViewModelProtocol {
                 detail.text = "\(detail.text) \(currentTrack)"
         }
         
-        playing = title.text + " " + subTitle.text + " " + detail.text
-
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -99,38 +105,12 @@ struct AudioViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
+            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         isBookmarked = checkIfBookmarked()
         reFillTitles()
-    }
-    
-    private mutating func reFillTitles() {
-        if title.count > 0 && subTitle.count > 0 && detail.count > 0 {
-            return
-        }
-        var titles = [String]()
-        if title.count > 0 {
-            titles.append(title.text)
-        }
-        if subTitle.count > 0 {
-            titles.append(subTitle.text)
-        }
-        if detail.count > 0 {
-            titles.append(detail.text)
-        }
-        detail.text = ""
-        detail.isHidden = true
-        if titles.count == 2 {
-            title.text = titles[0]
-            subTitle.text = titles[1]
-            detail.isHidden = true
-            title.lines = 2
-        }
-        else if titles.count == 1 {
-            title.text = titles[0]
-            subTitle.text = ""
-            subTitle.isHidden = true
-            title.lines = 3
+        if detail.text.count <= 0 {
+            detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
         }
     }
     
@@ -156,6 +136,7 @@ struct AudioViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
+            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         isBookmarked = checkIfBookmarked()
         reFillTitles()
@@ -170,12 +151,8 @@ struct AudioViewModel : BaseViewModelProtocol {
             name.contains("mp3") {
             title.text = name
         }
-        else {
-            title.text = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
-            useWeb = true
-        }
-        subTitle.text = ""
-        detail.text = ""
+        subTitle.text = "El Desconcierto de Quique Pesoa"
+        detail.text = "Podcasts"
     
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -190,6 +167,7 @@ struct AudioViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
+            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         isBookmarked = checkIfBookmarked()
         reFillTitles()
@@ -225,6 +203,7 @@ struct AudioViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl),
             UIApplication.shared.canOpenURL(urlChecked) {
             url = urlChecked
+            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         title.text = bookmark?.title ?? ""
         useWeb = bookmark?.useWeb ?? false
@@ -246,11 +225,37 @@ struct AudioViewModel : BaseViewModelProtocol {
         return AVURLAsset(url: url)
     }
     
+    func play() {
+        isPlaying = !isPlaying
+    }
+    
+    func stop() {
+        isPlaying = false
+    }
+    
+    func sizeReset() {
+        isPlaying = false
+    }
+    
+    func height() -> Float {
+        if isFullScreen {
+            return Float(UIScreen.main.bounds.size.height)
+        }
+        else if isPlaying {
+            if UIScreen.main.bounds.size.height < 400 {
+                return Float(UIScreen.main.bounds.size.height - 100)
+            }
+            return Float(UIScreen.main.bounds.size.height * 0.5)
+        }
+        else {
+            return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
+        }
+    }
 }
 
 /// RNA Station method for update
 extension AudioViewModel {
-    public mutating func update(station: RNAStation?, isAm: Bool) {
+    public  func update(station: RNAStation?, isAm: Bool) {
         section = ControllerName.rna.rawValue
         id = station?.id
         title.text = station?.firstName ?? ""
@@ -274,6 +279,8 @@ extension AudioViewModel {
         
         url = streamUrl(usingBaseUrl: station?.url1, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
+        
+        isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: url?.absoluteString)
         
         isBookmarked = checkIfBookmarked()
         reFillTitles()
@@ -306,5 +313,38 @@ extension AudioViewModel {
         }
         return nil
     }
+
+    private func reFillTitles() {
+        if title.count > 0 && subTitle.count > 0 && detail.count > 0 {
+            playing = [title.text, subTitle.text, detail.text].joined(separator: ". ")
+            return
+        }
+        var titles = [String]()
+        if title.count > 0 {
+            titles.append(title.text)
+        }
+        if subTitle.count > 0 {
+            titles.append(subTitle.text)
+        }
+        if detail.count > 0 {
+            titles.append(detail.text)
+        }
+        detail.text = ""
+        detail.isHidden = true
+        if titles.count == 2 {
+            title.text = titles[0]
+            subTitle.text = titles[1]
+            detail.isHidden = true
+            title.lines = 2
+        }
+        else if titles.count == 1 {
+            title.text = titles[0]
+            subTitle.text = ""
+            subTitle.isHidden = true
+            title.lines = 3
+        }
+        playing = [title.text, subTitle.text, detail.text].joined(separator: ". ")
+    }
+    
 
 }

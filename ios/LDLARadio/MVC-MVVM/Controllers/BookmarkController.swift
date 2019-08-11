@@ -102,16 +102,21 @@ class BookmarkController: BaseController {
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         if count() == 0 && section == 0 {
-            return CGFloat(AudioViewModel.cellheight)
+            if let model = model(forSection: section, row: row) as? AudioViewModel {
+                return CGFloat(model.height())
+            }
         }
         if section < models.count {
             let modelSection = models[section]
             if row < modelSection.count {
-                return CGFloat(AudioViewModel.cellheight)
+                if let model = model(forSection: section, row: row) as? AudioViewModel {
+                    return CGFloat(model.height())
+                }
             }
         }
         return 0
     }
+    
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {

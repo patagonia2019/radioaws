@@ -14,7 +14,6 @@
 		428139F71CE44B7300972264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428139F51CE44B7300972264 /* Main.storyboard */; };
 		428139F91CE44B7300972264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428139F81CE44B7300972264 /* Assets.xcassets */; };
 		42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42813A051CE44F9700972264 /* StreamPersistenceManager.swift */; };
-		703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A91E291DF600E6D458 /* WebViewController.swift */; };
 		7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7073F3B61E155C05004DBB59 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
 		70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC071E3064EA008DE753 /* LDLARadio.html */; };
@@ -92,6 +91,7 @@
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
+		98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -121,7 +121,6 @@
 		47F749A1AD4E4959FB881877 /* Pods-LDLARadio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.debug.xcconfig"; sourceTree = "<group>"; };
 		703373A31E28343600E6D458 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		703373A71E284C1800E6D458 /* CityListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityListManager.swift; sourceTree = "<group>"; };
-		703373A91E291DF600E6D458 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		7073F3B61E155C05004DBB59 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		708AAD9F1E27B586004D88C3 /* StationListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationListManager.swift; sourceTree = "<group>"; };
 		70D4EC031E304A9B008DE753 /* common.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = common.css; sourceTree = "<group>"; };
@@ -183,6 +182,7 @@
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
 		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
 		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
+		98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTests.swift; sourceTree = "<group>"; };
 		BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -348,7 +348,6 @@
 				98D7149022EF937F00983818 /* Main.xib */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				9808511222E6A1C10013B67C /* AudioViewController.swift */,
-				703373A91E291DF600E6D458 /* WebViewController.swift */,
 				983E01F822F5EBCC008370BA /* LaunchViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 			);
@@ -403,6 +402,7 @@
 				987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */,
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
+				98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */,
 				9808513322E8F4E40013B67C /* BookmarkTests.swift */,
 				987DA0C022D663E700F34BD3 /* Info.plist */,
 			);
@@ -670,7 +670,6 @@
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
 				983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
-				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
@@ -710,6 +709,7 @@
 				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
 				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
+				98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */,
 				983E01F122F45C59008370BA /* LabelViewModel.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,

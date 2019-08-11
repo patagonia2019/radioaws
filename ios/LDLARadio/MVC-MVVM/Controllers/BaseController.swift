@@ -33,7 +33,28 @@ class BaseController : Controllable {
     func model(forSection section: Int, row: Int) -> Any? {
         fatalError()
     }
-    
+
+    func play(forSection section: Int, row: Int) {
+        if let model = model(forSection: section, row: row) as? AudioViewModel {
+            if model.isPlaying {
+                model.stop()
+            }
+            else {
+                model.play()
+            }
+        }
+        for s in 0..<numberOfSections() {
+            for r in 0..<numberOfRows(inSection: s) {
+                if s == section && r == row {
+                    continue
+                }
+                if let model = model(forSection: s, row: r) as? AudioViewModel {
+                    model.sizeReset()
+                }
+            }
+        }
+    }
+
     func heightForRow(at section: Int, row: Int) -> CGFloat {
         return 45
     }
@@ -61,7 +82,6 @@ class BaseController : Controllable {
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         finishBlock = finishClosure
-        
         
         RestApi.instance.context?.performAndWait {
             startClosure?()
@@ -99,39 +119,39 @@ class BaseController : Controllable {
     func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
 
         guard let context = RestApi.instance.context else { fatalError() }
-        guard var model = model else { return }
+        guard let model = model else { return }
         
         context.performAndWait {
+            var action : String = "*"
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
                 bookmark.remove()
-                Analytics.logFunction(function: "bookmark",
-                                      parameters: ["action": "-" as AnyObject,
-                                                   "title": model.title.text as AnyObject,
-                                                   "section": model.section as AnyObject,
-                                                   "url": model.urlString() as AnyObject])
-
+                action = "-"
             }
             else if var bookmark = Bookmark.create() {
-                Analytics.logFunction(function: "bookmark",
-                                      parameters: ["action": "+" as AnyObject,
-                                                   "title": model.title.text as AnyObject,
-                                                   "section": model.section as AnyObject,
-                                                   "url": model.urlString() as AnyObject])
+                action = "+"
                 bookmark += model
             }
             else {
                 fatalError()
             }
-            model.isBookmarked = !(model.isBookmarked ?? false)
+            Analytics.logFunction(function: "bookmark",
+                                  parameters: ["action": action as AnyObject,
+                                               "title": model.title.text as AnyObject,
+                                               "section": model.section as AnyObject,
+                                               "url": model.urlString() as AnyObject])
+
             if useRefresh {
                 CoreDataManager.instance.save()
-                refresh(isClean: false, finishClosure: finishBlock)
+//                refresh(isClean: false, finishClosure: finishBlock)
             }
         }
     }
 
     func changeAudioBookmark(at section: Int, row: Int) {
-        changeAudioBookmark(model: model(forSection: section, row: row) as? AudioViewModel)
+        if let model = model(forSection: section, row: row) as? AudioViewModel {
+            changeAudioBookmark(model: model)
+            model.isBookmarked = !(model.isBookmarked ?? false)
+        }
     }
     
 }

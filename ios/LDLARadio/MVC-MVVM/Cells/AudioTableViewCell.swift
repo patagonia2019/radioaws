@@ -18,11 +18,34 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var logoView: UIImageView!
+    @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
     weak var delegate: AudioTableViewCellDelegate?
+    fileprivate let formatter = DateComponentsFormatter()
+
+    // Player buttons
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var totalTimeLabel: UILabel!
+    @IBOutlet weak var sliderView: UISlider!
+    @IBOutlet weak var startOfStreamButton: UIButton!
+    @IBOutlet weak var backwardButton: UIButton!
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
+    @IBOutlet weak var endOfStreamButton: UIButton!
+    @IBOutlet weak var resizeButton: UIButton!
+    @IBOutlet weak var targetSoundButton: UIButton!
+
+    @IBOutlet weak var graphButton: UIButton!
+    @IBOutlet weak var playerStack: UIStackView!
+    @IBOutlet weak var progressStack: UIStackView!
+    @IBOutlet weak var infoButton: UIButton!
+    @IBOutlet weak var bugButton: UIButton!
+    @IBOutlet weak var sliderStack: UIStackView!
     
+    fileprivate var timerPlayed: Timer?
+
     var model : AudioViewModel? = nil {
         didSet {
             let labels = [downloadStateLabel, subtitleLabel, titleLabel]
@@ -44,22 +67,62 @@ class AudioTableViewCell: UITableViewCell {
                     }
                 }
             }
-
+            
             logoView.image = model?.placeholderImage
+            thumbnailView.image = logoView.image
             if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.alpha = 0.5
                 logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (response) in
-                    if response.error != nil {
-                        self.logoView.alpha = 0.5
-                    }
-                    else {
-                        self.logoView.alpha = 1.0
-                    }
+                    self.thumbnailView.image = self.logoView.image
+                    self.model?.image = self.logoView.image
                 }
             }
             bookmarkButton.isHighlighted = model?.isBookmarked ?? false
-            selectionStyle = model?.selectionStyle ?? .none
+            bugButton.alpha = 0
+            
+            if model?.isPlaying ?? false {
+                playButton.isHighlighted = true
+                selectionStyle = model?.selectionStyle ?? .none
+                // show big logo, and hide thumbnail
+                logoView.isHidden = false
+                thumbnailView.alpha = 0
+                
+                playerStack.isHidden = false
+                if let timerPlayed = timerPlayed {
+                    timerPlayed.invalidate()
+                }
+                updateTimePlayed()
+                timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
+                resizeButton.isHighlighted = model?.isFullScreen ?? false
+                
+                backwardButton.isHidden = StreamPlaybackManager.sharedManager.canStepBackward()
+                forwardButton.isHidden = StreamPlaybackManager.sharedManager.canStepForward()
+                startOfStreamButton.isHidden = StreamPlaybackManager.sharedManager.canGoToStart()
+                endOfStreamButton.isHidden = StreamPlaybackManager.sharedManager.canGoToEnd()
+                progressStack.isHidden = backwardButton.isHidden && forwardButton.isHidden
+            }
+            else {
+                playButton.isHighlighted = false
+                selectionStyle = .none
+                // show thumbnail, and hide logo
+                logoView.isHidden = true
+                thumbnailView.alpha = 1
+                playerStack.isHidden = true
+                progressStack.isHidden = true
+                if let timerPlayed = timerPlayed {
+                    timerPlayed.invalidate()
+                }
+                resizeButton.isHighlighted = false
+                
+            }
+
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        formatter.allowedUnits = [.second, .minute, .hour]
+        formatter.zeroFormattingBehavior = .pad
     }
     
     override func prepareForReuse() {
@@ -78,22 +141,111 @@ class AudioTableViewCell: UITableViewCell {
     }
     
     @IBAction func bookmarkAction(_ sender: UIButton?) {
+        bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
+        delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
+    }
     
-        if sender == bookmarkButton {
-            bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
-            delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
-        }
-        else {
-            fatalError()
-        }
+    @IBAction func playAction(_ sender: UIButton?) {
+        playButton.isHighlighted = !playButton.isHighlighted
+        delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
+    }
+    
+    @IBAction func startOfStreamAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didChangePosition: 0)
+    }
+    
+    @IBAction func endOfStreamAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didChangeToEnd: true)
     }
 
+    @IBAction func backwardAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didChangeOffset: true)
+    }
+    
+    @IBAction func forwardAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didChangeOffset: false)
+    }
+    
+    @IBAction func graphAction(_ sender: UIButton?) {
+        graphButton.isHighlighted = !graphButton.isHighlighted
+        delegate?.audioTableViewCell(self, didShowGraph: graphButton.isHighlighted)
+    }
+    
+    @IBAction func infoAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didShowInfo: infoButton.isHighlighted)
+    }
+    
+    @IBAction func bugAction(_ sender: UIButton?) {
+        delegate?.audioTableViewCell(self, didShowBug: true)
+    }
+    
+    @IBAction func resizeAction(_ sender: UIButton?) {
+        let isFullScreen = !(model?.isFullScreen ?? false)
+        model?.isFullScreen = isFullScreen
+        delegate?.audioTableViewCell(self, didResize: isFullScreen)
+    }
+    
+    @IBAction func targetSoundAction(_ sender: UIButton?) {
+        targetSoundButton.isHighlighted = !targetSoundButton.isHighlighted
+        delegate?.audioTableViewCell(self, didChangeTargetSound: targetSoundButton.isHighlighted)
+    }
+    
+    @IBAction func sliderValueChanged(_ sender: UISlider?) {
+        let value = sender?.value ?? 0
+        delegate?.audioTableViewCell(self, didChangePosition: value)
+        updateTimeLabel(with: value)
+    }
+
+    @objc fileprivate func updateTimePlayed() {
+        let currentStreamTime = StreamPlaybackManager.sharedManager.getCurrentTime()
+        let totalStreamTime = StreamPlaybackManager.sharedManager.getTotalTime()
+        sliderView.value = Float(currentStreamTime)
+        sliderView.maximumValue = Float(totalStreamTime)
+        currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
+        totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
+        if sliderView.maximumValue > 0.0 {
+            if sliderView.value >= sliderView.maximumValue {
+                if let timerPlayed = timerPlayed {
+                    timerPlayed.invalidate()
+                }
+            }
+            else {
+                sliderStack.alpha = 1
+                currentTimeLabel.alpha = 1
+                totalTimeLabel.alpha = 1
+            }
+        }
+        else {
+            sliderStack.alpha = 0
+            currentTimeLabel.alpha = 0
+            totalTimeLabel.alpha = 0
+        }
+    }
+    
+    fileprivate func updateTimeLabel(with updatedTime: Float) {
+        currentTimeLabel.text = timeStringFor(seconds: updatedTime)
+    }
+    
+    func timeStringFor(seconds : Float) -> String
+    {
+        let output = formatter.string(from: TimeInterval(seconds))!
+        return seconds < 3600 ? output.substring(from: output.range(of: ":")!.upperBound) : output
+    }
+
+    
 }
 
 protocol AudioTableViewCellDelegate: class {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
-
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
-
+    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeOffset isBackward: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newState: Float)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeTargetSound newState: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool)
 }

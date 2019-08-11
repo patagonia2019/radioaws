@@ -12,7 +12,7 @@ import UIKit
 struct LabelViewModel {
     /// title specification
     var text: String = ""
-    var color: UIColor = .darkGray
+    var color: UIColor = .blue
     var font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.L)
     var isHidden: Bool = false
     var lines: Int = 1

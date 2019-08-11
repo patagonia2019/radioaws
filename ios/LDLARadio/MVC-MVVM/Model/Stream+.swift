@@ -14,7 +14,7 @@ extension Stream : Modellable {
     
     /// Function to obtain all the streams sorted by station.name
     static func all() -> [Stream]? {
-        return all(predicate: NSPredicate(format: "listenIsWorking = true"),
+        return all(predicate: NSPredicate(format: "listenIsWorking = true and useWeb = false"),
                    sortDescriptors: [NSSortDescriptor(key: "station.name",
                                                       ascending: true)])
             as? [Stream]

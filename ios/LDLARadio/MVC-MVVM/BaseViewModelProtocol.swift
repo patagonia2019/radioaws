@@ -11,9 +11,7 @@ import UIKit
 
 protocol BaseViewModelProtocol {
     
-    /// Some constants hardcoded here
-    static var cellheight: Float { get }
-    
+    /// Some constants hardcoded here    
     var icon: Commons.symbols.FontAwesome { get }
     var iconColor: UIColor { get }
     var url: URL? { get set }
