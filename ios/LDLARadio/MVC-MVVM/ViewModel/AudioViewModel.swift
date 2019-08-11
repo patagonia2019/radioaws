@@ -144,8 +144,11 @@ class AudioViewModel : BaseViewModelProtocol {
             name.contains("mp3") {
             title.text = name
         }
-        subTitle.text = "El Desconcierto de Quique Pesoa"
-        detail.text = "Podcasts"
+        else {
+            title.text = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
+        }
+        subTitle.text = ""
+        detail.text = ""
     
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {

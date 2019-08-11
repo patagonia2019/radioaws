@@ -84,7 +84,7 @@ class AudioTableViewCell: UITableViewCell {
                 selectionStyle = model?.selectionStyle ?? .none
                 // show big logo, and hide thumbnail
                 logoView.isHidden = false
-                thumbnailView.alpha = 0
+                thumbnailView.isHidden = true
                 
                 playerStack.isHidden = false
                 if let timerPlayed = timerPlayed {
@@ -93,19 +93,13 @@ class AudioTableViewCell: UITableViewCell {
                 updateTimePlayed()
                 timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
                 resizeButton.isHighlighted = model?.isFullScreen ?? false
-                
-                backwardButton.isHidden = StreamPlaybackManager.sharedManager.canStepBackward()
-                forwardButton.isHidden = StreamPlaybackManager.sharedManager.canStepForward()
-                startOfStreamButton.isHidden = StreamPlaybackManager.sharedManager.canGoToStart()
-                endOfStreamButton.isHidden = StreamPlaybackManager.sharedManager.canGoToEnd()
-                progressStack.isHidden = backwardButton.isHidden && forwardButton.isHidden
             }
             else {
                 playButton.isHighlighted = false
                 selectionStyle = .none
                 // show thumbnail, and hide logo
                 logoView.isHidden = true
-                thumbnailView.alpha = 1
+                thumbnailView.isHidden = false
                 playerStack.isHidden = true
                 progressStack.isHidden = true
                 if let timerPlayed = timerPlayed {
@@ -213,12 +207,22 @@ class AudioTableViewCell: UITableViewCell {
                 sliderStack.alpha = 1
                 currentTimeLabel.alpha = 1
                 totalTimeLabel.alpha = 1
+                backwardButton.isHidden = false
+                forwardButton.isHidden = false
+                startOfStreamButton.isHidden = false
+                endOfStreamButton.isHidden = false
+                progressStack.alpha = 1
             }
         }
         else {
             sliderStack.alpha = 0
             currentTimeLabel.alpha = 0
             totalTimeLabel.alpha = 0
+            backwardButton.isHidden = true
+            forwardButton.isHidden = true
+            startOfStreamButton.isHidden = true
+            endOfStreamButton.isHidden = true
+            progressStack.alpha = 0
         }
     }
     

@@ -102,19 +102,19 @@ class StreamPlaybackManager: NSObject {
     }
     
     func canStepBackward() -> Bool {
-        return playerItem?.canStepBackward ?? false
+        return getTotalTime() > 0
     }
     
     func canStepForward() -> Bool {
-        return playerItem?.canStepForward ?? false
+        return getTotalTime() > 0
     }
     
     func canGoToStart() -> Bool {
-        return playerItem?.canPlayReverse ?? false
+        return getTotalTime() > 0
     }
 
     func canGoToEnd() -> Bool {
-        return playerItem?.canPlayReverse ?? false
+        return getTotalTime() > 0
     }
 
     func pause() {

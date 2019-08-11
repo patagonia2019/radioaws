@@ -193,8 +193,8 @@ class AudioViewController: UITableViewController {
             else {
                 StreamPlaybackManager.sharedManager.pause()
             }
+            self.reloadData()
             UIView.animate(withDuration: 0.5, animations: {
-                self.reloadData()
             }) { (finished) in
                 if finished {
                     self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
@@ -355,7 +355,7 @@ class AudioViewController: UITableViewController {
             isBookmarked = section.isBookmarked
         }
         if let isBookmarked = isBookmarked {
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Del.\nBook" : "Add\nBook") { (action, indexPath) in
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (action, indexPath) in
                 self.bookmark(indexPath: indexPath)
             }
             bookmarkAction.backgroundColor = isBookmarked ? .purple : .blue
@@ -501,15 +501,20 @@ extension AudioViewController: AssetPlaybackDelegate {
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
         if isPlaying {
+            print("JF FINALLY PLAYING")
             player.play()
         }
         else {
+            print("JF PAUSE")
             player.pause()
         }
         reloadData()
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
+        print("JF CHANGE")
+        reloadData()
+        player.play()
     }
 }
 
