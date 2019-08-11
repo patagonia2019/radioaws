@@ -20,7 +20,7 @@ class BookmarkController: BaseController {
     private var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
 
     override var useRefresh : Bool {
-        return true
+        return cloudKit.loggedIn
     }
 
     override init() {
@@ -171,7 +171,7 @@ class BookmarkController: BaseController {
             }
         }
        
-        if isClean {
+        if isClean && cloudKit.loggedIn {
             
             RestApi.instance.context?.performAndWait {
                 Bookmark.clean()

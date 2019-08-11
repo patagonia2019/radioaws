@@ -638,6 +638,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="refreshButton" destination="gNa-fy-l3t" id="DB8-ZU-cdC"/>
                         <segue destination="kEF-Tm-fDg" kind="show" identifier="recursiveCatalog" id="Jbn-VQ-sy7"/>
                         <segue destination="kEF-Tm-fDg" kind="show" identifier="searchAudio" id="6tQ-09-Vua"/>
                     </connections>
@@ -678,6 +679,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QEc-wE-fUB"/>
-        <segue reference="6tQ-09-Vua"/>
+        <segue reference="Jbn-VQ-sy7"/>
     </inferredMetricsTieBreakers>
 </document>

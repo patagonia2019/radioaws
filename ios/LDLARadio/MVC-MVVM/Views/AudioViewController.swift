@@ -18,6 +18,8 @@ class AudioViewController: UITableViewController {
     
     var isFullScreen : Bool = false
     
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
     var rnaController = RNAController()
@@ -80,6 +82,8 @@ class AudioViewController: UITableViewController {
         super.viewDidLoad()
         
         SwiftSpinner.useContainerView(view)
+        
+        refreshButton.isEnabled = controller.useRefresh
         
         // Set the ViewController as the delegate for StreamPlaybackManager to recieve playback information.
         StreamPlaybackManager.sharedManager.delegate = self
