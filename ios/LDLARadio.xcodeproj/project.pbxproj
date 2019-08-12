@@ -32,10 +32,7 @@
 		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
 		9808512B22E782C40013B67C /* RNABand+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512A22E782C40013B67C /* RNABand+.swift */; };
 		9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512C22E7A2DD0013B67C /* RNAProgram+.swift */; };
-		9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513322E8F4E40013B67C /* BookmarkTests.swift */; };
-		9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
 		9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
-		9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
 		9808513922E8FBC80013B67C /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		9808513A22E8FBE80013B67C /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
@@ -89,6 +86,18 @@
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
 		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
 		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
+		98B53CE922FFE0EC003F50EE /* ArchiveOrgController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */; };
+		98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */; };
+		98B53CEC22FFEB28003F50EE /* StreamPlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */; };
+		98B53CED22FFEB47003F50EE /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
+		98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */; };
+		98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */; };
+		98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */; };
+		98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */; };
+		98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */; };
+		98B53CF72301192E003F50EE /* ArchiveCollection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */; };
+		98B53CF923012730003F50EE /* ArchiveDoc+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF823012730003F50EE /* ArchiveDoc+.swift */; };
+		98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF823012730003F50EE /* ArchiveDoc+.swift */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
@@ -185,6 +194,12 @@
 		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		98B53CE622FFAB8D003F50EE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveOrgController.swift; sourceTree = "<group>"; };
+		98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveMeta+.swift"; sourceTree = "<group>"; };
+		98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMeta.json; sourceTree = "<group>"; };
+		98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgDetail.json; sourceTree = "<group>"; };
+		98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveCollection+.swift"; sourceTree = "<group>"; };
+		98B53CF823012730003F50EE /* ArchiveDoc+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDoc+.swift"; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
 		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
 		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
@@ -221,6 +236,9 @@
 				980DA23B22EE77FA00B32154 /* Extensions */,
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
+				98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */,
+				98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */,
+				98B53CF823012730003F50EE /* ArchiveDoc+.swift */,
 				9808513622E8FAA00013B67C /* Bookmark+.swift */,
 				9808511A22E6D7040013B67C /* City+.swift */,
 				986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */,
@@ -371,6 +389,7 @@
 				9808511022E69D990013B67C /* BaseController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
 				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
+				98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */,
 				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
 				9808513C22E903730013B67C /* BookmarkController.swift */,
@@ -410,6 +429,8 @@
 			isa = PBXGroup;
 			children = (
 				98195FBC22DBFBFE006E7961 /* BaseTests.swift */,
+				98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */,
+				98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */,
 				987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */,
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
@@ -543,6 +564,8 @@
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
 				983E01F722F5E845008370BA /* Settings.bundle in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
+				98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */,
+				98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */,
 				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
@@ -557,6 +580,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */,
+				98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,8 +671,11 @@
 				"${PODS_ROOT}/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -655,8 +683,11 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireCoreData.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -695,6 +726,8 @@
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
+				98B53CF923012730003F50EE /* ArchiveDoc+.swift in Sources */,
+				98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
@@ -709,6 +742,8 @@
 				9808511122E69D990013B67C /* BaseController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
 				9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */,
+				98B53CE922FFE0EC003F50EE /* ArchiveOrgController.swift in Sources */,
+				98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				9808512722E6E6640013B67C /* RNAStation+.swift in Sources */,
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
@@ -729,24 +764,25 @@
 			files = (
 				983E01FF22F65EB1008370BA /* CatalogViewModel.swift in Sources */,
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
-				9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */,
-				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
 				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
 				98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */,
 				983E01F122F45C59008370BA /* LabelViewModel.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
+				98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
+				98B53CEC22FFEB28003F50EE /* StreamPlaybackManager.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
+				98B53CED22FFEB47003F50EE /* AudioViewModel.swift in Sources */,
 				983E01FC22F65E70008370BA /* Searchable.swift in Sources */,
 				983E01FE22F65E79008370BA /* BaseViewModelProtocol.swift in Sources */,
+				98B53CF72301192E003F50EE /* ArchiveCollection+.swift in Sources */,
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
 				983E01FD22F65E73008370BA /* Downloadable.swift in Sources */,
 				983E01FB22F65E6E008370BA /* Modellable.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
-				9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */,
 				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,
 				9808514222EA70B60013B67C /* String+.swift in Sources */,
 				9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */,

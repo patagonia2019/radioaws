@@ -7,8 +7,6 @@
 //
 
 import Foundation
-
-import Foundation
 import UIKit
 import AVFoundation
 
@@ -29,6 +27,7 @@ class AudioViewModel : BaseViewModelProtocol {
         case rna = "RNA"
         case bookmark = "Bookmark"
         case desconcierto = "El Desconcierto"
+        case archiveOrg = "Archive.org"
         case search = "Search"
     }
 
@@ -102,7 +101,7 @@ class AudioViewModel : BaseViewModelProtocol {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-        isBookmarked = checkIfBookmarked()
+//        isBookmarked = checkIfBookmarked()
         reFillTitles()
         if detail.text.count <= 0 {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
@@ -131,11 +130,36 @@ class AudioViewModel : BaseViewModelProtocol {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-        isBookmarked = checkIfBookmarked()
+//        isBookmarked = checkIfBookmarked()
         reFillTitles()
         
     }
     
+    init(doc: ArchiveDoc?) {
+        section = "Archive Doc"
+        id = doc?.identifier ?? ""
+        title.text = doc?.title ?? ""
+        subTitle.text = "" // doc?.subject?.joined(separator: ",") ?? ""
+        detail.text = doc?.descript ?? ""
+        
+        placeholderImageName = Stream.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+        
+//        if let imageUrl = stream?.station?.imageUrl,
+//            let urlChecked = URL(string: imageUrl) {
+//            thumbnailUrl = urlChecked
+//        }
+//        if let audioUrl = stream?.url,
+//            let urlChecked = URL(string: audioUrl) {
+//            url = urlChecked
+//            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
+//        }
+//        isBookmarked = checkIfBookmarked()
+        reFillTitles()
+    }
+
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
         section = ControllerName.desconcierto.rawValue
@@ -163,7 +187,7 @@ class AudioViewModel : BaseViewModelProtocol {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-        isBookmarked = checkIfBookmarked()
+//        isBookmarked = checkIfBookmarked()
         reFillTitles()
 
     }
@@ -177,6 +201,7 @@ class AudioViewModel : BaseViewModelProtocol {
     init(stationFm: RNAStation?) {
         update(station: stationFm, isAm: false)
     }
+    
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
@@ -201,14 +226,15 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = true
     }
     
+    
     func urlString() -> String? {
         return url?.absoluteString
     }
         
     /// to know if the model is in bookmark
-    func checkIfBookmarked() -> Bool {
-        return Bookmark.search(byUrl: url?.absoluteString) != nil
-    }
+//    func checkIfBookmarked() -> Bool {
+//        return Bookmark.search(byUrl: url?.absoluteString) != nil
+//    }
     
     /// Use the url of the stream/audio as an AVURLAsset
     func urlAsset() -> AVURLAsset? {
@@ -273,7 +299,7 @@ extension AudioViewModel {
         
         isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: url?.absoluteString)
         
-        isBookmarked = checkIfBookmarked()
+//        isBookmarked = checkIfBookmarked()
         reFillTitles()
     }
 

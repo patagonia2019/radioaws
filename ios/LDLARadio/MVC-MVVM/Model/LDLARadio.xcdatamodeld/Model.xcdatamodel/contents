@@ -1,38 +1,202 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ArchiveDoc" representedClassName="ArchiveDoc" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="avg_rating" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="backup_location" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="btih" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="downloads" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="item_size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="mediatype" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="publicdate" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="docs" inverseEntity="ArchiveResponse" syncable="YES"/>
+    <entity name="ArchiveCollection" representedClassName=".ArchiveCollection" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="detail" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="detail"/>
+            </userInfo>
+        </attribute>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="URL"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isExpanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="subtitle"/>
+            </userInfo>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="title"/>
+            </userInfo>
+        </attribute>
+        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="collection" inverseEntity="ArchiveMeta" syncable="YES"/>
         <userInfo>
-            <entry key="key" value="description"/>
+            <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
-    <entity name="ArchiveMeta" representedClassName="ArchiveMeta" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader" syncable="YES"/>
-        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="meta" inverseEntity="ArchiveResponse" syncable="YES"/>
+    <entity name="ArchiveDetail" representedClassName=".ArchiveDetail" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="dir" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="dir"/>
+            </userInfo>
+        </attribute>
+        <attribute name="files" optional="YES" attributeType="Transformable" customClassName="NSDictionary" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="files"/>
+            </userInfo>
+        </attribute>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="misc.image"/>
+            </userInfo>
+        </attribute>
+        <attribute name="server" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="server"/>
+            </userInfo>
+        </attribute>
+        <relationship name="archiveFiles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveFile" inverseName="detail" inverseEntity="ArchiveFile" syncable="YES"/>
+        <relationship name="doc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDoc" inverseName="detail" inverseEntity="ArchiveDoc" syncable="YES"/>
     </entity>
-    <entity name="ArchiveResponse" representedClassName="ArchiveResponse" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="numFound" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="start" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="docs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ArchiveDoc" inverseName="response" inverseEntity="ArchiveDoc" syncable="YES"/>
+    <entity name="ArchiveDoc" representedClassName=".ArchiveDoc" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="avgRating" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="avg_rating"/>
+            </userInfo>
+        </attribute>
+        <attribute name="creator" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="creator"/>
+            </userInfo>
+        </attribute>
+        <attribute name="descript" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="description"/>
+            </userInfo>
+        </attribute>
+        <attribute name="downloads" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="downloads"/>
+            </userInfo>
+        </attribute>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="identifier"/>
+            </userInfo>
+        </attribute>
+        <attribute name="itemSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="item_size"/>
+            </userInfo>
+        </attribute>
+        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="mediatype"/>
+            </userInfo>
+        </attribute>
+        <attribute name="publicDate" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="publicdate"/>
+            </userInfo>
+        </attribute>
+        <attribute name="subject" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="subject"/>
+            </userInfo>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="title"/>
+            </userInfo>
+        </attribute>
+        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="doc" inverseEntity="ArchiveDetail" syncable="YES"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="docs" inverseEntity="ArchiveResponse" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="identifier"/>
+        </userInfo>
+    </entity>
+    <entity name="ArchiveFile" representedClassName=".ArchiveFile" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="format" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="format"/>
+            </userInfo>
+        </attribute>
+        <attribute name="length" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="length"/>
+            </userInfo>
+        </attribute>
+        <attribute name="mtime" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="mtime"/>
+            </userInfo>
+        </attribute>
+        <attribute name="original" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="original"/>
+            </userInfo>
+        </attribute>
+        <attribute name="size" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="size"/>
+            </userInfo>
+        </attribute>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="source"/>
+            </userInfo>
+        </attribute>
+        <attribute name="track" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="track"/>
+            </userInfo>
+        </attribute>
+        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="archiveFiles" inverseEntity="ArchiveDetail" syncable="YES"/>
+    </entity>
+    <entity name="ArchiveMeta" representedClassName=".ArchiveMeta" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveCollection" inverseName="meta" inverseEntity="ArchiveCollection" syncable="YES"/>
+        <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="responseHeader"/>
+            </userInfo>
+        </relationship>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="meta" inverseEntity="ArchiveResponse" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="response"/>
+            </userInfo>
+        </relationship>
+    </entity>
+    <entity name="ArchiveResponse" representedClassName=".ArchiveResponse" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="numFound" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="numFound"/>
+            </userInfo>
+        </attribute>
+        <attribute name="start" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="start"/>
+            </userInfo>
+        </attribute>
+        <relationship name="docs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveDoc" inverseName="response" inverseEntity="ArchiveDoc" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="docs"/>
+            </userInfo>
+        </relationship>
         <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="response" inverseEntity="ArchiveMeta" syncable="YES"/>
     </entity>
-    <entity name="ArchiveResponseHeader" representedClassName="ArchiveResponseHeader" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="qTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="ArchiveResponseHeader" representedClassName=".ArchiveResponseHeader" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="qTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="QTime"/>
+            </userInfo>
+        </attribute>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="status"/>
+            </userInfo>
+        </attribute>
         <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta" syncable="YES"/>
+        <userInfo>
+            <entry key="key" value="value"/>
+        </userInfo>
     </entity>
     <entity name="Bookmark" representedClassName=".Bookmark" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
@@ -531,8 +695,8 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="ArchiveDoc" positionX="-639" positionY="-72" width="128" height="255"/>
-        <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="75"/>
+        <element name="ArchiveDoc" positionX="-639" positionY="-72" width="128" height="30"/>
+        <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="30"/>
         <element name="ArchiveResponse" positionX="-648" positionY="-81" width="128" height="105"/>
         <element name="ArchiveResponseHeader" positionX="-657" positionY="-99" width="128" height="90"/>
         <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="180"/>
@@ -550,5 +714,8 @@
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>
+        <element name="ArchiveDetail" positionX="-684" positionY="-117" width="128" height="30"/>
+        <element name="ArchiveFile" positionX="-675" positionY="-108" width="128" height="30"/>
+        <element name="ArchiveCollection" positionX="-666" positionY="-99" width="128" height="30"/>
     </elements>
 </model>

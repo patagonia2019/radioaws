@@ -67,7 +67,7 @@ struct CatalogViewModel : BaseViewModelProtocol {
         }
         var sectionsTmp = [CatalogViewModel]()
         var audiosTmp = [AudioViewModel]()
-
+        
         for element in all {
             if element.isAudio(), element.url?.count ?? 0 > 0 {
                 if element.audioCatalog == nil {
@@ -104,7 +104,43 @@ struct CatalogViewModel : BaseViewModelProtocol {
         }
         
         isBookmarked = checkIfBookmarked()
+        
+    }
 
+    init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
+        section = AudioViewModel.ControllerName.archiveOrg.rawValue
+        title.text = archiveCollection?.title ?? ""
+        tree = ""
+        detail.text = archiveCollection?.detail ?? ""
+        
+        if let queryUrl = archiveCollection?.urlString(),
+            let urlChecked = URL(string: queryUrl) {
+            url = urlChecked
+        }
+        
+        let meta = archiveCollection?.meta
+        let response = meta?.response
+        if let docs = response?.docs {
+            sections = docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded) })
+        }
+        
+        isBookmarked = checkIfBookmarked()
+        isExpanded = isAlreadyExpanded
+    }
+
+    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false) {
+        section = AudioViewModel.ControllerName.archiveOrg.rawValue
+        title.text = archiveDoc?.title ?? ""
+        tree = archiveDoc?.subjectString() ?? ""
+        detail.text = archiveDoc?.descript ?? ""
+        
+        if let queryUrl = archiveDoc?.urlString(),
+            let urlChecked = URL(string: queryUrl) {
+            url = urlChecked
+        }
+        
+        isBookmarked = checkIfBookmarked()
+        isExpanded = isAlreadyExpanded
     }
     
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {

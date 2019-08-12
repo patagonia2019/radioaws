@@ -93,13 +93,8 @@ class ElDesconciertoController: BaseController {
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-                
-        var resetInfo = false
-        if isClean {
-            resetInfo = true
-        }
-        
-        if resetInfo == false {
+
+        if isClean == false {
             updateModels()
             if models.count > 0 {
                 finishClosure?(nil)

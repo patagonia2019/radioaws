@@ -120,6 +120,20 @@ class RestApi {
         request(usingUrl: urlJson, method: .get, type: type, finish: finish)
     }
     
+    /// Request in RT server with Insert in Core Data using RTServer
+    /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
+    /// query: uri to build the url
+    /// type: The class that implement insertable protocol
+    /// finish: closure to know if there is an error in the request/json conversion/core data insert
+    func requestARCH<T: Insertable>(
+        usingQuery query: String? = "",
+        type: T.Type,
+        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil)
+    {
+        let url = Constants.Service.url(with: query, baseUrl: Constants.Service.archServer)
+        requestARCH(usingUrl: url, type: type, finish: finish)
+    }
+
     /// Request in Archive server with Insert in Core Data using RTServer
     /// T: Insertable: protocol that is used to insert any converted JSON object into Core Data model object.
     /// url: the url

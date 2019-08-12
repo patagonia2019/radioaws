@@ -564,7 +564,7 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                                     desc: "Error",
                                     reason: "Audio Session failed",
                                     suggestion: "Please check the audio in your device",
-                                    underError: error as? NSError)
+                                    underError: error as NSError)
                 
                 delegate?.streamPlaybackManager(self, playerError: errorjf)
             }

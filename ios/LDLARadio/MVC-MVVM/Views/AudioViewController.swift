@@ -26,6 +26,7 @@ class AudioViewController: UITableViewController {
     var bookmarkController = BookmarkController()
     var desconciertoController = ElDesconciertoController()
     var searchController = SearchController()
+    var archiveOrgController = ArchiveOrgController()
 
     var controller: BaseController {
         get {
@@ -41,6 +42,8 @@ class AudioViewController: UITableViewController {
                     return bookmarkController
                 case AudioViewModel.ControllerName.desconcierto.rawValue:
                     return desconciertoController
+                case AudioViewModel.ControllerName.archiveOrg.rawValue:
+                    return archiveOrgController
                 case AudioViewModel.ControllerName.search.rawValue:
                     return searchController
                 default:
@@ -65,6 +68,9 @@ class AudioViewController: UITableViewController {
                 break
             case AudioViewModel.ControllerName.desconcierto.rawValue:
                 desconciertoController = newValue as! ElDesconciertoController
+                break
+            case AudioViewModel.ControllerName.archiveOrg.rawValue:
+                archiveOrgController = newValue as! ArchiveOrgController
                 break
             case AudioViewModel.ControllerName.search.rawValue:
                 searchController = newValue as! SearchController
@@ -147,6 +153,9 @@ class AudioViewController: UITableViewController {
     }
     
     private func reloadData() {
+        if !Thread.isMainThread {
+            print("ojo")
+        }
         tableView.refreshControl?.attributedTitle = controller.title().bigRed()
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
@@ -225,6 +234,20 @@ class AudioViewController: UITableViewController {
         }
         else if controller is ElDesconciertoController {
             (controller as? ElDesconciertoController)?.expand(model: model, section: section, finishClosure: { (error) in
+                self.reloadData()
+            })
+        }
+        else if controller is ArchiveOrgController {
+            (controller as? ArchiveOrgController)?.expand(model: model, section: section, startClosure: {
+                RestApi.instance.context?.performAndWait {
+                    SwiftSpinner.show(Quote.randomQuote())
+                }
+            }, finishClosure: { (error) in
+                if let error = error {
+                    self.showAlert(error: error)
+                    Analytics.logError(error: error)
+                }
+                SwiftSpinner.hide()
                 self.reloadData()
             })
         }
@@ -309,6 +332,16 @@ class AudioViewController: UITableViewController {
                 (self.controller as? ElDesconciertoController)?.changeCatalogBookmark(section: section)
             }
             headerView?.model = (controller as? ElDesconciertoController)?.model(inSection: section)
+            return headerView
+        }
+        else if controller is ArchiveOrgController {
+            headerView?.actionExpandBlock = { model, isHighlighted in
+                self.expand(model:model, section:section)
+            }
+            headerView?.actionBookmarkBlock = { model, isHighlighted in
+                (self.controller as? ArchiveOrgController)?.changeCatalogBookmark(section: section)
+            }
+            headerView?.model = (controller as? ArchiveOrgController)?.model(inSection: section)
             return headerView
         }
         return nil

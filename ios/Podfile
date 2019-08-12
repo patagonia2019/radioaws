@@ -5,13 +5,13 @@ use_frameworks!
 def sharedPods
     pod 'AlamofireCoreData'
     pod 'JFCore', :git => 'https://github.com/patagonia2019/jfcore', :branch => 'master'
+    pod 'Firebase/Analytics'
+    pod 'AlamofireImage'
     #pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
 end
 
 def iosPods
-  pod 'AlamofireImage'
   pod 'SwiftSpinner'
-  pod 'Firebase/Analytics'
 end
 
 target 'LDLARadio' do

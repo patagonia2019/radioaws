@@ -30,7 +30,113 @@ class BaseTests: XCTestCase {
         
         super.tearDown()
     }
+    
+    func fileJSON(path: String?) -> Data? {
+        guard let path = path else {
+            XCTFail()
+            return nil
+        }
+        let location = URL(fileURLWithPath: path)
+        return try? Data(contentsOf: location, options: .mappedIfSafe)
+    }
 
+    func archiveOrgMetaJSON() -> JSONDictionary {
+        return [
+            "responseHeader": [
+                "status": 0,
+                "QTime": 32,
+                "params": [
+                    "query": "(title:harry^100 OR description:harry^15 OR collection:harry^10 OR language:harry^10 OR text:harry^1) (title:potter^100 OR description:potter^15 OR collection:potter^10 OR language:potter^10 OR text:potter^1) (title:audiobook^100 OR description:audiobook^15 OR collection:audiobook^10 OR language:audiobook^10 OR text:audiobook^1)",
+                    "qin": "harry potter audiobook",
+                    "fields": "avg_rating,backup_location,btih,call_number,collection,contributor,coverage,creator,date,description,downloads,external-identifier,foldoutcount,format,genre,headerImage,identifier,imagecount,indexflag,item_size,language,licenseurl,mediatype,members,month,name,noindex,num_reviews,oai_updatedate,publicdate,publisher,related-external-id,reviewdate,rights,scanningcentre,source,stripped_tags,subject,title,type,volume,week,year",
+                    "wt": "json",
+                    "rows": "50",
+                    "start": 0
+                ]
+            ],
+            "response": [
+                "numFound": 124,
+                "start": 0,
+                "docs": [[
+                    "backup_location": "ia906604_27",
+                    "btih": "57db4363115cf2c08d6530cdd999c021c2d04c3d",
+                    "collection": ["opensource_audio", "fav-camila_gramaglia", "fav-traceyamey", "fav-nanagrace", "fav-hardcore_collector", "fav-blackc4t11", "fav-fsoz", "fav-aly3428", "fav-dkimbrell", "fav-meekaboo", "fav-kassaty", "fav-dmanikowski", "fav-majocka89", "fav-alexha", "fav-destynough", "fav-taryn13", "fav-jessica_dimarco", "fav-pathareshraddha", "fav-nahmed111", "fav-nifnaf", "fav-jadee_louiiisee", "fav-lonelydancer", "fav-sardinland_13", "fav-poysonboy", "fav-angelia_chopra", "fav-jamilasecche"],
+                    "creator": "JK Rowling",
+                    "date": "1992-10-07T00:00:00Z",
+                    "description": "AudioBook 5 Harry Potter",
+                    "downloads": 100949,
+                    "format": ["Archive BitTorrent", "Columbia Peaks", "Item Tile", "Metadata", "Ogg Vorbis", "PNG", "Spectrogram", "VBR MP3"],
+                    "identifier": "Book5HarryPotter",
+                    "indexflag": ["index", "nonoindex"],
+                    "item_size": 2476837663,
+                    "mediatype": "audio",
+                    "month": 3047,
+                    "oai_updatedate": ["2017-12-29T19:28:36Z", "2017-12-29T19:28:36Z", "2019-07-23T03:31:07Z"],
+                    "publicdate": "2017-12-29T19:28:36Z",
+                    "subject": "Harry Potter",
+                    "title": "AudioBook 5 Harry Potter",
+                    "week": 633,
+                    "year": "1992"
+                    ]]
+            ]
+        ]
+    }
+
+    func archiveOrgDetailJSON() -> JSONDictionary {
+        return [
+            "server": "ia800102.us.archive.org",
+            "dir": "/23/items/Book5HarryPotter",
+            "metadata": [
+                "identifier": ["Book5HarryPotter"],
+                "mediatype": ["audio"],
+                "collection": ["opensource_audio"],
+                "creator": ["JK Rowling"],
+                "date": ["1992-10-07"],
+                "description": ["AudioBook 5 Harry Potter"],
+                "scanner": ["Internet Archive HTML5 Uploader 1.6.3"],
+                "subject": ["Harry Potter"],
+                "title": ["AudioBook 5 Harry Potter"],
+                "publicdate": ["2017-12-29 19:28:36"],
+                "addeddate": ["2017-12-29 19:28:36"],
+                "curation": ["[curator]validator@archive.org[/curator][date]20171229193028[/date][comment]checked for malware[/comment]"],
+                "backup_location": ["ia906604_27"]
+            ],
+            "files": [
+                "/AudioBook5 parte 1.afpk": [
+                "source": "derivative",
+                "format": "Columbia Peaks",
+                "original": "AudioBook5 parte 1.mp3",
+                "mtime": "1563851907",
+                "size": "65",
+                "md5": "54d5f3336947666a99c0f54906a0cba5",
+                "crc32": "03e4b101",
+                "sha1": "042e9daed6de7b3004abb37cfa647aaaa1b964e8"
+                ],
+                "/AudioBook5 parte 1.mp3": [
+                "source": "original",
+                "mtime": "1563843592",
+                "size": "838866684",
+                "md5": "25f37e1631ea4c86bec0794db77178f2",
+                "crc32": "025ced17",
+                "sha1": "fc702e161795ce44ede6a8e4a6971e21e32f3e19",
+                "format": "VBR MP3",
+                "length": "52429.17",
+                "height": "0",
+                "width": "0",
+                "track": "01"
+                ]
+            ],
+            "misc": [
+                "image": "https://ia600102.us.archive.org/23/items/Book5HarryPotter/__ia_thumb.jpg",
+                "collection-title": "Community Audio"
+            ],
+            "item": [
+                "downloads": 100949,
+                "month": 3047
+            ]
+        ]
+
+    }
     func rnaEmisorasJSON() -> JSONDictionary {
         return [
             "data": [

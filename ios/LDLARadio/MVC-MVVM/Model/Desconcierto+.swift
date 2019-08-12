@@ -10,7 +10,6 @@ import Foundation
 
 extension Desconcierto : Modellable {
     
-    /// Function to obtain all the quotes
     static func all() -> [Desconcierto]? {
         return all(predicate: nil,
                    sortDescriptors: [NSSortDescriptor(key: "date", ascending: false)])
