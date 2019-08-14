@@ -10,23 +10,13 @@ import Foundation
 import JFCore
 import AlamofireCoreData
 
-extension Controllable where Self : ArchiveOrgController {
-    func model(inSection section: Int) -> CatalogViewModel? {
-        if section < models.count {
-            let model = models[section]
-            return model
-        }
-        return nil
-    }
-}
-
-
 class ArchiveOrgController: BaseController {
     
     fileprivate var models = [CatalogViewModel]()
     
     override init() { }
     
+
     override func numberOfSections() -> Int {
         return models.count
     }
@@ -42,16 +32,35 @@ class ArchiveOrgController: BaseController {
             if model.isExpanded == false {
                 return 0
             }
-            count = model.audios.count
+            count = model.sections.count + model.audios.count
         }
         return count > 0 ? count : 1
     }
     
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if section < models.count {
+            let model = models[section]
+            return model
+        }
+        return nil
+    }
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
             let model = models[section]
-            if row < model.audios.count {
-                return model.audios[row]
+            if row < (model.sections.count + model.audios.count) {
+                if row < model.sections.count {
+                    return model.sections[row]
+                }
+                let audioRow = row - model.sections.count
+                if audioRow < model.audios.count {
+                    return model.audios[audioRow]
+                }
+            }
+            else {
+                if row < model.audios.count {
+                    return model.audios[row]
+                }
             }
         }
         return nil
@@ -65,26 +74,22 @@ class ArchiveOrgController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight)
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        if let model = model(forSection: section, row: row) as? AudioViewModel {
-            return CGFloat(model.height())
+        let subModel = model(forSection: section, row: row)
+        if let audioModel = subModel as? AudioViewModel {
+            return CGFloat(audioModel.height())
         }
-        return 0
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
     
     private func updateModels() {
-
         if let collections = ArchiveCollection.all() {
             func isExpanded(ac: ArchiveCollection?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    if let identifier = ac?.identifier {
-                        let queryUrl = "\(RestApi.Constants.Service.archServer)/details/\(identifier)"
-                        return (catalog.isExpanded ?? false) && queryUrl == catalog.urlString()
-                    }
-                    return false
+                    return (catalog.isExpanded ?? false) && ac?.identifier == catalog.id
                     }.count > 0
             }
             models = collections.map({ CatalogViewModel(archiveCollection: $0, isAlreadyExpanded: isExpanded(ac: $0)) })
@@ -108,8 +113,13 @@ class ArchiveOrgController: BaseController {
         RestApi.instance.context?.performAndWait {
             
             ArchiveCollection.clean()
-            
-            RestApi.instance.requestLDLA(usingQuery: "/archive_org_audios.json", type: Many<ArchiveCollection>.self) { error, _ in
+            ArchiveMeta.clean()
+            ArchiveDoc.clean()
+            ArchiveFile.clean()
+            ArchiveResponse.clean()
+            ArchiveResponseHeader.clean()
+
+            RestApi.instance.requestLDLA(usingQuery: "/archivecatalogs.json", type: Many<ArchiveCollection>.self) { error, _ in
                 
                 if error != nil {
                     CoreDataManager.instance.rollback()
@@ -134,54 +144,43 @@ class ArchiveOrgController: BaseController {
         }
     }
     
-//    func expand(model: CatalogViewModel?, section: Int,
-//                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-//        RestApi.instance.context?.performAndWait {
-//            self.expanding(model: model, section: section, finishClosure: finishClosure)
-//        }
-//    }
-//
-//    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-//
-//        if let isExpanded = model?.isExpanded {
-//            models[section].isExpanded = !isExpanded
-//        }
-//
-//        finishClosure?(nil)
-//    }
-    func expand(model: CatalogViewModel?, section: Int,
-                startClosure: (() -> Void)? = nil,
-                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        RestApi.instance.context?.performAndWait {
-            self.expanding(model: model, section: section, startClosure: startClosure, finishClosure: finishClosure)
-        }
-    }
-    
-    private func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
-        let archiveCollection = ArchiveCollection.search(byName: model?.title.text)?.first
+    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        archiveCollection?.isExpanded = !(archiveCollection?.isExpanded ?? false)
+        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
         
-        let url = archiveCollection?.searchUrlString()
+        if let isExpanded = model?.isExpanded {
+            model?.isExpanded = !isExpanded
+            archiveCollection?.isExpanded = !isExpanded
+        }
+
+        if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
+            finishClosure?(nil)
+            return
+        }
+
+        if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
+            self.updateModels()
+            finishClosure?(nil)
+            return
+        }
+
+        let url = archiveCollection?.searchUrlString(page: section) ?? model?.urlString()
         if url == nil {
-            lastUpdated = RTCatalog.lastUpdated()
+            self.updateModels()
             finishClosure?(nil)
             return
         }
         
         RestApi.instance.context?.performAndWait {
-            
-            ArchiveCollection.clean()
-            
+        
             RestApi.instance.requestARCH(usingUrl: url, type: ArchiveMeta.self) { error, meta in
+                
+                if error == nil {
+                    meta?.collection = ArchiveCollection.search(byIdentifier: archiveCollection?.identifier ?? model?.parentId)
 
-                archiveCollection?.meta = meta
+                    meta?.collectionIdentifier = archiveCollection?.identifier ?? model?.parentId
+                    meta?.identifier = model?.id
 
-                if error != nil {
-                    CoreDataManager.instance.rollback()
-                }
-                else {
                     CoreDataManager.instance.save()
                 }
                 
@@ -192,9 +191,40 @@ class ArchiveOrgController: BaseController {
                 }
             }
         }
-
-        
     }
+    
+    
+    
+    static func search(text: String = "",
+                       finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if text.count == 0 {
+            finishClosure?(nil)
+            return
+        }
+        
+        guard let text2Search = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
+            finishClosure?(nil)
+            return
+        }
+        
+        let urlString = ArchiveCollection.searchUrlString(withString: text2Search, page: 1)
+        RestApi.instance.requestARCH(usingUrl: urlString, type: ArchiveMeta.self) { error, archiveMeta in
+            
+            if error != nil {
+                DispatchQueue.main.async {
+                    finishClosure?(error)
+                }
+                return
+            }
+            CoreDataManager.instance.save()
+            
+            DispatchQueue.main.async {
+                finishClosure?(error)
+            }
+        }
+    }
+    
 
 
 }

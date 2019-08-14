@@ -9,11 +9,16 @@
 import Foundation
 import JFCore
 
+
 class RadioController: BaseController {
     
+    var catalogViewModel = CatalogViewModel()
     private var models = [AudioViewModel]()
     
-    override init() { }
+    override init() {
+        catalogViewModel.title.text = "Los Locos de la Azotea"
+        catalogViewModel.audios = models
+    }
 
     init(withStreams streams: [Stream]?) {
         super.init()
@@ -32,6 +37,10 @@ class RadioController: BaseController {
             return models[row]
         }
         return nil
+    }
+    
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        return catalogViewModel
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
@@ -94,4 +103,15 @@ class RadioController: BaseController {
             }
         }
     }
+    
+    
+    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if let isExpanded = model?.isExpanded {
+            catalogViewModel.isExpanded = !isExpanded
+        }
+        
+        finishClosure?(nil)
+    }
+
 }

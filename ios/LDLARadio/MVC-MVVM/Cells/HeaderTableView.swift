@@ -16,7 +16,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
     @IBOutlet weak var expandButton: UIButton?
     @IBOutlet weak var titleButton: UIButton?
     @IBOutlet weak var bookmarkButton: UIButton?
-    
+    @IBOutlet weak var infoButton: UIButton?
+    @IBOutlet weak var thumbnailView: UIImageView?
+
+    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
     var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
     var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> ())? = nil
     
@@ -33,13 +36,16 @@ class HeaderTableView : UITableViewHeaderFooterView {
                 else {
                     expandButton?.isHidden = true
                 }
-                if let isBookmarked = model.isBookmarked {
-                    bookmarkButton?.isHidden = false
-                    bookmarkButton?.isHighlighted = isBookmarked
+                
+                thumbnailView?.alpha = 0
+                if let thumbnailUrl = model.thumbnailUrl {
+                    thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
+                        if response.error == nil {
+                            self.thumbnailView?.alpha = 1
+                        }
+                    }
                 }
-                else {
-                    bookmarkButton?.isHidden = true
-                }
+                infoButton?.isHidden = !(model.detail.text.count > 0)
             }
         }
     }
@@ -51,7 +57,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
         expandButton?.isHighlighted = false
         bookmarkButton?.isHidden = true
         bookmarkButton?.isHighlighted = false
+        thumbnailView?.alpha = 0
+        infoButton?.isHidden = true
     }
+    
     
     static func setup(tableView: UITableView?) {
         let headerNib = UINib.init(nibName: nibName(), bundle: Bundle.main)
@@ -62,6 +71,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
         return "Main"
     }
 
+    @IBAction func infoAction(_ sender: Any) {
+        infoBlock?(model)
+    }
+    
     @IBAction func expandAction(_ sender: Any) {
         if let expandButton = expandButton {
             expandButton.isHighlighted = !expandButton.isHighlighted

@@ -26,6 +26,7 @@ class Commons {
     
     struct segue {
         static let catalog = "recursiveCatalog"
+        static let archiveorg = "recursiveArchiveOrg"
         static let search = "searchAudio"
         static let radio = "radioViewController"
     }

@@ -33,6 +33,59 @@ class ArchiveTests: BaseTests {
         }
     }
     
+    func testModelArchiveOrgMetaCrashJson() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        
+        do {
+            guard let path = Bundle.main.path(forResource: "ArchiveOrgMetaCrash", ofType: "json") else {
+                XCTFail()
+                return
+            }
+            
+            guard let data = fileJSON(path: path) else {
+                XCTFail()
+                return
+            }
+//            guard let str = String(data: data0, encoding: .utf16),
+//                let data = Data.init(base64Encoded: str, options: .ignoreUnknownCharacters) else {
+//                    XCTFail()
+//                    return
+//            }
+////            let str = String(UTF8String: strToDecode.cStringUsingEncoding(NSUTF8StringEncoding))
+
+                
+            let metas: [ArchiveMeta] = try objects(fromJSONData: data, inContext: context)
+            
+            XCTAssertNotNil(metas)
+            let meta = metas.first
+            XCTAssertNotNil(meta)
+            XCTAssertEqual(meta?.header?.qTime, 501)
+            let response = meta?.response
+            XCTAssertNotNil(response)
+            XCTAssertEqual(response?.numFound, 37)
+            let docs = response?.docs
+            XCTAssertEqual(docs?.count, 1)
+            let doc = docs?.firstObject as? ArchiveDoc
+            XCTAssertNotNil(doc)
+            XCTAssertEqual(doc?.title, "Hardcore Vinyl Collection 78GB")
+            if let subject = doc?.subjectString {
+                XCTAssertEqual(subject, "hardcore, techno, vinyl")
+            }
+            else {
+                XCTFail()
+            }
+            let another = docs?.lastObject as? ArchiveDoc
+            XCTAssertNotNil(another)
+            XCTAssertEqual(another?.title, "Hardcore Vinyl Collection 78GB")
+            
+        } catch {
+            XCTFail("error: \(error)")
+        }
+    }
+    
     func testModelArchiveOrgMetaJson() {
         guard let context = context else {
             XCTFail()
@@ -63,7 +116,7 @@ class ArchiveTests: BaseTests {
             let doc = docs?.firstObject as? ArchiveDoc
             XCTAssertNotNil(doc)
             XCTAssertEqual(doc?.title, "AudioBook 5 Harry Potter")
-            if let subject = doc?.subject as? String {
+            if let subject = doc?.subject {
                 XCTAssertEqual(subject, "Harry Potter")
             }
             else {
@@ -72,8 +125,8 @@ class ArchiveTests: BaseTests {
             let another = docs?.lastObject as? ArchiveDoc
             XCTAssertNotNil(another)
             XCTAssertEqual(another?.title, "The Dark Prophecy The Trials Of Apollo 2 Audiobook Part 1.3 GP")
-            if let subject = another?.subject as? [String] {
-                XCTAssertEqual(subject, ["khong gia dinh", "khong gia dinh audiobook", "taudio"])
+            if let subject = another?.subject {
+                XCTAssertEqual(subject, "khong gia dinh, khong gia dinh audiobook, taudio")
             }
             else {
                 XCTFail()
@@ -85,8 +138,8 @@ class ArchiveTests: BaseTests {
     }
     
     func testRequestArchiveMeta() {
-        let expect = expectation(description: "/advancedsearch.php?q=harry+potter+audiobook&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw")
-        RestApi.instance.requestARCH(usingQuery: "/advancedsearch.php?q=harry+potter+audiobook&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=50&page=1&output=json&save=yes#raw", type: ArchiveMeta.self) { error, meta in
+        let expect = expectation(description: "/advancedsearch.php?q=harry+potter+audiobook")
+        RestApi.instance.requestARCH(usingQuery: "/advancedsearch.php?q=title:Hardcore+Vinyl Collection+78GB&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=50&page=1&output=json&save=yes#raw", type: ArchiveMeta.self) { error, meta in
             
             XCTAssertNotNil(meta)
             let response = meta?.response
@@ -96,16 +149,22 @@ class ArchiveTests: BaseTests {
             XCTAssertEqual(docs?.count, 50)
             let doc = docs?.firstObject as? ArchiveDoc
             XCTAssertNotNil(doc)
-            XCTAssertEqual(doc?.title, "AudioBook 5 Harry Potter")
-            if let subject = doc?.subject as? String {
-                XCTAssertEqual(subject, "Harry Potter")
+            XCTAssertEqual(doc?.title, "Harry Potter and the Goblet of Fire")
+//            if let subject = doc?.subject as? String {
+//                XCTAssertEqual(subject, "Harry Potter")
+//            }
+//            else {
+//                XCTFail()
+//            }
+            if let subject = doc?.subject as? [String] {
+                XCTAssertEqual(subject, ["audiobook","Harry Potter"])
             }
             else {
                 XCTFail()
             }
             let another = docs?.lastObject as? ArchiveDoc
             XCTAssertNotNil(another)
-            XCTAssertEqual(another?.title, "The Dark Prophecy The Trials Of Apollo 2 Audiobook Part 1.3 GP")
+            XCTAssertEqual(another?.title, "Taudio.site The Lord Of The Rings The Two Towers Audiobook Full Free")
             expect.fulfill()
         }
         waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
@@ -124,6 +183,33 @@ class ArchiveTests: BaseTests {
         
         do {
             let detail: ArchiveDetail = try object(withEntityName: "ArchiveDetail", fromJSONDictionary: archiveOrgDetailJSON(), inContext: context) as! ArchiveDetail
+            
+            XCTAssertNotNil(detail)
+            XCTAssertEqual(detail.files?.count, 2)
+            if let files = detail.files {
+                for (k,v) in files {
+                    let arcFile = try object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
+                    XCTAssertNotNil(arcFile)
+                    arcFile?.original = k as? String
+                    XCTAssertEqual(arcFile?.original, k as? String)
+                }
+            }
+            else {
+                XCTFail()
+            }
+        } catch {
+            XCTFail("error: \(error)")
+        }
+    }
+
+    func testModelArchiveOrgDetailAlice() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        
+        do {
+            let detail: ArchiveDetail = try object(withEntityName: "ArchiveDetailAlice", fromJSONDictionary: archiveOrgDetailJSON(), inContext: context) as! ArchiveDetail
             
             XCTAssertNotNil(detail)
             XCTAssertEqual(detail.files?.count, 2)
@@ -170,7 +256,7 @@ class ArchiveTests: BaseTests {
         }
     }
 
-    func testRequestArchiveOrgDetail() {
+    func testRequestArchiveOrgDetailHarry() {
         guard let context = context else {
             XCTFail()
             return
@@ -190,6 +276,41 @@ class ArchiveTests: BaseTests {
                     XCTAssertEqual(arcFile?.original, k as? String)
                     if arcFile?.format == "VBR MP3" && arcFile?.track == "02" {
                         XCTAssertEqual(arcFile?.original, "/AudioBook5 parte 2.mp3")
+                    }
+                }
+            }
+            else {
+                XCTFail()
+            }
+            
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
+            XCTAssertNil(error)
+        })
+        
+    }
+    
+    func testRequestArchiveOrgDetailAlice() {
+        guard let context = context else {
+            XCTFail()
+            return
+        }
+        
+        let expect = expectation(description: "/details/alice_in_wonderland_librivox")
+        RestApi.instance.requestARCH(usingQuery: "/details/alice_in_wonderland_librivox", type: ArchiveDetail.self) { error, detail in
+            
+            XCTAssertNotNil(detail)
+            XCTAssertEqual(detail?.server, "ia800707.us.archive.org")
+            XCTAssertEqual(detail?.dir, "/8/items/alice_in_wonderland_librivox")
+            if let files = detail?.files {
+                for (k,v) in files {
+                    let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
+                    XCTAssertNotNil(arcFile)
+                    arcFile?.original = k as? String
+                    XCTAssertEqual(arcFile?.original, k as? String)
+                    if arcFile?.format == "64Kbps MP3 ZIP" {
+                        XCTAssertEqual(arcFile?.original, "/alice_in_wonderland_librivox_64kb_mp3.zip")
                     }
                 }
             }

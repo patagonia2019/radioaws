@@ -7,19 +7,45 @@
 //
 
 import Foundation
+import CoreData
+import Groot
 
 extension ArchiveDoc {
     
-    func subjectString() -> String? {
-        if let subject = subject as? String {
-            return subject
+    /// Update the `updatedAt` field in the entity when the model is created
+    override public func awakeFromInsert() {
+        super.awakeFromInsert()
+        setPrimitiveValue(parseCreator(), forKey: "creator")
+        setPrimitiveValue(parseSubject(), forKey: "subject")
+    }
+
+    func parseSubject() -> String? {
+        if let str = subjectTrf as? String {
+            return str
         }
-        else if let subject = subject as? [String] {
-            return subject.joined(separator: ", ")
+        else if let array = subjectTrf as? [String] {
+            return array.joined(separator: ", ")
         }
         return nil
     }
     
+    func parseCreator() -> String? {
+        if let str = creatorTrf as? String {
+            return str
+        }
+        else if let array = creatorTrf as? [String] {
+            return array.joined(separator: ", ")
+        }
+        return nil
+    }
+    
+    func thumbnailUrlString() -> String? {
+        if let identifier = identifier {
+            return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"
+        }
+        return nil
+    }
+
     func urlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/details/\(identifier)"
@@ -27,4 +53,56 @@ extension ArchiveDoc {
         return nil
     }
 
+    func extractFiles() {
+        detail?.extractFiles()
+    }
+
 }
+
+extension ArchiveDoc : Modellable {
+    
+    static func all() -> [ArchiveDoc]? {
+        return all(predicate: nil,
+                   sortDescriptors: [NSSortDescriptor(key: "title", ascending: false)])
+            as? [ArchiveDoc]
+    }
+}
+
+extension ArchiveDoc : Searchable {
+    
+    /// Fetch an object by url
+    static func search(byUrl url: String?) -> ArchiveDoc? {
+        guard let url = url else { return nil }
+        guard let context = RestApi.instance.context else { fatalError() }
+        let req = NSFetchRequest<ArchiveDoc>(entityName: "ArchiveDoc")
+        req.predicate = NSPredicate(format: "urlString() = %@", url)
+        let object = try? context.fetch(req).first
+        return object
+    }
+    
+
+    /// Returns the streams for a given name.
+    static func search(byName name: String?) -> [ArchiveDoc]? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let name = name else { return nil }
+        let req = NSFetchRequest<ArchiveDoc>(entityName: "ArchiveDoc")
+        req.predicate = NSPredicate(format: "title = %@ OR title CONTAINS[cd] %@ OR descript = %@ OR descript CONTAINS[cd] %@ OR identifier = %@ OR identifier CONTAINS[cd] %@ OR subject = %@ OR subject CONTAINS[cd] %@ OR creator = %@ OR creator CONTAINS[cd] %@", name, name, name, name, name, name, name, name, name, name)
+        req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "identifier", ascending: true)]
+        let array = try? context.fetch(req)
+        return array
+    }
+    
+    /// Fetch an object by id
+    static func search(byIdentifier id: String?) -> ArchiveDoc? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let id = id else { return nil }
+        let req = NSFetchRequest<ArchiveDoc>(entityName: "ArchiveDoc")
+        req.predicate = NSPredicate(format: "identifier = %@", id)
+        let array = try? context.fetch(req)
+        return array?.first
+    }
+
+}
+
+
+

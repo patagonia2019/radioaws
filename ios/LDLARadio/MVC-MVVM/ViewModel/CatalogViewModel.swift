@@ -11,7 +11,7 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Catalog info
-struct CatalogViewModel : BaseViewModelProtocol {
+class CatalogViewModel : BaseViewModelProtocol {
     
     let icon: Commons.symbols.FontAwesome = .indent
     let iconColor = UIColor.darkGray
@@ -33,8 +33,14 @@ struct CatalogViewModel : BaseViewModelProtocol {
     var audios = [AudioViewModel]()
 
     var isExpanded : Bool? = nil
-    
+    var thumbnailUrl: URL? = nil
+
     var section : String = ""
+    var text : String? = nil
+
+    /// convenient id
+    var parentId: String? = nil
+    var id: String? = nil
 
     init() {
         title.text = "No more info"
@@ -49,12 +55,16 @@ struct CatalogViewModel : BaseViewModelProtocol {
         title.text = catalog?.titleAndText() ?? "No more info"
         tree = catalog?.titleTree() ?? "?"
         isExpanded = catalog?.isExpanded
+        id = catalog?.guideId ?? catalog?.genreId ?? catalog?.presetId
+        if let parent = catalog?.sectionCatalog ?? catalog?.audioCatalog {
+            parentId = parent.guideId ?? parent.genreId ?? parent.presetId
+        }
         
         if let catalog = catalog,
             let text = catalog.text ?? catalog.subtext {
             detail.text = catalog.isOnlyText() ? text : ""
         }
-        if let queryUrl = catalog?.url,
+        if let queryUrl = catalog?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
@@ -104,16 +114,23 @@ struct CatalogViewModel : BaseViewModelProtocol {
         }
         
         isBookmarked = checkIfBookmarked()
-        
+        text = tree + ". " + detail.text
+
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
+        id = archiveCollection?.identifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
         title.text = archiveCollection?.title ?? ""
         tree = ""
         detail.text = archiveCollection?.detail ?? ""
-        
-        if let queryUrl = archiveCollection?.urlString(),
+
+        if let imageUrl = archiveCollection?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let urlChecked = URL(string: imageUrl) {
+            thumbnailUrl = urlChecked
+        }
+
+        if let queryUrl = archiveCollection?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
@@ -121,29 +138,60 @@ struct CatalogViewModel : BaseViewModelProtocol {
         let meta = archiveCollection?.meta
         let response = meta?.response
         if let docs = response?.docs {
-            sections = docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded) })
+            sections = docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded, superTree: title.text) })
         }
         
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
+        
+        text = detail.text
+
     }
 
-    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false) {
+    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false, superTree: String?) {
+        id = archiveDoc?.identifier
+        parentId = archiveDoc?.response?.meta?.identifier ?? archiveDoc?.response?.meta?.collectionIdentifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
-        title.text = archiveDoc?.title ?? ""
-        tree = archiveDoc?.subjectString() ?? ""
-        detail.text = archiveDoc?.descript ?? ""
+        var str = [String]()
+        if let adtitle = archiveDoc?.title {
+            str.append(String(adtitle.prefix(256)))
+        }
+        if let adsubject = archiveDoc?.subject {
+            str.append(String(adsubject.prefix(256)))
+        }
+        if let adcreator = archiveDoc?.creator {
+            str.append(String(adcreator.prefix(256)))
+        }
+        title.text = str.joined(separator: ", ")
+        tree = superTree ?? ""
+        detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
         
-        if let queryUrl = archiveDoc?.urlString(),
+        if let archiveFiles = archiveDoc?.detail?.archiveFiles,
+            archiveFiles.count > 0 {
+            audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
+        }
+        
+        if let imageUrl = archiveDoc?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let urlChecked = URL(string: imageUrl) {
+            thumbnailUrl = urlChecked
+        }
+
+        if let queryUrl = archiveDoc?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
         
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
+        
+        text = tree + ". " + detail.text + ". " + (archiveDoc?.descript ?? "") + (archiveDoc?.description ?? "")
+
     }
     
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
+        if let desconciertoId = desconcierto?.id {
+            id = "\(desconciertoId)"
+        }
         section = AudioViewModel.ControllerName.desconcierto.rawValue
         title.text = desconcierto?.date ?? ""
         tree = ""
@@ -162,10 +210,14 @@ struct CatalogViewModel : BaseViewModelProtocol {
         }
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
+        
+        text = title.text + ". " + detail.text
+
     }
     
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
+        id = bookmark?.id
         section = bookmark?.section ?? AudioViewModel.ControllerName.bookmark.rawValue
         title.text = bookmark?.subTitle ?? ""
         tree = bookmark?.title ?? ""
@@ -175,6 +227,9 @@ struct CatalogViewModel : BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = true
+        
+        text = tree + ". " + detail.text
+
     }
 
     /// to know if the model is in bookmark

@@ -49,3 +49,10 @@ extension Modellable where Self : ArchiveCollection {
     
     internal static var placeholderImageName: String { get { return "f0001-music"} }
 }
+
+extension Modellable where Self : ArchiveDoc {
+    
+    internal static var placeholderImageName: String { get { return "f0001-music"} }
+}
+
+

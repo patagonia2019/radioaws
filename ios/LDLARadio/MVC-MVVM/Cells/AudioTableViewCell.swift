@@ -78,6 +78,8 @@ class AudioTableViewCell: UITableViewCell {
             }
             bookmarkButton.isHighlighted = model?.isBookmarked ?? false
             bugButton.alpha = 0
+            targetSoundButton.alpha = 0
+            graphButton.alpha = 0
             
             if model?.isPlaying ?? false {
                 playButton.isHighlighted = true
@@ -85,14 +87,23 @@ class AudioTableViewCell: UITableViewCell {
                 // show big logo, and hide thumbnail
                 logoView.isHidden = false
                 thumbnailView.isHidden = true
-                
                 playerStack.isHidden = false
+                progressStack.isHidden = false
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-                updateTimePlayed()
+//                updateTimePlayed()
                 timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
                 resizeButton.isHighlighted = model?.isFullScreen ?? false
+                
+                sliderStack.alpha = 1
+                currentTimeLabel.alpha = 1
+                totalTimeLabel.alpha = 1
+                backwardButton.isHidden = false
+                forwardButton.isHidden = false
+                startOfStreamButton.isHidden = false
+                endOfStreamButton.isHidden = false
+
             }
             else {
                 playButton.isHighlighted = false
@@ -107,6 +118,14 @@ class AudioTableViewCell: UITableViewCell {
                 }
                 resizeButton.isHighlighted = false
                 
+                sliderStack.alpha = 0
+                currentTimeLabel.alpha = 0
+                totalTimeLabel.alpha = 0
+                backwardButton.isHidden = true
+                forwardButton.isHidden = true
+                startOfStreamButton.isHidden = true
+                endOfStreamButton.isHidden = true
+
             }
 
         }
@@ -141,7 +160,18 @@ class AudioTableViewCell: UITableViewCell {
     
     @IBAction func playAction(_ sender: UIButton?) {
         playButton.isHighlighted = !playButton.isHighlighted
-        delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
+
+        if let timerPlayed = timerPlayed {
+            timerPlayed.invalidate()
+        }
+
+        if model?.isPlaying ?? false {
+            model?.isPlaying = false
+            StreamPlaybackManager.sharedManager.pause(propagate: false)
+        }
+        else {
+            delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
+        }
     }
     
     @IBAction func startOfStreamAction(_ sender: UIButton?) {
@@ -197,24 +227,20 @@ class AudioTableViewCell: UITableViewCell {
         sliderView.maximumValue = Float(totalStreamTime)
         currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
         totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
-        if sliderView.maximumValue > 0.0 {
+        if model?.isPlaying ?? false,
+            StreamPlaybackManager.sharedManager.canGoToEnd() {
             if sliderView.value >= sliderView.maximumValue {
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-            }
-            else {
-                sliderStack.alpha = 1
-                currentTimeLabel.alpha = 1
-                totalTimeLabel.alpha = 1
-                backwardButton.isHidden = false
-                forwardButton.isHidden = false
-                startOfStreamButton.isHidden = false
-                endOfStreamButton.isHidden = false
-                progressStack.alpha = 1
+                playButton.isHighlighted = false
+                StreamPlaybackManager.sharedManager.pause(propagate: false)
             }
         }
         else {
+            if let timerPlayed = timerPlayed {
+                timerPlayed.invalidate()
+            }
             sliderStack.alpha = 0
             currentTimeLabel.alpha = 0
             totalTimeLabel.alpha = 0
@@ -222,7 +248,6 @@ class AudioTableViewCell: UITableViewCell {
             forwardButton.isHidden = true
             startOfStreamButton.isHidden = true
             endOfStreamButton.isHidden = true
-            progressStack.alpha = 0
         }
     }
     

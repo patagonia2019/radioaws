@@ -33,6 +33,11 @@ class BaseController : Controllable {
     func model(forSection section: Int, row: Int) -> Any? {
         fatalError()
     }
+    
+    func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        return nil
+    }
+
 
     func play(forSection section: Int, row: Int) {
         if let model = model(forSection: section, row: row) as? AudioViewModel {
@@ -88,6 +93,19 @@ class BaseController : Controllable {
             self.privateRefresh(isClean: isClean, prompt: prompt, finishClosure: finishClosure)
         }
     }
+    
+    func expand(model: CatalogViewModel?, section: Int,
+                startClosure: (() -> Void)? = nil,
+                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        RestApi.instance.context?.performAndWait {
+            self.expanding(model: model, section: section, startClosure: startClosure, finishClosure: finishClosure)
+        }
+    }
+
+    internal func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        fatalError()
+    }
+
 
     internal func privateRefresh(isClean: Bool = false,
                                 prompt: String,

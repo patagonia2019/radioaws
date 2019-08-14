@@ -9,16 +9,6 @@
 import Foundation
 import JFCore
 
-extension Controllable where Self : RadioTimeController {
-    func modelInstance(inSection section: Int) -> CatalogViewModel? {
-        if let model = mainModel,
-            section < model.sections.count {
-            return model.sections[section]
-        }
-        return mainModel
-    }
-}
-
 class RadioTimeController: BaseController {
     
     fileprivate var mainModel : CatalogViewModel? = nil
@@ -40,7 +30,7 @@ class RadioTimeController: BaseController {
     }
     
     override func titleForHeader(inSection section: Int) -> String? {
-        return ""
+        return mainModel?.title.text
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
@@ -61,6 +51,14 @@ class RadioTimeController: BaseController {
         return count > 0 ? count : 1
     }
     
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if let model = mainModel,
+            section < model.sections.count {
+            return model.sections[section]
+        }
+        return mainModel
+    }
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if let model = mainModel {
             if section < model.sections.count {
@@ -85,7 +83,7 @@ class RadioTimeController: BaseController {
     }
         
     override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight)
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -207,22 +205,14 @@ class RadioTimeController: BaseController {
     }
 
     
-    func expand(model: CatalogViewModel?, section: Int,
-                startClosure: (() -> Void)? = nil,
-                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        RestApi.instance.context?.performAndWait {
-            self.expanding(model: model, section: section, startClosure: startClosure, finishClosure: finishClosure)
-        }
-    }
-
-    private func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         let dbCatalog = mainCatalogFromDb(mainCVM: model)
         dbCatalog?.isExpanded = !(dbCatalog?.isExpanded ?? false)
 
         let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
         mainModel = CatalogViewModel(catalog: mainCatalog)
-        var sectionModel = modelInstance(inSection: section)
+        let sectionModel = modelInstance(inSection: section)
         if let isExpanded = model?.isExpanded {
             sectionModel?.isExpanded = !isExpanded
         }
@@ -289,12 +279,14 @@ class RadioTimeController: BaseController {
                 }
             }
             
-            CoreDataManager.instance.save()
             
             let mainCatalog = self.mainCatalogFromDb(mainCVM: self.mainModel)
             catalog?.isExpanded = true
+            
+            CoreDataManager.instance.save()
+
             self.mainModel = CatalogViewModel(catalog: mainCatalog)
-            var sectionModel = self.modelInstance(inSection: section)
+            let sectionModel = self.modelInstance(inSection: section)
             sectionModel?.isExpanded = true
 
             self.lastUpdated = RTCatalog.lastUpdated()
@@ -385,4 +377,5 @@ class RadioTimeController: BaseController {
         }
         return nil
     }
+    
 }

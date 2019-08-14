@@ -174,12 +174,12 @@ class RestApi {
         Analytics.logFunction(function: "request", parameters: ["url": url as AnyObject])
         request.responseInsert(context: context, type: T.self) { response in
             context.performAndWait({
-                print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\nRESPONSE:\n\(response.dataAsString())\n")
+                print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\n")
                 var error : JFError? = nil
                 if response.error != nil {
                     var desc = "Error"
                     var suggestion = "Please try again later"
-                    var reason = response.dataAsString()
+                    var reason = String(response.dataAsString().prefix(256))
                     if reason.count == 0 {
                         desc = "The server is not responding the request"
                         suggestion = "Please check your internet connection"

@@ -81,6 +81,7 @@ extension Bookmark : Creational {
         bookmark?.url = record["url"] as? String
         bookmark?.section = record["section"] as? String
         bookmark?.recordID = record.recordID.recordName
+        bookmark?.descript = record["descript"] as? String
 
         return bookmark
     }
@@ -98,6 +99,7 @@ extension Bookmark {
         bookmark.title = audioViewModel.title.text
         bookmark.url = audioViewModel.url?.absoluteString
         bookmark.section = audioViewModel.section
+        bookmark.descript = audioViewModel.text
         
     }
     
@@ -108,7 +110,7 @@ extension Bookmark {
         bookmark.title = catalogViewModel.tree
         bookmark.url = catalogViewModel.urlString()
         bookmark.section = catalogViewModel.section
-        
+        bookmark.descript = catalogViewModel.text
     }
     
 }

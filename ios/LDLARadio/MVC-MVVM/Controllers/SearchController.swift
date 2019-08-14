@@ -14,7 +14,8 @@ class SearchController: BaseController {
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "SearchController.didRefreshNotification")
     
-    private var models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
+    private var models = [CatalogViewModel]()
+
     private var textList = [String]()
     private var isAlreadyDone : Bool = false
     var textToSearch = String() {
@@ -40,100 +41,77 @@ class SearchController: BaseController {
         return "Search: \(textToSearch)"
     }
     
-    private func count() -> Int {
-        var count : Int = 0
-        for n in 0..<AudioViewModel.Section.count.rawValue {
-            count += models[n].count
-        }
-        return count
-    }
-    
     override func numberOfSections() -> Int {
-        return count() > 0 ? AudioViewModel.Section.count.rawValue : 1
+        return models.count
     }
     
     override func numberOfRows(inSection section: Int) -> Int {
-        if count() == 0 && section == 0 {
-            return 1
-        }
+        var count : Int = 0
         if section < models.count {
-            return models[section].count
+            let model = models[section]
+            if model.isExpanded == false {
+                return 0
+            }
+            count = model.sections.count + model.audios.count
         }
-        return 0
+        return count > 0 ? count : 1
+    }
+
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if section < models.count {
+            let model = models[section]
+            return model
+        }
+        return nil
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
-            let modelSection = models[section]
-            if row < modelSection.count {
-                return modelSection[row]
+            let model = models[section]
+            if row < (model.sections.count + model.audios.count) {
+                if row < model.sections.count {
+                    return model.sections[row]
+                }
+                let audioRow = row - model.sections.count
+                if audioRow < model.audios.count {
+                    return model.audios[audioRow]
+                }
             }
+            else {
+                if row < model.audios.count {
+                    return model.audios[row]
+                }
+            }
+        }
+        return nil
+    }
+    
+    override func titleForHeader(inSection section: Int) -> String? {
+        if section < models.count {
+            return models[section].title.text
         }
         return nil
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        if count() == 0 {
-            if section == 0 {
-                return CGFloat(CatalogViewModel.cellheight)
-            }
-            else {
-                return 0
-            }
-        }
-        if section < models.count {
-            let modelSection = models[section]
-            if modelSection.count > 0 {
-                return CGFloat(CatalogViewModel.cellheight)
-            }
-        }
-        return 0
-    }
-    
-    override func titleForHeader(inSection section: Int) -> String? {
-        if count() == 0 && section == 0 {
-            return "No results for \(textToSearch)"
-        }
-        if section < models.count {
-            let n = models[section].count
-            if n == 0 {
-                return nil
-            }
-            var str = [String]()
-            str.append(models[section].first?.section ?? "")
-            if n > 1 {
-                str.append("\(n) Items")
-            }
-            else {
-                str.append("1 Item")
-            }
-            return str.joined(separator: ": ")
-        }
-        return nil
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        if count() == 0 && section == 0 {
-            if let model = model(forSection: section, row: row) as? AudioViewModel {
-                return CGFloat(model.height())
-            }
+        let subModel = model(forSection: section, row: row)
+        if let audioModel = subModel as? AudioViewModel {
+            return CGFloat(audioModel.height())
         }
-        if section < models.count {
-            let modelSection = models[section]
-            if row < modelSection.count {
-                if let model = model(forSection: section, row: row) as? AudioViewModel {
-                    return CGFloat(model.height())
-                }
-            }
-        }
-        return 0
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
     
+
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
-        models = [[AudioViewModel](), [AudioViewModel](), [AudioViewModel](), [AudioViewModel]()]
+
+
+        models = [CatalogViewModel]()
 
         if textToSearch.count == 0 {
             finishClosure?(nil)
@@ -146,7 +124,11 @@ class SearchController: BaseController {
                     return station.amUri?.count ?? 0 > 0
                 }).map({ AudioViewModel(stationAm: $0) })
                 if amModels.count > 0 {
-                    models[AudioViewModel.Section.model0.rawValue].append(contentsOf: amModels)
+                    let model = CatalogViewModel()
+                    model.isExpanded = false
+                    model.title.text = "\(AudioViewModel.ControllerName.rna.rawValue) - AM"
+                    model.audios = amModels
+                    models.append(model)
                 }
                 
                 let fmModels = rnaStations.filter({ (station) -> Bool in
@@ -154,14 +136,22 @@ class SearchController: BaseController {
                 }).map({ AudioViewModel(stationFm: $0) })
                 
                 if fmModels.count > 0 {
-                    models[AudioViewModel.Section.model0.rawValue].append(contentsOf: amModels)
+                    let model = CatalogViewModel()
+                    model.isExpanded = false
+                    model.title.text = "\(AudioViewModel.ControllerName.rna.rawValue) - FM"
+                    model.audios = fmModels
+                    models.append(model)
                 }
             }
             
             if let streams = Stream.search(byName: textToSearch), streams.count > 0 {
                 let streamModels = streams.map({ AudioViewModel(stream: $0) })
                 if streamModels.count > 0 {
-                    models[AudioViewModel.Section.model1.rawValue].append(contentsOf: streamModels)
+                    let model = CatalogViewModel()
+                    model.isExpanded = false
+                    model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
+                    model.audios = streamModels
+                    models.append(model)
                 }
             }
         }
@@ -169,6 +159,11 @@ class SearchController: BaseController {
         let closure = {
             if let catalogs = RTCatalog.search(byName: self.textToSearch), catalogs.count > 0 {
                 var audiosTmp = [AudioViewModel]()
+
+                let model = CatalogViewModel()
+                model.isExpanded = false
+                model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
+
                 for element in catalogs {
                     if element.isAudio(), element.url?.count ?? 0 > 0 {
                         let viewModel = AudioViewModel(audio: element)
@@ -179,25 +174,37 @@ class SearchController: BaseController {
                         }
                     }
                     else {
-                        let catalogModel = CatalogViewModel(catalog: element)
-                        for viewModel in catalogModel.audios {
-                            if audiosTmp.first(where: { (avm) -> Bool in
-                                return avm.url == viewModel.url
-                            }) == nil {
-                                audiosTmp.append(viewModel)
-                            }
-                        }
+                        model.sections.append(CatalogViewModel(catalog: element))
                     }
                 }
                 if audiosTmp.count > 0 {
-                    self.models[AudioViewModel.Section.model2.rawValue].append(contentsOf: audiosTmp)
+                    model.audios = audiosTmp
+                }
+                if model.sections.count > 0 && model.audios.count > 0 {
+                    self.models.append(model)
+                }
+
+            }
+
+            if let archiveOrgs = ArchiveDoc.search(byName: self.textToSearch), archiveOrgs.count > 0 {
+                let model = CatalogViewModel()
+                model.isExpanded = false
+                model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
+                model.sections = archiveOrgs.map({ CatalogViewModel(archiveDoc: $0, superTree: "") })
+
+                if model.sections.count > 0 {
+                    self.models.append(model)
                 }
             }
             
             if let bookmarks = Bookmark.search(byName: self.textToSearch), bookmarks.count > 0 {
                 let bookmarkModels = bookmarks.map({ AudioViewModel(bookmark: $0) })
                 if bookmarkModels.count > 0 {
-                    self.models[AudioViewModel.Section.model3.rawValue].append(contentsOf: bookmarkModels)
+                    let model = CatalogViewModel()
+                    model.isExpanded = false
+                    model.title.text = AudioViewModel.ControllerName.bookmark.rawValue
+                    model.audios = bookmarkModels
+                    self.models.append(model)
                 }
             }
             
@@ -212,15 +219,29 @@ class SearchController: BaseController {
                                   parameters: ["text": textToSearch as AnyObject])
             
             RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
-                RestApi.instance.context?.performAndWait {
-                    self.textList.append(self.textToSearch)
-                    closure()
-                }
+                
+                ArchiveOrgController.search(text: self.textToSearch, finishClosure: { (error) in
+                    RestApi.instance.context?.performAndWait {
+                        
+                        self.textList.append(self.textToSearch)
+                        
+                        closure()
+                    }
+                })
             })
             
         }
         else {
             closure()
         }
+    }
+    
+    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if let isExpanded = model?.isExpanded {
+            model?.isExpanded = !isExpanded
+        }
+        
+        finishClosure?(nil)
     }
 }

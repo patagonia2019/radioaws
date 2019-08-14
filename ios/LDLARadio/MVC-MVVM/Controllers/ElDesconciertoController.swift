@@ -10,16 +10,6 @@ import Foundation
 import JFCore
 import AlamofireCoreData
 
-extension Controllable where Self : ElDesconciertoController {
-    func model(inSection section: Int) -> CatalogViewModel? {
-        if section < models.count {
-            let model = models[section]
-            return model
-        }
-        return nil
-    }
-}
-
 class ElDesconciertoController: BaseController {
     
     fileprivate var models = [CatalogViewModel]()
@@ -46,6 +36,14 @@ class ElDesconciertoController: BaseController {
         return count > 0 ? count : 1
     }
     
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if section < models.count {
+            let model = models[section]
+            return model
+        }
+        return nil
+    }
+    
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
             let model = models[section]
@@ -64,7 +62,7 @@ class ElDesconciertoController: BaseController {
     }
     
     override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight)
+        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
 
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -130,14 +128,7 @@ class ElDesconciertoController: BaseController {
         }
     }
     
-    func expand(model: CatalogViewModel?, section: Int,
-                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        RestApi.instance.context?.performAndWait {
-            self.expanding(model: model, section: section, finishClosure: finishClosure)
-        }
-    }
-    
-    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if let isExpanded = model?.isExpanded {
             models[section].isExpanded = !isExpanded

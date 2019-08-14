@@ -76,6 +76,9 @@
 		983E01FE22F65E79008370BA /* BaseViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */; };
 		983E01FF22F65EB1008370BA /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */; };
 		983E020122F6775E008370BA /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E020022F6775E008370BA /* SearchController.swift */; };
+		9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
+		9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */; };
+		986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
 		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
 		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
@@ -100,6 +103,13 @@
 		98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF823012730003F50EE /* ArchiveDoc+.swift */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
+		98CF5C2323032A1A00830F8D /* ArchiveOrgDetailAlice.json in Resources */ = {isa = PBXBuildFile; fileRef = 98CF5C2223032A1A00830F8D /* ArchiveOrgDetailAlice.json */; };
+		98CF5C2423032A1A00830F8D /* ArchiveOrgDetailAlice.json in Resources */ = {isa = PBXBuildFile; fileRef = 98CF5C2223032A1A00830F8D /* ArchiveOrgDetailAlice.json */; };
+		98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */; };
+		98CF5C2723032BC000830F8D /* ArchiveDetail+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */; };
+		98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
+		98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
+		98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
 		98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */; };
@@ -182,6 +192,7 @@
 		983E01EF22F459D2008370BA /* LabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
 		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		983E020022F6775E008370BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMetaCrash.json; sourceTree = "<group>"; };
 		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
 		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
 		986EBCC822EE49CF001AAF0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
@@ -201,6 +212,10 @@
 		98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveCollection+.swift"; sourceTree = "<group>"; };
 		98B53CF823012730003F50EE /* ArchiveDoc+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDoc+.swift"; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
+		98CF5C2223032A1A00830F8D /* ArchiveOrgDetailAlice.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgDetailAlice.json; sourceTree = "<group>"; };
+		98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDetail+.swift"; sourceTree = "<group>"; };
+		98CF5C282303354F00830F8D /* ArchiveFile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveFile+.swift"; sourceTree = "<group>"; };
+		98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchiveOrgMainModelController.swift; sourceTree = "<group>"; };
 		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
 		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
 		98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTests.swift; sourceTree = "<group>"; };
@@ -239,6 +254,8 @@
 				98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */,
 				98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */,
 				98B53CF823012730003F50EE /* ArchiveDoc+.swift */,
+				98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */,
+				98CF5C282303354F00830F8D /* ArchiveFile+.swift */,
 				9808513622E8FAA00013B67C /* Bookmark+.swift */,
 				9808511A22E6D7040013B67C /* City+.swift */,
 				986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */,
@@ -389,6 +406,7 @@
 				9808511022E69D990013B67C /* BaseController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
 				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
+				98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */,
 				98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */,
 				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
@@ -430,7 +448,9 @@
 			children = (
 				98195FBC22DBFBFE006E7961 /* BaseTests.swift */,
 				98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */,
+				9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */,
 				98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */,
+				98CF5C2223032A1A00830F8D /* ArchiveOrgDetailAlice.json */,
 				987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */,
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
@@ -570,6 +590,8 @@
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
+				98CF5C2323032A1A00830F8D /* ArchiveOrgDetailAlice.json in Resources */,
+				986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
@@ -581,6 +603,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */,
+				98CF5C2423032A1A00830F8D /* ArchiveOrgDetailAlice.json in Resources */,
+				9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */,
 				98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -711,6 +735,7 @@
 				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
 				980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */,
 				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
+				98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
 				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
@@ -718,6 +743,7 @@
 				980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
+				98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
@@ -736,6 +762,7 @@
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
 				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
+				98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
 				986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */,
@@ -771,17 +798,20 @@
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
+				98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
 				98B53CEC22FFEB28003F50EE /* StreamPlaybackManager.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
 				98B53CED22FFEB47003F50EE /* AudioViewModel.swift in Sources */,
 				983E01FC22F65E70008370BA /* Searchable.swift in Sources */,
+				98CF5C2723032BC000830F8D /* ArchiveDetail+.swift in Sources */,
 				983E01FE22F65E79008370BA /* BaseViewModelProtocol.swift in Sources */,
 				98B53CF72301192E003F50EE /* ArchiveCollection+.swift in Sources */,
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
 				983E01FD22F65E73008370BA /* Downloadable.swift in Sources */,
 				983E01FB22F65E6E008370BA /* Modellable.swift in Sources */,
+				9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
 				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,
 				9808514222EA70B60013B67C /* String+.swift in Sources */,

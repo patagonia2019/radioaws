@@ -133,6 +133,7 @@ class CloudKitManager {
         ckBookmark.setObject(bookmark.thumbnailUrl as CKRecordValue?, forKey: "thumbnailUrl")
         ckBookmark.setObject(bookmark.title as CKRecordValue?, forKey: "title")
         ckBookmark.setObject(bookmark.url as CKRecordValue?, forKey: "url")
+        ckBookmark.setObject(bookmark.descript as CKRecordValue?, forKey: "descript")
 
         
         privateDB.save(ckBookmark, completionHandler: { record, error in

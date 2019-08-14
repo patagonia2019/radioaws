@@ -20,6 +20,8 @@ class StreamPlaybackManager: NSObject {
     
     private var observerContext = 0
     
+    private var hasDuration = false
+    
     weak var delegate: AssetPlaybackDelegate?
     
     lazy var session : URLSession = {
@@ -59,7 +61,7 @@ class StreamPlaybackManager: NSObject {
     }
     
     /// The Stream that is currently being loaded for playback.
-    private var model: AudioViewModel? {
+    var model: AudioViewModel? {
         willSet {
             let urlAsset = model?.urlAsset()
             urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
@@ -102,38 +104,48 @@ class StreamPlaybackManager: NSObject {
     }
     
     func canStepBackward() -> Bool {
-        return getTotalTime() > 0
+        return hasDuration
     }
     
     func canStepForward() -> Bool {
-        return getTotalTime() > 0
+        return hasDuration
     }
     
     func canGoToStart() -> Bool {
-        return getTotalTime() > 0
+        return hasDuration
     }
 
     func canGoToEnd() -> Bool {
-        return getTotalTime() > 0
+        return hasDuration
     }
 
-    func pause() {
+    func pause(propagate: Bool = true) {
+        if !propagate {
+            player.pause()
+            return
+        }
         delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
     }
 
     func forward() {
-        let position = getCurrentTime() + 60
-        playPosition(position: position)
+        if canStepForward() {
+            let position = getCurrentTime() + 60
+            playPosition(position: position)
+        }
     }
 
     func backward() {
-        let position = getCurrentTime() - 60
-        playPosition(position: position)
+        if canStepBackward() {
+            let position = getCurrentTime() - 60
+            playPosition(position: position)
+        }
     }
     
     func seekEnd() {
-        let position = getTotalTime() - 60
-        playPosition(position: position)
+        if canGoToEnd() {
+            let position = getTotalTime() - 60
+            playPosition(position: position)
+        }
     }
     
     func progress() -> Float {
@@ -301,8 +313,10 @@ class StreamPlaybackManager: NSObject {
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio duration \(CMTimeGetSeconds(currentItem.duration))")
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
+            hasDuration = true
             return TimeInterval(CMTimeGetSeconds(currentItem.duration))
         }
+        hasDuration = false
         return 0
     }
 
@@ -313,11 +327,14 @@ class StreamPlaybackManager: NSObject {
      and handle KVO cleanup.
      */
     func setAssetForPlayback(_ model: AudioViewModel?) {
-        if self.model?.url?.absoluteString == model?.url?.absoluteString {
+        if  model?.url != nil &&
+            model?.url?.absoluteString.count ?? 0 > 0 &&
+            self.model?.url?.absoluteString == model?.url?.absoluteString {
             addPlayInfo()
             delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
         }
         else {
+            hasDuration = false
             self.model = model
         }
     }
@@ -390,7 +407,9 @@ class StreamPlaybackManager: NSObject {
             }
             
         case #keyPath(AVPlayer.currentItem):
-            delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
+//            delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
+            delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+
         default:
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }

@@ -27,6 +27,7 @@ class AudioViewController: UITableViewController {
     var desconciertoController = ElDesconciertoController()
     var searchController = SearchController()
     var archiveOrgController = ArchiveOrgController()
+    var archiveOrgMainModelController = ArchiveOrgMainModelController()
 
     var controller: BaseController {
         get {
@@ -44,6 +45,8 @@ class AudioViewController: UITableViewController {
                     return desconciertoController
                 case AudioViewModel.ControllerName.archiveOrg.rawValue:
                     return archiveOrgController
+                case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
+                    return archiveOrgMainModelController
                 case AudioViewModel.ControllerName.search.rawValue:
                     return searchController
                 default:
@@ -71,6 +74,9 @@ class AudioViewController: UITableViewController {
                 break
             case AudioViewModel.ControllerName.archiveOrg.rawValue:
                 archiveOrgController = newValue as! ArchiveOrgController
+                break
+            case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
+                archiveOrgMainModelController = newValue as! ArchiveOrgMainModelController
                 break
             case AudioViewModel.ControllerName.search.rawValue:
                 searchController = newValue as! SearchController
@@ -187,6 +193,20 @@ class AudioViewController: UITableViewController {
         }
     }
     
+    private func info(model: CatalogViewModel?) {
+        showAlert(title: model?.title.text, message: model?.text, error: nil)
+    }
+    
+    private func info(indexPath: IndexPath) {
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            showAlert(title: audio.title.text, message: audio.text, error: nil)
+        }
+        else if let section = object as? CatalogViewModel {
+            info(model: section)
+        }
+    }
+    
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
@@ -211,46 +231,38 @@ class AudioViewController: UITableViewController {
             }
         }
         else if let section = object as? CatalogViewModel {
-            performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+            if controller is RadioTimeController {
+                performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+            }
+            else if controller is ArchiveOrgController {
+                performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
+            }
+            else if controller is SearchController {
+                if section.section == AudioViewModel.ControllerName.radioTime.rawValue {
+                    performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+                }
+                else if section.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
+                    performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
+                }
+            }
         }
 
     }
     
     private func expand(model: CatalogViewModel?, section: Int) {
         // Reusing the same model, but focus in this section
-        if controller is RadioTimeController {
-            (controller as? RadioTimeController)?.expand(model: model, section: section, startClosure: {
-                RestApi.instance.context?.performAndWait {
-                    SwiftSpinner.show(Quote.randomQuote())
-                }
-            }, finishClosure: { (error) in
-                if let error = error {
-                    self.showAlert(error: error)
-                    Analytics.logError(error: error)
-                }
-                SwiftSpinner.hide()
-                self.reloadData()
-            })
-        }
-        else if controller is ElDesconciertoController {
-            (controller as? ElDesconciertoController)?.expand(model: model, section: section, finishClosure: { (error) in
-                self.reloadData()
-            })
-        }
-        else if controller is ArchiveOrgController {
-            (controller as? ArchiveOrgController)?.expand(model: model, section: section, startClosure: {
-                RestApi.instance.context?.performAndWait {
-                    SwiftSpinner.show(Quote.randomQuote())
-                }
-            }, finishClosure: { (error) in
-                if let error = error {
-                    self.showAlert(error: error)
-                    Analytics.logError(error: error)
-                }
-                SwiftSpinner.hide()
-                self.reloadData()
-            })
-        }
+        controller.expand(model: model, section: section, startClosure: {
+            RestApi.instance.context?.performAndWait {
+                SwiftSpinner.show(Quote.randomQuote())
+            }
+        }, finishClosure: { (error) in
+            if let error = error {
+                self.showAlert(error: error)
+                Analytics.logError(error: error)
+            }
+            SwiftSpinner.hide()
+            self.reloadData()
+        })
     }
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
@@ -314,37 +326,17 @@ class AudioViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
-        if controller is RadioTimeController {
-            headerView?.actionExpandBlock = { model, isHighlighted in
-                self.expand(model:model, section:section)
-            }
-            headerView?.actionBookmarkBlock = { model, isHighlighted in
-                (self.controller as? RadioTimeController)?.changeCatalogBookmark(section: section)
-            }
-            headerView?.model = (controller as? RadioTimeController)?.modelInstance(inSection: section)
-            return headerView
+        headerView?.actionExpandBlock = { model, isHighlighted in
+            self.expand(model:model, section:section)
         }
-        else if controller is ElDesconciertoController {
-            headerView?.actionExpandBlock = { model, isHighlighted in
-                self.expand(model:model, section:section)
-            }
-            headerView?.actionBookmarkBlock = { model, isHighlighted in
-                (self.controller as? ElDesconciertoController)?.changeCatalogBookmark(section: section)
-            }
-            headerView?.model = (controller as? ElDesconciertoController)?.model(inSection: section)
-            return headerView
+        headerView?.actionBookmarkBlock = { model, isHighlighted in
+            self.controller.changeCatalogBookmark(model: model)
         }
-        else if controller is ArchiveOrgController {
-            headerView?.actionExpandBlock = { model, isHighlighted in
-                self.expand(model:model, section:section)
-            }
-            headerView?.actionBookmarkBlock = { model, isHighlighted in
-                (self.controller as? ArchiveOrgController)?.changeCatalogBookmark(section: section)
-            }
-            headerView?.model = (controller as? ArchiveOrgController)?.model(inSection: section)
-            return headerView
+        headerView?.infoBlock = { model in
+            self.info(model: model)
         }
-        return nil
+        headerView?.model = self.controller.modelInstance(inSection: section)
+        return headerView
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -419,6 +411,9 @@ class AudioViewController: UITableViewController {
             cell.actionBookmarkBlock = { catalog, isBookmarking in
                 self.controller.changeCatalogBookmark(at: indexPath.section, row: indexPath.row)
             }
+            cell.infoBlock = { catalog in
+                self.info(model: catalog)
+            }
             return cell
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
@@ -440,6 +435,10 @@ class AudioViewController: UITableViewController {
         if segue.identifier == Commons.segue.catalog {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
+        }
+        else if segue.identifier == Commons.segue.archiveorg {
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
+            (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? CatalogViewModel))
         }
         else if segue.identifier == Commons.segue.search {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
@@ -509,7 +508,8 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool) {
-        
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        info(indexPath: indexPath)
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool) {

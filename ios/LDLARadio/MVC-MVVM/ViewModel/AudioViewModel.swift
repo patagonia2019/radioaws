@@ -18,16 +18,20 @@ class AudioViewModel : BaseViewModelProtocol {
         case model1
         case model2
         case model3
+        case model4
+        case model5
         case count
     }
     
     enum ControllerName : String {
+        case playing = "Playing"
         case suggestion = "Suggestion"
         case radioTime = "Radio Time"
         case rna = "RNA"
         case bookmark = "Bookmark"
         case desconcierto = "El Desconcierto"
         case archiveOrg = "Archive.org"
+        case archiveMainModelOrg = "Archive.org "
         case search = "Search"
     }
 
@@ -41,6 +45,8 @@ class AudioViewModel : BaseViewModelProtocol {
     var accessoryType = UITableViewCell.AccessoryType.none
     
     var detail : LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    
+    var text : String? = nil
     
     var isBookmarked: Bool? = nil
     
@@ -72,8 +78,8 @@ class AudioViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
-        section = ControllerName.radioTime.rawValue
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
+        section = ControllerName.radioTime.rawValue
         title.text = audio?.titleAndText() ?? ""
         subTitle.text = audio?.subtext ?? ""
         if let playing = audio?.playing {
@@ -87,16 +93,18 @@ class AudioViewModel : BaseViewModelProtocol {
                 detail.text = "\(detail.text) \(currentTrack)"
         }
         
+        text = subTitle.text + ". " + detail.text
+
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
 
-        if let imageUrl = audio?.image,
+        if let imageUrl = audio?.image?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
-        if let audioUrl = audio?.url,
+        if let audioUrl = audio?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
@@ -110,22 +118,26 @@ class AudioViewModel : BaseViewModelProtocol {
     
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
-        section = "Suggestion"
-        id = "\(stream?.id ?? 0)"
+        section = ControllerName.suggestion.rawValue
+        if let streamId = stream?.id {
+            id = "\(streamId)"
+        }
         title.text = stream?.station?.name ?? ""
         subTitle.text = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
         detail.text = stream?.station?.tuningDial ?? ""
         
+        text = subTitle.text + ". " + detail.text
+
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
         
-        if let imageUrl = stream?.station?.imageUrl,
+        if let imageUrl = stream?.station?.imageUrl?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
-        if let audioUrl = stream?.url,
+        if let audioUrl = stream?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
             isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
@@ -135,30 +147,59 @@ class AudioViewModel : BaseViewModelProtocol {
         
     }
     
-    init(doc: ArchiveDoc?) {
-        section = "Archive Doc"
-        id = doc?.identifier ?? ""
-        title.text = doc?.title ?? ""
-        subTitle.text = "" // doc?.subject?.joined(separator: ",") ?? ""
-        detail.text = doc?.descript ?? ""
+    
+    init(archiveFile: ArchiveFile?) {
+
+        section = ControllerName.archiveOrg.rawValue
+        id = archiveFile?.original
+        title.text = archiveFile?.title ?? archiveFile?.detail?.doc?.title ?? ""
+        var subtitleStr = [String]()
+        if let creator = archiveFile?.detail?.doc?.creator {
+            subtitleStr.append(creator)
+        }
+        if let format = archiveFile?.format {
+            subtitleStr.append(format)
+        }
+        subTitle.text = subtitleStr.joined(separator: ". ")
+
+        var detailStr = [String]()
+        if let artist = archiveFile?.artist {
+            detailStr.append(artist)
+        }
+        if let original = archiveFile?.original {
+            detailStr.append(original)
+        }
+        detail.text = detailStr.joined(separator: ". ")
+        
+        var textStr = [String]()
+        textStr.append(subTitle.text)
+        textStr.append(detail.text)
+        if let original = archiveFile?.detail?.doc?.descript {
+            textStr.append(original)
+        }
+        if let original = archiveFile?.description {
+            textStr.append(original)
+        }
+        text = textStr.joined(separator: ". ")
         
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
+        if let imageUrl = archiveFile?.detail?.image?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let urlChecked = URL(string: imageUrl) {
+            thumbnailUrl = urlChecked
+        }
         
-//        if let imageUrl = stream?.station?.imageUrl,
-//            let urlChecked = URL(string: imageUrl) {
-//            thumbnailUrl = urlChecked
-//        }
-//        if let audioUrl = stream?.url,
-//            let urlChecked = URL(string: audioUrl) {
-//            url = urlChecked
-//            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
-//        }
+        if let audioUrl = archiveFile?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let urlChecked = URL(string: audioUrl) {
+            url = urlChecked
+            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
+        }
 //        isBookmarked = checkIfBookmarked()
         reFillTitles()
     }
+
 
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
@@ -172,7 +213,7 @@ class AudioViewModel : BaseViewModelProtocol {
             title.text = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
         }
         subTitle.text = ""
-        detail.text = ""
+        detail.text = "El Desconcierto, de Quique Pesoa"
     
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -207,7 +248,7 @@ class AudioViewModel : BaseViewModelProtocol {
     init(bookmark: Bookmark?) {
         section = bookmark?.section ?? ControllerName.bookmark.rawValue
         detail.text = bookmark?.detail ?? ""
-        id = bookmark?.id
+        id = bookmark?.id ?? ""
         placeholderImageName = bookmark?.placeholder
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)

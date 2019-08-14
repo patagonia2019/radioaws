@@ -13,14 +13,39 @@ extension ArchiveCollection : Modellable {
     
     static func all() -> [ArchiveCollection]? {
         return all(predicate: nil,
-                   sortDescriptors: [NSSortDescriptor(key: "id", ascending: false)])
+                   sortDescriptors: [NSSortDescriptor(key: "title", ascending: false)])
             as? [ArchiveCollection]
     }
     
 }
 
+extension ArchiveCollection : Creational {
+    
+    /// Create bookmark entity programatically
+    static func create() -> ArchiveCollection? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let entity = NSEntityDescription.entity(forEntityName: "ArchiveCollection", in: context) else {
+            fatalError()
+        }
+        let object = NSManagedObject(entity: entity, insertInto: context) as? ArchiveCollection
+        return object
+    }
+
+}
+
 extension ArchiveCollection {
     
+    /// Fetch an object by url
+    static func search(byUrl url: String?) -> ArchiveCollection? {
+        guard let url = url else { return nil }
+        guard let context = RestApi.instance.context else { fatalError() }
+        let req = NSFetchRequest<ArchiveCollection>(entityName: "ArchiveCollection")
+        req.predicate = NSPredicate(format: "urlString() = %@", url)
+        let object = try? context.fetch(req).first
+        return object
+    }
+    
+
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [ArchiveCollection]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -47,9 +72,16 @@ extension ArchiveCollection {
         guard let context = RestApi.instance.context else { fatalError() }
         guard let id = id else { return nil }
         let req = NSFetchRequest<ArchiveCollection>(entityName: "ArchiveCollection")
-        req.predicate = NSPredicate(format: "id = %@", id)
+        req.predicate = NSPredicate(format: "identifier = %@", id)
         let array = try? context.fetch(req)
         return array?.first
+    }
+    
+    func thumbnailUrlString() -> String? {
+        if let identifier = identifier {
+            return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"
+        }
+        return nil
     }
     
     func urlString() -> String? {
@@ -58,12 +90,18 @@ extension ArchiveCollection {
         }
         return nil
     }
+    
 
-    func searchUrlString() -> String? {
+    func searchUrlString(page: Int = 1) -> String? {
         if let identifier = identifier {
-            return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(identifier)&rows=50&page=1&save=yes#raw"
+            return ArchiveCollection.searchUrlString(withString: identifier, page: page)
         }
         return nil
+    }
+    
+
+    static func searchUrlString(withString string: String, page: Int = 1) -> String? {
+        return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(string)+AND+mediatype:audio&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=50&page=\(page)"
     }
     
 }

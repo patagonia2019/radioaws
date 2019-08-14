@@ -9,12 +9,21 @@
 import Foundation
 import JFCore
 
+
 class RNAController: BaseController {
     
+    var amCatalogViewModel = CatalogViewModel()
+    var fmCatalogViewModel = CatalogViewModel()
+
     private var amModels = [AudioViewModel]()
     private var fmModels = [AudioViewModel]()
 
-    override init() { }
+    override init() {
+        amCatalogViewModel.title.text = "AM"
+        fmCatalogViewModel.title.text = "FM"
+        amCatalogViewModel.audios = amModels
+        fmCatalogViewModel.audios = fmModels
+    }
     
     init(withStreams dial: RNADial?) {
         super.init()
@@ -37,6 +46,13 @@ class RNAController: BaseController {
         return count > 0 ? count : 1
     }
     
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if section == 0 {
+            return amCatalogViewModel
+        }
+        return fmCatalogViewModel
+    }
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if section == 0 {
             if row < amModels.count {
@@ -235,6 +251,20 @@ class RNAController: BaseController {
             }
             finishClosure?(error)
         }
+    }
+
+    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        
+        if let isExpanded = model?.isExpanded {
+            if section == 0 {
+                amCatalogViewModel.isExpanded = !isExpanded
+            }
+            else {
+                fmCatalogViewModel.isExpanded = !isExpanded
+            }
+        }
+        
+        finishClosure?(nil)
     }
 
 }
