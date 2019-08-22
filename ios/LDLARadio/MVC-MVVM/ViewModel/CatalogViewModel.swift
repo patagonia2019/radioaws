@@ -14,7 +14,7 @@ import AVFoundation
 class CatalogViewModel : BaseViewModelProtocol {
     
     let icon: Commons.symbols.FontAwesome = .indent
-    let iconColor = UIColor.darkGray
+    let iconColor = UIColor.lavender
 
     var url: URL? = nil
     static let cellheight : Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
@@ -22,10 +22,10 @@ class CatalogViewModel : BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: .green, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
 
     var isBookmarked: Bool? = nil
-    var title : LabelViewModel = LabelViewModel(text: "No more info", color: .blue, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
+    var title : LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
 
     var tree: String = ""
 
@@ -41,6 +41,7 @@ class CatalogViewModel : BaseViewModelProtocol {
     /// convenient id
     var parentId: String? = nil
     var id: String? = nil
+    var page: Int = 1
 
     init() {
         title.text = "No more info"
@@ -114,8 +115,6 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
         
         isBookmarked = checkIfBookmarked()
-        text = tree + ". " + detail.text
-
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
@@ -135,10 +134,14 @@ class CatalogViewModel : BaseViewModelProtocol {
             url = urlChecked
         }
         
-        let meta = archiveCollection?.meta
-        let response = meta?.response
-        if let docs = response?.docs {
-            sections = docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded, superTree: title.text) })
+        if let metas = archiveCollection?.metas {
+            page = metas.count
+            for meta in metas {
+                if let response = (meta as? ArchiveMeta)?.response,
+                    let docs = response.docs {
+                    sections.append(contentsOf: docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded, superTree: title.text) }))
+                }
+            }
         }
         
         isBookmarked = checkIfBookmarked()
@@ -166,7 +169,8 @@ class CatalogViewModel : BaseViewModelProtocol {
         tree = superTree ?? ""
         detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
         
-        if let archiveFiles = archiveDoc?.detail?.archiveFiles,
+        let sortByTitle = [NSSortDescriptor(key: "title", ascending: true)]
+        if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
             archiveFiles.count > 0 {
             audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
         }
@@ -184,7 +188,27 @@ class CatalogViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
         
-        text = tree + ". " + detail.text + ". " + (archiveDoc?.descript ?? "") + (archiveDoc?.description ?? "")
+        var textStr = [String]()
+        if tree.count > 0 {
+            textStr.append(tree)
+        }
+        if let adtitle = archiveDoc?.title {
+            textStr.append("Title: \(adtitle)")
+        }
+        if let adsubject = archiveDoc?.subject {
+            textStr.append("Subject: \(adsubject)")
+        }
+        if let adcreator = archiveDoc?.creator {
+            textStr.append("Creator: \(adcreator)")
+        }
+        if let descript = archiveDoc?.descript {
+            textStr.append(descript)
+        }
+        if let publicDate = archiveDoc?.publicDate {
+            textStr.append("Date of Publish: \(publicDate)")
+        }
+
+        text = textStr.joined(separator: ".\n")
 
     }
     
@@ -211,7 +235,7 @@ class CatalogViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
         
-        text = title.text + ". " + detail.text
+        text = desconcierto?.obs ?? ""
 
     }
     

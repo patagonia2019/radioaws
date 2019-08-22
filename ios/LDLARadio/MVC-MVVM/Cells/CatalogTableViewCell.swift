@@ -16,7 +16,7 @@ class CatalogTableViewCell : UITableViewCell {
     @IBOutlet weak var detailView: UILabel!
     @IBOutlet weak var bookmarkButton: UIButton!
     @IBOutlet weak var thumbnailView: UIImageView!
-    @IBOutlet weak var infoButton: UIButton?
+    @IBOutlet weak var infoButton: UIButton!
 
     var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
     var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> ())? = nil
@@ -48,6 +48,8 @@ class CatalogTableViewCell : UITableViewCell {
                 }
             }
             bookmarkButton.isHidden = true
+            infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
+
         }
     }
     
@@ -63,6 +65,7 @@ class CatalogTableViewCell : UITableViewCell {
         accessoryType = .none
         bookmarkButton.isHidden = true
         bookmarkButton.isHighlighted = false
+        infoButton.isHidden = true
     }
     
     @IBAction func bookmarkAction(_ sender: UIButton?) {

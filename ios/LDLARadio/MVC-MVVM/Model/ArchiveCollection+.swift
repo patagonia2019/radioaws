@@ -13,7 +13,7 @@ extension ArchiveCollection : Modellable {
     
     static func all() -> [ArchiveCollection]? {
         return all(predicate: nil,
-                   sortDescriptors: [NSSortDescriptor(key: "title", ascending: false)])
+                   sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)])
             as? [ArchiveCollection]
     }
     
@@ -92,16 +92,17 @@ extension ArchiveCollection {
     }
     
 
-    func searchUrlString(page: Int = 1) -> String? {
+    func searchCollectionUrlString(page: Int = 1) -> String? {
         if let identifier = identifier {
-            return ArchiveCollection.searchUrlString(withString: identifier, page: page)
+            return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=collection:(\(identifier))+AND+mediatype:(audio)&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=10&page=\(page)"
+
         }
         return nil
     }
     
 
     static func searchUrlString(withString string: String, page: Int = 1) -> String? {
-        return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(string)+AND+mediatype:audio&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=50&page=\(page)"
+        return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(string)+AND+mediatype:(audio)&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=10&page=\(page)"
     }
     
 }

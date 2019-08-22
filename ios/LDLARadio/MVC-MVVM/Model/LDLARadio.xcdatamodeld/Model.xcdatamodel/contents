@@ -27,7 +27,7 @@
                 <entry key="JSONKeyPath" value="title"/>
             </userInfo>
         </attribute>
-        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="collection" inverseEntity="ArchiveMeta" syncable="YES"/>
+        <relationship name="metas" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveMeta" inverseName="collection" inverseEntity="ArchiveMeta" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
@@ -69,7 +69,7 @@
             </userInfo>
         </attribute>
         <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="descriptionTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+        <attribute name="descriptTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="description"/>
             </userInfo>
@@ -180,7 +180,7 @@
     <entity name="ArchiveMeta" representedClassName=".ArchiveMeta" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="collectionIdentifier" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveCollection" inverseName="meta" inverseEntity="ArchiveCollection" syncable="YES"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveCollection" inverseName="metas" inverseEntity="ArchiveCollection" syncable="YES"/>
         <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="responseHeader"/>
@@ -196,7 +196,7 @@
         </userInfo>
     </entity>
     <entity name="ArchiveResponse" representedClassName=".ArchiveResponse" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="numFound" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="numFound" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="numFound"/>
             </userInfo>
@@ -225,6 +225,23 @@
             </userInfo>
         </attribute>
         <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta" syncable="YES"/>
+    </entity>
+    <entity name="AudioPlay" representedClassName=".AudioPlay" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="currentTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="downloadFiles" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="String" valueTransformerName="" customClassName="Error" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDownloading" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isPlaying" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="placeholder" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="section" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Bookmark" representedClassName=".Bookmark" parentEntity="Model" syncable="YES" codeGenerationType="class">
         <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
@@ -268,6 +285,11 @@
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="obs" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="obs"/>
             </userInfo>
         </attribute>
         <attribute name="streamUrl1" optional="YES" attributeType="String" syncable="YES">
@@ -475,6 +497,12 @@
         </userInfo>
     </entity>
     <entity name="RTCatalog" representedClassName=".RTCatalog" parentEntity="RTNode" syncable="YES" codeGenerationType="class">
+        <attribute name="bitrate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bitrateTrf" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="Any" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="bitrate"/>
+            </userInfo>
+        </attribute>
         <attribute name="currentTrack" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="current_track"/>
@@ -579,6 +607,12 @@
         <attribute name="presetId" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="preset_id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="reliability" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reliabilityTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="reliability"/>
             </userInfo>
         </attribute>
         <attribute name="subtext" optional="YES" attributeType="String" syncable="YES">
@@ -731,9 +765,10 @@
         <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="120"/>
         <element name="ArchiveResponse" positionX="-648" positionY="-81" width="128" height="105"/>
         <element name="ArchiveResponseHeader" positionX="-657" positionY="-99" width="128" height="90"/>
+        <element name="AudioPlay" positionX="-675" positionY="-108" width="128" height="270"/>
         <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="195"/>
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
-        <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="30"/>
+        <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="135"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="90"/>
         <element name="Model" positionX="-1.640625" positionY="-51.85546875" width="128" height="60"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
@@ -742,7 +777,7 @@
         <element name="RNADial" positionX="-699.24609375" positionY="-153.71484375" width="128" height="30"/>
         <element name="RNAProgram" positionX="-214.1015625" positionY="248.921875" width="128" height="135"/>
         <element name="RNAStation" positionX="-859.12109375" positionY="96.828125" width="128" height="330"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="465"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="525"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>

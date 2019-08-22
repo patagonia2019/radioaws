@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import JFCore
 
 // This view model will be responsible of render out information in the views for Audio info
 class AudioViewModel : BaseViewModelProtocol {
@@ -35,6 +36,7 @@ class AudioViewModel : BaseViewModelProtocol {
         case search = "Search"
     }
 
+    private var observerContext = 0
 
     let icon = Commons.symbols.FontAwesome.music
     let iconColor = UIColor.darkGray
@@ -50,18 +52,15 @@ class AudioViewModel : BaseViewModelProtocol {
     
     var isBookmarked: Bool? = nil
     
-    var isPlaying: Bool = false
-
     var isDownloading: Bool = false
     
-    var downloadTask: URLSessionDownloadTask? = nil
     var downloadFiles : [String]? = nil
 
     var isFullScreen: Bool = false
 
     var title = LabelViewModel()
 
-    var subTitle = LabelViewModel(text: "", color: .red, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
+    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String? = nil
@@ -72,16 +71,27 @@ class AudioViewModel : BaseViewModelProtocol {
     var placeholderImage: UIImage? = nil
     var image: UIImage? = nil
     
-    var playing: String = ""
+    var info: String = ""
+    
+    var isPlaying: Bool = false
     
     var section : String = ""
+    
+    var error : JFError? = nil
     
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
+        
+        var textStr = [String()]
+        
         section = ControllerName.radioTime.rawValue
         title.text = audio?.titleAndText() ?? ""
+        if let subtext = audio?.subtext {
+            textStr.append(subtext)
+        }
         subTitle.text = audio?.subtext ?? ""
+        
         if let playing = audio?.playing {
             detail.text = playing
         }
@@ -90,10 +100,21 @@ class AudioViewModel : BaseViewModelProtocol {
         }
         if let currentTrack = audio?.currentTrack,
             subTitle.text != currentTrack {
-                detail.text = "\(detail.text) \(currentTrack)"
+            if let currentTrack = audio?.currentTrack {
+                textStr.append(currentTrack)
+            }
+            detail.text = "\(detail.text) \(currentTrack)"
         }
         
-        text = subTitle.text + ". " + detail.text
+
+        if let bitrate = audio?.bitrate {
+            textStr.append(bitrate + " kbps")
+        }
+
+        if let formats = audio?.formats {
+            textStr.append(formats)
+        }
+        text = textStr.joined(separator: ". ")
 
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -107,9 +128,9 @@ class AudioViewModel : BaseViewModelProtocol {
         if let audioUrl = audio?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
-            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-//        isBookmarked = checkIfBookmarked()
+        isBookmarked = checkIfBookmarked()
+        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
         if detail.text.count <= 0 {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
@@ -140,9 +161,9 @@ class AudioViewModel : BaseViewModelProtocol {
         if let audioUrl = stream?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
-            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-//        isBookmarked = checkIfBookmarked()
+        isBookmarked = checkIfBookmarked()
+        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
         
     }
@@ -152,10 +173,25 @@ class AudioViewModel : BaseViewModelProtocol {
 
         section = ControllerName.archiveOrg.rawValue
         id = archiveFile?.original
-        title.text = archiveFile?.title ?? archiveFile?.detail?.doc?.title ?? ""
+        
+        var titleStr = [String]()
+        if let title = archiveFile?.title {
+            titleStr.append(title)
+        }
+        if let album = archiveFile?.album {
+            titleStr.append(album)
+        }
+        if let docTitle = archiveFile?.detail?.doc?.title {
+            titleStr.append(docTitle)
+        }
+        title.text = titleStr.joined(separator: ". ")
+
         var subtitleStr = [String]()
         if let creator = archiveFile?.detail?.doc?.creator {
             subtitleStr.append(creator)
+        }
+        if let artist = archiveFile?.artist {
+            subtitleStr.append(artist)
         }
         if let format = archiveFile?.format {
             subtitleStr.append(format)
@@ -163,24 +199,17 @@ class AudioViewModel : BaseViewModelProtocol {
         subTitle.text = subtitleStr.joined(separator: ". ")
 
         var detailStr = [String]()
-        if let artist = archiveFile?.artist {
-            detailStr.append(artist)
-        }
         if let original = archiveFile?.original {
             detailStr.append(original)
         }
         detail.text = detailStr.joined(separator: ". ")
         
         var textStr = [String]()
+        textStr.append(title.text)
         textStr.append(subTitle.text)
         textStr.append(detail.text)
-        if let original = archiveFile?.detail?.doc?.descript {
-            textStr.append(original)
-        }
-        if let original = archiveFile?.description {
-            textStr.append(original)
-        }
-        text = textStr.joined(separator: ". ")
+        textStr.append(archiveFile?.detail?.doc?.descript ?? archiveFile?.description ?? "")
+        text = textStr.joined(separator: "\n")
         
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
@@ -194,9 +223,9 @@ class AudioViewModel : BaseViewModelProtocol {
         if let audioUrl = archiveFile?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
-            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-//        isBookmarked = checkIfBookmarked()
+        isBookmarked = checkIfBookmarked()
+        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
     }
 
@@ -204,9 +233,9 @@ class AudioViewModel : BaseViewModelProtocol {
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
         section = ControllerName.desconcierto.rawValue
-        id = "\(desconcierto?.id ?? 0)"
+        id = "\((Int(desconcierto?.id ?? 0) * 1000) + order)"
         if let name = audioUrl?.components(separatedBy: "/").last?.removingPercentEncoding,
-            name.contains("mp3") {
+            name.contains("alt=media&token") == false {
             title.text = name
         }
         else {
@@ -226,9 +255,9 @@ class AudioViewModel : BaseViewModelProtocol {
         if let audioUrl = audioUrl,
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
-            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
-//        isBookmarked = checkIfBookmarked()
+        isBookmarked = checkIfBookmarked()
+        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
 
     }
@@ -261,7 +290,6 @@ class AudioViewModel : BaseViewModelProtocol {
         if let audioUrl = bookmark?.url,
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
-            isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: audioUrl)
         }
         title.text = bookmark?.title ?? ""
         isBookmarked = true
@@ -273,9 +301,9 @@ class AudioViewModel : BaseViewModelProtocol {
     }
         
     /// to know if the model is in bookmark
-//    func checkIfBookmarked() -> Bool {
-//        return Bookmark.search(byUrl: url?.absoluteString) != nil
-//    }
+    func checkIfBookmarked() -> Bool {
+        return Bookmark.search(byUrl: url?.absoluteString) != nil
+    }
     
     /// Use the url of the stream/audio as an AVURLAsset
     func urlAsset() -> AVURLAsset? {
@@ -283,23 +311,11 @@ class AudioViewModel : BaseViewModelProtocol {
         return AVURLAsset(url: url)
     }
     
-    func play() {
-        isPlaying = !isPlaying
-    }
-    
-    func stop() {
-        isPlaying = false
-    }
-    
-    func sizeReset() {
-        isPlaying = false
-    }
-    
     func height() -> Float {
         if isFullScreen {
             return Float(UIScreen.main.bounds.size.height)
         }
-        else if isPlaying {
+        if isPlaying || StreamPlaybackManager.instance.isTryingToPlay(url: urlString()) {
             if UIScreen.main.bounds.size.height < 400 {
                 return Float(UIScreen.main.bounds.size.height - 100)
             }
@@ -338,12 +354,10 @@ extension AudioViewModel {
         url = streamUrl(usingBaseUrl: station?.url1, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
         
-        isPlaying = StreamPlaybackManager.sharedManager.isPlayingUrl(urlString: url?.absoluteString)
-        
-//        isBookmarked = checkIfBookmarked()
+        isBookmarked = checkIfBookmarked()
+        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
     }
-
 }
 
 
@@ -372,7 +386,7 @@ extension AudioViewModel {
 
     private func reFillTitles() {
         if title.count > 0 && subTitle.count > 0 && detail.count > 0 {
-            playing = [title.text, subTitle.text, detail.text].joined(separator: ". ")
+            info = [title.text, subTitle.text, detail.text].joined(separator: ". ")
             return
         }
         var titles = [String]()
@@ -399,7 +413,7 @@ extension AudioViewModel {
             subTitle.isHidden = true
             title.lines = 3
         }
-        playing = [title.text, subTitle.text, detail.text].joined(separator: ". ")
+        info = [title.text, subTitle.text, detail.text].joined(separator: ". ")
     }
     
 

@@ -18,7 +18,8 @@ extension ArchiveDetail {
             if let files = files {
                 for (k,v) in files {
                     if let key = k as? String,
-                        key.uppercased().contains("MP3"),
+                        key.uppercased().contains("MP3") == true,
+                        key.uppercased().contains("ZIP") == false,
                         let json = v as? JSONDictionary
                     {
                         let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: json, inContext: context) as? ArchiveFile

@@ -21,6 +21,25 @@ extension Model {
         return NSStringFromClass(self).components(separatedBy: ".").last
     }
     
+    func parseField(field: Any?) -> String? {
+        if let str = field as? String {
+            return str
+        }
+        else if let num = field as? Int {
+            return "\(num)"
+        }
+        else if let num = field as? Float {
+            return "\(num)"
+        }
+        else if let num = field as? Double {
+            return "\(num)"
+        }
+        else if let array = field as? [String] {
+            return array.joined(separator: ", ")
+        }
+        return nil
+    }
+    
     /// Fetch the most recent updatedAt date
     static func lastUpdated() -> Date? {
         guard let name = entityName() else { return nil }

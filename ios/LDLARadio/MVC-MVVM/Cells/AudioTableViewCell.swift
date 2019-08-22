@@ -9,6 +9,8 @@
 import UIKit
 import AlamofireImage
 import JFCore
+import AVKit
+import MediaPlayer
 
 class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
@@ -22,8 +24,11 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
+    
     weak var delegate: AudioTableViewCellDelegate?
     fileprivate let formatter = DateComponentsFormatter()
+    let gradientBg = CAGradientLayer()
+
 
     // Player buttons
     @IBOutlet weak var currentTimeLabel: UILabel!
@@ -42,7 +47,6 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var progressStack: UIStackView!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var bugButton: UIButton!
-    @IBOutlet weak var sliderStack: UIStackView!
     
     fileprivate var timerPlayed: Timer?
 
@@ -77,33 +81,33 @@ class AudioTableViewCell: UITableViewCell {
                 }
             }
             bookmarkButton.isHighlighted = model?.isBookmarked ?? false
-            bugButton.alpha = 0
-            targetSoundButton.alpha = 0
-            graphButton.alpha = 0
+            bugButton.isHidden = (model?.error != nil) ? false : true
+            targetSoundButton.isHidden = true
+            graphButton.isHidden = true
+            resizeButton.isHidden = true
             
-            if model?.isPlaying ?? false {
+            paintBgView()
+            infoButton.isHidden = true
+            
+            let modelIsPlaying = model?.isPlaying ?? false
+            
+            if modelIsPlaying {
+                playButton.isHidden = false
                 playButton.isHighlighted = true
+
+                infoButton.isHidden = model?.text?.count ?? 0 > 0
                 selectionStyle = model?.selectionStyle ?? .none
                 // show big logo, and hide thumbnail
                 logoView.isHidden = false
                 thumbnailView.isHidden = true
                 playerStack.isHidden = false
-                progressStack.isHidden = false
+                
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-//                updateTimePlayed()
-                timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
-                resizeButton.isHighlighted = model?.isFullScreen ?? false
                 
-                sliderStack.alpha = 1
-                currentTimeLabel.alpha = 1
-                totalTimeLabel.alpha = 1
-                backwardButton.isHidden = false
-                forwardButton.isHidden = false
-                startOfStreamButton.isHidden = false
-                endOfStreamButton.isHidden = false
-
+                timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
+                
             }
             else {
                 playButton.isHighlighted = false
@@ -116,23 +120,29 @@ class AudioTableViewCell: UITableViewCell {
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-                resizeButton.isHighlighted = false
                 
-                sliderStack.alpha = 0
+                sliderView.isHidden = true
                 currentTimeLabel.alpha = 0
                 totalTimeLabel.alpha = 0
                 backwardButton.isHidden = true
                 forwardButton.isHidden = true
                 startOfStreamButton.isHidden = true
                 endOfStreamButton.isHidden = true
-
+                
             }
 
+            setNeedsLayout()
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+        gradientBg.frame = contentView.bounds
+        contentView.layer.insertSublayer(gradientBg, at: 0)
         
         formatter.allowedUnits = [.second, .minute, .hour]
         formatter.zeroFormattingBehavior = .pad
@@ -150,7 +160,48 @@ class AudioTableViewCell: UITableViewCell {
         logoView.image = nil
         downloadProgressView.isHidden = true
         bookmarkButton.isHighlighted = false
+        infoButton.isHidden = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let stream = StreamPlaybackManager.instance
+        let currentStreamTime = stream.getCurrentTime()
+        let isStreamPlaying = stream.isPlaying(url: model?.urlString())
+        
+        currentTimeLabel.alpha = !isStreamPlaying ? 0 : 1
+        totalTimeLabel.alpha = !isStreamPlaying ? 0 : 1
+        backwardButton.isHidden = !isStreamPlaying
+        forwardButton.isHidden = !isStreamPlaying
+        startOfStreamButton.isHidden = !isStreamPlaying
+        endOfStreamButton.isHidden = !isStreamPlaying
+        sliderView.isHidden = !isStreamPlaying
 
+        let isPaused = stream.isPaused(url: model?.urlString())
+        if isPaused {
+            if playButton.isHighlighted {
+                playButton.isHighlighted = false
+            }
+        }
+        else {
+            if !playButton.isHighlighted {
+                playButton.isHighlighted = true
+            }
+        }
+
+        if isStreamPlaying {
+            let totalStreamTime = stream.getTotalTime()
+            sliderView.value = Float(currentStreamTime)
+            sliderView.maximumValue = Float(totalStreamTime)
+            currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
+            totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
+            
+            if sliderView.value >= sliderView.maximumValue {
+                playButton.isHighlighted = false
+                stream.pause()
+            }
+        }
     }
     
     @IBAction func bookmarkAction(_ sender: UIButton?) {
@@ -159,19 +210,24 @@ class AudioTableViewCell: UITableViewCell {
     }
     
     @IBAction func playAction(_ sender: UIButton?) {
-        playButton.isHighlighted = !playButton.isHighlighted
-
-        if let timerPlayed = timerPlayed {
-            timerPlayed.invalidate()
-        }
-
-        if model?.isPlaying ?? false {
-            model?.isPlaying = false
-            StreamPlaybackManager.sharedManager.pause(propagate: false)
+        let stream = StreamPlaybackManager.instance
+        if stream.isPaused(url: model?.urlString()) {
+            stream.playCurrentPosition()
         }
         else {
-            delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
+            stream.pause()
         }
+        setNeedsLayout()
+        delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
+    }
+    
+    func startPlaying() {
+        setNeedsLayout()
+    }
+    
+    func play() {
+        StreamPlaybackManager.instance.delegate = self
+        setNeedsLayout()
     }
     
     @IBAction func startOfStreamAction(_ sender: UIButton?) {
@@ -221,46 +277,34 @@ class AudioTableViewCell: UITableViewCell {
     }
 
     @objc fileprivate func updateTimePlayed() {
-        let currentStreamTime = StreamPlaybackManager.sharedManager.getCurrentTime()
-        let totalStreamTime = StreamPlaybackManager.sharedManager.getTotalTime()
-        sliderView.value = Float(currentStreamTime)
-        sliderView.maximumValue = Float(totalStreamTime)
-        currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
-        totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
-        if model?.isPlaying ?? false,
-            StreamPlaybackManager.sharedManager.canGoToEnd() {
-            if sliderView.value >= sliderView.maximumValue {
-                if let timerPlayed = timerPlayed {
-                    timerPlayed.invalidate()
-                }
-                playButton.isHighlighted = false
-                StreamPlaybackManager.sharedManager.pause(propagate: false)
-            }
-        }
-        else {
-            if let timerPlayed = timerPlayed {
-                timerPlayed.invalidate()
-            }
-            sliderStack.alpha = 0
-            currentTimeLabel.alpha = 0
-            totalTimeLabel.alpha = 0
-            backwardButton.isHidden = true
-            forwardButton.isHidden = true
-            startOfStreamButton.isHidden = true
-            endOfStreamButton.isHidden = true
-        }
+        setNeedsLayout()
     }
     
-    fileprivate func updateTimeLabel(with updatedTime: Float) {
+    private func updateTimeLabel(with updatedTime: Float) {
         currentTimeLabel.text = timeStringFor(seconds: updatedTime)
     }
     
-    func timeStringFor(seconds : Float) -> String
+    private func timeStringFor(seconds : Float) -> String?
     {
-        let output = formatter.string(from: TimeInterval(seconds))!
-        return seconds < 3600 ? output.substring(from: output.range(of: ":")!.upperBound) : output
+        guard let output = formatter.string(from: TimeInterval(seconds)) else {
+            return nil
+        }
+        if seconds < 3600 {
+            guard let rng = output.range(of: ":") else { return nil }
+            return String(output[rng.upperBound...])
+        }
+        return output
     }
-
+    
+    private func paintBgView() {
+        if let audioPlay = AudioPlay.search(byIdentifier: model?.id),
+            audioPlay.isPlaying {
+            gradientBg.isHidden = false
+        }
+        else {
+            gradientBg.isHidden = true
+        }
+    }
     
 }
 
@@ -277,4 +321,29 @@ protocol AudioTableViewCellDelegate: class {
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool)
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool)
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool)
+}
+
+/**
+ Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
+ */
+extension AudioTableViewCell: AssetPlaybackDelegate {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
+        Analytics.logError(error: error)
+        layoutIfNeeded()
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
+        if isPlaying {
+            print("JF FINALLY PLAYING")
+        }
+        else {
+            print("JF PAUSE")
+        }
+        layoutIfNeeded()
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
+        print("JF CHANGE")
+        layoutIfNeeded()
+    }
 }

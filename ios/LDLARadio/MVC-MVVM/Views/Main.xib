@@ -17,28 +17,35 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="LDLARadio" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="540" height="87"/>
+            <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMn-wc-ut7">
-                    <rect key="frame" x="0.0" y="10" width="540" height="87"/>
+                    <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="m8n-iJ-bl2">
-                            <rect key="frame" x="0.0" y="0.0" width="540" height="87"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0S-Qz-QFX">
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m8n-iJ-bl2">
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
                             <subviews>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Y-oK-ri8">
-                                    <rect key="frame" x="-43.5" y="0.0" width="43.5" height="87"/>
+                                    <rect key="frame" x="-30" y="0.0" width="30" height="60"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="r1Y-oK-ri8" secondAttribute="height" multiplier="0.5:1" id="5bq-F2-MJz"/>
                                     </constraints>
-                                    <state key="normal" image="apple-alt-line"/>
+                                    <state key="normal" image="apple-alt-line">
+                                        <color key="titleColor" red="0.84465640779999995" green="0.51457053419999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
                                     <state key="highlighted" image="f5d1-apple-alt-solid"/>
                                     <connections>
                                         <action selector="bookmarkAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="yn8-u2-Bq4"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDu-TF-z6Y">
-                                    <rect key="frame" x="0.0" y="0.0" width="43.5" height="87"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="ZDu-TF-z6Y" secondAttribute="height" multiplier="0.5:1" id="3Xp-QJ-9El"/>
                                     </constraints>
@@ -54,15 +61,17 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgN-ad-36E">
-                                    <rect key="frame" x="47.5" y="0.0" width="367.5" height="87"/>
-                                    <state key="normal" title="Button"/>
+                                    <rect key="frame" x="30" y="0.0" width="420" height="60"/>
                                     <connections>
                                         <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="cBZ-MJ-cyf"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soG-3m-Nz5">
-                                    <rect key="frame" x="419" y="0.0" width="30" height="87"/>
-                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                    <rect key="frame" x="450" y="0.0" width="30" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="soG-3m-Nz5" secondAttribute="height" multiplier="0.5:1" id="Ncv-gL-T7s"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
                                     <state key="normal" title="">
                                         <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
@@ -70,14 +79,14 @@
                                         <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <variation key="heightClass=regular-widthClass=compact">
-                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="26"/>
                                     </variation>
                                     <connections>
                                         <action selector="infoAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="MAg-jw-pGY"/>
                                     </connections>
                                 </button>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="38Z-dc-wfH">
-                                    <rect key="frame" x="453" y="0.0" width="87" height="87"/>
+                                    <rect key="frame" x="480" y="0.0" width="60" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="38Z-dc-wfH" secondAttribute="height" multiplier="1:1" id="Clj-gi-3pZ"/>
                                     </constraints>
@@ -86,14 +95,17 @@
                             <constraints>
                                 <constraint firstItem="ZDu-TF-z6Y" firstAttribute="width" secondItem="ZDu-TF-z6Y" secondAttribute="height" multiplier="0.5:1" id="Zmh-JP-hRy"/>
                                 <constraint firstItem="r1Y-oK-ri8" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" id="b75-TH-f5K"/>
-                                <constraint firstItem="38Z-dc-wfH" firstAttribute="leading" secondItem="soG-3m-Nz5" secondAttribute="trailing" constant="4" id="dOM-AU-2zf"/>
+                                <constraint firstItem="38Z-dc-wfH" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" id="xfI-qu-uiD"/>
                             </constraints>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="2v1-dI-X7p"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="3ej-bv-GYU"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="RZU-Jn-fFm"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="dTb-Xx-mMe"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="dpB-zq-nPj"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="gfk-rJ-IH7"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="irT-1B-nFL"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="l5q-GT-u36"/>
                     </constraints>
@@ -103,12 +115,13 @@
             <constraints>
                 <constraint firstItem="bMn-wc-ut7" firstAttribute="centerX" secondItem="PBz-vr-rax" secondAttribute="centerX" id="GMR-ss-frX"/>
                 <constraint firstItem="bMn-wc-ut7" firstAttribute="height" secondItem="OUZ-ye-H4L" secondAttribute="height" id="dPk-rh-eXX"/>
-                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerY" secondItem="PBz-vr-rax" secondAttribute="centerY" id="lPX-Bh-d6P"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerY" secondItem="PBz-vr-rax" secondAttribute="centerY" constant="-10" id="lPX-Bh-d6P"/>
                 <constraint firstItem="bMn-wc-ut7" firstAttribute="width" secondItem="OUZ-ye-H4L" secondAttribute="width" id="o6r-Pb-X9J"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="PBz-vr-rax"/>
             <connections>
+                <outlet property="bgView" destination="J0S-Qz-QFX" id="CYr-Wh-Qwv"/>
                 <outlet property="bookmarkButton" destination="r1Y-oK-ri8" id="zly-ow-6G1"/>
                 <outlet property="expandButton" destination="ZDu-TF-z6Y" id="dhi-1i-8eY"/>
                 <outlet property="infoButton" destination="soG-3m-Nz5" id="tKY-aH-DHd"/>

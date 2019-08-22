@@ -15,8 +15,6 @@ protocol Controllable {
     associatedtype ModelType
 
     func numberOfSections() -> Int
-
-    func titleForHeader(inSection section: Int) -> String?
     
     func numberOfRows(inSection section: Int) -> Int
     

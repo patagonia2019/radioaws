@@ -56,3 +56,9 @@ extension Modellable where Self : ArchiveDoc {
 }
 
 
+extension Modellable where Self : AudioPlay {
+    
+    internal static var placeholderImageName: String { get { return "f0001-music"} }
+}
+
+

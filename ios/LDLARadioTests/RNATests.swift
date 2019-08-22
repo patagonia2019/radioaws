@@ -118,7 +118,7 @@ class RNATests: BaseTests {
             
             XCTAssertNil(error)
             XCTAssertNotNil(band)
-            XCTAssertEqual(band?.programs?.count, 21)
+            XCTAssertEqual(band?.programs?.count, 17)
             
             expect.fulfill()
         }

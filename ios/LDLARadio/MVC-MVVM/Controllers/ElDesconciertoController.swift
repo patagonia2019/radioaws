@@ -41,7 +41,7 @@ class ElDesconciertoController: BaseController {
             let model = models[section]
             return model
         }
-        return nil
+        return models.first
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -53,18 +53,7 @@ class ElDesconciertoController: BaseController {
         }
         return nil
     }
-    
-    override func titleForHeader(inSection section: Int) -> String? {
-        if section < models.count {
-            return models[section].title.text
-        }
-        return nil
-    }
-    
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
-    }
-
+        
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         if let model = model(forSection: section, row: row) as? AudioViewModel {
             return CGFloat(model.height())
@@ -128,7 +117,7 @@ class ElDesconciertoController: BaseController {
         }
     }
     
-    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if let isExpanded = model?.isExpanded {
             models[section].isExpanded = !isExpanded

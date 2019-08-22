@@ -97,9 +97,6 @@ class AudioViewController: UITableViewController {
         
         refreshButton.isEnabled = controller.useRefresh
         
-        // Set the ViewController as the delegate for StreamPlaybackManager to recieve playback information.
-        StreamPlaybackManager.sharedManager.delegate = self
-        
         if controller.useRefresh {
             addRefreshControl()
         }
@@ -109,7 +106,8 @@ class AudioViewController: UITableViewController {
         if (controller is SearchController) {
             refresh(isClean: true)
         }
-
+        
+        tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -209,21 +207,13 @@ class AudioViewController: UITableViewController {
     
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            Analytics.logFunction(function: "embeddedplay",
-                                  parameters: ["audio": audio.title.text as AnyObject,
-                                               "section": audio.section as AnyObject,
-                                               "url": audio.urlString() as AnyObject,
-                                               "controller": titleForController() as AnyObject])
-            controller.play(forSection: indexPath.section, row: indexPath.row)
-            if audio.isPlaying {
-                StreamPlaybackManager.sharedManager.setAssetForPlayback(audio)
-            }
-            else {
-                StreamPlaybackManager.sharedManager.pause()
-            }
-            self.reloadData()
-            UIView.animate(withDuration: 0.5, animations: {
+        if object is AudioViewModel {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+                DispatchQueue.main.async {
+                    self.controller.play(forSection: indexPath.section, row: indexPath.row)
+//                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    self.reloadData()
+                }
             }) { (finished) in
                 if finished {
                     self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
@@ -246,12 +236,23 @@ class AudioViewController: UITableViewController {
                 }
             }
         }
+        else {
+            if controller is ArchiveOrgController || controller is SearchController {
+                if let cell = tableView.cellForRow(at: indexPath) as? LoadTableViewCell {
+                    cell.start()
+                }
+                let model = controller.modelInstance(inSection: indexPath.section)
+                expand(model:model, incrementPage: true, section:indexPath.section)
+            }
+        }
 
     }
     
-    private func expand(model: CatalogViewModel?, section: Int) {
+    private func expand(model: CatalogViewModel?, incrementPage: Bool = false, section: Int) {
         // Reusing the same model, but focus in this section
-        controller.expand(model: model, section: section, startClosure: {
+        controller.expand(model: model, section: section,
+                          incrementPage: incrementPage,
+                          startClosure: {
             RestApi.instance.context?.performAndWait {
                 SwiftSpinner.show(Quote.randomQuote())
             }
@@ -320,12 +321,9 @@ class AudioViewController: UITableViewController {
         return controller.numberOfRows(inSection: section)
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return controller.titleForHeader(inSection: section)
-    }
-    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
+        headerView?.model = self.controller.modelInstance(inSection: section)
         headerView?.actionExpandBlock = { model, isHighlighted in
             self.expand(model:model, section:section)
         }
@@ -335,7 +333,6 @@ class AudioViewController: UITableViewController {
         headerView?.infoBlock = { model in
             self.info(model: model)
         }
-        headerView?.model = self.controller.modelInstance(inSection: section)
         return headerView
     }
     
@@ -367,10 +364,17 @@ class AudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         var isBookmarked : Bool? = false
         if let audio = object as? AudioViewModel {
-            let playAction = UITableViewRowAction(style: .normal, title: audio.isPlaying ? "Pause" : "Play") { (action, indexPath) in
-                self.play(indexPath: indexPath)
+            let stream = StreamPlaybackManager.instance
+            let isReady = stream.isReadyToPlay(url: audio.urlString())
+            let playAction = UITableViewRowAction(style: .normal, title: isReady ? "Pause" : "Play") { (action, indexPath) in
+                if isReady {
+                    stream.pause()
+                }
+                else {
+                    self.play(indexPath: indexPath)
+                }
             }
-            playAction.backgroundColor = audio.isPlaying ? .red : .green
+            playAction.backgroundColor = .cayenne
             actions.append(playAction)
             
             isBookmarked = audio.isBookmarked
@@ -383,14 +387,14 @@ class AudioViewController: UITableViewController {
             let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (action, indexPath) in
                 self.bookmark(indexPath: indexPath)
             }
-            bookmarkAction.backgroundColor = isBookmarked ? .purple : .blue
+            bookmarkAction.backgroundColor = isBookmarked ? .lavender : .blueberry
             actions.append(bookmarkAction)
         }
         
         let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
         }
-        shareAction.backgroundColor = .orange
+        shareAction.backgroundColor = .orchid
         actions.append(shareAction)
         
         return actions
@@ -416,13 +420,12 @@ class AudioViewController: UITableViewController {
             }
             return cell
         }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
-        cell.model = nil
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadTableViewCell.reuseIdentifier, for: indexPath) as? LoadTableViewCell else { fatalError() }
         if controller is BookmarkController {
-            cell.detailTextLabel?.text = "You should tap on the Apple button to get some."
+            cell.titleView?.text = "You should tap on the Apple button to get some."
         }
         else if controller is SearchController {
-            cell.detailTextLabel?.text = "Please try again with another search term."
+            cell.titleView?.text = "Please try again with another search term."
         }
         return cell
     }
@@ -467,7 +470,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        play(indexPath: indexPath)
+//        play(indexPath: indexPath)
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool) {
@@ -476,7 +479,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
         if let audio = object as? AudioViewModel {
             Analytics.logFunction(function: "resize",
                                   parameters: ["audio": audio.title.text as AnyObject,
-                                               "isPlaying": audio.isPlaying as AnyObject,
+//                                               "isPlaying": audio.isPlaying as AnyObject,
                                                "didResize": newState as AnyObject,
                                                "url": audio.urlString() as AnyObject,
                                                "controller": titleForController() as AnyObject])
@@ -491,20 +494,21 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool) {
-        StreamPlaybackManager.sharedManager.seekEnd()
+        StreamPlaybackManager.instance.seekEnd()
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangeOffset isBackward: Bool) {
+        let stream = StreamPlaybackManager.instance
         if isBackward {
-            StreamPlaybackManager.sharedManager.backward()
+            stream.backward()
         }
         else {
-            StreamPlaybackManager.sharedManager.forward()
+            stream.forward()
         }
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newValue: Float) {
-        StreamPlaybackManager.sharedManager.playPosition(position: Double(newValue))
+        StreamPlaybackManager.instance.playPosition(position: Double(newValue))
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool) {
@@ -513,7 +517,11 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool) {
-        
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            showAlert(title: audio.title.text, message: audio.text, error: audio.error)
+        }
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool) {
@@ -523,31 +531,4 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
 }
 
-/**
- Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
- */
-extension AudioViewController: AssetPlaybackDelegate {
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
-        Analytics.logError(error: error)
-        showAlert(error: error)
-    }
-    
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
-        if isPlaying {
-            print("JF FINALLY PLAYING")
-            player.play()
-        }
-        else {
-            print("JF PAUSE")
-            player.pause()
-        }
-        reloadData()
-    }
-    
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
-        print("JF CHANGE")
-        reloadData()
-        player.play()
-    }
-}
 

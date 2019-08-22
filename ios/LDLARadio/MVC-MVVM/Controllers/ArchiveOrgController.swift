@@ -15,7 +15,6 @@ class ArchiveOrgController: BaseController {
     fileprivate var models = [CatalogViewModel]()
     
     override init() { }
-    
 
     override func numberOfSections() -> Int {
         return models.count
@@ -34,7 +33,7 @@ class ArchiveOrgController: BaseController {
             }
             count = model.sections.count + model.audios.count
         }
-        return count > 0 ? count : 1
+        return count > 0 ? (count + 1) : 1
     }
     
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -42,7 +41,7 @@ class ArchiveOrgController: BaseController {
             let model = models[section]
             return model
         }
-        return nil
+        return models.first
     }
 
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -64,17 +63,6 @@ class ArchiveOrgController: BaseController {
             }
         }
         return nil
-    }
-    
-    override func titleForHeader(inSection section: Int) -> String? {
-        if section < models.count {
-            return models[section].title.text
-        }
-        return nil
-    }
-    
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
     }
     
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
@@ -144,33 +132,39 @@ class ArchiveOrgController: BaseController {
         }
     }
     
-    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+
+        if incrementPage, let page = model?.page {
+            model?.page = page + 1
+        }
 
         let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
         
-        if let isExpanded = model?.isExpanded {
-            model?.isExpanded = !isExpanded
-            archiveCollection?.isExpanded = !isExpanded
-        }
-
+        if incrementPage == false {
+            if let isExpanded = model?.isExpanded {
+                model?.isExpanded = !isExpanded
+                archiveCollection?.isExpanded = !isExpanded
+            }
+        
         if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
             finishClosure?(nil)
             return
+            }
+            
+            if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
+                self.updateModels()
+                finishClosure?(nil)
+                return
+            }
         }
-
-        if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
-            self.updateModels()
-            finishClosure?(nil)
-            return
-        }
-
-        let url = archiveCollection?.searchUrlString(page: section) ?? model?.urlString()
+        
+        let url = archiveCollection?.searchCollectionUrlString(page: model?.page ?? 1) ?? model?.urlString()
         if url == nil {
             self.updateModels()
             finishClosure?(nil)
             return
         }
-        
+
         RestApi.instance.context?.performAndWait {
         
             RestApi.instance.requestARCH(usingUrl: url, type: ArchiveMeta.self) { error, meta in
@@ -196,6 +190,7 @@ class ArchiveOrgController: BaseController {
     
     
     static func search(text: String = "",
+                       pageNumber: Int = 1,
                        finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if text.count == 0 {
@@ -208,7 +203,7 @@ class ArchiveOrgController: BaseController {
             return
         }
         
-        let urlString = ArchiveCollection.searchUrlString(withString: text2Search, page: 1)
+        let urlString = ArchiveCollection.searchUrlString(withString: text2Search, page: pageNumber)
         RestApi.instance.requestARCH(usingUrl: urlString, type: ArchiveMeta.self) { error, archiveMeta in
             
             if error != nil {
@@ -225,6 +220,4 @@ class ArchiveOrgController: BaseController {
         }
     }
     
-
-
 }

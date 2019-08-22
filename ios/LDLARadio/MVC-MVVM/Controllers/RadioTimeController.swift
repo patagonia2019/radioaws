@@ -29,10 +29,6 @@ class RadioTimeController: BaseController {
         return n
     }
     
-    override func titleForHeader(inSection section: Int) -> String? {
-        return mainModel?.title.text
-    }
-    
     override func numberOfRows(inSection section: Int) -> Int {
         var count : Int = 0
         if let model = mainModel {
@@ -82,10 +78,6 @@ class RadioTimeController: BaseController {
         return nil
     }
         
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
-    }
-
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if let audioModel = subModel as? AudioViewModel {
@@ -205,7 +197,7 @@ class RadioTimeController: BaseController {
     }
 
     
-    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         let dbCatalog = mainCatalogFromDb(mainCVM: model)
         dbCatalog?.isExpanded = !(dbCatalog?.isExpanded ?? false)

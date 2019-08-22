@@ -18,6 +18,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     @IBOutlet weak var bookmarkButton: UIButton?
     @IBOutlet weak var infoButton: UIButton?
     @IBOutlet weak var thumbnailView: UIImageView?
+    @IBOutlet weak var bgView: UIView?
 
     var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
     var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
@@ -25,29 +26,14 @@ class HeaderTableView : UITableViewHeaderFooterView {
     
     var model : CatalogViewModel? {
         didSet {
-            titleButton?.setTitle(model?.title.text, for: .normal)
-            titleButton?.setTitleColor(model?.title.color, for: .normal)
-            titleButton?.titleLabel?.font = model?.title.font
-            if let model = model {
-                if let isExpanded = model.isExpanded {
-                    expandButton?.isHidden = false
-                    expandButton?.isHighlighted = !isExpanded
-                }
-                else {
-                    expandButton?.isHidden = true
-                }
-                
-                thumbnailView?.alpha = 0
-                if let thumbnailUrl = model.thumbnailUrl {
-                    thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
-                        if response.error == nil {
-                            self.thumbnailView?.alpha = 1
-                        }
-                    }
-                }
-                infoButton?.isHidden = !(model.detail.text.count > 0)
-            }
+            setNeedsLayout()
         }
+    }
+    
+    override func awakeFromNib() {
+        paintBgView()
+        expandButton?.setTitleColor(UIColor.aqua, for: .normal)
+        expandButton?.setTitleColor(UIColor.blueberry, for: .highlighted)
     }
     
     override func prepareForReuse() {
@@ -57,8 +43,37 @@ class HeaderTableView : UITableViewHeaderFooterView {
         expandButton?.isHighlighted = false
         bookmarkButton?.isHidden = true
         bookmarkButton?.isHighlighted = false
-        thumbnailView?.alpha = 0
+        thumbnailView?.isHidden = true
         infoButton?.isHidden = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        titleButton?.setTitle(model?.title.text, for: .normal)
+        titleButton?.setTitleColor(model?.title.color, for: .normal)
+        titleButton?.titleLabel?.font = model?.title.font
+        titleButton?.titleLabel?.numberOfLines = 3
+        titleButton?.titleLabel?.lineBreakMode = .byTruncatingTail
+
+        if let model = model {
+            if let isExpanded = model.isExpanded {
+                expandButton?.isHidden = false
+                expandButton?.isHighlighted = !isExpanded
+            }
+            else {
+                expandButton?.isHidden = true
+            }
+            
+            thumbnailView?.isHidden = true
+            if let thumbnailUrl = model.thumbnailUrl {
+                thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
+                    if response.error == nil {
+                        self.thumbnailView?.isHidden = false
+                    }
+                }
+            }
+            infoButton?.isHidden = !(model.text?.count ?? 0 > 0)
+        }
     }
     
     
@@ -76,6 +91,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     }
     
     @IBAction func expandAction(_ sender: Any) {
+        setNeedsLayout()
         if let expandButton = expandButton {
             expandButton.isHighlighted = !expandButton.isHighlighted
             actionExpandBlock?(model, expandButton.isHighlighted)
@@ -90,6 +106,17 @@ class HeaderTableView : UITableViewHeaderFooterView {
         }
         else {
             fatalError()
+        }
+    }
+
+    private func paintBgView() {
+        let gradientBg2 = CAGradientLayer()
+        gradientBg2.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientBg2.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientBg2.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+        if let bgView = bgView {
+            gradientBg2.frame = bgView.bounds
+            bgView.layer.insertSublayer(gradientBg2, at: 0)
         }
     }
 

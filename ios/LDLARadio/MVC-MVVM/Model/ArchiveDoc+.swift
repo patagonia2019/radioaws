@@ -12,33 +12,20 @@ import Groot
 
 extension ArchiveDoc {
     
-    /// Update the `updatedAt` field in the entity when the model is created
-    override public func awakeFromInsert() {
-        super.awakeFromInsert()
-        setPrimitiveValue(parseCreator(), forKey: "creator")
-        setPrimitiveValue(parseSubject(), forKey: "subject")
-    }
-
-    func parseSubject() -> String? {
-        if let str = subjectTrf as? String {
-            return str
-        }
-        else if let array = subjectTrf as? [String] {
-            return array.joined(separator: ", ")
-        }
-        return nil
-    }
     
-    func parseCreator() -> String? {
-        if let str = creatorTrf as? String {
-            return str
+    override public func didChangeValue(forKey key: String) {
+        if key == "creatorTrf" {
+            setPrimitiveValue(parseField(field: creatorTrf), forKey: "creator")
         }
-        else if let array = creatorTrf as? [String] {
-            return array.joined(separator: ", ")
+        else if key == "subjectTrf" {
+            setPrimitiveValue(parseField(field: subjectTrf), forKey: "subject")
         }
-        return nil
+        else if key == "descriptTrf" {
+            setPrimitiveValue(parseField(field: descriptTrf), forKey: "descript")
+        }
+        super.didChangeValue(forKey: key)
     }
-    
+        
     func thumbnailUrlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"

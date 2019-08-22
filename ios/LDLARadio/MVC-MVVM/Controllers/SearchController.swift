@@ -15,14 +15,11 @@ class SearchController: BaseController {
     static let didRefreshNotification = NSNotification.Name(rawValue: "SearchController.didRefreshNotification")
     
     private var models = [CatalogViewModel]()
+    private var page: Int = 1
 
     private var textList = [String]()
     private var isAlreadyDone : Bool = false
-    var textToSearch = String() {
-        willSet {
-            isAlreadyDone = textList.contains(textToSearch)
-        }
-    }
+    var textToSearch = String()
     
     override var useRefresh : Bool {
         return true
@@ -54,7 +51,7 @@ class SearchController: BaseController {
             }
             count = model.sections.count + model.audios.count
         }
-        return count > 0 ? count : 1
+        return count > 0 ? (count + 1) : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -62,7 +59,7 @@ class SearchController: BaseController {
             let model = models[section]
             return model
         }
-        return nil
+        return models.first
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -86,38 +83,32 @@ class SearchController: BaseController {
         return nil
     }
     
-    override func titleForHeader(inSection section: Int) -> String? {
-        if section < models.count {
-            return models[section].title.text
-        }
-        return nil
-    }
-    
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
-    }
-    
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if let audioModel = subModel as? AudioViewModel {
             return CGFloat(audioModel.height())
         }
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
+        return CGFloat(CatalogViewModel.cellheight)
     }
-    
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-
-        models = [CatalogViewModel]()
+        if isClean == false {
+            isAlreadyDone = textList.contains(textToSearch)
+        }
+        else {
+            isAlreadyDone = false
+        }
 
         if textToSearch.count == 0 {
             finishClosure?(nil)
             return
         }
     
+        models = [CatalogViewModel]()
+
         RestApi.instance.context?.performAndWait {
             if let rnaStations = RNAStation.search(byName: textToSearch), rnaStations.count > 0 {
                 let amModels = rnaStations.filter({ (station) -> Bool in
@@ -220,7 +211,9 @@ class SearchController: BaseController {
             
             RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
                 
-                ArchiveOrgController.search(text: self.textToSearch, finishClosure: { (error) in
+                ArchiveOrgController.search(text: self.textToSearch,
+                                            pageNumber: self.page,
+                                            finishClosure: { (error) in
                     RestApi.instance.context?.performAndWait {
                         
                         self.textList.append(self.textToSearch)
@@ -236,12 +229,18 @@ class SearchController: BaseController {
         }
     }
     
-    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
-        if let isExpanded = model?.isExpanded {
-            model?.isExpanded = !isExpanded
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        if incrementPage {
+            page += 1
+            refresh(isClean: true, prompt: "", startClosure: startClosure, finishClosure: finishClosure)
         }
-        
-        finishClosure?(nil)
+        else {
+            if let isExpanded = model?.isExpanded {
+                model?.isExpanded = !isExpanded
+            }
+            
+            finishClosure?(nil)
+        }
     }
+    
 }

@@ -34,14 +34,17 @@ class RNAController: BaseController {
         return 2
     }
     
-    override func titleForHeader(inSection section: Int) -> String? {
-        if section == 0 {
-            return "AM"
-        }
-        return "FM"
-    }
-    
     override func numberOfRows(inSection section: Int) -> Int {
+        if section == 0 {
+            if amCatalogViewModel.isExpanded == false {
+                return 0
+            }
+        }
+        else {
+            if fmCatalogViewModel.isExpanded == false {
+                return 0
+            }
+        }
         let count : Int = (section == 0) ? amModels.count : fmModels.count
         return count > 0 ? count : 1
     }
@@ -252,8 +255,8 @@ class RNAController: BaseController {
             finishClosure?(error)
         }
     }
-
-    private func expanding(model: CatalogViewModel?, section: Int, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if let isExpanded = model?.isExpanded {
             if section == 0 {

@@ -52,7 +52,7 @@ class BookmarkController: BaseController {
             let model = models[section]
             return model
         }
-        return nil
+        return models.first
     }
     
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -76,23 +76,12 @@ class BookmarkController: BaseController {
         return nil
     }
     
-    override func titleForHeader(inSection section: Int) -> String? {
-        if section < models.count {
-            return models[section].title.text
-        }
-        return nil
-    }
-    
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
-    }
-    
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if let audioModel = subModel as? AudioViewModel {
             return CGFloat(audioModel.height())
         }
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
+        return CGFloat(CatalogViewModel.cellheight)
     }
     
 
@@ -107,14 +96,6 @@ class BookmarkController: BaseController {
             RestApi.instance.context?.performAndWait {
                 let all = Bookmark.all()
                 
-                if let audio = StreamPlaybackManager.sharedManager.model {
-                    let model = CatalogViewModel()
-                    model.isExpanded = false
-                    model.title.text = "Playing now!"
-                    model.audios = [audio]
-                    self.models.append(model)
-                }
-
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
                 }), suggestions.count > 0 {
@@ -189,17 +170,23 @@ class BookmarkController: BaseController {
        
         var forceUpdate = false
         
-        if isClean {
+        if isClean || BaseController.isBookmarkChanged {
             forceUpdate = true
+            BaseController.isBookmarkChanged = false
         }
         else {
+            if self.models.count > 0 {
+                finishClosure?(nil)
+                return
+            }
+        
             if Bookmark.all()?.count ?? 0 == 0 {
                 forceUpdate = true
             }
         }
         
         if forceUpdate && cloudKit.loggedIn {
-            
+
             RestApi.instance.context?.performAndWait {
                 Bookmark.clean()
                 cloudKit.refresh { (error) in
@@ -217,7 +204,7 @@ class BookmarkController: BaseController {
         }
     }
     
-    internal override func expanding(model: CatalogViewModel?, section: Int, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         if let isExpanded = model?.isExpanded {
             model?.isExpanded = !isExpanded

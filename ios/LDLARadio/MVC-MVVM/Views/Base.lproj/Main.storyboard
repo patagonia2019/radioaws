@@ -26,10 +26,13 @@
         <scene sceneID="6TM-Je-eAM">
             <objects>
                 <tabBarController id="X43-98-nWc" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5Gv-sf-6HL">
+                    <tabBar key="tabBar" opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5Gv-sf-6HL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="vN1-ue-gmt" kind="relationship" relationship="viewControllers" id="zMt-8o-R9a"/>
@@ -182,26 +185,26 @@
         <scene sceneID="tWu-fb-xyR">
             <objects>
                 <tableViewController storyboardIdentifier="AudioViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0gk-XM-DML" customClass="AudioViewController" customModule="LDLARadio" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="44" sectionFooterHeight="44" id="vfv-cq-Tr9">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="75" sectionHeaderHeight="100" estimatedSectionHeaderHeight="100" sectionFooterHeight="100" estimatedSectionFooterHeight="100" id="vfv-cq-Tr9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CatalogTableViewCell" id="ZM5-hv-1JK" customClass="CatalogTableViewCell" customModule="LDLARadio" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="74"/>
+                                <rect key="frame" x="0.0" y="100" width="414" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZM5-hv-1JK" id="2XD-ex-fvp">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="73.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5i-9x-rsT">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="73.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rgX-hg-UFM">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="73.666666666666671"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6h9-HM-IKT">
-                                                            <rect key="frame" x="0.0" y="0.0" width="37" height="73.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="75"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="6h9-HM-IKT" secondAttribute="height" multiplier="0.5:1" id="m6k-az-L4E"/>
                                                             </constraints>
@@ -212,13 +215,13 @@
                                                             </connections>
                                                         </button>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IWc-yg-c5j">
-                                                            <rect key="frame" x="45.000000000000007" y="0.0" width="73.666666666666686" height="73.666666666666671"/>
+                                                            <rect key="frame" x="45.666666666666657" y="0.0" width="75" height="75"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="IWc-yg-c5j" secondAttribute="height" multiplier="1:1" id="91y-Nk-XdP"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SsZ-hn-ubZ">
-                                                            <rect key="frame" x="126.66666666666667" y="0.0" width="36.666666666666671" height="73.666666666666671"/>
+                                                            <rect key="frame" x="128.66666666666666" y="0.0" width="37.333333333333343" height="75"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="SsZ-hn-ubZ" secondAttribute="height" multiplier="0.5:1" id="Wts-a1-7lM"/>
                                                             </constraints>
@@ -229,18 +232,18 @@
                                                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="25"/>
                                                             </variation>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kvW-0i-VS1">
-                                                            <rect key="frame" x="171.33333333333337" y="37" width="198" height="0.0"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kvW-0i-VS1">
+                                                            <rect key="frame" x="174" y="37.666666666666664" width="194.66666666666663" height="0.0"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4D-eK-5sg">
-                                                            <rect key="frame" x="377.33333333333331" y="0.0" width="36.666666666666686" height="73.666666666666671"/>
+                                                            <rect key="frame" x="376.66666666666669" y="0.0" width="37.333333333333314" height="75"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="f4D-eK-5sg" secondAttribute="height" multiplier="0.5:1" id="25R-Ig-uvH"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
                                                             <state key="normal" title="">
                                                                 <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
@@ -248,7 +251,7 @@
                                                                 <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </state>
                                                             <variation key="heightClass=regular-widthClass=compact">
-                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="26"/>
                                                             </variation>
                                                             <connections>
                                                                 <action selector="infoAction:" destination="ZM5-hv-1JK" eventType="touchUpInside" id="hwG-lp-Abo"/>
@@ -263,7 +266,7 @@
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="rgX-hg-UFM" firstAttribute="centerX" secondItem="T5i-9x-rsT" secondAttribute="centerX" id="1yy-re-6eY"/>
                                                 <constraint firstItem="rgX-hg-UFM" firstAttribute="width" secondItem="T5i-9x-rsT" secondAttribute="width" id="cSD-Oa-6hb"/>
@@ -288,26 +291,26 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioTableViewCell" rowHeight="400" id="43R-O8-DGN" customClass="AudioTableViewCell" customModule="LDLARadio" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="118" width="414" height="400"/>
+                                <rect key="frame" x="0.0" y="175" width="414" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="43R-O8-DGN" id="t4S-dl-D3j">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="399.66666666666669"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="hl0-Ll-kzm">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="399.66666666666669"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RNA-256x256bb" translatesAutoresizingMaskIntoConstraints="NO" id="4qm-e3-wPX">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="199"/>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="w2B-Un-6mP">
-                                                    <rect key="frame" x="0.0" y="201" width="414" height="198.66666666666663"/>
+                                                    <rect key="frame" x="0.0" y="201" width="414" height="199"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpq-LJ-gn4">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="58"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="52.666666666666664"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25C-80-uwu">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="58"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="52.666666666666664" height="52.666666666666664"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="25C-80-uwu" secondAttribute="height" id="C36-EW-zCc"/>
                                                                     </constraints>
@@ -318,28 +321,28 @@
                                                                     </connections>
                                                                 </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="YVq-Cu-0tb">
-                                                                    <rect key="frame" x="58.333333333333343" y="0.0" width="297.33333333333326" height="58"/>
+                                                                    <rect key="frame" x="52.666666666666657" y="0.0" width="308.66666666666674" height="52.666666666666664"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="q6k-9D-4ue">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="297.33333333333331" height="19.333333333333332"/>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q6k-9D-4ue">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="308.66666666666669" height="17.666666666666668"/>
                                                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="City" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6fF-9W-nvI">
-                                                                            <rect key="frame" x="0.0" y="19.333333333333343" width="297.33333333333331" height="19.333333333333329"/>
+                                                                            <rect key="frame" x="0.0" y="17.666666666666657" width="308.66666666666669" height="17.333333333333329"/>
                                                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dvh-bY-pth">
-                                                                            <rect key="frame" x="0.0" y="38.666666666666657" width="297.33333333333331" height="19.333333333333329"/>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" verticalCompressionResistancePriority="751" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvh-bY-pth">
+                                                                            <rect key="frame" x="0.0" y="35" width="308.66666666666669" height="17.666666666666671"/>
                                                                             <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <progressView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCL-gI-QfZ">
-                                                                            <rect key="frame" x="0.0" y="58" width="297.33333333333331" height="0.0"/>
+                                                                            <rect key="frame" x="0.0" y="52.666666666666657" width="308.66666666666669" height="0.0"/>
                                                                         </progressView>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -348,7 +351,7 @@
                                                                     </constraints>
                                                                 </stackView>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b5y-Ls-36e">
-                                                                    <rect key="frame" x="355.66666666666669" y="0.0" width="58.333333333333314" height="58"/>
+                                                                    <rect key="frame" x="361.33333333333331" y="0.0" width="52.666666666666686" height="52.666666666666664"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="b5y-Ls-36e" secondAttribute="height" multiplier="1:1" id="7tp-fh-5Bx"/>
                                                                     </constraints>
@@ -361,35 +364,17 @@
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="YOI-B5-wu9">
-                                                            <rect key="frame" x="0.0" y="68" width="414" height="77.666666666666686"/>
+                                                            <rect key="frame" x="0.0" y="62.666666666666686" width="414" height="49.666666666666657"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="MZQ-3w-o2R">
-                                                                    <rect key="frame" x="0.0" y="18" width="79.666666666666671" height="42"/>
-                                                                    <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6WU-fc-55g">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted">
-                                                                                <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                            <connections>
-                                                                                <action selector="graphAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="0Wt-fn-h52"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                    </subviews>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="49.666666666666664"/>
                                                                 </stackView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="mDE-Al-cBc">
-                                                                    <rect key="frame" x="83.666666666666657" y="18" width="79.666666666666657" height="42"/>
+                                                                    <rect key="frame" x="83.666666666666657" y="7" width="79.666666666666657" height="36"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcM-kg-pJM">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="36"/>
+                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="33"/>
                                                                             <state key="normal" title="">
                                                                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
@@ -397,15 +382,15 @@
                                                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
                                                                             <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                                                             </variation>
                                                                             <connections>
                                                                                 <action selector="startOfStreamAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="pCx-TU-v8g"/>
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mvM-id-wRw">
-                                                                            <rect key="frame" x="41.666666666666657" y="0.0" width="38" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                            <rect key="frame" x="41.666666666666657" y="0.0" width="38" height="36"/>
+                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="33"/>
                                                                             <state key="normal" title="">
                                                                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
@@ -413,7 +398,7 @@
                                                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
                                                                             <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                                                             </variation>
                                                                             <connections>
                                                                                 <action selector="backwardAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="w6v-OK-0qf"/>
@@ -422,8 +407,8 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coq-nf-e2P">
-                                                                    <rect key="frame" x="167.33333333333334" y="0.0" width="79.333333333333343" height="77.666666666666671"/>
-                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="88"/>
+                                                                    <rect key="frame" x="167.33333333333334" y="0.0" width="79.333333333333343" height="49.666666666666664"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="66"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </state>
@@ -431,18 +416,18 @@
                                                                         <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </state>
                                                                     <variation key="heightClass=regular-widthClass=compact">
-                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="66"/>
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     </variation>
                                                                     <connections>
                                                                         <action selector="playAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="sHW-xB-b0V"/>
                                                                     </connections>
                                                                 </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HI2-M3-fUq">
-                                                                    <rect key="frame" x="250.66666666666666" y="18" width="79.666666666666657" height="42"/>
+                                                                    <rect key="frame" x="250.66666666666666" y="7" width="79.666666666666657" height="36"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCa-VK-FJ6">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="38" height="36"/>
+                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="33"/>
                                                                             <state key="normal" title="">
                                                                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
@@ -450,15 +435,15 @@
                                                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
                                                                             <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                                                             </variation>
                                                                             <connections>
                                                                                 <action selector="forwardAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="kBY-tJ-Ecj"/>
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJJ-kX-WlY">
-                                                                            <rect key="frame" x="42.000000000000028" y="0.0" width="37.666666666666657" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                            <rect key="frame" x="42.000000000000028" y="0.0" width="37.666666666666657" height="36"/>
+                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="33"/>
                                                                             <state key="normal" title="">
                                                                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
@@ -466,7 +451,7 @@
                                                                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
                                                                             <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                                                             </variation>
                                                                             <connections>
                                                                                 <action selector="endOfStreamAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="Cly-2R-huC"/>
@@ -475,129 +460,119 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Viy-OR-7FM">
-                                                                    <rect key="frame" x="334.33333333333331" y="18" width="79.666666666666686" height="42"/>
-                                                                    <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ep0-AY-Oei">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="79.666666666666671" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="0.59999999999999998" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted" title="">
-                                                                                <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                            <connections>
-                                                                                <action selector="resizeAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="EU2-ht-Ugl"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                    </subviews>
+                                                                    <rect key="frame" x="334.33333333333331" y="0.0" width="79.666666666666686" height="49.666666666666664"/>
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jap-VD-3Ye">
-                                                            <rect key="frame" x="0.0" y="155.66666666666669" width="414" height="43"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Hs1-TV-dlJ">
+                                                            <rect key="frame" x="0.0" y="122.33333333333333" width="414" height="23.666666666666671"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uFj-eF-Xcy">
-                                                                    <rect key="frame" x="0.0" y="0.66666666666662877" width="74.666666666666671" height="42"/>
-                                                                    <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJe-g5-nn6">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="32.333333333333336" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="0.40000000000000002" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted">
-                                                                                <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                            <connections>
-                                                                                <action selector="targetSoundAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="vRp-eT-yfK"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpo-JO-m92">
-                                                                            <rect key="frame" x="42.333333333333329" y="0.0" width="32.333333333333329" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted">
-                                                                                <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                            <connections>
-                                                                                <action selector="bugAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="3NU-HD-iCi"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                    </subviews>
-                                                                </stackView>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uM4-Mh-9sf">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="74.333333333333329" height="23.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted">
+                                                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                    <connections>
+                                                                        <action selector="graphAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="cdg-hN-Zu9"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9NO-Ey-vcK">
+                                                                    <rect key="frame" x="84.333333333333329" y="0.0" width="63.666666666666671" height="23.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted">
+                                                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                    <connections>
+                                                                        <action selector="infoAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="J6C-SN-0Ht"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNr-TP-RFA">
+                                                                    <rect key="frame" x="158" y="0.0" width="63.666666666666657" height="23.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted">
+                                                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                    <connections>
+                                                                        <action selector="bugAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="0wu-SS-uC4"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iuu-tA-iC1">
+                                                                    <rect key="frame" x="231.66666666666666" y="0.0" width="63.666666666666657" height="23.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="0.40000000000000002" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted">
+                                                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                    <connections>
+                                                                        <action selector="targetSoundAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="add-D6-hyS"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCL-dA-4nu">
+                                                                    <rect key="frame" x="305.33333333333331" y="0.0" width="108.66666666666669" height="23.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="0.59999999999999998" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted" title="">
+                                                                        <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                    <connections>
+                                                                        <action selector="resizeAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="px9-VT-q8F"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jap-VD-3Ye">
+                                                            <rect key="frame" x="0.0" y="156" width="414" height="43"/>
+                                                            <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6nS-4j-1nM">
-                                                                    <rect key="frame" x="84.666666666666671" y="12" width="75.000000000000014" height="19"/>
+                                                                    <rect key="frame" x="0.0" y="12" width="43" height="19"/>
                                                                     <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ck9-23-sib">
-                                                                    <rect key="frame" x="169.66666666666666" y="0.0" width="74.666666666666657" height="43"/>
-                                                                    <subviews>
-                                                                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3kC-II-7Tx">
-                                                                            <rect key="frame" x="-2" y="0.0" width="78.666666666666671" height="44"/>
-                                                                            <connections>
-                                                                                <action selector="sliderValueChanged:" destination="43R-O8-DGN" eventType="valueChanged" id="PXJ-ad-Udv"/>
-                                                                            </connections>
-                                                                        </slider>
-                                                                    </subviews>
-                                                                </stackView>
+                                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3kC-II-7Tx">
+                                                                    <rect key="frame" x="51" y="6.6666666666666856" width="312" height="31"/>
+                                                                    <connections>
+                                                                        <action selector="sliderValueChanged:" destination="43R-O8-DGN" eventType="valueChanged" id="PXJ-ad-Udv"/>
+                                                                    </connections>
+                                                                </slider>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pWy-BK-mc3">
-                                                                    <rect key="frame" x="254.33333333333337" y="12" width="75" height="19"/>
+                                                                    <rect key="frame" x="371" y="12" width="43" height="19"/>
                                                                     <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dLv-Tz-UzV">
-                                                                    <rect key="frame" x="339.33333333333331" y="0.66666666666662877" width="74.666666666666686" height="42"/>
-                                                                    <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="93V-x6-tOg">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="74.666666666666671" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted">
-                                                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                            <connections>
-                                                                                <action selector="infoAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="ben-Ed-ilJ"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                        <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9c7-5q-3SU">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="42"/>
-                                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
-                                                                            <state key="normal" title="">
-                                                                                <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                                            </state>
-                                                                            <state key="highlighted">
-                                                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            </state>
-                                                                            <variation key="heightClass=regular-widthClass=compact">
-                                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
-                                                                            </variation>
-                                                                        </button>
-                                                                    </subviews>
-                                                                </stackView>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstItem="Ck9-23-sib" firstAttribute="top" secondItem="jap-VD-3Ye" secondAttribute="top" id="0Tk-Je-z2Z"/>
                                                                 <constraint firstItem="6nS-4j-1nM" firstAttribute="top" secondItem="jap-VD-3Ye" secondAttribute="top" constant="12" id="6Mw-bS-iVY"/>
                                                                 <constraint firstItem="6nS-4j-1nM" firstAttribute="baseline" secondItem="pWy-BK-mc3" secondAttribute="firstBaseline" id="ALj-oo-AP2"/>
                                                                 <constraint firstItem="6nS-4j-1nM" firstAttribute="baseline" secondItem="pWy-BK-mc3" secondAttribute="baseline" id="MOP-oe-Itg"/>
@@ -618,27 +593,90 @@
                                 <connections>
                                     <outlet property="backwardButton" destination="mvM-id-wRw" id="NK0-kW-GXY"/>
                                     <outlet property="bookmarkButton" destination="25C-80-uwu" id="JZ7-6S-fP6"/>
-                                    <outlet property="bugButton" destination="lpo-JO-m92" id="IDW-j8-FQf"/>
+                                    <outlet property="bugButton" destination="LNr-TP-RFA" id="Egm-8y-nVw"/>
                                     <outlet property="currentTimeLabel" destination="6nS-4j-1nM" id="oDN-dx-zpi"/>
                                     <outlet property="downloadProgressView" destination="cCL-gI-QfZ" id="9Ke-O7-kyv"/>
                                     <outlet property="downloadStateLabel" destination="dvh-bY-pth" id="ncr-i2-Z8Z"/>
                                     <outlet property="endOfStreamButton" destination="VJJ-kX-WlY" id="Zom-wD-QJd"/>
                                     <outlet property="forwardButton" destination="rCa-VK-FJ6" id="gJ4-lf-Cyc"/>
-                                    <outlet property="graphButton" destination="6WU-fc-55g" id="cPi-aG-Brl"/>
-                                    <outlet property="infoButton" destination="93V-x6-tOg" id="cls-ZM-IfA"/>
+                                    <outlet property="graphButton" destination="uM4-Mh-9sf" id="2ES-Mb-M1T"/>
+                                    <outlet property="infoButton" destination="9NO-Ey-vcK" id="xth-mf-aRy"/>
                                     <outlet property="logoView" destination="4qm-e3-wPX" id="mK8-wK-44r"/>
                                     <outlet property="playButton" destination="coq-nf-e2P" id="MNl-nh-T8S"/>
                                     <outlet property="playerStack" destination="YOI-B5-wu9" id="Aij-i3-9CX"/>
                                     <outlet property="progressStack" destination="jap-VD-3Ye" id="knU-JN-p8E"/>
-                                    <outlet property="resizeButton" destination="ep0-AY-Oei" id="SjK-hA-bAO"/>
-                                    <outlet property="sliderStack" destination="Ck9-23-sib" id="Dos-Lg-ZJY"/>
+                                    <outlet property="resizeButton" destination="BCL-dA-4nu" id="VFM-qh-4lz"/>
                                     <outlet property="sliderView" destination="3kC-II-7Tx" id="jA4-gl-AG3"/>
                                     <outlet property="startOfStreamButton" destination="wcM-kg-pJM" id="XnL-D9-aoq"/>
                                     <outlet property="subtitleLabel" destination="6fF-9W-nvI" id="gCP-IP-GwM"/>
-                                    <outlet property="targetSoundButton" destination="GJe-g5-nn6" id="FKZ-rc-bQj"/>
+                                    <outlet property="targetSoundButton" destination="Iuu-tA-iC1" id="WiE-ga-ZkK"/>
                                     <outlet property="thumbnailView" destination="b5y-Ls-36e" id="0dO-Ix-nTY"/>
                                     <outlet property="titleLabel" destination="q6k-9D-4ue" id="vjj-Rw-LAb"/>
                                     <outlet property="totalTimeLabel" destination="pWy-BK-mc3" id="6PI-eT-HrI"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadTableViewCell" id="1ea-8n-d2T" userLabel="LoadTableViewCell" customClass="LoadTableViewCell" customModule="LDLARadio" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="575" width="414" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1ea-8n-d2T" id="ec2-kE-cOd">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Phm-T4-jAa">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SxF-s9-xnD">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zu2-Uv-7v1">
+                                                            <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="75"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="Zu2-Uv-7v1" secondAttribute="height" multiplier="0.5:1" id="zE3-yw-zHo"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=regular-widthClass=regular">
+                                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="25"/>
+                                                            </variation>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load more?" textAlignment="center" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G7b-f7-eYL">
+                                                            <rect key="frame" x="45.666666666666657" y="28" width="285.33333333333337" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pnp-jV-ncb">
+                                                            <rect key="frame" x="339" y="0.0" width="75" height="75"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="Pnp-jV-ncb" secondAttribute="height" multiplier="1:1" id="49N-wh-Ydl"/>
+                                                            </constraints>
+                                                        </activityIndicatorView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="Zu2-Uv-7v1" firstAttribute="height" secondItem="SxF-s9-xnD" secondAttribute="height" id="1Mo-dI-N0q"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="SxF-s9-xnD" firstAttribute="centerX" secondItem="Phm-T4-jAa" secondAttribute="centerX" id="3JB-9g-RDX"/>
+                                                <constraint firstItem="SxF-s9-xnD" firstAttribute="height" secondItem="Phm-T4-jAa" secondAttribute="height" id="XYt-N5-zRS"/>
+                                                <constraint firstItem="SxF-s9-xnD" firstAttribute="centerY" secondItem="Phm-T4-jAa" secondAttribute="centerY" id="po7-z1-HhL"/>
+                                                <constraint firstItem="SxF-s9-xnD" firstAttribute="width" secondItem="Phm-T4-jAa" secondAttribute="width" id="rdx-Li-OeO"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Phm-T4-jAa" firstAttribute="width" secondItem="ec2-kE-cOd" secondAttribute="width" id="5dk-7W-nmg"/>
+                                        <constraint firstItem="Phm-T4-jAa" firstAttribute="height" secondItem="ec2-kE-cOd" secondAttribute="height" id="TmE-wz-ZGj"/>
+                                        <constraint firstItem="Phm-T4-jAa" firstAttribute="centerX" secondItem="ec2-kE-cOd" secondAttribute="centerX" id="kch-rs-Uko"/>
+                                        <constraint firstItem="Phm-T4-jAa" firstAttribute="centerY" secondItem="ec2-kE-cOd" secondAttribute="centerY" id="v6x-hb-6nn"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="iconView" destination="Zu2-Uv-7v1" id="4fI-hL-gz7"/>
+                                    <outlet property="spinner" destination="Pnp-jV-ncb" id="boA-zL-WXI"/>
+                                    <outlet property="titleView" destination="G7b-f7-eYL" id="3mm-Xv-4vX"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -675,7 +713,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kXk-Cf-Eek" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802.9296874999998" y="-276.72035139092236"/>
+            <point key="canvasLocation" x="1802.8985507246377" y="-277.17391304347831"/>
         </scene>
         <!--About-->
         <scene sceneID="RAk-Ah-28I">

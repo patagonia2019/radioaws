@@ -16,6 +16,7 @@ extension RTCatalog : Modellable {
                    sortDescriptors: [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)])
             as? [RTCatalog]
     }
+    
 }
 
 extension RTCatalog : Searchable {
@@ -36,11 +37,19 @@ extension RTCatalog : Searchable {
 
 extension RTCatalog {
     
-    /// Update the `updatedAt` field in the entity when the model is created
-    override public func awakeFromInsert() {
-        setPrimitiveValue(Date(), forKey: "updatedAt")
-    }
     
+    override public func didChangeValue(forKey key: String) {
+        if key == "reliabilityTrf" {
+            setPrimitiveValue(parseField(field: reliabilityTrf), forKey: "reliability")
+        }
+        else if key == "bitrateTrf" {
+            setPrimitiveValue(parseField(field: bitrateTrf), forKey: "bitrate")
+        }
+        super.didChangeValue(forKey: key)
+
+    }
+
+
     /// returns the title or text of the catalog
     func titleAndText() -> String? {
         var str = [String]()

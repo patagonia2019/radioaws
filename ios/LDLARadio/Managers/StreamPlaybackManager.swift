@@ -16,7 +16,7 @@ class StreamPlaybackManager: NSObject {
     // MARK: Properties
     
     /// Singleton for StreamPlaybackManager.
-    static let sharedManager = StreamPlaybackManager()
+    static let instance = StreamPlaybackManager()
     
     private var observerContext = 0
     
@@ -24,7 +24,7 @@ class StreamPlaybackManager: NSObject {
     
     weak var delegate: AssetPlaybackDelegate?
     
-    lazy var session : URLSession = {
+    private lazy var session : URLSession = {
         guard let bundleID = Bundle.main.bundleIdentifier else { fatalError() }
         
         let config = URLSessionConfiguration.background(withIdentifier: "\(bundleID).background")
@@ -46,58 +46,83 @@ class StreamPlaybackManager: NSObject {
 
     /// A Bool tracking if the AVPlayerItem.status has changed to .readyToPlay for the current StreamPlaybackManager.playerItem.
     private var readyForPlayback = false
+
+    private var isPaused = false
+
+//    private var audioPlay: AudioPlay? = nil
     
     /// The AVPlayerItem associated with StreamPlaybackManager.asset.urlAsset
-    private var playerItem: AVPlayerItem? {
+    private var playerItem: AVPlayerItem?
+    {
         willSet {
             if ((playerItem?.observationInfo) != nil) {
                 playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
+//                playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), context: &observerContext)
             }
         }
-        
         didSet {
             playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
+//            playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), options: [.initial, .new], context: &observerContext)
         }
     }
     
     /// The Stream that is currently being loaded for playback.
-    var model: AudioViewModel? {
+    private var audioPlay: AudioPlay? {
         willSet {
-            let urlAsset = model?.urlAsset()
+            let urlAsset = audioPlay?.urlAsset()
             urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
             if ((urlAsset?.observationInfo) != nil) {
                 urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
             }
+//            if ((audioPlay.observationInfo) != nil) {
+//                audioPlay.removeObserver(self, forKeyPath: #keyPath(AudioPlay.currentTime), context: &observerContext)
+//            }
         }
         
         didSet {
-            if let urlAsset = model?.urlAsset() {
+            if let urlAsset = audioPlay?.urlAsset() {
                 urlAsset.resourceLoader.setDelegate(self, queue: .main)
                 urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
             }
             else {
                 playerItem = nil
                 player.replaceCurrentItem(with: nil)
+                isPaused = false
                 readyForPlayback = false
             }
         }
     }
     
+    func isPlaying(url: String?) -> Bool {
+        return isPaused(url: url) == false && audioPlay?.isPlaying ?? false
+    }
+    
+    func isPaused(url: String?) -> Bool {
+        return isReadyToPlay(url: url) && isPaused == true
+    }
+    
+    func isReadyToPlay(url: String?) -> Bool {
+        return isTryingToPlay(url: url) && readyForPlayback
+    }
+    
+    func isTryingToPlay(url: String?) -> Bool {
+        return audioPlay?.urlString == url
+    }
+    
     private func reload() {
         readyForPlayback = false
-        let urlAsset = model?.urlAsset()
+        let urlAsset = audioPlay?.urlAsset()
         urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
         if ((urlAsset?.observationInfo) != nil) {
             urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
         }
 
-        model?.isDownloading = false
-        if let audioUrl = model?.downloadFiles?.popLast(),
-            let urlChecked = URL(string: audioUrl) {
-            model?.url = urlChecked
+        audioPlay?.isDownloading = false
+        if let audioUrl = audioPlay?.downloadFiles?.popLast() {
+            audioPlay?.urlString = audioUrl
         }
 
-        if let urlAsset = model?.urlAsset() {
+        if let urlAsset = audioPlay?.urlAsset() {
             urlAsset.resourceLoader.setDelegate(self, queue: .main)
             urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
         }
@@ -119,12 +144,10 @@ class StreamPlaybackManager: NSObject {
         return hasDuration
     }
 
-    func pause(propagate: Bool = true) {
-        if !propagate {
-            player.pause()
-            return
-        }
+    func pause() {
         delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
+        isPaused = true
+        player.pause()
     }
 
     func forward() {
@@ -155,20 +178,36 @@ class StreamPlaybackManager: NSObject {
         }
         return 0
     }
+    
+    func playCurrentPosition() {
+        addPlayInfo()
+        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+
+        let position = audioPlay?.currentTime ?? 0.0
+        if position == 0.0 {
+            isPaused = false
+            player.play()
+        }
+        else {
+            playPosition(position: position)
+        }
+    }
 
     func playPosition(position: Double) {
+        isPaused = false
         var t = CMTime.zero
         if position > 0 {
             t = CMTime.init(seconds: position, preferredTimescale: 1)
         }
         player.seek(to: t, completionHandler: { response in
+            self.isPaused = false
             self.player.play()
         })
     }
     
     func isPlayingUrl(urlString: String?) -> Bool {
         guard let urlString = urlString else { return false }
-        return urlString == model?.urlString()
+        return urlString == audioPlay?.urlString
     }
     // MARK: Intitialization
     
@@ -186,7 +225,7 @@ class StreamPlaybackManager: NSObject {
                                 reason: "Audio Session failed",
                                 suggestion: "Please check the audio in your device",
                                 underError: error)
-            
+            audioPlay?.error = error.message()
             delegate?.streamPlaybackManager(self, playerError: error)
             return
         }
@@ -253,6 +292,7 @@ class StreamPlaybackManager: NSObject {
                 if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? Int  {
                     if reason == AVAudioSession.RouteChangeReason.oldDeviceUnavailable.hashValue {
                         // headphones plugged out
+                        isPaused = false
                         player.play()
                     }
                 }
@@ -278,6 +318,8 @@ class StreamPlaybackManager: NSObject {
         switch note.name {
         case .AVPlayerItemTimeJumped:
             print("AVPlayerItemTimeJumped")
+            audioPlay?.currentTime = getCurrentTime()
+            audioPlay?.isPlaying = audioPlay?.currentTime ?? 0 > 0
             break
         case .AVPlayerItemDidPlayToEndTime: // item has played to its end time
             print("AVPlayerItemDidPlayToEndTime")
@@ -303,7 +345,14 @@ class StreamPlaybackManager: NSObject {
         if let currentItem = player.currentItem,
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
-            return TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
+            let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
+            
+            if currentTime != audioPlay?.currentTime {
+                audioPlay?.currentTime = currentTime
+                audioPlay?.isPlaying = currentTime > 0
+            }
+
+            return currentTime
         }
         return 0
     }
@@ -326,16 +375,15 @@ class StreamPlaybackManager: NSObject {
      is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
      and handle KVO cleanup.
      */
-    func setAssetForPlayback(_ model: AudioViewModel?) {
-        if  model?.url != nil &&
-            model?.url?.absoluteString.count ?? 0 > 0 &&
-            self.model?.url?.absoluteString == model?.url?.absoluteString {
-            addPlayInfo()
-            delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+    func setAudioForPlayback(_ sender: AudioPlay?) {
+        if  sender?.urlString != nil &&
+            sender?.urlString?.count ?? 0 > 0 &&
+            self.audioPlay?.urlString == sender?.urlString {
+            playCurrentPosition()
         }
         else {
             hasDuration = false
-            self.model = model
+            audioPlay = sender
         }
     }
     
@@ -352,9 +400,9 @@ class StreamPlaybackManager: NSObject {
         
         switch keyPath {
         case #keyPath(AVURLAsset.isPlayable):
-            guard let urlAsset = model?.urlAsset(),
+            guard let urlAsset = audioPlay?.urlAsset(),
                 urlAsset.isPlayable == true else {
-                    if model?.downloadFiles?.count ?? 0 > 0 {
+                    if audioPlay?.downloadFiles?.count ?? 0 > 0 {
                         reload()
                         return
                     }
@@ -364,9 +412,11 @@ class StreamPlaybackManager: NSObject {
                                         suggestion: "Please check your internet connection",
                                         underError: nil)
                     
+                    audioPlay?.error = error.message()
                     delegate?.streamPlaybackManager(self, playerError: error)
                     return
             }
+            
             
             playerItem = AVPlayerItem(asset: urlAsset)
             player.replaceCurrentItem(with: playerItem)
@@ -375,23 +425,23 @@ class StreamPlaybackManager: NSObject {
             if playerItem.status == .readyToPlay {
                 if !readyForPlayback {
                     readyForPlayback = true
-                    addPlayInfo()
-                    delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+                    playCurrentPosition()
                 }
             }
             else if playerItem.status == .failed {
                 // Check if the url could be downloaded (probably as .pls)
-                if let urlAsset = model?.urlAsset(),
-                    model?.isDownloading == false,
-                    model?.downloadFiles == nil {
+                if let urlString = audioPlay?.urlString,
+                    let url = URL(string: urlString),
+                    audioPlay?.isDownloading == false,
+                    audioPlay?.downloadFiles == nil {
                     readyForPlayback = false
 	
-                    model?.isDownloading = true
-                    model?.downloadTask = session.downloadTask(with: urlAsset.url)
-                    model?.downloadTask?.taskDescription = model?.urlString()
-                    model?.downloadTask?.resume()
+                    audioPlay?.isDownloading = true
+                    let downloadTask = session.downloadTask(with: url)
+                    downloadTask.taskDescription = audioPlay?.urlString
+                    downloadTask.resume()
                 }
-                else if model?.downloadFiles?.count ?? 0 > 0 {
+                else if audioPlay?.downloadFiles?.count ?? 0 > 0 {
                     reload()
                     return
                 }
@@ -401,14 +451,15 @@ class StreamPlaybackManager: NSObject {
                                         reason: "Player failed",
                                         suggestion: "Please check your internet connection",
                                         underError: playerItem.error as NSError?)
+                    audioPlay?.error = error.message()
                     delegate?.streamPlaybackManager(self, playerError: error)
                 }
                 return
             }
             
         case #keyPath(AVPlayer.currentItem):
-//            delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
-            delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+            delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
+            playCurrentPosition()
 
         default:
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -417,10 +468,10 @@ class StreamPlaybackManager: NSObject {
     
     private func addPlayInfo() {
         var nowPlayingInfo = [String : Any]()
-        if let model = model {
-            nowPlayingInfo[MPMediaItemPropertyTitle] = model.playing
-            nowPlayingInfo[MPMediaItemPropertyArtist] = model.title.text
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = model.subTitle.text
+        if let audioPlay = audioPlay {
+//            nowPlayingInfo[MPMediaItemPropertyTitle] = audioPlay.playing
+            nowPlayingInfo[MPMediaItemPropertyArtist] = audioPlay.title
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audioPlay.subTitle
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
             if let placeholderImage = UIImage.init(named: "Locos_de_la_azotea") {
                 nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (size) -> UIImage in
@@ -429,8 +480,9 @@ class StreamPlaybackManager: NSObject {
                 
                 let iv = UIImageView.init(image: placeholderImage)
                 
-                if let imageUrl = model.thumbnailUrl {
-                    iv.af_setImage(withURL: imageUrl, placeholderImage: placeholderImage)
+                if let imageUrl = audioPlay.thumbnailUrl,
+                    let url = URL(string: imageUrl) {
+                    iv.af_setImage(withURL: url, placeholderImage: placeholderImage)
                     if  let image = iv.image,
                         let imageCopy = image.copy() as? UIImage {
                         nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (size) -> UIImage in
@@ -544,6 +596,10 @@ extension StreamPlaybackManager : AVAssetResourceLoaderDelegate {
 
 extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate {
     
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+        print("responde = \(response)")
+    }
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         if totalBytesExpectedToWrite > 0 {
             let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
@@ -554,27 +610,27 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("\(downloadTask.taskIdentifier) \(downloadTask.taskDescription ?? "") -> Download finished: \(location)")
         print("fileName: \(location)")
-        if downloadTask.taskDescription == model?.urlString() {
+        if downloadTask.taskDescription == audioPlay?.urlString {
             do {
                 let data = try Data(contentsOf: location, options: .mappedIfSafe)
 
-                model?.downloadFiles = [String]()
+                audioPlay?.downloadFiles = [String]()
                 if let files = String.init(data: data, encoding: .ascii)?.components(separatedBy: "\n") {
                     for file in files {
                         if file.count > 0 {
-                            model?.downloadFiles?.append(file)
+                            audioPlay?.downloadFiles?.append(file)
                         }
                     }
                     self.reload()
                 }
                 else {
-                    let error = JFError(code: Int(errno),
+                    let errorjf = JFError(code: Int(errno),
                                         desc: "Error",
                                         reason: "Audio Session failed",
                                         suggestion: "Please check the audio in your device",
                                         underError: nil)
-                    
-                    delegate?.streamPlaybackManager(self, playerError: error)
+                    audioPlay?.error = errorjf.message()
+                    delegate?.streamPlaybackManager(self, playerError: errorjf)
                     return
                 }
             }
@@ -590,5 +646,6 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
 
         }
     }
+    
 }
 

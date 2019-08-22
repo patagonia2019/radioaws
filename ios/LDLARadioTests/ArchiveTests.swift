@@ -67,19 +67,14 @@ class ArchiveTests: BaseTests {
             XCTAssertNotNil(response)
             XCTAssertEqual(response?.numFound, 37)
             let docs = response?.docs
-            XCTAssertEqual(docs?.count, 1)
+            XCTAssertEqual(docs?.count, 35)
             let doc = docs?.firstObject as? ArchiveDoc
             XCTAssertNotNil(doc)
             XCTAssertEqual(doc?.title, "Hardcore Vinyl Collection 78GB")
-            if let subject = doc?.subjectString {
-                XCTAssertEqual(subject, "hardcore, techno, vinyl")
-            }
-            else {
-                XCTFail()
-            }
+            XCTAssertEqual(doc?.subject, "hardcore, techno, vinyl")
             let another = docs?.lastObject as? ArchiveDoc
             XCTAssertNotNil(another)
-            XCTAssertEqual(another?.title, "Hardcore Vinyl Collection 78GB")
+            XCTAssertEqual(another?.title, "Parc Crecelius 2019-07-27")
             
         } catch {
             XCTFail("error: \(error)")
@@ -139,32 +134,21 @@ class ArchiveTests: BaseTests {
     
     func testRequestArchiveMeta() {
         let expect = expectation(description: "/advancedsearch.php?q=harry+potter+audiobook")
-        RestApi.instance.requestARCH(usingQuery: "/advancedsearch.php?q=title:Hardcore+Vinyl Collection+78GB&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=50&page=1&output=json&save=yes#raw", type: ArchiveMeta.self) { error, meta in
+    RestApi.instance.requestARCH(usingQuery:"/advancedsearch.php?q=collection:(oldtimeradio)+AND+mediatype:(audio)&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=10&page=1", type: ArchiveMeta.self) { error, meta in
             
             XCTAssertNotNil(meta)
             let response = meta?.response
             XCTAssertNotNil(response)
-            XCTAssertEqual(response?.numFound, 124)
+            XCTAssertEqual(response?.numFound, 4173)
             let docs = response?.docs
-            XCTAssertEqual(docs?.count, 50)
+            XCTAssertEqual(docs?.count, 10)
             let doc = docs?.firstObject as? ArchiveDoc
             XCTAssertNotNil(doc)
-            XCTAssertEqual(doc?.title, "Harry Potter and the Goblet of Fire")
-//            if let subject = doc?.subject as? String {
-//                XCTAssertEqual(subject, "Harry Potter")
-//            }
-//            else {
-//                XCTFail()
-//            }
-            if let subject = doc?.subject as? [String] {
-                XCTAssertEqual(subject, ["audiobook","Harry Potter"])
-            }
-            else {
-                XCTFail()
-            }
+            XCTAssertEqual(doc?.title, "Gunsmoke - Single Episodes")
+            XCTAssertEqual(doc?.subject, "OTRR, Old Time Radio Researchers Group, Old Time Radio, OTRR Single Episodes, Gunsmoke, OTRR - 2006-12")
             let another = docs?.lastObject as? ArchiveDoc
             XCTAssertNotNil(another)
-            XCTAssertEqual(another?.title, "Taudio.site The Lord Of The Rings The Two Towers Audiobook Full Free")
+            XCTAssertEqual(another?.title, "X Minus One - Single Episodes")
             expect.fulfill()
         }
         waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
@@ -202,33 +186,6 @@ class ArchiveTests: BaseTests {
         }
     }
 
-    func testModelArchiveOrgDetailAlice() {
-        guard let context = context else {
-            XCTFail()
-            return
-        }
-        
-        do {
-            let detail: ArchiveDetail = try object(withEntityName: "ArchiveDetailAlice", fromJSONDictionary: archiveOrgDetailJSON(), inContext: context) as! ArchiveDetail
-            
-            XCTAssertNotNil(detail)
-            XCTAssertEqual(detail.files?.count, 2)
-            if let files = detail.files {
-                for (k,v) in files {
-                    let arcFile = try object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
-                    XCTAssertNotNil(arcFile)
-                    arcFile?.original = k as? String
-                    XCTAssertEqual(arcFile?.original, k as? String)
-                }
-            }
-            else {
-                XCTFail()
-            }
-        } catch {
-            XCTFail("error: \(error)")
-        }
-    }
-    
     
     func testModelArchiveOrgDetailJson() {
         guard let context = context else {
@@ -301,7 +258,6 @@ class ArchiveTests: BaseTests {
         RestApi.instance.requestARCH(usingQuery: "/details/alice_in_wonderland_librivox", type: ArchiveDetail.self) { error, detail in
             
             XCTAssertNotNil(detail)
-            XCTAssertEqual(detail?.server, "ia800707.us.archive.org")
             XCTAssertEqual(detail?.dir, "/8/items/alice_in_wonderland_librivox")
             if let files = detail?.files {
                 for (k,v) in files {

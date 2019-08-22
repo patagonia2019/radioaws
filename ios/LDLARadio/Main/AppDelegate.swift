@@ -56,17 +56,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func changeAppearance() {
+        let aqua : UIColor = .aqua
         let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
-                          NSAttributedString.Key.foregroundColor: UIColor.gray]
+                          NSAttributedString.Key.foregroundColor: aqua]
         UINavigationBar.appearance().titleTextAttributes = attributes
         
-        UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .normal)
+        let unselected = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
+                          NSAttributedString.Key.foregroundColor: UIColor.steel]
+
+        UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
         
-        let headerLabel = UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
-        headerLabel.font = UIFont(name: Commons.font.name, size: Commons.font.size.XXL)!
-        headerLabel.textColor = .lightGray
-        headerLabel.shadowColor = .black
-        headerLabel.shadowOffset = CGSize(width: -1, height: -1)
+        let tabBar = UITabBar.appearance()
+        tabBar.isTranslucent = true
+        tabBar.tintColor = aqua
+        tabBar.barTintColor = UIColor.turquoise
+        
+        let tableView = UITableView.appearance()
+        tableView.backgroundColor = UIColor.mercury
+        
+        let cell = UITableViewCell.appearance()
+        cell.backgroundColor = UIColor.mercury
     }
     
     @objc func defaultsChanged() {
