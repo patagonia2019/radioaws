@@ -29,6 +29,7 @@ protocol Modellable {
     
     /// Remove the current instance of the Entity
     func remove() // -> normally implemented in Model+ extension
+    
 }
 
 protocol Creational : Modellable {

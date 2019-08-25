@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         Analytics.start()
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

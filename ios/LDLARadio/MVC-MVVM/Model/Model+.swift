@@ -83,5 +83,8 @@ extension Model {
         context.delete(self)
     }
     
-}
+//    func modelName() -> String {
+//        return "Model.modelName()"
+//    }
 
+}
