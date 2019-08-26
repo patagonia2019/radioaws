@@ -235,8 +235,8 @@ class StreamPlaybackManager: NSObject {
         return 0
     }
 
-    func isPlaying(url: String?) -> Bool {
-        return isReadyToPlay(url: url) && audioPlay?.isPlaying ?? false
+    func isPlaying(url: String? = nil) -> Bool {
+        return isReadyToPlay(url: url ?? audioPlay?.urlString) && audioPlay?.isPlaying ?? false
     }
     
     func isReadyToPlay(url: String?) -> Bool {

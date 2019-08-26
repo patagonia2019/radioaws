@@ -170,12 +170,58 @@ class AudioViewController: UITableViewController {
             
             navigationBar.isHidden = isFullScreen
             tabBar.isHidden = isFullScreen
-//            navigationController?.setToolbarHidden(isFullScreen, animated: true)
             navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
             tableView.allowsSelection = !isFullScreen
             tableView.isScrollEnabled = !isFullScreen
         }
+        
+        let stream = StreamPlaybackManager.instance
+        let isPlaying = stream.isPlaying()
+        reloadToolbar(isHidden: !(isPlaying && !isFullScreen))
     }
+    
+    private func reloadToolbar(isHidden: Bool) {
+        navigationController?.setToolbarHidden(isHidden, animated: true)
+        if isHidden == false {
+            let stream = StreamPlaybackManager.instance
+            let isPlaying = stream.isPlaying()
+            let items = [
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:))),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: isPlaying ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:))),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            ]
+            navigationController?.toolbar.items = items
+        }
+    }
+    
+    @objc private func handleRewind(_ button: UIBarButtonItem) {
+        StreamPlaybackManager.instance.forward()
+        reloadToolbar(isHidden: false)
+    }
+    
+    @objc private func handleFastForward(_ button: UIBarButtonItem) {
+        StreamPlaybackManager.instance.forward()
+        reloadToolbar(isHidden: false)
+    }
+    
+    @objc private func handlePlay(_ button: UIBarButtonItem) {
+        let stream = StreamPlaybackManager.instance
+        let isPlaying = stream.isPlaying()
+        if isPlaying {
+            stream.pause()
+        }
+        else {
+            stream.playCurrentPosition()
+        }
+        reloadToolbar(isHidden: false)
+
+    }
+    
+
     
     private func bookmark(indexPath: IndexPath, isReload: Bool = true) {
         let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
@@ -209,6 +255,7 @@ class AudioViewController: UITableViewController {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                 DispatchQueue.main.async {
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
+                    self.reloadToolbar(isHidden: !audio.isPlaying)
                     if audio.isPlaying {
                         self.reloadData()
                     }
@@ -283,11 +330,11 @@ class AudioViewController: UITableViewController {
     }
     
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
-    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         Analytics.logFunction(function: "refresh",
                               parameters: ["method": "control" as AnyObject,
                                            "controller": titleForController() as AnyObject])
-
+        
         refresh(isClean: true, refreshControl: refreshControl)
     }
     
@@ -391,8 +438,8 @@ class AudioViewController: UITableViewController {
         var isBookmarked : Bool? = false
         if let audio = object as? AudioViewModel {
             let stream = StreamPlaybackManager.instance
-            let isReady = stream.isPlaying(url: audio.urlString())
-            let playAction = UITableViewRowAction(style: .normal, title: isReady ? "Pause" : "Play") { (action, indexPath) in
+            let isPlaying = stream.isPlaying(url: audio.urlString())
+            let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (action, indexPath) in
                 
                 self.play(indexPath: indexPath)
             }
