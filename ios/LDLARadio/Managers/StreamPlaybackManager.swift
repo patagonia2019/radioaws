@@ -20,8 +20,6 @@ class StreamPlaybackManager: NSObject {
     
     private var observerContext = 0
     
-    private var hasDuration = false
-    
     weak var delegate: AssetPlaybackDelegate?
     
     private lazy var session : URLSession = {
@@ -47,9 +45,6 @@ class StreamPlaybackManager: NSObject {
     /// A Bool tracking if the AVPlayerItem.status has changed to .readyToPlay for the current StreamPlaybackManager.playerItem.
     private var readyForPlayback = false
 
-    private var isPaused = false
-
-//    private var audioPlay: AudioPlay? = nil
     
     /// The AVPlayerItem associated with StreamPlaybackManager.asset.urlAsset
     private var playerItem: AVPlayerItem?
@@ -57,29 +52,26 @@ class StreamPlaybackManager: NSObject {
         willSet {
             if ((playerItem?.observationInfo) != nil) {
                 playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
-//                playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), context: &observerContext)
             }
         }
         didSet {
             playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
-//            playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), options: [.initial, .new], context: &observerContext)
         }
     }
     
     /// The Stream that is currently being loaded for playback.
     private var audioPlay: AudioPlay? {
         willSet {
+            audioPlay?.isPlaying = false
             let urlAsset = audioPlay?.urlAsset()
             urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
             if ((urlAsset?.observationInfo) != nil) {
                 urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
             }
-//            if ((audioPlay.observationInfo) != nil) {
-//                audioPlay.removeObserver(self, forKeyPath: #keyPath(AudioPlay.currentTime), context: &observerContext)
-//            }
         }
         
         didSet {
+            audioPlay?.isPlaying = false
             if let urlAsset = audioPlay?.urlAsset() {
                 urlAsset.resourceLoader.setDelegate(self, queue: .main)
                 urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
@@ -87,130 +79,12 @@ class StreamPlaybackManager: NSObject {
             else {
                 playerItem = nil
                 player.replaceCurrentItem(with: nil)
-                isPaused = false
                 readyForPlayback = false
             }
         }
     }
     
-    func isPlaying(url: String?) -> Bool {
-        return isPaused(url: url) == false && audioPlay?.isPlaying ?? false
-    }
-    
-    func isPaused(url: String?) -> Bool {
-        return isReadyToPlay(url: url) && isPaused == true
-    }
-    
-    func isReadyToPlay(url: String?) -> Bool {
-        return isTryingToPlay(url: url) && readyForPlayback
-    }
-    
-    func isTryingToPlay(url: String?) -> Bool {
-        return audioPlay?.urlString == url
-    }
-    
-    private func reload() {
-        readyForPlayback = false
-        let urlAsset = audioPlay?.urlAsset()
-        urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
-        if ((urlAsset?.observationInfo) != nil) {
-            urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
-        }
-
-        audioPlay?.isDownloading = false
-        if let audioUrl = audioPlay?.downloadFiles?.popLast() {
-            audioPlay?.urlString = audioUrl
-        }
-
-        if let urlAsset = audioPlay?.urlAsset() {
-            urlAsset.resourceLoader.setDelegate(self, queue: .main)
-            urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
-        }
-    }
-    
-    func canStepBackward() -> Bool {
-        return hasDuration
-    }
-    
-    func canStepForward() -> Bool {
-        return hasDuration
-    }
-    
-    func canGoToStart() -> Bool {
-        return hasDuration
-    }
-
-    func canGoToEnd() -> Bool {
-        return hasDuration
-    }
-
-    func pause() {
-        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
-        isPaused = true
-        player.pause()
-    }
-
-    func forward() {
-        if canStepForward() {
-            let position = getCurrentTime() + 60
-            playPosition(position: position)
-        }
-    }
-
-    func backward() {
-        if canStepBackward() {
-            let position = getCurrentTime() - 60
-            playPosition(position: position)
-        }
-    }
-    
-    func seekEnd() {
-        if canGoToEnd() {
-            let position = getTotalTime() - 60
-            playPosition(position: position)
-        }
-    }
-    
-    func progress() -> Float {
-        let total = getTotalTime()
-        if total > 0 {
-            return Float(getCurrentTime() / total)
-        }
-        return 0
-    }
-    
-    func playCurrentPosition() {
-        addPlayInfo()
-        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
-
-        let position = audioPlay?.currentTime ?? 0.0
-        if position == 0.0 {
-            isPaused = false
-            player.play()
-        }
-        else {
-            playPosition(position: position)
-        }
-    }
-
-    func playPosition(position: Double) {
-        isPaused = false
-        var t = CMTime.zero
-        if position > 0 {
-            t = CMTime.init(seconds: position, preferredTimescale: 1)
-        }
-        player.seek(to: t, completionHandler: { response in
-            self.isPaused = false
-            self.player.play()
-        })
-    }
-    
-    func isPlayingUrl(urlString: String?) -> Bool {
-        guard let urlString = urlString else { return false }
-        return urlString == audioPlay?.urlString
-    }
-    // MARK: Intitialization
-    
+    // MARK: Initialization
     override private init() {
         super.init()
         
@@ -233,10 +107,7 @@ class StreamPlaybackManager: NSObject {
         if let sd = session.sessionDescription {
             print("sessionDescription = %@", sd)
         }
-        
-        
         restartObservers()
-
     }
     
     deinit {
@@ -292,7 +163,7 @@ class StreamPlaybackManager: NSObject {
                 if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? Int  {
                     if reason == AVAudioSession.RouteChangeReason.oldDeviceUnavailable.hashValue {
                         // headphones plugged out
-                        isPaused = false
+                        audioPlay?.isPlaying = true
                         player.play()
                     }
                 }
@@ -318,8 +189,6 @@ class StreamPlaybackManager: NSObject {
         switch note.name {
         case .AVPlayerItemTimeJumped:
             print("AVPlayerItemTimeJumped")
-            audioPlay?.currentTime = getCurrentTime()
-            audioPlay?.isPlaying = audioPlay?.currentTime ?? 0 > 0
             break
         case .AVPlayerItemDidPlayToEndTime: // item has played to its end time
             print("AVPlayerItemDidPlayToEndTime")
@@ -346,12 +215,11 @@ class StreamPlaybackManager: NSObject {
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
             let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
-            
-            if currentTime != audioPlay?.currentTime {
-                audioPlay?.currentTime = currentTime
-                audioPlay?.isPlaying = currentTime > 0
+            audioPlay?.currentTime = currentTime
+            if audioPlay?.hasDuration == false {
+                delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
             }
-
+            audioPlay?.hasDuration = true
             return currentTime
         }
         return 0
@@ -362,14 +230,127 @@ class StreamPlaybackManager: NSObject {
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio duration \(CMTimeGetSeconds(currentItem.duration))")
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
-            hasDuration = true
             return TimeInterval(CMTimeGetSeconds(currentItem.duration))
         }
-        hasDuration = false
         return 0
     }
 
+    func isPlaying(url: String?) -> Bool {
+        return isReadyToPlay(url: url) && audioPlay?.isPlaying ?? false
+    }
     
+    func isReadyToPlay(url: String?) -> Bool {
+        return isTryingToPlay(url: url) && readyForPlayback
+    }
+    
+    func isTryingToPlay(url: String?) -> Bool {
+        return audioPlay?.urlString == url
+    }
+    
+    private func reload() {
+        readyForPlayback = false
+        let urlAsset = audioPlay?.urlAsset()
+        urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
+        if ((urlAsset?.observationInfo) != nil) {
+            urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+        }
+        
+        audioPlay?.isDownloading = false
+        if let audioUrl = audioPlay?.downloadFiles?.popLast() {
+            audioPlay?.urlString = audioUrl
+        }
+        
+        if let urlAsset = audioPlay?.urlAsset() {
+            urlAsset.resourceLoader.setDelegate(self, queue: .main)
+            urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+        }
+    }
+    
+    func canStepBackward() -> Bool {
+        return hasDuration(url: audioPlay?.urlString)
+    }
+    
+    func canStepForward() -> Bool {
+        return hasDuration(url: audioPlay?.urlString)
+    }
+    
+    func canGoToStart() -> Bool {
+        return hasDuration(url: audioPlay?.urlString)
+    }
+    
+    func canGoToEnd() -> Bool {
+        return hasDuration(url: audioPlay?.urlString)
+    }
+    
+    func hasDuration(url: String?) -> Bool {
+        return isTryingToPlay(url: url) && audioPlay?.hasDuration ?? false
+    }
+    
+    func pause() {
+        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
+        audioPlay?.isPlaying = false
+        player.pause()
+    }
+    
+    func forward() {
+        if canStepForward() {
+            let position = getCurrentTime() + 60
+            playPosition(position: position)
+        }
+    }
+    
+    func backward() {
+        if canStepBackward() {
+            let position = getCurrentTime() - 60
+            playPosition(position: position)
+        }
+    }
+    
+    func seekEnd() {
+        if canGoToEnd() {
+            let position = getTotalTime() - 60
+            playPosition(position: position)
+        }
+    }
+    
+    func progress() -> Float {
+        let total = getTotalTime()
+        if total > 0 {
+            return Float(getCurrentTime() / total)
+        }
+        return 0
+    }
+    
+    func playCurrentPosition() {
+        addPlayInfo()
+        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+        
+        let position = audioPlay?.currentTime ?? 0.0
+        if position == 0.0 {
+            audioPlay?.isPlaying = true
+            player.play()
+        }
+        else {
+            playPosition(position: position)
+        }
+    }
+    
+    func playPosition(position: Double) {
+        var t = CMTime.zero
+        if position > 0 {
+            t = CMTime.init(seconds: position, preferredTimescale: 1)
+        }
+        player.seek(to: t, completionHandler: { response in
+            self.audioPlay?.isPlaying = true
+            self.player.play()
+        })
+    }
+    
+    func isPlayingUrl(urlString: String?) -> Bool {
+        guard let urlString = urlString else { return false }
+        return urlString == audioPlay?.urlString
+    }
+
     /**
      Replaces the currently playing `Stream`, if any, with a new `Stream`. If nil
      is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
@@ -382,7 +363,6 @@ class StreamPlaybackManager: NSObject {
             playCurrentPosition()
         }
         else {
-            hasDuration = false
             audioPlay = sender
         }
     }

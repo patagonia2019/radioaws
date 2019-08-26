@@ -28,7 +28,7 @@ class AudioTableViewCell: UITableViewCell {
     weak var delegate: AudioTableViewCellDelegate?
     fileprivate let formatter = DateComponentsFormatter()
     let gradientBg = CAGradientLayer()
-
+    let gradientPlayBg = CAGradientLayer()
 
     // Player buttons
     @IBOutlet weak var currentTimeLabel: UILabel!
@@ -84,14 +84,16 @@ class AudioTableViewCell: UITableViewCell {
             bugButton.isHidden = (model?.error != nil) ? false : true
             targetSoundButton.isHidden = true
             graphButton.isHidden = true
-            resizeButton.isHidden = true
             
-            paintBgView()
             infoButton.isHidden = true
             
             let modelIsPlaying = model?.isPlaying ?? false
             
             if modelIsPlaying {
+                resizeButton.isHidden = false
+                resizeButton.isHighlighted = (model?.isFullScreen ?? false)
+
+                gradientPlayBg.isHidden = false
                 playButton.isHidden = false
                 playButton.isHighlighted = true
 
@@ -110,6 +112,8 @@ class AudioTableViewCell: UITableViewCell {
                 
             }
             else {
+                resizeButton.isHidden = true
+                gradientPlayBg.isHidden = true
                 playButton.isHighlighted = false
                 selectionStyle = .none
                 // show thumbnail, and hide logo
@@ -121,9 +125,6 @@ class AudioTableViewCell: UITableViewCell {
                     timerPlayed.invalidate()
                 }
                 
-                sliderView.isHidden = true
-                currentTimeLabel.alpha = 0
-                totalTimeLabel.alpha = 0
                 backwardButton.isHidden = true
                 forwardButton.isHidden = true
                 startOfStreamButton.isHidden = true
@@ -143,6 +144,14 @@ class AudioTableViewCell: UITableViewCell {
         gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
         gradientBg.frame = contentView.bounds
         contentView.layer.insertSublayer(gradientBg, at: 0)
+        gradientBg.isHidden = false
+
+        gradientPlayBg.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientPlayBg.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientPlayBg.colors = [UIColor.turquoise.cgColor, UIColor.aqua.cgColor]
+        gradientPlayBg.frame = contentView.bounds
+        gradientPlayBg.isHidden = false
+        contentView.layer.insertSublayer(gradientPlayBg, at: 1)
         
         formatter.allowedUnits = [.second, .minute, .hour]
         formatter.zeroFormattingBehavior = .pad
@@ -168,37 +177,30 @@ class AudioTableViewCell: UITableViewCell {
         
         let stream = StreamPlaybackManager.instance
         let currentStreamTime = stream.getCurrentTime()
-        let isStreamPlaying = stream.isPlaying(url: model?.urlString())
+        let isPlaying = model?.isPlaying ?? false
+        let hasDuration = stream.hasDuration(url: model?.urlString())
         
-        currentTimeLabel.alpha = !isStreamPlaying ? 0 : 1
-        totalTimeLabel.alpha = !isStreamPlaying ? 0 : 1
-        backwardButton.isHidden = !isStreamPlaying
-        forwardButton.isHidden = !isStreamPlaying
-        startOfStreamButton.isHidden = !isStreamPlaying
-        endOfStreamButton.isHidden = !isStreamPlaying
-        sliderView.isHidden = !isStreamPlaying
+        backwardButton.isHidden = !hasDuration
+        forwardButton.isHidden = !hasDuration
+        startOfStreamButton.isHidden = !hasDuration
+        endOfStreamButton.isHidden = !hasDuration
+        progressStack.isHidden = !hasDuration
+        gradientBg.frame = contentView.bounds
+        gradientPlayBg.frame = contentView.bounds
 
-        let isPaused = stream.isPaused(url: model?.urlString())
-        if isPaused {
-            if playButton.isHighlighted {
-                playButton.isHighlighted = false
-            }
-        }
-        else {
-            if !playButton.isHighlighted {
-                playButton.isHighlighted = true
-            }
-        }
+        playButton.isHighlighted = isPlaying
+        gradientPlayBg.isHidden = !isPlaying
 
-        if isStreamPlaying {
+        if hasDuration {
             let totalStreamTime = stream.getTotalTime()
             sliderView.value = Float(currentStreamTime)
             sliderView.maximumValue = Float(totalStreamTime)
             currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
             totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
-            
+
             if sliderView.value >= sliderView.maximumValue {
                 playButton.isHighlighted = false
+                gradientPlayBg.isHidden = true
                 stream.pause()
             }
         }
@@ -210,14 +212,7 @@ class AudioTableViewCell: UITableViewCell {
     }
     
     @IBAction func playAction(_ sender: UIButton?) {
-        let stream = StreamPlaybackManager.instance
-        if stream.isPaused(url: model?.urlString()) {
-            stream.playCurrentPosition()
-        }
-        else {
-            stream.pause()
-        }
-        setNeedsLayout()
+        playButton.isHighlighted = !playButton.isHighlighted
         delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
     }
     
@@ -294,16 +289,6 @@ class AudioTableViewCell: UITableViewCell {
             return String(output[rng.upperBound...])
         }
         return output
-    }
-    
-    private func paintBgView() {
-        if let audioPlay = AudioPlay.search(byIdentifier: model?.id),
-            audioPlay.isPlaying {
-            gradientBg.isHidden = false
-        }
-        else {
-            gradientBg.isHidden = true
-        }
     }
     
 }

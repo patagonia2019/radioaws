@@ -90,6 +90,7 @@ extension AudioPlay {
         audioPlay?.recordID = record.recordID.recordName
         audioPlay?.descript = record["descript"] as? String
         audioPlay?.currentTime = record["descript"] as? Double ?? 0.0
+        audioPlay?.hasDuration = record["hasDuration"] as? Bool ?? false
 
         return audioPlay
     }
@@ -117,6 +118,6 @@ extension AudioPlay {
             let url = URL(string: urlString) else { return nil }
         return AVURLAsset(url: url)
     }
-
+    
 }
 

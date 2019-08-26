@@ -19,6 +19,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     @IBOutlet weak var infoButton: UIButton?
     @IBOutlet weak var thumbnailView: UIImageView?
     @IBOutlet weak var bgView: UIView?
+    let gradientBg = CAGradientLayer()
 
     var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
     var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
@@ -54,6 +55,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
         titleButton?.titleLabel?.font = model?.title.font
         titleButton?.titleLabel?.numberOfLines = 3
         titleButton?.titleLabel?.lineBreakMode = .byTruncatingTail
+
+        if let bgView = bgView {
+            gradientBg.frame = bgView.bounds
+        }
 
         if let model = model {
             if let isExpanded = model.isExpanded {
@@ -91,6 +96,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
     }
     
     @IBAction func expandAction(_ sender: Any) {
+        if expandButton?.isHidden == true {
+            return
+        }
+
         setNeedsLayout()
         if let expandButton = expandButton {
             expandButton.isHighlighted = !expandButton.isHighlighted
@@ -110,13 +119,12 @@ class HeaderTableView : UITableViewHeaderFooterView {
     }
 
     private func paintBgView() {
-        let gradientBg2 = CAGradientLayer()
-        gradientBg2.startPoint = CGPoint.init(x: 0, y: 1)
-        gradientBg2.endPoint = CGPoint.init(x: 1, y: 1)
-        gradientBg2.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+        gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
         if let bgView = bgView {
-            gradientBg2.frame = bgView.bounds
-            bgView.layer.insertSublayer(gradientBg2, at: 0)
+            gradientBg.frame = bgView.bounds
+            bgView.layer.insertSublayer(gradientBg, at: 0)
         }
     }
 

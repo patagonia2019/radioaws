@@ -37,46 +37,51 @@ class BaseController : Controllable {
 
     func play(forSection section: Int, row: Int) {
 
-        if let audio = model(forSection: section, row: row) as? AudioViewModel,
-            audio.isPlaying == false {
-            
-            for j in 0..<numberOfSections() {
-                for k in 0..<numberOfRows(inSection: j) {
-                    if let other = model(forSection: j, row: k) as? AudioViewModel {
-                        if other.isPlaying {
-                            if other.urlString() != audio.urlString() {
-                                StreamPlaybackManager.instance.setAudioForPlayback(nil)
-                                other.isPlaying = false
+        if let audio = model(forSection: section, row: row) as? AudioViewModel {
+            if audio.isPlaying == false {
+                
+                for j in 0..<numberOfSections() {
+                    for k in 0..<numberOfRows(inSection: j) {
+                        if let other = model(forSection: j, row: k) as? AudioViewModel {
+                            if other.isPlaying {
+                                if other.urlString() != audio.urlString() {
+                                    StreamPlaybackManager.instance.setAudioForPlayback(nil)
+                                    other.isPlaying = false
+                                }
                             }
                         }
                     }
                 }
-            }
-            audio.isPlaying = true
-            
-            Analytics.logFunction(function: "embeddedplay",
-                                  parameters: ["audio": audio.title.text as AnyObject,
-                                               "section": audio.section as AnyObject,
-                                               "url": audio.urlString() as AnyObject])
-            
-            guard let context = RestApi.instance.context else { fatalError() }
-            
-            context.performAndWait {
+                audio.isPlaying = true
                 
-                var tmpAudioPlay = AudioPlay.search(byUrl: audio.url?.absoluteString)
-                if tmpAudioPlay == nil {
-                    tmpAudioPlay = AudioPlay.create()
-                }
-                if var tmpAudioPlay = tmpAudioPlay {
-                    tmpAudioPlay += audio
-                    CloudKitManager.instance.save(audioPlay: tmpAudioPlay) { error in
-                    }
+                Analytics.logFunction(function: "embeddedplay",
+                                      parameters: ["audio": audio.title.text as AnyObject,
+                                                   "section": audio.section as AnyObject,
+                                                   "url": audio.urlString() as AnyObject])
+                
+                guard let context = RestApi.instance.context else { fatalError() }
+                
+                context.performAndWait {
                     
-                    StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
+                    var tmpAudioPlay = AudioPlay.search(byUrl: audio.url?.absoluteString)
+                    if tmpAudioPlay == nil {
+                        tmpAudioPlay = AudioPlay.create()
+                    }
+                    if var tmpAudioPlay = tmpAudioPlay {
+                        tmpAudioPlay += audio
+                        CloudKitManager.instance.save(audioPlay: tmpAudioPlay) { error in
+                        }
+                        
+                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
+                    }
+                    if useRefresh {
+                        CoreDataManager.instance.save()
+                    }
                 }
-                if useRefresh {
-                    CoreDataManager.instance.save()
-                }
+            }
+            else {
+                audio.isPlaying = false
+                StreamPlaybackManager.instance.pause()
             }
         }
     }
@@ -86,7 +91,7 @@ class BaseController : Controllable {
     }
     
     func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight)*1.5
+        return CGFloat(CatalogViewModel.cellheight)
     }
 
     func title() -> String {

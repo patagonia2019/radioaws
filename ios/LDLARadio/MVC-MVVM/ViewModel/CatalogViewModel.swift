@@ -115,6 +115,9 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
         
         isBookmarked = checkIfBookmarked()
+        if audios.count > 0 && sections.count == 0 {
+            isExpanded = nil
+        }
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
@@ -148,7 +151,6 @@ class CatalogViewModel : BaseViewModelProtocol {
         isExpanded = isAlreadyExpanded
         
         text = detail.text
-
     }
 
     init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false, superTree: String?) {
@@ -186,7 +188,6 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
         
         isBookmarked = checkIfBookmarked()
-        isExpanded = isAlreadyExpanded
         
         var textStr = [String]()
         if tree.count > 0 {
@@ -209,7 +210,12 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
 
         text = textStr.joined(separator: ".\n")
-
+        if sections.count == 0 {
+            isExpanded = nil
+        }
+        else {
+            isExpanded = isAlreadyExpanded
+        }
     }
     
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {

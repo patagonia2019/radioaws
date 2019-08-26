@@ -168,14 +168,12 @@ class AudioViewController: UITableViewController {
             let tabBar = self.navigationController?.tabBarController?.tabBar ??
             self.tabBarController?.tabBar {
             
-            if isFullScreen {
-                navigationBar.isHidden = true
-                tabBar.isHidden = true
-            }
-            else {
-                navigationBar.isHidden = false
-                tabBar.isHidden = false
-            }
+            navigationBar.isHidden = isFullScreen
+            tabBar.isHidden = isFullScreen
+//            navigationController?.setToolbarHidden(isFullScreen, animated: true)
+            navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
+            tableView.allowsSelection = !isFullScreen
+            tableView.isScrollEnabled = !isFullScreen
         }
     }
     
@@ -207,16 +205,19 @@ class AudioViewController: UITableViewController {
     
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if object is AudioViewModel {
+        if let audio = object as? AudioViewModel {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                 DispatchQueue.main.async {
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
-//                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                    self.reloadData()
+                    if audio.isPlaying {
+                        self.reloadData()
+                    }
                 }
             }) { (finished) in
                 if finished {
-                    self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                    if audio.isPlaying {
+                        self.showCellAtTop(at: indexPath)
+                    }
                 }
             }
         }
@@ -246,6 +247,21 @@ class AudioViewController: UITableViewController {
             }
         }
 
+    }
+    
+    private func showCellAtTop(at indexPath: IndexPath) {
+        if isFullScreen {
+            guard let cell = self.tableView.cellForRow(at: indexPath) else {
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                return
+            }
+            var point = cell.frame.origin
+            point.y += self.tableView.frame.origin.y
+            self.tableView.setContentOffset(point, animated: false)
+        }
+        else {
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+        }
     }
     
     private func expand(model: CatalogViewModel?, incrementPage: Bool = false, section: Int) {
@@ -323,7 +339,7 @@ class AudioViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
-        headerView?.model = self.controller.modelInstance(inSection: section)
+        headerView?.model = controller.modelInstance(inSection: section)
         headerView?.actionExpandBlock = { model, isHighlighted in
             self.expand(model:model, section:section)
         }
@@ -341,7 +357,17 @@ class AudioViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return controller.heightForHeader(at: section)
+        if isFullScreen {
+            return 0
+        }
+        let model = controller.modelInstance(inSection: section)
+        let h = controller.heightForHeader(at: section)
+        if model?.isExpanded ?? false {
+            return h * 1.5
+        }
+        else {
+            return h
+        }
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -367,12 +393,8 @@ class AudioViewController: UITableViewController {
             let stream = StreamPlaybackManager.instance
             let isReady = stream.isReadyToPlay(url: audio.urlString())
             let playAction = UITableViewRowAction(style: .normal, title: isReady ? "Pause" : "Play") { (action, indexPath) in
-                if isReady {
-                    stream.pause()
-                }
-                else {
-                    self.play(indexPath: indexPath)
-                }
+                
+                self.play(indexPath: indexPath)
             }
             playAction.backgroundColor = .cayenne
             actions.append(playAction)
@@ -470,7 +492,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-//        play(indexPath: indexPath)
+        play(indexPath: indexPath)
     }
     
     func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool) {
@@ -484,7 +506,16 @@ extension AudioViewController: AudioTableViewCellDelegate {
                                                "url": audio.urlString() as AnyObject,
                                                "controller": titleForController() as AnyObject])
             isFullScreen = audio.isFullScreen
-            reloadData()
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+                DispatchQueue.main.async {
+                    self.reloadData()
+                }
+            }) { (finished) in
+                if finished {
+                    self.showCellAtTop(at: indexPath)
+                }
+            }
+
         }
 
     }

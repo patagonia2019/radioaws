@@ -139,8 +139,11 @@ class ArchiveOrgMainModelController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
+        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
+
         if let isExpanded = model?.isExpanded {
             model?.isExpanded = !isExpanded
+            archiveCollection?.isExpanded = !isExpanded
         }
         
         finishClosure?(nil)

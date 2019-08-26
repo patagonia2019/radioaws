@@ -182,7 +182,7 @@ class RadioTimeController: BaseController {
             
             CoreDataManager.instance.save()
             self.mainModel = CatalogViewModel(catalog: catalog)
-            self.mainModel?.isExpanded = isExpanded ?? false
+ //           self.mainModel?.isExpanded = isExpanded ?? false
             self.lastUpdated = RTCatalog.lastUpdated()
 
             DispatchQueue.main.async {
@@ -205,9 +205,6 @@ class RadioTimeController: BaseController {
         let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
         mainModel = CatalogViewModel(catalog: mainCatalog)
         let sectionModel = modelInstance(inSection: section)
-        if let isExpanded = model?.isExpanded {
-            sectionModel?.isExpanded = !isExpanded
-        }
         
         if sectionModel?.audios.count ?? 0 > 0 || sectionModel?.sections.count ?? 0 > 0 {
             lastUpdated = RTCatalog.lastUpdated()

@@ -232,6 +232,7 @@
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="downloadFiles" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
         <attribute name="error" optional="YES" attributeType="String" valueTransformerName="" customClassName="Error" syncable="YES"/>
+        <attribute name="hasDuration" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isDownloading" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isPlaying" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -765,7 +766,7 @@
         <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="120"/>
         <element name="ArchiveResponse" positionX="-648" positionY="-81" width="128" height="105"/>
         <element name="ArchiveResponseHeader" positionX="-657" positionY="-99" width="128" height="90"/>
-        <element name="AudioPlay" positionX="-675" positionY="-108" width="128" height="270"/>
+        <element name="AudioPlay" positionX="-675" positionY="-108" width="128" height="285"/>
         <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="195"/>
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
         <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="135"/>

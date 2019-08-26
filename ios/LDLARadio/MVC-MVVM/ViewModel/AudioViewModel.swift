@@ -74,7 +74,8 @@ class AudioViewModel : BaseViewModelProtocol {
     var info: String = ""
     
     var isPlaying: Bool = false
-    
+    var hasDuration: Bool = false
+
     var section : String = ""
     
     var error : JFError? = nil
@@ -135,6 +136,7 @@ class AudioViewModel : BaseViewModelProtocol {
         if detail.text.count <= 0 {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
         }
+        hasDuration = false
     }
     
     /// initialization of the view model for LDLA stream audios
@@ -165,7 +167,7 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
-        
+        hasDuration = false
     }
     
     
@@ -227,6 +229,7 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
+        hasDuration = true
     }
 
 
@@ -259,7 +262,7 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
-
+        hasDuration = true
     }
     
     
@@ -315,11 +318,16 @@ class AudioViewModel : BaseViewModelProtocol {
         if isFullScreen {
             return Float(UIScreen.main.bounds.size.height)
         }
-        if isPlaying || StreamPlaybackManager.instance.isTryingToPlay(url: urlString()) {
-            if UIScreen.main.bounds.size.height < 400 {
-                return Float(UIScreen.main.bounds.size.height - 100)
+        if isPlaying {
+            if hasDuration || StreamPlaybackManager.instance.hasDuration(url: urlString()) {
+                if UIScreen.main.bounds.size.height < 600 {
+                    return Float(UIScreen.main.bounds.size.height * 0.8)
+                }
+                return Float(UIScreen.main.bounds.size.height * 0.5)
             }
-            return Float(UIScreen.main.bounds.size.height * 0.5)
+            else {
+                return 300
+            }
         }
         else {
             return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
@@ -357,6 +365,7 @@ extension AudioViewModel {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
+        hasDuration = false
     }
 }
 
