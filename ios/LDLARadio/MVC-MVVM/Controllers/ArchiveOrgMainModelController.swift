@@ -10,13 +10,12 @@ import Foundation
 import JFCore
 import AlamofireCoreData
 
-
 class ArchiveOrgMainModelController: BaseController {
-    
-    fileprivate var mainModel : CatalogViewModel? = nil
+
+    fileprivate var mainModel: CatalogViewModel?
 
     override init() { }
-    
+
     init(withCatalogViewModel catalogViewModel: CatalogViewModel?) {
         mainModel = catalogViewModel
     }
@@ -33,9 +32,9 @@ class ArchiveOrgMainModelController: BaseController {
     override func prompt() -> String {
         return AudioViewModel.ControllerName.archiveOrg.rawValue
     }
-    
+
     override func numberOfRows(inSection section: Int) -> Int {
-        var count : Int = 0
+        var count: Int = 0
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
@@ -44,8 +43,7 @@ class ArchiveOrgMainModelController: BaseController {
                     return 0
                 }
                 count = subModel.sections.count + subModel.audios.count
-            }
-            else {
+            } else {
                 count = model.audios.count
             }
         }
@@ -73,8 +71,7 @@ class ArchiveOrgMainModelController: BaseController {
                         return subModel.audios[audioRow]
                     }
                 }
-            }
-            else {
+            } else {
                 if row < model.audios.count {
                     return model.audios[row]
                 }
@@ -90,46 +87,44 @@ class ArchiveOrgMainModelController: BaseController {
         }
         return CGFloat(CatalogViewModel.cellheight)
     }
-    
+
     private func updateModels() {
         if let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) {
             mainModel = CatalogViewModel(archiveDoc: doc, superTree: "")
         }
         lastUpdated = ArchiveCollection.lastUpdated()
     }
-    
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Archive.org",
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil)
-    {
-        
+                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+
         let doc = ArchiveDoc.search(byIdentifier: mainModel?.id)
-        
+
         if isClean == false {
             if doc?.detail?.archiveFiles?.count ?? 0 > 0 {
-                
+
                 mainModel = CatalogViewModel(archiveDoc: doc, superTree: "")
-                
+
                 lastUpdated = ArchiveCollection.lastUpdated()
                 finishClosure?(nil)
                 return
             }
         }
-        
+
         RestApi.instance.context?.performAndWait {
-            
+
             RestApi.instance.requestARCH(usingUrl: doc?.urlString(), type: ArchiveDetail.self) { error, detail in
-                
+
                 let archiveDoc = ArchiveDoc.search(byIdentifier: doc?.identifier)
                 detail?.extractFiles()
                 archiveDoc?.detail = detail
-                
+
                 let meta = ArchiveMeta.search(byCollectionIdentifier: self.mainModel?.parentId)
                 archiveDoc?.response?.meta = meta
                 CoreDataManager.instance.save()
                 self.updateModels()
-                
+
                 DispatchQueue.main.async {
                     finishClosure?(error)
                 }
@@ -138,14 +133,14 @@ class ArchiveOrgMainModelController: BaseController {
     }
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
 
         if let isExpanded = model?.isExpanded {
             model?.isExpanded = !isExpanded
             archiveCollection?.isExpanded = !isExpanded
         }
-        
+
         finishClosure?(nil)
     }
 }

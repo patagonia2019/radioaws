@@ -16,8 +16,8 @@ struct LabelViewModel {
     var font: UIFont? = UIFont(name: Commons.font.name, size: Commons.font.size.L)
     var isHidden: Bool = false
     var lines: Int = 1
-    
-    var count : Int {
+
+    var count: Int {
         return text.count
     }
 }

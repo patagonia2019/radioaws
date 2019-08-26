@@ -17,10 +17,10 @@ class LDLARadioTests: BaseTests {
             XCTFail()
             return
         }
-        
+
         do {
             let streams: [Stream]  = try objects(fromJSONArray: streamsJSON(), inContext: context)
-            
+
             XCTAssertEqual(3, streams.count)
             let stream = streams.last
             XCTAssert(stream != nil)

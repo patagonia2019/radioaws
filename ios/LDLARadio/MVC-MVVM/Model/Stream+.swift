@@ -10,8 +10,8 @@ import Foundation
 import AVFoundation
 import CoreData
 
-extension Stream : Modellable {
-    
+extension Stream: Modellable {
+
     /// Function to obtain all the streams sorted by station.name
     static func all() -> [Stream]? {
         return all(predicate: NSPredicate(format: "listenIsWorking = true and useWeb = false"),
@@ -21,8 +21,8 @@ extension Stream : Modellable {
     }
 }
 
-extension Stream : Searchable {
-    
+extension Stream: Searchable {
+
     /// Returns the entities for a given name.
     static func search(byName name: String?) -> [Stream]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -33,7 +33,6 @@ extension Stream : Searchable {
         return array
     }
 
-    
     /// Fetch an object by url
     static func search(byUrl url: String?) -> Stream? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -46,7 +45,7 @@ extension Stream : Searchable {
 
 }
 
-extension Stream : Downloadable {
+extension Stream: Downloadable {
 
     /// Returns the urlAsset of the stream
     func urlAsset() -> AVURLAsset? {
@@ -62,16 +61,16 @@ extension Stream : Downloadable {
         guard let urlString = url,
             let localFileLocation = userDefaults.value(forKey: urlString) as? String else { return nil }
         let baseDownloadURL = URL(fileURLWithPath: NSHomeDirectory())
-        
+
         let urlPath = baseDownloadURL.appendingPathComponent(localFileLocation)
-        
+
         return urlPath
     }
-    
+
 }
 
 extension Stream {
-    
+
     /// Returns the streams for a given station id.
     static func stream(byStation stationId: Int16?) -> [Stream]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -90,18 +89,17 @@ extension Stream {
  */
 extension Stream {
     enum DownloadState: String {
-        
+
         /// The asset is not downloaded at all.
         case notDownloaded
-        
+
         /// The asset has a download in progress.
         case downloading
-        
+
         /// The asset is downloaded and saved on diek.
         case downloaded
     }
 }
-
 
 /**
  Extends `Stream` to define a number of values to use as keys in dictionary lookups.
@@ -114,19 +112,19 @@ extension Stream {
          StreamListManager.
          */
         static let name = "AssetNameKey"
-        
+
         /**
          Key for the Stream download percentage, used for
          `StreamDownloadProgressNotification` Notification.
          */
         static let percentDownloaded = "AssetPercentDownloadedKey"
-        
+
         /**
          Key for the Stream download state, used for
          `StreamDownloadStateChangedNotification` Notification.
          */
         static let downloadState = "AssetDownloadStateKey"
-        
+
         /**
          Key for the Stream download AVMediaSelection display Name, used for
          `StreamDownloadStateChangedNotification` Notification.
@@ -134,4 +132,3 @@ extension Stream {
         static let downloadSelectionDisplayName = "AssetDownloadSelectionDisplayNameKey"
     }
 }
-

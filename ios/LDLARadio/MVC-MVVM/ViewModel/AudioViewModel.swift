@@ -12,9 +12,9 @@ import AVFoundation
 import JFCore
 
 // This view model will be responsible of render out information in the views for Audio info
-class AudioViewModel : BaseViewModelProtocol {
-    
-    enum Section : Int {
+class AudioViewModel: BaseViewModelProtocol {
+
+    enum Section: Int {
         case model0 = 0
         case model1
         case model2
@@ -23,8 +23,8 @@ class AudioViewModel : BaseViewModelProtocol {
         case model5
         case count
     }
-    
-    enum ControllerName : String {
+
+    enum ControllerName: String {
         case playing = "Playing"
         case suggestion = "Suggestion"
         case radioTime = "Radio Time"
@@ -41,20 +41,20 @@ class AudioViewModel : BaseViewModelProtocol {
     let icon = Commons.symbols.FontAwesome.music
     let iconColor = UIColor.darkGray
 
-    var url: URL? = nil
-    
+    var url: URL?
+
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.none
-    
-    var detail : LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
-    
-    var text : String? = nil
-    
-    var isBookmarked: Bool? = nil
-    
+
+    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+
+    var text: String?
+
+    var isBookmarked: Bool?
+
     var isDownloading: Bool = false
-    
-    var downloadFiles : [String]? = nil
+
+    var downloadFiles: [String]?
 
     var isFullScreen: Bool = false
 
@@ -63,40 +63,39 @@ class AudioViewModel : BaseViewModelProtocol {
     var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
 
     /// convenient id
-    var id: String? = nil
-    
+    var id: String?
+
     /// thumbnail url and placeholders
-    var thumbnailUrl: URL? = nil
-    var placeholderImageName: String? = nil
-    var placeholderImage: UIImage? = nil
-    var image: UIImage? = nil
-    
+    var thumbnailUrl: URL?
+    var placeholderImageName: String?
+    var placeholderImage: UIImage?
+    var image: UIImage?
+
     var info: String = ""
-    
+
     var isPlaying: Bool = false
     var hasDuration: Bool = false
 
-    var section : String = ""
-    
-    var error : JFError? = nil
-    
+    var section: String = ""
+
+    var error: JFError?
+
     /// initialization of the view model for RT catalog audios
     init(audio: RTCatalog?) {
         id = audio?.guideId ?? audio?.presetId ?? audio?.genreId
-        
+
         var textStr = [String()]
-        
+
         section = ControllerName.radioTime.rawValue
         title.text = audio?.titleAndText() ?? ""
         if let subtext = audio?.subtext {
             textStr.append(subtext)
         }
         subTitle.text = audio?.subtext ?? ""
-        
+
         if let playing = audio?.playing {
             detail.text = playing
-        }
-        else {
+        } else {
             detail.text = ""
         }
         if let currentTrack = audio?.currentTrack,
@@ -106,7 +105,6 @@ class AudioViewModel : BaseViewModelProtocol {
             }
             detail.text = "\(detail.text) \(currentTrack)"
         }
-        
 
         if let bitrate = audio?.bitrate {
             textStr.append(bitrate + " kbps")
@@ -138,7 +136,7 @@ class AudioViewModel : BaseViewModelProtocol {
         }
         hasDuration = false
     }
-    
+
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
         section = ControllerName.suggestion.rawValue
@@ -148,14 +146,14 @@ class AudioViewModel : BaseViewModelProtocol {
         title.text = stream?.station?.name ?? ""
         subTitle.text = (stream?.station?.city?.name ?? "") + " " + (stream?.station?.city?.district?.name ?? "")
         detail.text = stream?.station?.tuningDial ?? ""
-        
+
         text = subTitle.text + ". " + detail.text
 
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-        
+
         if let imageUrl = stream?.station?.imageUrl?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
@@ -170,13 +168,12 @@ class AudioViewModel : BaseViewModelProtocol {
         info = ""
         hasDuration = false
     }
-    
-    
+
     init(archiveFile: ArchiveFile?) {
 
         section = ControllerName.archiveOrg.rawValue
         id = archiveFile?.original
-        
+
         var titleStr = [String]()
         if let title = archiveFile?.title {
             titleStr.append(title)
@@ -206,14 +203,14 @@ class AudioViewModel : BaseViewModelProtocol {
             detailStr.append(original)
         }
         detail.text = detailStr.joined(separator: ". ")
-        
+
         var textStr = [String]()
         textStr.append(title.text)
         textStr.append(subTitle.text)
         textStr.append(detail.text)
         textStr.append(archiveFile?.detail?.doc?.descript ?? archiveFile?.description ?? "")
         text = textStr.joined(separator: "\n")
-        
+
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -222,7 +219,7 @@ class AudioViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
-        
+
         if let audioUrl = archiveFile?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
@@ -233,7 +230,6 @@ class AudioViewModel : BaseViewModelProtocol {
         hasDuration = true
     }
 
-
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
         section = ControllerName.desconcierto.rawValue
@@ -241,13 +237,12 @@ class AudioViewModel : BaseViewModelProtocol {
         if let name = audioUrl?.components(separatedBy: "/").last?.removingPercentEncoding,
             name.contains("alt=media&token") == false {
             title.text = name
-        }
-        else {
+        } else {
             title.text = "ED-\(desconcierto?.date ?? "file")-\(order).mp3"
         }
         subTitle.text = ""
         detail.text = "El Desconcierto, de Quique Pesoa"
-    
+
         placeholderImageName = Stream.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -266,18 +261,16 @@ class AudioViewModel : BaseViewModelProtocol {
         info = ""
         hasDuration = true
     }
-    
-    
+
     /// initialization of the view model for RNA audios
     init(stationAm: RNAStation?) {
         update(station: stationAm, isAm: true)
     }
-    
+
     init(stationFm: RNAStation?) {
         update(station: stationFm, isAm: false)
     }
-    
-    
+
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
         section = bookmark?.section ?? ControllerName.bookmark.rawValue
@@ -299,23 +292,22 @@ class AudioViewModel : BaseViewModelProtocol {
         title.text = bookmark?.title ?? ""
         isBookmarked = true
     }
-    
-    
+
     func urlString() -> String? {
         return url?.absoluteString
     }
-        
+
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool {
         return Bookmark.search(byUrl: url?.absoluteString) != nil
     }
-    
+
     /// Use the url of the stream/audio as an AVURLAsset
     func urlAsset() -> AVURLAsset? {
         guard let url = url else { return nil }
         return AVURLAsset(url: url)
     }
-    
+
     func height() -> Float {
         if isFullScreen {
             return Float(UIScreen.main.bounds.size.height)
@@ -326,12 +318,10 @@ class AudioViewModel : BaseViewModelProtocol {
                     return Float(UIScreen.main.bounds.size.height * 0.8)
                 }
                 return Float(UIScreen.main.bounds.size.height * 0.5)
-            }
-            else {
+            } else {
                 return 300
             }
-        }
-        else {
+        } else {
             return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
         }
     }
@@ -356,14 +346,14 @@ extension AudioViewModel {
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-        
+
         thumbnailUrl = imageUrl(usingUri: station?.image)
             ?? imageUrl(usingUri: currentProgram?.image)
             ?? imageUrl(usingUri: currentProgram?.imageStation)
-        
+
         url = streamUrl(usingBaseUrl: station?.url1, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
-        
+
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
@@ -372,25 +362,22 @@ extension AudioViewModel {
     }
 }
 
-
 /// some private stuff for the view model
 extension AudioViewModel {
-    
+
     private func imageUrl(usingUri uri: String?) -> URL? {
         if let uri = uri, uri.count > 0,
-            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer))
-        {
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer)) {
             return urlChecked
         }
         return nil
     }
-    
+
     private func streamUrl(usingBaseUrl baseUrl: String?, port: String?, bandUri: String?) -> URL? {
         if let baseUrl = baseUrl, baseUrl.count > 0,
             let bandUri = bandUri, bandUri.count > 0,
             let port = port, port.count > 0,
-            let urlChecked = URL(string: "http://\(baseUrl):\(port)\(bandUri)")
-        {
+            let urlChecked = URL(string: "http://\(baseUrl):\(port)\(bandUri)") {
             return urlChecked
         }
         return nil
@@ -418,8 +405,7 @@ extension AudioViewModel {
             subTitle.text = titles[1]
             detail.isHidden = true
             title.lines = 2
-        }
-        else if titles.count == 1 {
+        } else if titles.count == 1 {
             title.text = titles[0]
             subTitle.text = ""
             subTitle.isHidden = true
@@ -427,6 +413,5 @@ extension AudioViewModel {
         }
         info = [title.text, subTitle.text, detail.text].joined(separator: ". ")
     }
-    
 
 }

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @IBDesignable
-class HeaderTableView : UITableViewHeaderFooterView {
+class HeaderTableView: UITableViewHeaderFooterView {
     static let reuseIdentifier: String = "HeaderTableView"
 
     @IBOutlet weak var expandButton: UIButton?
@@ -21,22 +21,22 @@ class HeaderTableView : UITableViewHeaderFooterView {
     @IBOutlet weak var bgView: UIView?
     let gradientBg = CAGradientLayer()
 
-    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
-    var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> ())? = nil
-    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> ())? = nil
-    
-    var model : CatalogViewModel? {
+    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> Void)?
+    var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> Void)?
+    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> Void)?
+
+    var model: CatalogViewModel? {
         didSet {
             setNeedsLayout()
         }
     }
-    
+
     override func awakeFromNib() {
         paintBgView()
         expandButton?.setTitleColor(UIColor.aqua, for: .normal)
         expandButton?.setTitleColor(UIColor.blueberry, for: .highlighted)
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         titleButton?.setTitle("", for: .normal)
@@ -47,7 +47,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
         thumbnailView?.isHidden = true
         infoButton?.isHidden = true
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         titleButton?.setTitle(model?.title.text, for: .normal)
@@ -64,11 +64,10 @@ class HeaderTableView : UITableViewHeaderFooterView {
             if let isExpanded = model.isExpanded {
                 expandButton?.isHidden = false
                 expandButton?.isHighlighted = !isExpanded
-            }
-            else {
+            } else {
                 expandButton?.isHidden = true
             }
-            
+
             thumbnailView?.isHidden = true
             if let thumbnailUrl = model.thumbnailUrl {
                 thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
@@ -80,8 +79,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
             infoButton?.isHidden = !(model.text?.count ?? 0 > 0)
         }
     }
-    
-    
+
     static func setup(tableView: UITableView?) {
         let headerNib = UINib.init(nibName: nibName(), bundle: Bundle.main)
         tableView?.register(headerNib, forHeaderFooterViewReuseIdentifier: reuseIdentifier)
@@ -94,7 +92,7 @@ class HeaderTableView : UITableViewHeaderFooterView {
     @IBAction func infoAction(_ sender: Any) {
         infoBlock?(model)
     }
-    
+
     @IBAction func expandAction(_ sender: Any) {
         if expandButton?.isHidden == true {
             return
@@ -108,12 +106,11 @@ class HeaderTableView : UITableViewHeaderFooterView {
     }
 
     @IBAction func bookmarkAction(_ sender: UIButton?) {
-        
-        if let bookmarkButton = bookmarkButton  {
+
+        if let bookmarkButton = bookmarkButton {
             bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
             actionBookmarkBlock?(model, bookmarkButton.isHighlighted)
-        }
-        else {
+        } else {
             fatalError()
         }
     }
@@ -129,7 +126,3 @@ class HeaderTableView : UITableViewHeaderFooterView {
     }
 
 }
-
-
-
-

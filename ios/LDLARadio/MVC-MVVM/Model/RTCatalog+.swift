@@ -9,18 +9,18 @@
 import Foundation
 import CoreData
 
-extension RTCatalog : Modellable {
+extension RTCatalog: Modellable {
     /// Function to obtain all the catalogs
     static func all() -> [RTCatalog]? {
         return all(predicate: nil,
                    sortDescriptors: [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)])
             as? [RTCatalog]
     }
-    
+
 }
 
-extension RTCatalog : Searchable {
-    
+extension RTCatalog: Searchable {
+
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [RTCatalog]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -34,21 +34,17 @@ extension RTCatalog : Searchable {
 
 }
 
-
 extension RTCatalog {
-    
-    
+
     override public func didChangeValue(forKey key: String) {
         if key == "reliabilityTrf" {
             setPrimitiveValue(parseField(field: reliabilityTrf), forKey: "reliability")
-        }
-        else if key == "bitrateTrf" {
+        } else if key == "bitrateTrf" {
             setPrimitiveValue(parseField(field: bitrateTrf), forKey: "bitrate")
         }
         super.didChangeValue(forKey: key)
 
     }
-
 
     /// returns the title or text of the catalog
     func titleAndText() -> String? {
@@ -61,7 +57,7 @@ extension RTCatalog {
         }
         return str.joined(separator: ". ")
     }
-    
+
     /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse > Europe > Radios"
     func titleTree() -> String {
         var str = ArraySlice<String>()
@@ -77,7 +73,7 @@ extension RTCatalog {
 //        }
         return str.joined()
     }
-    
+
     /// convenient for debug or print info about catalog
     func descript() -> String {
         var str = [String]()
@@ -88,22 +84,22 @@ extension RTCatalog {
         if let audios = audios { str.append("\(audios.count) audios") }
         return str.joined(separator: ", ")
     }
-    
+
     /// Determine if the catalog is about text information
     func isOnlyText() -> Bool {
         return type == "text" || (sections?.count == 0 && audios?.count == 0 && title != "Browse")
     }
-    
+
     /// Determine if the catalog is about audio information
     func isAudio() -> Bool {
         return type == "audio" || element == "audio" || formats == "mp3"
     }
-    
+
     /// Determine if the catalog is about link information
     func isLink() -> Bool {
         return type == nil || type == "link"
     }
-    
+
     /// Fetch an object by url
     static func search(byUrl url: String?) -> RTCatalog? {
         guard let context = RestApi.instance.context else { fatalError() }

@@ -20,13 +20,12 @@ extension Data {
     var html2String: String {
         return html2AttributedString?.string ?? ""
     }
-    
-    
+
     func mimeType() -> String {
-        
+
         var b: UInt8 = 0
         copyBytes(to: &b, count: 1)
-        
+
         switch b {
         case 0x3C:
             return "audio/mpeg"
@@ -50,4 +49,3 @@ extension Data {
     }
 
 }
-

@@ -12,12 +12,12 @@ import JFCore
 
 /// A class that is showed in the second tab, it shows my Resumé using PDFKit.
 class AboutViewController: BaseViewController {
-    
+
     @IBOutlet weak var pdfView: PDFView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let path = Bundle.main.path(forResource: "javier.fuchs.about", ofType: "pdf") {
             if let pdfDocument = PDFDocument(url: URL(fileURLWithPath: path)) {
                 pdfView.displayMode = .singlePageContinuous
@@ -26,20 +26,19 @@ class AboutViewController: BaseViewController {
                 pdfView.document = pdfDocument
             }
         }
-        
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         Analytics.logFunction(function: "about",
                               parameters: ["action": "check" as AnyObject])
 
     }
-    
+
     @IBAction func shareAction(_ sender: Any) {
         share(indexPath: nil)
     }
 
 }
-

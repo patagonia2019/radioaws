@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension Desconcierto : Modellable {
-    
+extension Desconcierto: Modellable {
+
     static func all() -> [Desconcierto]? {
         return all(predicate: nil,
                    sortDescriptors: [NSSortDescriptor(key: "date", ascending: false)])

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CatalogTableViewCell : UITableViewCell {
+class CatalogTableViewCell: UITableViewCell {
     static let reuseIdentifier: String = "CatalogTableViewCell"
 
     @IBOutlet weak var iconView: UILabel!
@@ -18,10 +18,10 @@ class CatalogTableViewCell : UITableViewCell {
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var infoButton: UIButton!
 
-    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> ())? = nil
-    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> ())? = nil
+    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> Void)?
+    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> Void)?
 
-    var model : CatalogViewModel? = nil {
+    var model: CatalogViewModel? = nil {
         didSet {
             if let model = model {
                 iconView.text = model.iconText()
@@ -31,7 +31,7 @@ class CatalogTableViewCell : UITableViewCell {
                 detailView.font = model.title.font
                 selectionStyle = model.selectionStyle
                 accessoryType = model.accessoryType
-                
+
                 if let thumbnailUrl = model.thumbnailUrl {
                     thumbnailView.isHidden = false
                     iconView.isHidden = true
@@ -41,8 +41,7 @@ class CatalogTableViewCell : UITableViewCell {
                             self.thumbnailView.isHidden = true
                         }
                     }
-                }
-                else {
+                } else {
                     thumbnailView.isHidden = true
                     iconView.isHidden = false
                 }
@@ -52,7 +51,7 @@ class CatalogTableViewCell : UITableViewCell {
 
         }
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         iconView.text = "\(Commons.symbols.showAwesome(icon: .battery_empty))"
@@ -67,23 +66,21 @@ class CatalogTableViewCell : UITableViewCell {
         bookmarkButton.isHighlighted = false
         infoButton.isHidden = true
     }
-    
+
     @IBAction func bookmarkAction(_ sender: UIButton?) {
-        
+
         if sender == bookmarkButton {
             bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
             actionBookmarkBlock?(model, bookmarkButton.isHighlighted)
-        }
-        else {
+        } else {
             fatalError()
         }
     }
     @IBAction func infoAction(_ sender: UIButton?) {
-        
+
         if sender == infoButton {
             infoBlock?(model)
-        }
-        else {
+        } else {
             fatalError()
         }
     }

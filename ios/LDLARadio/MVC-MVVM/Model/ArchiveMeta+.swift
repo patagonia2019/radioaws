@@ -9,12 +9,12 @@
 import Foundation
 import CoreData
 
-extension ArchiveMeta : Modellable {
-    
+extension ArchiveMeta: Modellable {
+
     static func all() -> [ArchiveMeta]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor(key: "response.start", ascending: true)]) as? [ArchiveMeta]
     }
-    
+
     /// Fetch an parent object by id
     static func search(byCollectionIdentifier id: String?) -> ArchiveMeta? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -24,7 +24,6 @@ extension ArchiveMeta : Modellable {
         let array = try? context.fetch(req)
         return array?.first
     }
-
 
     /// Fetch an object by id
     static func search(byIdentifier id: String?) -> ArchiveMeta? {

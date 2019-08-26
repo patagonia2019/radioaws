@@ -9,12 +9,11 @@
 import Foundation
 import CoreData
 
+extension RNABand: Modellable {
 
-extension RNABand : Modellable {
-    
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNABand]? {
         return all(predicate: nil, sortDescriptors: nil) as? [RNABand]
     }
-    
+
 }

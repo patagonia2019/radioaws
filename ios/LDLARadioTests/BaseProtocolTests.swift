@@ -8,20 +8,19 @@
 
 import XCTest
 
-
 protocol ModellableTest {
     func modelName() -> String
 }
 
 extension ModellableTest {
-    func modelName() -> String  {
+    func modelName() -> String {
         return "use default"
     }
 }
 
 extension ModellableTest where Self: SomeModellable {
     // override default protocol
-    func modelName() -> String  {
+    func modelName() -> String {
         return "override default protocol"
     }
 }
@@ -31,7 +30,6 @@ class SomeModel: ModellableTest {
 
 class SomeModellable: ModellableTest {
 }
-
 
 class BaseProtocolTests: XCTestCase {
 
@@ -44,16 +42,16 @@ class BaseProtocolTests: XCTestCase {
     }
 
     func testProtocolModellable() {
-        
+
         let someModel = SomeModel()
         XCTAssertEqual(someModel.modelName(), "use default")
-        
-        let someModellable : ModellableTest = SomeModellable()
+
+        let someModellable: ModellableTest = SomeModellable()
         XCTAssertEqual(someModellable.modelName(), "override default protocol")
 
         let someModellableSpecific: SomeModellable = SomeModellable()
         XCTAssertEqual(someModellableSpecific.modelName(), "override default protocol")
-        
+
     }
 
 }

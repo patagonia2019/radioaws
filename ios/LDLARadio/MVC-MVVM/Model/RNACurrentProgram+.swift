@@ -9,12 +9,11 @@
 import Foundation
 import CoreData
 
-extension RNACurrentProgram : Modellable {
-    
+extension RNACurrentProgram: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNACurrentProgram]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "name", ascending: true)]) as? [RNACurrentProgram]
     }
-    
-}
 
+}

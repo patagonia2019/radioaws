@@ -9,17 +9,17 @@
 import Foundation
 import CoreData
 
-extension RNAStation : Modellable {
-    
+extension RNAStation: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNAStation]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "lastName", ascending: true)]) as? [RNAStation]
     }
-    
+
 }
 
-extension RNAStation : Searchable {
-    
+extension RNAStation: Searchable {
+
     /// Fetch an object by url
     static func search(byUrl url: String?) -> RNAStation? {
         guard let url = url else { return nil }
@@ -29,7 +29,7 @@ extension RNAStation : Searchable {
         let object = try? context.fetch(req).first
         return object
     }
-    
+
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [RNAStation]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -39,6 +39,5 @@ extension RNAStation : Searchable {
         let array = try? context.fetch(req)
         return array
     }
-    
 
 }

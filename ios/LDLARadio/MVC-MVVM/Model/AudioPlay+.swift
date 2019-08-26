@@ -12,17 +12,16 @@ import CloudKit
 import AVKit
 import JFCore
 
-extension AudioPlay : Modellable {
-    
+extension AudioPlay: Modellable {
+
     static func all() -> [AudioPlay]? {
         return all(predicate: nil, sortDescriptors: nil) as? [AudioPlay]
     }
-    
+
 }
 
+extension AudioPlay: Searchable {
 
-extension AudioPlay : Searchable {
-    
     /// Fetch an object by url
     static func search(byUrl url: String?) -> AudioPlay? {
         guard let url = url else { return nil }
@@ -32,7 +31,7 @@ extension AudioPlay : Searchable {
         let object = try? context.fetch(req).first
         return object
     }
-    
+
     /// Fetch an object by id
     static func search(byIdentifier id: String?) -> AudioPlay? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -42,7 +41,7 @@ extension AudioPlay : Searchable {
         let array = try? context.fetch(req)
         return array?.first
     }
-    
+
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [AudioPlay]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -55,7 +54,6 @@ extension AudioPlay : Searchable {
 
 }
 
-
 extension AudioPlay {
     /// Create AudioPlay entity programatically
     static func create() -> AudioPlay? {
@@ -66,19 +64,19 @@ extension AudioPlay {
         let audioPlay = NSManagedObject(entity: entity, insertInto: context) as? AudioPlay
         return audioPlay
     }
-    
+
     static func create(record: CKRecord) -> AudioPlay? {
-        
-        var audioPlay : AudioPlay? = AudioPlay.search(byUrl: record["url"])
-        
+
+        var audioPlay: AudioPlay? = AudioPlay.search(byUrl: record["url"])
+
         if audioPlay == nil {
             audioPlay = AudioPlay.create()
         }
-        
+
         if audioPlay == nil {
             return nil
         }
-        
+
         audioPlay?.detail = record["detail"] as? String
         audioPlay?.id = record["id"] as? String
         audioPlay?.placeholder = record["placeholder"] as? String
@@ -94,8 +92,7 @@ extension AudioPlay {
 
         return audioPlay
     }
-    
-    
+
 }
 
 extension AudioPlay {
@@ -111,13 +108,12 @@ extension AudioPlay {
         audioPlay.section = audioViewModel.section
         audioPlay.descript = audioViewModel.text
     }
-    
+
     /// Use the url of the stream/audio as an AVURLAsset
     func urlAsset() -> AVURLAsset? {
         guard let urlString = urlString,
             let url = URL(string: urlString) else { return nil }
         return AVURLAsset(url: url)
     }
-    
-}
 
+}

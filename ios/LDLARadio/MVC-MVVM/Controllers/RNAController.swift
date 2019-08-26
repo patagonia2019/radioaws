@@ -9,9 +9,8 @@
 import Foundation
 import JFCore
 
-
 class RNAController: BaseController {
-    
+
     var amCatalogViewModel = CatalogViewModel()
     var fmCatalogViewModel = CatalogViewModel()
 
@@ -24,31 +23,30 @@ class RNAController: BaseController {
         amCatalogViewModel.audios = amModels
         fmCatalogViewModel.audios = fmModels
     }
-    
+
     init(withStreams dial: RNADial?) {
         super.init()
         self.updateModels(dial: dial)
     }
-    
+
     override func numberOfSections() -> Int {
         return 2
     }
-    
+
     override func numberOfRows(inSection section: Int) -> Int {
         if section == 0 {
             if amCatalogViewModel.isExpanded == false {
                 return 0
             }
-        }
-        else {
+        } else {
             if fmCatalogViewModel.isExpanded == false {
                 return 0
             }
         }
-        let count : Int = (section == 0) ? amModels.count : fmModels.count
+        let count: Int = (section == 0) ? amModels.count : fmModels.count
         return count > 0 ? count : 1
     }
-    
+
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
         if section == 0 {
             return amCatalogViewModel
@@ -67,24 +65,24 @@ class RNAController: BaseController {
         }
         return nil
     }
-    
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         if let model = model(forSection: section, row: row) as? AudioViewModel {
             return CGFloat(model.height())
         }
         return 0
     }
-    
+
     override func prompt() -> String {
         return "Radio Nacional Argentina"
     }
-    
+
     private func updateModels(dial: RNADial?) {
         guard let dial = dial else {
             return
         }
         lastUpdated = dial.updatedAt
-        
+
         amModels = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).map({ AudioViewModel(stationAm: $0 as? RNAStation) }) ?? [AudioViewModel]()
         fmModels = dial.stations?.filtered(using: NSPredicate(format: "fmUri.length > 0")).map({ AudioViewModel(stationFm: $0 as? RNAStation) }) ?? [AudioViewModel]()
     }
@@ -99,9 +97,8 @@ class RNAController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Radio Nacional Argentina",
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil)
-    {
-                
+                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+
         if isClean == false {
             updateModels()
             if fmModels.count > 0 && amModels.count > 0 {
@@ -109,17 +106,16 @@ class RNAController: BaseController {
                 return
             }
         }
-        
-        
+
         RestApi.instance.context?.performAndWait {
-            
+
             RNABand.clean()
             RNAProgram.clean()
             RNACurrentProgram.clean()
             RNAStation.clean()
             RNADial.clean()
 
-            RestApi.instance.requestRNA(usingQuery: "/api/listar_emisoras.json", type: RNADial.self) { (error, dial) in
+            RestApi.instance.requestRNA(usingQuery: "/api/listar_emisoras.json", type: RNADial.self) { (error, _) in
                 if error != nil {
                     CoreDataManager.instance.rollback()
                 } else {
@@ -130,9 +126,8 @@ class RNAController: BaseController {
             }
         }
     }
-    
-    func updateDial(finishClosure: ((_ error: Error?) -> Void)? = nil)
-    {
+
+    func updateDial(finishClosure: ((_ error: Error?) -> Void)? = nil) {
         guard let dial = RNADial.all()?.first else {
             return
         }
@@ -153,7 +148,7 @@ class RNAController: BaseController {
             var amStationsVar = [RNAStation]()
             amStationsVar.append(contentsOf: amStations)
             self.updateStations(stations: amStationsVar, isAm: true) { (error) in
-                
+
                 var fmStationsVar = [RNAStation]()
                 fmStationsVar.append(contentsOf: fmStations)
                 self.updateStations(stations: fmStationsVar, isAm: false) { (error) in
@@ -164,28 +159,26 @@ class RNAController: BaseController {
         }
 
     }
-    
+
     private func updateStations(stations: [RNAStation],
                               isAm: Bool = false,
-                              finishClosure: ((_ error: Error?) -> Void)? = nil)
-    {
+                              finishClosure: ((_ error: Error?) -> Void)? = nil) {
         if stations.count == 0 {
             finishClosure?(nil)
             return
         }
         var stationsToUpdate = [RNAStation]()
         stationsToUpdate.append(contentsOf: stations)
-        
+
         let station = stationsToUpdate.popLast()
-        
+
         updateProgram(forStation: station, isAm: isAm) { (error) in
-            self.updateBand(forStation: station, isAm: isAm) { error in
+            self.updateBand(forStation: station, isAm: isAm) { _ in
                 self.updateStations(stations: stationsToUpdate, isAm: isAm, finishClosure: finishClosure)
             }
         }
     }
-    
-    
+
     private func updateProgram(forStation station: RNAStation?,
                                isAm: Bool = false,
                                finishClosure: ((_ error: Error?) -> Void)? = nil) {
@@ -193,27 +186,23 @@ class RNAController: BaseController {
             finishClosure?(nil)
             return
         }
-        var query : String = "/api/listar_programacion_actual/\(stationId)"
+        var query: String = "/api/listar_programacion_actual/\(stationId)"
         if isAm {
             if station?.dialAM != nil {
                 query += "/AM.json"
-            }
-            else {
+            } else {
                 finishClosure?(nil)
             }
-        }
-        else if station?.dialFM != nil {
+        } else if station?.dialFM != nil {
             query += "/FM.json"
-        }
-        else {
+        } else {
             finishClosure?(nil)
             return
         }
         RestApi.instance.requestRNA(usingQuery: query, type: RNACurrentProgram.self) { (error, program) in
             if isAm {
                 station?.amCurrentProgram = program
-            }
-            else {
+            } else {
                 station?.fmCurrentProgram = program
             }
             self.updateBand(forStation: station, isAm: isAm) { error in
@@ -221,7 +210,7 @@ class RNAController: BaseController {
             }
         }
     }
-    
+
     private func updateBand(forStation station: RNAStation?,
                                isAm: Bool = false,
                                finishClosure: ((_ error: Error?) -> Void)? = nil) {
@@ -229,44 +218,39 @@ class RNAController: BaseController {
             finishClosure?(nil)
             return
         }
-        var query : String = "/api/listar_programacion_diaria_banda/\(stationId)"
+        var query: String = "/api/listar_programacion_diaria_banda/\(stationId)"
         if isAm {
             if station?.dialAM != nil {
                 query += "/AM.json"
-            }
-            else {
+            } else {
                 finishClosure?(nil)
             }
-        }
-        else if station?.dialFM != nil {
+        } else if station?.dialFM != nil {
             query += "/FM.json"
-        }
-        else {
+        } else {
             finishClosure?(nil)
             return
         }
         RestApi.instance.requestRNA(usingQuery: query, type: RNABand.self) { (error, band) in
             if isAm {
                 station?.amBand = band
-            }
-            else {
+            } else {
                 station?.fmBand = band
             }
             finishClosure?(error)
         }
     }
-    
+
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         if let isExpanded = model?.isExpanded {
             if section == 0 {
                 amCatalogViewModel.isExpanded = !isExpanded
-            }
-            else {
+            } else {
                 fmCatalogViewModel.isExpanded = !isExpanded
             }
         }
-        
+
         finishClosure?(nil)
     }
 

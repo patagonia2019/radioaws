@@ -9,7 +9,7 @@
 import Foundation
 
 extension Date {
-    
+
     /// Conversion from date into more human readable time ago:
     /// years/monts/days/hours/an hour/minutes/seconds ago, or
     /// last year/month/yesterday/now
@@ -64,7 +64,7 @@ extension Date {
         }
         return "Just now"
     }
-    
+
     func year() -> String? {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year], from: Date())

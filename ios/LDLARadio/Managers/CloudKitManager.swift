@@ -11,7 +11,7 @@ import CloudKit
 import JFCore
 
 class CloudKitManager {
-    
+
     static let instance = CloudKitManager()
 
     let container: CKContainer
@@ -25,10 +25,10 @@ class CloudKitManager {
         publicDB = container.publicCloudDatabase
         privateDB = container.privateCloudDatabase
         user = User(container: container)
-        user.loggedInToICloud() { accountStatus, error in
+        user.loggedInToICloud { accountStatus, error in
             let enabled = accountStatus == .available || accountStatus == .couldNotDetermine
             if enabled {
-                user.userID() { userRecord, error in
+                user.userID { userRecord, error in
                     if error == nil {
                         self.loggedIn = true
                         self.refresh()
@@ -42,12 +42,12 @@ class CloudKitManager {
         }
 
     }
-    
+
     private func queryAudioPlays(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         let predicate = NSPredicate(value: true)
         let queryAudioPlay = CKQuery(recordType: "AudioPlay", predicate: predicate)
         privateDB.perform(queryAudioPlay, inZoneWith: nil) { results, error in
-            
+
             guard error == nil else {
                 DispatchQueue.main.async {
                     let jferror = JFError(code: Int(errno),
@@ -59,7 +59,7 @@ class CloudKitManager {
                 }
                 return
             }
-            
+
             if let results = results {
                 RestApi.instance.context?.performAndWait {
                     for record in results {
@@ -68,7 +68,7 @@ class CloudKitManager {
                     }
                 }
             }
-            
+
             DispatchQueue.main.async {
                 finishClosure?(nil)
             }
@@ -79,7 +79,7 @@ class CloudKitManager {
         let predicate = NSPredicate(value: true)
         let queryBookmark = CKQuery(recordType: "Bookmark", predicate: predicate)
         privateDB.perform(queryBookmark, inZoneWith: nil) { results, error in
-            
+
             guard error == nil else {
                 DispatchQueue.main.async {
                     let jferror = JFError(code: Int(errno),
@@ -91,7 +91,7 @@ class CloudKitManager {
                 }
                 return
             }
-            
+
             if let results = results {
                 RestApi.instance.context?.performAndWait {
                     for record in results {
@@ -100,14 +100,13 @@ class CloudKitManager {
                     }
                 }
             }
-            
+
             self.queryAudioPlays(finishClosure: finishClosure)
         }
     }
 
-    
     func refresh(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         if loggedIn == false {
             DispatchQueue.main.async {
                 finishClosure?(nil)
@@ -116,17 +115,18 @@ class CloudKitManager {
         }
         queryBookmarks(finishClosure: finishClosure)
     }
-    
+
     func remove(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if loggedIn == false {
+            finishClosure?(nil)
             return
         }
-        
+
         guard let bookmark = bookmark,
             let recordName = bookmark.recordID else { return }
-        
+
         let recordId = CKRecord.ID.init(recordName: recordName)
-        privateDB.delete(withRecordID: recordId) { (id, error) in
+        privateDB.delete(withRecordID: recordId) { (_, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
                     let jferror = JFError(code: Int(errno),
@@ -138,21 +138,22 @@ class CloudKitManager {
                 }
                 return
             }
-            
+
             DispatchQueue.main.async {
                 finishClosure?(nil)
             }
         }
     }
-    
+
     func save(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         if loggedIn == false {
+            finishClosure?(nil)
             return
         }
-        
+
         guard let bookmark = bookmark else { return }
-        
+
         let ckBookmark = CKRecord(recordType: "Bookmark")
         if let detail = bookmark.detail as CKRecordValue? {
             ckBookmark.setObject(detail, forKey: "detail")
@@ -169,14 +170,13 @@ class CloudKitManager {
         ckBookmark.setObject(bookmark.title as CKRecordValue?, forKey: "title")
         ckBookmark.setObject(bookmark.url as CKRecordValue?, forKey: "url")
         ckBookmark.setObject(bookmark.descript as CKRecordValue?, forKey: "descript")
-        
-        
+
         privateDB.save(ckBookmark, completionHandler: { record, error in
-            
+
             DispatchQueue.main.async {
-                
+
                 guard error == nil else {
-                    
+
                     let jferror = JFError(code: Int(errno),
                                           desc: "Error",
                                           reason: "Cannot save Bookmark",
@@ -188,20 +188,21 @@ class CloudKitManager {
                 bookmark.recordID = record?.recordID.recordName
                 finishClosure?(nil)
             }
-            
+
         })
     }
-    
+
     func remove(audioPlay: AudioPlay?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if loggedIn == false {
+            finishClosure?(nil)
             return
         }
-        
+
         guard let audioPlay = audioPlay,
             let recordName = audioPlay.recordID else { return }
-        
+
         let recordId = CKRecord.ID.init(recordName: recordName)
-        privateDB.delete(withRecordID: recordId) { (id, error) in
+        privateDB.delete(withRecordID: recordId) { (_, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
                     let jferror = JFError(code: Int(errno),
@@ -213,22 +214,22 @@ class CloudKitManager {
                 }
                 return
             }
-            
+
             DispatchQueue.main.async {
                 finishClosure?(nil)
             }
         }
     }
-    
 
     func save(audioPlay: AudioPlay?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         if loggedIn == false {
+            finishClosure?(nil)
             return
         }
 
         guard let audioPlay = audioPlay else { return }
-        
+
         let ckAudioPlay = CKRecord(recordType: "AudioPlay")
         if let detail = audioPlay.detail as CKRecordValue? {
             ckAudioPlay.setObject(detail, forKey: "detail")
@@ -246,13 +247,12 @@ class CloudKitManager {
         ckAudioPlay.setObject(audioPlay.urlString as CKRecordValue?, forKey: "url")
         ckAudioPlay.setObject(audioPlay.descript as CKRecordValue?, forKey: "descript")
 
-        
         privateDB.save(ckAudioPlay, completionHandler: { record, error in
-            
+
             DispatchQueue.main.async {
-                
+
                 guard error == nil else {
-                    
+
                     let jferror = JFError(code: Int(errno),
                                           desc: "Error",
                                           reason: "Cannot save Audioplay",

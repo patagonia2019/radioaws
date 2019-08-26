@@ -10,27 +10,27 @@ import Foundation
 import CloudKit
 
 class User {
-    
+
     // MARK: - Properties
     let container: CKContainer
     var userRecordID: CKRecord.ID!
     var contacts: [AnyObject] = []
-    
+
     // MARK: - Initializers
     init (container: CKContainer) {
-        self.container = container;
+        self.container = container
     }
-    
-    func loggedInToICloud(_ completion: (_ accountStatus: CKAccountStatus, _ error: NSError?) -> ()) {
+
+    func loggedInToICloud(_ completion: (_ accountStatus: CKAccountStatus, _ error: NSError?) -> Void) {
         // Capability not yet implemented.
         completion(.couldNotDetermine, nil)
     }
-    
-    func userID(_ completion: @escaping (_ userRecordID: CKRecord.ID?, _ error: NSError?)->()) {
-        
+
+    func userID(_ completion: @escaping (_ userRecordID: CKRecord.ID?, _ error: NSError?)->Void) {
+
         guard userRecordID != nil else {
-            container.fetchUserRecordID() { recordID, error in
-                
+            container.fetchUserRecordID { recordID, error in
+
                 if recordID != nil {
                     self.userRecordID = recordID
                 }
@@ -40,5 +40,5 @@ class User {
         }
         completion(userRecordID, nil)
     }
-    
+
 }

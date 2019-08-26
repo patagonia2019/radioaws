@@ -9,34 +9,33 @@
 import Foundation
 import JFCore
 
-
 class BookmarkController: BaseController {
-    
+
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "BookmarkController.didRefreshNotification")
-    
+
     let cloudKit: CloudKitManager = CloudKitManager.instance
 
     private var models = [CatalogViewModel]()
 
-    override var useRefresh : Bool {
+    override var useRefresh: Bool {
         return cloudKit.loggedIn
     }
 
     override init() {
         super.init()
     }
-    
+
     override func prompt() -> String {
         return "Bookmarks"
     }
-    
+
     override func numberOfSections() -> Int {
         return models.count
     }
-    
+
     override func numberOfRows(inSection section: Int) -> Int {
-        var count : Int = 0
+        var count: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
@@ -46,7 +45,7 @@ class BookmarkController: BaseController {
         }
         return count > 0 ? count : 1
     }
-    
+
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
         if section < models.count {
             let model = models[section]
@@ -54,7 +53,7 @@ class BookmarkController: BaseController {
         }
         return models.first
     }
-    
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
             let model = models[section]
@@ -66,8 +65,7 @@ class BookmarkController: BaseController {
                 if audioRow < model.audios.count {
                     return model.audios[audioRow]
                 }
-            }
-            else {
+            } else {
                 if row < model.audios.count {
                     return model.audios[row]
                 }
@@ -75,7 +73,7 @@ class BookmarkController: BaseController {
         }
         return nil
     }
-    
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if let audioModel = subModel as? AudioViewModel {
@@ -83,25 +81,24 @@ class BookmarkController: BaseController {
         }
         return CGFloat(CatalogViewModel.cellheight)
     }
-    
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         let closure = {
-          
+
             self.models = [CatalogViewModel]()
 
             RestApi.instance.context?.performAndWait {
                 let all = Bookmark.all()
-                
+
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
                 }), suggestions.count > 0 {
                     let audios = suggestions.map({ AudioViewModel(bookmark: $0) })
                     if audios.count > 0 {
-                        
+
                         let model = CatalogViewModel()
                         model.isExpanded = false
                         model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
@@ -110,22 +107,22 @@ class BookmarkController: BaseController {
 
                     }
                 }
-                
+
                 if let rnas = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
                 }), rnas.count > 0 {
                     let audios = rnas.map({ AudioViewModel(bookmark: $0) })
                     if audios.count > 0 {
-                        
+
                         let model = CatalogViewModel()
                         model.isExpanded = false
                         model.title.text = AudioViewModel.ControllerName.rna.rawValue
                         model.audios = audios
                         self.models.append(model)
-                        
+
                     }
                 }
-                
+
                 if let rts = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
                 }), rts.count > 0 {
@@ -138,7 +135,7 @@ class BookmarkController: BaseController {
                         self.models.append(model)
                     }
                 }
-                
+
                 if let eds = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
                 }), eds.count > 0 {
@@ -167,24 +164,23 @@ class BookmarkController: BaseController {
                 finishClosure?(nil)
             }
         }
-       
+
         var forceUpdate = false
-        
+
         if isClean || BaseController.isBookmarkChanged {
             forceUpdate = true
             BaseController.isBookmarkChanged = false
-        }
-        else {
+        } else {
             if self.models.count > 0 {
                 finishClosure?(nil)
                 return
             }
-        
+
             if Bookmark.all()?.count ?? 0 == 0 {
                 forceUpdate = true
             }
         }
-        
+
         if forceUpdate && cloudKit.loggedIn {
 
             RestApi.instance.context?.performAndWait {
@@ -198,19 +194,16 @@ class BookmarkController: BaseController {
                     closure()
                 }
             }
-        }
-        else {
+        } else {
             closure()
         }
     }
-    
+
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         model?.isExpanded = !(model?.isExpanded ?? false)
-        
+
         finishClosure?(nil)
     }
 
 }
-
-

@@ -15,11 +15,11 @@ import JFCore
 
 class AudioViewController: UITableViewController {
     // MARK: Properties
-    
-    var isFullScreen : Bool = false
-    
+
+    var isFullScreen: Bool = false
+
     @IBOutlet weak var refreshButton: UIBarButtonItem!
-    
+
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
     var rnaController = RNAController()
@@ -86,17 +86,16 @@ class AudioViewController: UITableViewController {
             }
         }
     }
-    
-    
+
     // MARK: UIViewController
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         SwiftSpinner.useContainerView(view)
-        
+
         refreshButton.isEnabled = controller.useRefresh
-        
+
         if controller.useRefresh {
             addRefreshControl()
         }
@@ -106,26 +105,25 @@ class AudioViewController: UITableViewController {
         if (controller is SearchController) {
             refresh(isClean: true)
         }
-        
+
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-                
-        if !(controller is SearchController) {            
+
+        if !(controller is SearchController) {
             refresh()
-        }
-        else {
+        } else {
             reloadData()
         }
     }
-    
+
     private func titleForController() -> String? {
         let titleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
         return titleName
     }
-    
+
     /// Refresh control to allow pull to refresh
     private func addRefreshControl() {
         let refreshControl = UIRefreshControl()
@@ -135,13 +133,13 @@ class AudioViewController: UITableViewController {
             #selector(AudioViewController.handleRefresh(_:)),
                                  for: .valueChanged)
         refreshControl.tintColor = UIColor.red
-        
+
         tableView.addSubview(refreshControl)
-        
+
     }
-    
+
     func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
-        
+
         controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
                             SwiftSpinner.show(Quote.randomQuote())
@@ -155,7 +153,7 @@ class AudioViewController: UITableViewController {
             self.reloadData()
         }
     }
-    
+
     private func reloadData() {
         if !Thread.isMainThread {
             print("ojo")
@@ -167,19 +165,19 @@ class AudioViewController: UITableViewController {
         if let navigationBar = self.navigationController?.navigationBar,
             let tabBar = self.navigationController?.tabBarController?.tabBar ??
             self.tabBarController?.tabBar {
-            
+
             navigationBar.isHidden = isFullScreen
             tabBar.isHidden = isFullScreen
             navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
             tableView.allowsSelection = !isFullScreen
             tableView.isScrollEnabled = !isFullScreen
         }
-        
+
         let stream = StreamPlaybackManager.instance
         let isPlaying = stream.isPlaying()
         reloadToolbar(isHidden: !(isPlaying && !isFullScreen))
     }
-    
+
     private func reloadToolbar(isHidden: Bool) {
         navigationController?.setToolbarHidden(isHidden, animated: true)
         if isHidden == false {
@@ -192,37 +190,34 @@ class AudioViewController: UITableViewController {
                 UIBarButtonItem(barButtonSystemItem: isPlaying ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:))),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             ]
             navigationController?.toolbar.items = items
         }
     }
-    
+
     @objc private func handleRewind(_ button: UIBarButtonItem) {
         StreamPlaybackManager.instance.forward()
         reloadToolbar(isHidden: false)
     }
-    
+
     @objc private func handleFastForward(_ button: UIBarButtonItem) {
         StreamPlaybackManager.instance.forward()
         reloadToolbar(isHidden: false)
     }
-    
+
     @objc private func handlePlay(_ button: UIBarButtonItem) {
         let stream = StreamPlaybackManager.instance
         let isPlaying = stream.isPlaying()
         if isPlaying {
             stream.pause()
-        }
-        else {
+        } else {
             stream.playCurrentPosition()
         }
         reloadToolbar(isHidden: false)
 
     }
-    
 
-    
     private func bookmark(indexPath: IndexPath, isReload: Bool = true) {
         let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
@@ -234,21 +229,20 @@ class AudioViewController: UITableViewController {
             self.controller.changeCatalogBookmark(model: section)
         }
     }
-    
+
     private func info(model: CatalogViewModel?) {
         showAlert(title: model?.title.text, message: model?.text, error: nil)
     }
-    
+
     private func info(indexPath: IndexPath) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             showAlert(title: audio.title.text, message: audio.info, error: nil)
-        }
-        else if let section = object as? CatalogViewModel {
+        } else if let section = object as? CatalogViewModel {
             info(model: section)
         }
     }
-    
+
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
@@ -267,35 +261,30 @@ class AudioViewController: UITableViewController {
                     }
                 }
             }
-        }
-        else if let section = object as? CatalogViewModel {
+        } else if let section = object as? CatalogViewModel {
             if controller is RadioTimeController {
                 performSegue(withIdentifier: Commons.segue.catalog, sender: section)
-            }
-            else if controller is ArchiveOrgController {
+            } else if controller is ArchiveOrgController {
                 performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
-            }
-            else if controller is SearchController {
+            } else if controller is SearchController {
                 if section.section == AudioViewModel.ControllerName.radioTime.rawValue {
                     performSegue(withIdentifier: Commons.segue.catalog, sender: section)
-                }
-                else if section.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
+                } else if section.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
                     performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
                 }
             }
-        }
-        else {
+        } else {
             if controller is ArchiveOrgController || controller is SearchController {
                 if let cell = tableView.cellForRow(at: indexPath) as? LoadTableViewCell {
                     cell.start()
                 }
                 let model = controller.modelInstance(inSection: indexPath.section)
-                expand(model:model, incrementPage: true, section:indexPath.section)
+                expand(model: model, incrementPage: true, section: indexPath.section)
             }
         }
 
     }
-    
+
     private func showCellAtTop(at indexPath: IndexPath) {
         if isFullScreen {
             guard let cell = self.tableView.cellForRow(at: indexPath) else {
@@ -305,12 +294,11 @@ class AudioViewController: UITableViewController {
             var point = cell.frame.origin
             point.y += self.tableView.frame.origin.y
             self.tableView.setContentOffset(point, animated: false)
-        }
-        else {
+        } else {
             self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
     }
-    
+
     private func expand(model: CatalogViewModel?, incrementPage: Bool = false, section: Int) {
         // Reusing the same model, but focus in this section
         controller.expand(model: model, section: section,
@@ -328,16 +316,16 @@ class AudioViewController: UITableViewController {
             self.reloadData()
         })
     }
-    
+
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         Analytics.logFunction(function: "refresh",
                               parameters: ["method": "control" as AnyObject,
                                            "controller": titleForController() as AnyObject])
-        
+
         refresh(isClean: true, refreshControl: refreshControl)
     }
-    
+
     @IBAction func shareAction(_ sender: Any) {
         share(indexPath: nil, controller: controller, tableView: tableView)
     }
@@ -345,9 +333,9 @@ class AudioViewController: UITableViewController {
     @IBAction func refreshAction(_ sender: Any) {
         refresh(isClean: true)
     }
-    
+
     @IBAction func searchAction(_ sender: Any) {
-        
+
         let alert = UIAlertController(title: "Search", message: "What do you need to search?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addTextField { (textfield) in
@@ -356,7 +344,7 @@ class AudioViewController: UITableViewController {
             textfield.autocorrectionType = .no
             textfield.autocapitalizationType = .none
         }
-        let search = UIAlertAction.init(title: "Search", style: .default) { action in
+        let search = UIAlertAction.init(title: "Search", style: .default) { _ in
             guard let textToSearch = alert.textFields?[0],
                 let text = textToSearch.text,
                 text.count > 0 else {
@@ -365,30 +353,29 @@ class AudioViewController: UITableViewController {
             if self.controller is SearchController {
                 (self.controller as? SearchController)?.textToSearch = text
                 self.refresh(isClean: true)
-            }
-            else {
+            } else {
                 self.performSegue(withIdentifier: Commons.segue.search, sender: text)
             }
         }
         alert.addAction(search)
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     // MARK: - Table view data source
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return controller.numberOfSections()
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return controller.numberOfRows(inSection: section)
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
         headerView?.model = controller.modelInstance(inSection: section)
         headerView?.actionExpandBlock = { model, isHighlighted in
-            self.expand(model:model, section:section)
+            self.expand(model: model, section: section)
         }
         headerView?.actionBookmarkBlock = { model, isHighlighted in
             self.controller.changeCatalogBookmark(model: model)
@@ -398,11 +385,11 @@ class AudioViewController: UITableViewController {
         }
         return headerView
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return controller.heightForRow(at: indexPath.section, row: indexPath.row)
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if isFullScreen {
             return 0
@@ -411,12 +398,11 @@ class AudioViewController: UITableViewController {
         let h = controller.heightForHeader(at: section)
         if model?.isExpanded ?? false {
             return h * 1.5
-        }
-        else {
+        } else {
             return h
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
@@ -431,21 +417,21 @@ class AudioViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
+
         var actions = [UITableViewRowAction]()
-        
+
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        var isBookmarked : Bool? = false
+        var isBookmarked: Bool? = false
         if let audio = object as? AudioViewModel {
             let stream = StreamPlaybackManager.instance
             let isPlaying = stream.isPlaying(url: audio.urlString())
-            let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (action, indexPath) in
-                
+            let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
+
                 self.play(indexPath: indexPath)
             }
             playAction.backgroundColor = .cayenne
             actions.append(playAction)
-            
+
             isBookmarked = audio.isBookmarked
         }
 
@@ -453,21 +439,21 @@ class AudioViewController: UITableViewController {
             isBookmarked = section.isBookmarked
         }
         if let isBookmarked = isBookmarked {
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (action, indexPath) in
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (_, indexPath) in
                 self.bookmark(indexPath: indexPath)
             }
             bookmarkAction.backgroundColor = isBookmarked ? .lavender : .blueberry
             actions.append(bookmarkAction)
         }
-        
-        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (_, indexPath) in
             self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
         }
         shareAction.backgroundColor = .orchid
         actions.append(shareAction)
-        
+
         return actions
-        
+
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -492,56 +478,52 @@ class AudioViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadTableViewCell.reuseIdentifier, for: indexPath) as? LoadTableViewCell else { fatalError() }
         if controller is BookmarkController {
             cell.titleView?.text = "You should tap on the Apple button to get some."
-        }
-        else if controller is SearchController {
+        } else if controller is SearchController {
             cell.titleView?.text = "Please try again with another search term."
         }
         return cell
     }
-        
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         play(indexPath: indexPath)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.segue.catalog {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
-        }
-        else if segue.identifier == Commons.segue.archiveorg {
+        } else if segue.identifier == Commons.segue.archiveorg {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
             (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? CatalogViewModel))
-        }
-        else if segue.identifier == Commons.segue.search {
+        } else if segue.identifier == Commons.segue.search {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
         }
         SwiftSpinner.hide()
     }
-    
+
 }
 
 /**
  Extend `AudioViewController` to conform to the `AudioTableViewCellDelegate` protocol.
  */
 extension AudioViewController: AudioTableViewCellDelegate {
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         bookmark(indexPath: indexPath)
     }
-    
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         play(indexPath: indexPath)
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
@@ -568,9 +550,9 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangeTargetSound newState: Bool) {
-        
+
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool) {
         StreamPlaybackManager.instance.seekEnd()
     }
@@ -579,8 +561,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
         let stream = StreamPlaybackManager.instance
         if isBackward {
             stream.backward()
-        }
-        else {
+        } else {
             stream.forward()
         }
     }
@@ -588,12 +569,12 @@ extension AudioViewController: AudioTableViewCellDelegate {
     func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newValue: Float) {
         StreamPlaybackManager.instance.playPosition(position: Double(newValue))
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         info(indexPath: indexPath)
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
@@ -603,10 +584,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool) {
-        
+
     }
-    
-    
+
 }
-
-

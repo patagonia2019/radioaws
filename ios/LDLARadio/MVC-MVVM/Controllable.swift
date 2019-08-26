@@ -15,19 +15,18 @@ protocol Controllable {
     associatedtype ModelType
 
     func numberOfSections() -> Int
-    
+
     func numberOfRows(inSection section: Int) -> Int
-    
+
     func model(forSection section: Int, row: Int) -> ModelType?
-    
+
     func heightForRow(at section: Int, row: Int) -> CGFloat
-    
+
     func heightForHeader(at section: Int) -> CGFloat
-    
+
     func title() -> String
-    
+
     func prompt() -> String
-    
+
     func privateRefresh(isClean: Bool, prompt: String, finishClosure: ((_ error: JFError?) -> Void)?)
 }
-

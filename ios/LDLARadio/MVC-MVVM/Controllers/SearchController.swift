@@ -10,21 +10,21 @@ import Foundation
 import JFCore
 
 class SearchController: BaseController {
-    
+
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "SearchController.didRefreshNotification")
-    
+
     private var models = [CatalogViewModel]()
     private var page: Int = 1
 
     private var textList = [String]()
-    private var isAlreadyDone : Bool = false
+    private var isAlreadyDone: Bool = false
     var textToSearch = String()
-    
-    override var useRefresh : Bool {
+
+    override var useRefresh: Bool {
         return true
     }
-    
+
     override init() {
     }
 
@@ -33,17 +33,17 @@ class SearchController: BaseController {
             textToSearch = text
         }
     }
-    
+
     override func prompt() -> String {
         return "Search: \(textToSearch)"
     }
-    
+
     override func numberOfSections() -> Int {
         return models.count
     }
-    
+
     override func numberOfRows(inSection section: Int) -> Int {
-        var count : Int = 0
+        var count: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
@@ -61,7 +61,7 @@ class SearchController: BaseController {
         }
         return models.first
     }
-    
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
             let model = models[section]
@@ -73,8 +73,7 @@ class SearchController: BaseController {
                 if audioRow < model.audios.count {
                     return model.audios[audioRow]
                 }
-            }
-            else {
+            } else {
                 if row < model.audios.count {
                     return model.audios[row]
                 }
@@ -82,7 +81,7 @@ class SearchController: BaseController {
         }
         return nil
     }
-    
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         let subModel = model(forSection: section, row: row)
         if let audioModel = subModel as? AudioViewModel {
@@ -97,8 +96,7 @@ class SearchController: BaseController {
 
         if isClean == false {
             isAlreadyDone = textList.contains(textToSearch)
-        }
-        else {
+        } else {
             isAlreadyDone = false
         }
 
@@ -106,7 +104,7 @@ class SearchController: BaseController {
             finishClosure?(nil)
             return
         }
-    
+
         models = [CatalogViewModel]()
 
         RestApi.instance.context?.performAndWait {
@@ -121,11 +119,11 @@ class SearchController: BaseController {
                     model.audios = amModels
                     models.append(model)
                 }
-                
+
                 let fmModels = rnaStations.filter({ (station) -> Bool in
                     return station.fmUri?.count ?? 0 > 0
                 }).map({ AudioViewModel(stationFm: $0) })
-                
+
                 if fmModels.count > 0 {
                     let model = CatalogViewModel()
                     model.isExpanded = false
@@ -134,7 +132,7 @@ class SearchController: BaseController {
                     models.append(model)
                 }
             }
-            
+
             if let streams = Stream.search(byName: textToSearch), streams.count > 0 {
                 let streamModels = streams.map({ AudioViewModel(stream: $0) })
                 if streamModels.count > 0 {
@@ -146,7 +144,7 @@ class SearchController: BaseController {
                 }
             }
         }
-        
+
         let closure = {
             if let catalogs = RTCatalog.search(byName: self.textToSearch), catalogs.count > 0 {
                 var audiosTmp = [AudioViewModel]()
@@ -163,8 +161,7 @@ class SearchController: BaseController {
                         }) == nil {
                             audiosTmp.append(viewModel)
                         }
-                    }
-                    else {
+                    } else {
                         model.sections.append(CatalogViewModel(catalog: element))
                     }
                 }
@@ -187,7 +184,7 @@ class SearchController: BaseController {
                     self.models.append(model)
                 }
             }
-            
+
             if let bookmarks = Bookmark.search(byName: self.textToSearch), bookmarks.count > 0 {
                 let bookmarkModels = bookmarks.map({ AudioViewModel(bookmark: $0) })
                 if bookmarkModels.count > 0 {
@@ -198,49 +195,47 @@ class SearchController: BaseController {
                     self.models.append(model)
                 }
             }
-            
+
             self.lastUpdated = Date()
-            
+
             finishClosure?(nil)
         }
-        
+
         if isClean && isAlreadyDone == false {
-            
+
             Analytics.logFunction(function: "search",
                                   parameters: ["text": textToSearch as AnyObject])
-            
+
             RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
-                
+
                 ArchiveOrgController.search(text: self.textToSearch,
                                             pageNumber: self.page,
-                                            finishClosure: { (error) in
+                                            finishClosure: { (_) in
                     RestApi.instance.context?.performAndWait {
-                        
+
                         self.textList.append(self.textToSearch)
-                        
+
                         closure()
                     }
                 })
             })
-            
-        }
-        else {
+
+        } else {
             closure()
         }
     }
-    
+
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if incrementPage {
             page += 1
             refresh(isClean: true, prompt: "", startClosure: startClosure, finishClosure: finishClosure)
-        }
-        else {
+        } else {
             if let isExpanded = model?.isExpanded {
                 model?.isExpanded = !isExpanded
             }
-            
+
             finishClosure?(nil)
         }
     }
-    
+
 }

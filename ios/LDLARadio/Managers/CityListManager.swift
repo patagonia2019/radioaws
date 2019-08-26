@@ -13,7 +13,7 @@ import JFCore
 
 struct CityListManager {
     // MARK: Properties
-    
+
     /// A singleton instance of CityListManager.
     static var instance = CityListManager()
 
@@ -24,12 +24,12 @@ struct CityListManager {
 
     /// The internal array of City structs.
     private var cities = [City]()
-    
+
     // MARK: Initialization
     init() {
         update(tryRequest: true)
     }
-    
+
     mutating func update(tryRequest: Bool = false) {
         // try memory
         if cities.count == 0 {
@@ -42,9 +42,7 @@ struct CityListManager {
         }
     }
 
-    
     // MARK: City access
-    
 
     func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/cities.json", type: Many<City>.self) { error, _ in
@@ -59,14 +57,13 @@ struct CityListManager {
             NotificationCenter.default.post(name: CityListManager.errorNotification, object: error)
         }
     }
-    
-    
+
     func clean() {
         City.clean()
     }
-    
+
     func reset() {
         setup()
     }
-    
+
 }

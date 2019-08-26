@@ -11,36 +11,36 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Catalog info
-class CatalogViewModel : BaseViewModelProtocol {
-    
+class CatalogViewModel: BaseViewModelProtocol {
+
     let icon: Commons.symbols.FontAwesome = .indent
     let iconColor = UIColor.lavender
 
-    var url: URL? = nil
-    static let cellheight : Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
+    var url: URL?
+    static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
 
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail : LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
 
-    var isBookmarked: Bool? = nil
-    var title : LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
+    var isBookmarked: Bool?
+    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
 
     var tree: String = ""
 
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
 
-    var isExpanded : Bool? = nil
-    var thumbnailUrl: URL? = nil
+    var isExpanded: Bool?
+    var thumbnailUrl: URL?
 
-    var section : String = ""
-    var text : String? = nil
+    var section: String = ""
+    var text: String?
 
     /// convenient id
-    var parentId: String? = nil
-    var id: String? = nil
+    var parentId: String?
+    var id: String?
     var page: Int = 1
 
     init() {
@@ -60,7 +60,7 @@ class CatalogViewModel : BaseViewModelProtocol {
         if let parent = catalog?.sectionCatalog ?? catalog?.audioCatalog {
             parentId = parent.guideId ?? parent.genreId ?? parent.presetId
         }
-        
+
         if let catalog = catalog,
             let text = catalog.text ?? catalog.subtext {
             detail.text = catalog.isOnlyText() ? text : ""
@@ -78,27 +78,24 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
         var sectionsTmp = [CatalogViewModel]()
         var audiosTmp = [AudioViewModel]()
-        
+
         for element in all {
             if element.isAudio(), element.url?.count ?? 0 > 0 {
                 if element.audioCatalog == nil {
                     if element.sectionCatalog == nil {
                         element.audioCatalog = catalog
-                    }
-                    else {
+                    } else {
                         element.audioCatalog = element.sectionCatalog
                         element.sectionCatalog = nil
                     }
                 }
                 let viewModel = AudioViewModel(audio: element)
                 audiosTmp.append(viewModel)
-            }
-            else {
+            } else {
                 if element.sectionCatalog == nil {
                     if element.audioCatalog == nil {
                         element.sectionCatalog = catalog
-                    }
-                    else {
+                    } else {
                         element.sectionCatalog = element.audioCatalog
                         element.audioCatalog = nil
                     }
@@ -113,7 +110,7 @@ class CatalogViewModel : BaseViewModelProtocol {
                 return c1.title.text < c2.title.text
             })
         }
-        
+
         isBookmarked = checkIfBookmarked()
         if audios.count > 0 && sections.count == 0 {
             isExpanded = nil
@@ -136,7 +133,7 @@ class CatalogViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
-        
+
         if let metas = archiveCollection?.metas {
             page = metas.count
             for meta in metas {
@@ -146,10 +143,10 @@ class CatalogViewModel : BaseViewModelProtocol {
                 }
             }
         }
-        
+
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
-        
+
         text = detail.text
     }
 
@@ -170,13 +167,13 @@ class CatalogViewModel : BaseViewModelProtocol {
         title.text = str.joined(separator: ", ")
         tree = superTree ?? ""
         detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
-        
+
         let sortByTitle = [NSSortDescriptor(key: "title", ascending: true)]
         if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
             archiveFiles.count > 0 {
             audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
         }
-        
+
         if let imageUrl = archiveDoc?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
@@ -186,9 +183,9 @@ class CatalogViewModel : BaseViewModelProtocol {
             let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
-        
+
         isBookmarked = checkIfBookmarked()
-        
+
         var textStr = [String]()
         if tree.count > 0 {
             textStr.append(tree)
@@ -212,12 +209,11 @@ class CatalogViewModel : BaseViewModelProtocol {
         text = textStr.joined(separator: ".\n")
         if sections.count == 0 {
             isExpanded = nil
-        }
-        else {
+        } else {
             isExpanded = isAlreadyExpanded
         }
     }
-    
+
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
         if let desconciertoId = desconcierto?.id {
             id = "\(desconciertoId)"
@@ -230,7 +226,7 @@ class CatalogViewModel : BaseViewModelProtocol {
         if let urlChecked = URL(string: queryUrl) {
             url = urlChecked
         }
-        var order : Int = 0
+        var order: Int = 0
         for streamUrl in [desconcierto?.streamUrl1, desconcierto?.streamUrl2, desconcierto?.streamUrl3] {
             order = order + 1
             let audio = AudioViewModel(desconcierto: desconcierto, audioUrl: streamUrl, order: order)
@@ -240,11 +236,11 @@ class CatalogViewModel : BaseViewModelProtocol {
         }
         isBookmarked = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
-        
+
         text = desconcierto?.obs ?? ""
 
     }
-    
+
     /// initialization of the view model for bookmarked audios
     init(bookmark: Bookmark?) {
         id = bookmark?.id
@@ -257,7 +253,7 @@ class CatalogViewModel : BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = true
-        
+
         text = tree + ". " + detail.text
 
     }
@@ -268,8 +264,7 @@ class CatalogViewModel : BaseViewModelProtocol {
             return audios.filter({ (audio) -> Bool in
                 return audio.isBookmarked ?? false
             }).count == audios.count
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -277,7 +272,7 @@ class CatalogViewModel : BaseViewModelProtocol {
     func iconText() -> String {
         return "\(Commons.symbols.showAwesome(icon: icon))"
     }
-    
+
     func urlString() -> String? {
         return url?.absoluteString
     }

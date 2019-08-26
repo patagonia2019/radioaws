@@ -9,11 +9,11 @@
 import Foundation
 import CoreData
 
-extension RNAProgram : Modellable {
-    
+extension RNAProgram: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNAProgram]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "name", ascending: true)]) as? [RNAProgram]
     }
-    
+
 }

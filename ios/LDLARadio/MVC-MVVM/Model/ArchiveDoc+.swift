@@ -11,21 +11,18 @@ import CoreData
 import Groot
 
 extension ArchiveDoc {
-    
-    
+
     override public func didChangeValue(forKey key: String) {
         if key == "creatorTrf" {
             setPrimitiveValue(parseField(field: creatorTrf), forKey: "creator")
-        }
-        else if key == "subjectTrf" {
+        } else if key == "subjectTrf" {
             setPrimitiveValue(parseField(field: subjectTrf), forKey: "subject")
-        }
-        else if key == "descriptTrf" {
+        } else if key == "descriptTrf" {
             setPrimitiveValue(parseField(field: descriptTrf), forKey: "descript")
         }
         super.didChangeValue(forKey: key)
     }
-        
+
     func thumbnailUrlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"
@@ -46,8 +43,8 @@ extension ArchiveDoc {
 
 }
 
-extension ArchiveDoc : Modellable {
-    
+extension ArchiveDoc: Modellable {
+
     static func all() -> [ArchiveDoc]? {
         return all(predicate: nil,
                    sortDescriptors: [NSSortDescriptor(key: "title", ascending: false)])
@@ -55,8 +52,8 @@ extension ArchiveDoc : Modellable {
     }
 }
 
-extension ArchiveDoc : Searchable {
-    
+extension ArchiveDoc: Searchable {
+
     /// Fetch an object by url
     static func search(byUrl url: String?) -> ArchiveDoc? {
         guard let url = url else { return nil }
@@ -66,7 +63,6 @@ extension ArchiveDoc : Searchable {
         let object = try? context.fetch(req).first
         return object
     }
-    
 
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [ArchiveDoc]? {
@@ -78,7 +74,7 @@ extension ArchiveDoc : Searchable {
         let array = try? context.fetch(req)
         return array
     }
-    
+
     /// Fetch an object by id
     static func search(byIdentifier id: String?) -> ArchiveDoc? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -90,6 +86,3 @@ extension ArchiveDoc : Searchable {
     }
 
 }
-
-
-

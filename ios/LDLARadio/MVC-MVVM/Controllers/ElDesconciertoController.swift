@@ -11,21 +11,21 @@ import JFCore
 import AlamofireCoreData
 
 class ElDesconciertoController: BaseController {
-    
+
     fileprivate var models = [CatalogViewModel]()
-    
+
     override init() { }
-    
+
     override func numberOfSections() -> Int {
         return models.count
     }
-    
+
     override func prompt() -> String {
         return AudioViewModel.ControllerName.desconcierto.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count : Int = 0
+        var count: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
@@ -35,7 +35,7 @@ class ElDesconciertoController: BaseController {
         }
         return count > 0 ? count : 1
     }
-    
+
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
         if section < models.count {
             let model = models[section]
@@ -43,7 +43,7 @@ class ElDesconciertoController: BaseController {
         }
         return models.first
     }
-    
+
     override func model(forSection section: Int, row: Int) -> Any? {
         if section < models.count {
             let model = models[section]
@@ -53,14 +53,14 @@ class ElDesconciertoController: BaseController {
         }
         return nil
     }
-        
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
         if let model = model(forSection: section, row: row) as? AudioViewModel {
             return CGFloat(model.height())
         }
         return 0
     }
-    
+
     private func updateModels() {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
             return stream.streamUrl1?.count ?? 0 > 0
@@ -76,7 +76,7 @@ class ElDesconciertoController: BaseController {
         }
         lastUpdated = Desconcierto.lastUpdated()
     }
-    
+
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
@@ -88,41 +88,40 @@ class ElDesconciertoController: BaseController {
                 return
             }
         }
-        
+
         RestApi.instance.context?.performAndWait {
-            
+
             Desconcierto.clean()
-            
+
             RestApi.instance.requestLDLA(usingQuery: "/desconciertos.json", type: Many<Desconcierto>.self) { error, _ in
-                
+
                 if error != nil {
                     CoreDataManager.instance.rollback()
-                }
-                else {
+                } else {
                     CoreDataManager.instance.save()
                 }
                 self.updateModels()
-                
+
                 DispatchQueue.main.async {
                     finishClosure?(error)
                 }
             }
         }
     }
-    
+
     func changeCatalogBookmark(section: Int) {
         if section < models.count {
             let model = models[section]
             changeCatalogBookmark(model: model)
         }
     }
-    
+
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         if let isExpanded = model?.isExpanded {
             models[section].isExpanded = !isExpanded
         }
-        
+
         finishClosure?(nil)
     }
 

@@ -11,35 +11,31 @@ import AVFoundation
 import CoreData
 
 extension Model {
-    
+
     /// Update the `updatedAt` field in the entity when the model is created
     override public func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")
     }
-    
+
     static func entityName() -> String? {
         return NSStringFromClass(self).components(separatedBy: ".").last
     }
-    
+
     func parseField(field: Any?) -> String? {
         if let str = field as? String {
             return str
-        }
-        else if let num = field as? Int {
+        } else if let num = field as? Int {
             return "\(num)"
-        }
-        else if let num = field as? Float {
+        } else if let num = field as? Float {
             return "\(num)"
-        }
-        else if let num = field as? Double {
+        } else if let num = field as? Double {
             return "\(num)"
-        }
-        else if let array = field as? [String] {
+        } else if let array = field as? [String] {
             return array.joined(separator: ", ")
         }
         return nil
     }
-    
+
     /// Fetch the most recent updatedAt date
     static func lastUpdated() -> Date? {
         guard let name = entityName() else { return nil }
@@ -63,7 +59,7 @@ extension Model {
         let array = try? context.fetch(req)
         return array
     }
-    
+
     /// Remove all the instances of the entity
     static func clean() {
         guard let name = entityName() else { return }
@@ -76,13 +72,13 @@ extension Model {
             }
         }
     }
-    
+
     /// Remove current instance of the entity
     @objc func remove() {
         guard let context = RestApi.instance.context else { fatalError() }
         context.delete(self)
     }
-    
+
 //    func modelName() -> String {
 //        return "Model.modelName()"
 //    }

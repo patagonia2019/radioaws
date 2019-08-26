@@ -499,7 +499,7 @@
                                                             <rect key="frame" x="0.0" y="175.5" width="320" height="23.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uM4-Mh-9sf">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="57.5" height="23.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="23.5"/>
                                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -515,7 +515,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9NO-Ey-vcK">
-                                                                    <rect key="frame" x="67.5" y="0.0" width="49" height="23.5"/>
+                                                                    <rect key="frame" x="57.5" y="0.0" width="41" height="23.5"/>
                                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -531,7 +531,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNr-TP-RFA">
-                                                                    <rect key="frame" x="126.5" y="0.0" width="49.5" height="23.5"/>
+                                                                    <rect key="frame" x="108.5" y="0.0" width="41" height="23.5"/>
                                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -547,7 +547,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iuu-tA-iC1">
-                                                                    <rect key="frame" x="186" y="0.0" width="49" height="23.5"/>
+                                                                    <rect key="frame" x="159.5" y="0.0" width="40.5" height="23.5"/>
                                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" red="0.40000000000000002" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -563,7 +563,20 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCL-dA-4nu">
-                                                                    <rect key="frame" x="245" y="0.0" width="75" height="23.5"/>
+                                                                    <rect key="frame" x="210" y="0.0" width="41" height="23.5"/>
+                                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
+                                                                    <state key="normal" title="">
+                                                                        <color key="titleColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    </state>
+                                                                    <state key="highlighted" title="">
+                                                                        <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    </state>
+                                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                                                    </variation>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bUT-Kz-chK">
+                                                                    <rect key="frame" x="261" y="0.0" width="59" height="23.5"/>
                                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="44"/>
                                                                     <state key="normal" title="">
                                                                         <color key="titleColor" red="0.59999999999999998" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -575,7 +588,7 @@
                                                                         <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
                                                                     </variation>
                                                                     <connections>
-                                                                        <action selector="resizeAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="px9-VT-q8F"/>
+                                                                        <action selector="resizeAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="kdk-g7-KIf"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -613,7 +626,8 @@
                                     <outlet property="playButton" destination="coq-nf-e2P" id="MNl-nh-T8S"/>
                                     <outlet property="playerStack" destination="YOI-B5-wu9" id="Aij-i3-9CX"/>
                                     <outlet property="progressStack" destination="jap-VD-3Ye" id="knU-JN-p8E"/>
-                                    <outlet property="resizeButton" destination="BCL-dA-4nu" id="VFM-qh-4lz"/>
+                                    <outlet property="repeatButton" destination="BCL-dA-4nu" id="Pqz-T4-qnB"/>
+                                    <outlet property="resizeButton" destination="bUT-Kz-chK" id="84L-PO-rTa"/>
                                     <outlet property="sliderView" destination="3kC-II-7Tx" id="jA4-gl-AG3"/>
                                     <outlet property="startOfStreamButton" destination="wcM-kg-pJM" id="XnL-D9-aoq"/>
                                     <outlet property="subtitleLabel" destination="6fF-9W-nvI" id="gCP-IP-GwM"/>

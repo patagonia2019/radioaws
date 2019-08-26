@@ -13,7 +13,7 @@ extension String {
     func bigRed() -> NSAttributedString {
         let font = UIFont.init(name: Commons.font.name, size: Commons.font.size.S)
         let attributes = [NSAttributedString.Key.foregroundColor: UIColor.red,
-                          NSAttributedString.Key.font:font as Any]
+                          NSAttributedString.Key.font: font as Any]
         return NSAttributedString(string: self, attributes: attributes)
     }
 

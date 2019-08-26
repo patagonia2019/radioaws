@@ -11,22 +11,17 @@ import CoreData
 import CloudKit
 import JFCore
 
-extension Bookmark : Modellable {
-    
+extension Bookmark: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [Bookmark]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "title", ascending: true)]) as? [Bookmark]
     }
-    
-    func remove(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        CloudKitManager.instance.remove(bookmark: self, finishClosure: finishClosure)
-        remove()
-    }
 
 }
 
-extension Bookmark : Searchable {
-    
+extension Bookmark: Searchable {
+
     /// Fetch an object by url
     static func search(byUrl url: String?) -> Bookmark? {
         guard let url = url else { return nil }
@@ -36,7 +31,7 @@ extension Bookmark : Searchable {
         let object = try? context.fetch(req).first
         return object
     }
-    
+
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [Bookmark]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -46,10 +41,10 @@ extension Bookmark : Searchable {
         let array = try? context.fetch(req)
         return array
     }
-    
+
 }
 
-extension Bookmark : Creational {
+extension Bookmark: Creational {
     /// Create bookmark entity programatically
     static func create() -> Bookmark? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -59,19 +54,19 @@ extension Bookmark : Creational {
         let bookmark = NSManagedObject(entity: entity, insertInto: context) as? Bookmark
         return bookmark
     }
-    
+
     static func create(record: CKRecord) -> Bookmark? {
-        
-        var bookmark : Bookmark? = Bookmark.search(byUrl: record["url"])
+
+        var bookmark: Bookmark? = Bookmark.search(byUrl: record["url"])
 
         if bookmark == nil {
             bookmark = Bookmark.create()
         }
-        
+
         if bookmark == nil {
             return nil
         }
-        
+
         bookmark?.detail = record["detail"] as? String
         bookmark?.id = record["id"] as? String
         bookmark?.placeholder = record["placeholder"] as? String
@@ -100,9 +95,9 @@ extension Bookmark {
         bookmark.url = audioViewModel.url?.absoluteString
         bookmark.section = audioViewModel.section
         bookmark.descript = audioViewModel.text
-        
+
     }
-    
+
     /// Using += as a overloading assignment operator for AudioPlay's in Bookmark entities
     static func +=(bookmark: inout Bookmark, audioPlay: AudioPlay) {
         bookmark.detail = audioPlay.detail
@@ -114,9 +109,9 @@ extension Bookmark {
         bookmark.url = audioPlay.urlString
         bookmark.section = audioPlay.section
         bookmark.descript = audioPlay.descript
-        
+
     }
-    
+
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
     static func +=(bookmark: inout Bookmark, catalogViewModel: CatalogViewModel) {
         bookmark.detail = catalogViewModel.detail.text
@@ -126,5 +121,5 @@ extension Bookmark {
         bookmark.section = catalogViewModel.section
         bookmark.descript = catalogViewModel.text
     }
-    
+
 }

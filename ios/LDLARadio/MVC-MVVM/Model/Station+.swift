@@ -9,11 +9,11 @@
 import Foundation
 import CoreData
 
-extension Station : Modellable {
-    
+extension Station: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [Station]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]) as? [Station]
     }
-    
+
 }

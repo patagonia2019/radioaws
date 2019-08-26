@@ -14,7 +14,7 @@ import MediaPlayer
 
 class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
-    
+
     static let reuseIdentifier: String = "AudioTableViewCell"
 
     @IBOutlet weak var titleLabel: UILabel!
@@ -24,7 +24,8 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
-    
+    @IBOutlet weak var repeatButton: UIButton!
+
     weak var delegate: AudioTableViewCellDelegate?
     fileprivate let formatter = DateComponentsFormatter()
     let gradientBg = CAGradientLayer()
@@ -47,10 +48,10 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var progressStack: UIStackView!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var bugButton: UIButton!
-    
+
     fileprivate var timerPlayed: Timer?
 
-    var model : AudioViewModel? = nil {
+    var model: AudioViewModel? = nil {
         didSet {
             let labels = [downloadStateLabel, subtitleLabel, titleLabel]
             let texts = [model?.detail, model?.subTitle, model?.title]
@@ -60,22 +61,20 @@ class AudioTableViewCell: UITableViewCell {
                     labels[i]?.text = text
                     labels[i]?.textColor = texts[i]?.color
                     labels[i]?.font = texts[i]?.font
-                }
-                else {
+                } else {
                     labels[i]?.isHidden = true
                     if i == 0 {
                         titleLabel.numberOfLines = 3
-                    }
-                    else if i == 1 {
+                    } else if i == 1 {
                         titleLabel.numberOfLines += 2
                     }
                 }
             }
-            
+
             logoView.image = model?.placeholderImage
             thumbnailView.image = logoView.image
             if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (response) in
+                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
                     self.thumbnailView.image = self.logoView.image
                     self.model?.image = self.logoView.image
                 }
@@ -84,11 +83,11 @@ class AudioTableViewCell: UITableViewCell {
             bugButton.isHidden = (model?.error != nil) ? false : true
             targetSoundButton.isHidden = true
             graphButton.isHidden = true
-            
+
             infoButton.isHidden = true
-            
+
             let modelIsPlaying = model?.isPlaying ?? false
-            
+
             if modelIsPlaying {
                 resizeButton.isHidden = false
                 resizeButton.isHighlighted = (model?.isFullScreen ?? false)
@@ -103,15 +102,14 @@ class AudioTableViewCell: UITableViewCell {
                 logoView.isHidden = false
                 thumbnailView.isHidden = true
                 playerStack.isHidden = false
-                
+
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-                
+
                 timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
-                
-            }
-            else {
+
+            } else {
                 resizeButton.isHidden = true
                 gradientPlayBg.isHidden = true
                 playButton.isHighlighted = false
@@ -124,21 +122,21 @@ class AudioTableViewCell: UITableViewCell {
                 if let timerPlayed = timerPlayed {
                     timerPlayed.invalidate()
                 }
-                
+
                 backwardButton.isHidden = true
                 forwardButton.isHidden = true
                 startOfStreamButton.isHidden = true
                 endOfStreamButton.isHidden = true
-                
+
             }
 
             setNeedsLayout()
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
         gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
         gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
@@ -152,34 +150,34 @@ class AudioTableViewCell: UITableViewCell {
         gradientPlayBg.frame = contentView.bounds
         gradientPlayBg.isHidden = false
         contentView.layer.insertSublayer(gradientPlayBg, at: 1)
-        
+
         formatter.allowedUnits = [.second, .minute, .hour]
         formatter.zeroFormattingBehavior = .pad
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         for label in [ downloadStateLabel, subtitleLabel, titleLabel] {
             label?.text = ""
             label?.isHidden = false
             label?.numberOfLines = 1
         }
-        
+
         logoView.image = nil
         downloadProgressView.isHidden = true
         bookmarkButton.isHighlighted = false
         infoButton.isHidden = true
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         let stream = StreamPlaybackManager.instance
         let currentStreamTime = stream.getCurrentTime()
         let isPlaying = model?.isPlaying ?? false
         let hasDuration = stream.hasDuration(url: model?.urlString())
-        
+
         backwardButton.isHidden = !hasDuration
         forwardButton.isHidden = !hasDuration
         startOfStreamButton.isHidden = !hasDuration
@@ -204,31 +202,35 @@ class AudioTableViewCell: UITableViewCell {
                 stream.pause()
             }
         }
+
+        let commandCenter = MPRemoteCommandCenter.shared()
+        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .off
+
     }
-    
+
     @IBAction func bookmarkAction(_ sender: UIButton?) {
         bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
         delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
     }
-    
+
     @IBAction func playAction(_ sender: UIButton?) {
         playButton.isHighlighted = !playButton.isHighlighted
         delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
     }
-    
+
     func startPlaying() {
         setNeedsLayout()
     }
-    
+
     func play() {
         StreamPlaybackManager.instance.delegate = self
         setNeedsLayout()
     }
-    
+
     @IBAction func startOfStreamAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didChangePosition: 0)
     }
-    
+
     @IBAction func endOfStreamAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didChangeToEnd: true)
     }
@@ -236,35 +238,41 @@ class AudioTableViewCell: UITableViewCell {
     @IBAction func backwardAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didChangeOffset: true)
     }
-    
+
     @IBAction func forwardAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didChangeOffset: false)
     }
-    
+
     @IBAction func graphAction(_ sender: UIButton?) {
         graphButton.isHighlighted = !graphButton.isHighlighted
         delegate?.audioTableViewCell(self, didShowGraph: graphButton.isHighlighted)
     }
-    
+
     @IBAction func infoAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didShowInfo: infoButton.isHighlighted)
     }
-    
+
     @IBAction func bugAction(_ sender: UIButton?) {
         delegate?.audioTableViewCell(self, didShowBug: true)
     }
-    
+
+    @IBAction func repeatAction(_ sender: UIButton?) {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.changeRepeatModeCommand.currentRepeatType = repeatButton.isHighlighted ? .one : .off
+        setNeedsLayout()
+    }
+
     @IBAction func resizeAction(_ sender: UIButton?) {
         let isFullScreen = !(model?.isFullScreen ?? false)
         model?.isFullScreen = isFullScreen
         delegate?.audioTableViewCell(self, didResize: isFullScreen)
     }
-    
+
     @IBAction func targetSoundAction(_ sender: UIButton?) {
         targetSoundButton.isHighlighted = !targetSoundButton.isHighlighted
         delegate?.audioTableViewCell(self, didChangeTargetSound: targetSoundButton.isHighlighted)
     }
-    
+
     @IBAction func sliderValueChanged(_ sender: UISlider?) {
         let value = sender?.value ?? 0
         delegate?.audioTableViewCell(self, didChangePosition: value)
@@ -274,13 +282,12 @@ class AudioTableViewCell: UITableViewCell {
     @objc fileprivate func updateTimePlayed() {
         setNeedsLayout()
     }
-    
+
     private func updateTimeLabel(with updatedTime: Float) {
         currentTimeLabel.text = timeStringFor(seconds: updatedTime)
     }
-    
-    private func timeStringFor(seconds : Float) -> String?
-    {
+
+    private func timeStringFor(seconds: Float) -> String? {
         guard let output = formatter.string(from: TimeInterval(seconds)) else {
             return nil
         }
@@ -290,11 +297,11 @@ class AudioTableViewCell: UITableViewCell {
         }
         return output
     }
-    
+
 }
 
 protocol AudioTableViewCellDelegate: class {
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
     func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
@@ -316,17 +323,16 @@ extension AudioTableViewCell: AssetPlaybackDelegate {
         Analytics.logError(error: error)
         layoutIfNeeded()
     }
-    
+
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
         if isPlaying {
             print("JF FINALLY PLAYING")
-        }
-        else {
+        } else {
             print("JF PAUSE")
         }
         layoutIfNeeded()
     }
-    
+
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
         print("JF CHANGE")
         layoutIfNeeded()

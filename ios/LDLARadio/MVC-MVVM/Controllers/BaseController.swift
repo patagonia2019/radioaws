@@ -9,28 +9,28 @@
 import Foundation
 import JFCore
 
-class BaseController : Controllable {
-    
-    var lastUpdated : Date? = nil
-    var finishBlock: ((_ error: JFError?) -> ())? = nil
+class BaseController: Controllable {
+
+    var lastUpdated: Date?
+    var finishBlock: ((_ error: JFError?) -> Void)?
     static var isBookmarkChanged = false
 
-    var useRefresh : Bool {
+    var useRefresh: Bool {
         return true
     }
-    
+
     func numberOfSections() -> Int {
         return 1
     }
-        
+
     func numberOfRows(inSection section: Int) -> Int {
         return 1
     }
-    
+
     func model(forSection section: Int, row: Int) -> Any? {
         fatalError()
     }
-    
+
     func modelInstance(inSection section: Int) -> CatalogViewModel? {
         return nil
     }
@@ -39,7 +39,7 @@ class BaseController : Controllable {
 
         if let audio = model(forSection: section, row: row) as? AudioViewModel {
             if audio.isPlaying == false {
-                
+
                 for j in 0..<numberOfSections() {
                     for k in 0..<numberOfRows(inSection: j) {
                         if let other = model(forSection: j, row: k) as? AudioViewModel {
@@ -53,33 +53,35 @@ class BaseController : Controllable {
                     }
                 }
                 audio.isPlaying = true
-                
+
                 Analytics.logFunction(function: "embeddedplay",
                                       parameters: ["audio": audio.title.text as AnyObject,
                                                    "section": audio.section as AnyObject,
                                                    "url": audio.urlString() as AnyObject])
-                
+
                 guard let context = RestApi.instance.context else { fatalError() }
-                
+
                 context.performAndWait {
-                    
+
                     var tmpAudioPlay = AudioPlay.search(byUrl: audio.url?.absoluteString)
                     if tmpAudioPlay == nil {
                         tmpAudioPlay = AudioPlay.create()
                     }
                     if var tmpAudioPlay = tmpAudioPlay {
                         tmpAudioPlay += audio
-                        CloudKitManager.instance.save(audioPlay: tmpAudioPlay) { error in
+                        CloudKitManager.instance.save(audioPlay: tmpAudioPlay) { ckError in
+                            if let ckError = ckError {
+                                audio.error = ckError
+                            } else {
+                                StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
+                            }
                         }
-                        
-                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
                     }
-                    if useRefresh {
+                    if useRefresh && audio.error != nil {
                         CoreDataManager.instance.save()
                     }
                 }
-            }
-            else {
+            } else {
                 audio.isPlaying = false
                 StreamPlaybackManager.instance.pause()
             }
@@ -89,7 +91,7 @@ class BaseController : Controllable {
     func heightForRow(at section: Int, row: Int) -> CGFloat {
         return 45
     }
-    
+
     func heightForHeader(at section: Int) -> CGFloat {
         return CGFloat(CatalogViewModel.cellheight)
     }
@@ -102,24 +104,24 @@ class BaseController : Controllable {
         }
         return str.joined()
     }
-    
+
     func prompt() -> String {
         return "Los Locos de la Azotea"
     }
-    
+
     func refresh(isClean: Bool = false,
                  prompt: String = "",
                  startClosure: (() -> Void)? = nil,
                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         finishBlock = finishClosure
-        
+
         RestApi.instance.context?.performAndWait {
             startClosure?()
             self.privateRefresh(isClean: isClean, prompt: prompt, finishClosure: finishClosure)
         }
     }
-    
+
     func expand(model: CatalogViewModel?, section: Int,
                 incrementPage: Bool = false,
                 startClosure: (() -> Void)? = nil,
@@ -133,11 +135,10 @@ class BaseController : Controllable {
         fatalError()
     }
 
-
     internal func privateRefresh(isClean: Bool = false,
                                 prompt: String,
                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        
+
         fatalError()
     }
 
@@ -155,12 +156,10 @@ class BaseController : Controllable {
         }
 
     }
-    
 
     func changeCatalogBookmark(at section: Int, row: Int) {
         changeCatalogBookmark(model: model(forSection: section, row: row) as? CatalogViewModel)
     }
-    
 
     func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
 
@@ -169,18 +168,29 @@ class BaseController : Controllable {
         BaseController.isBookmarkChanged = true
 
         context.performAndWait {
-            var action : String = "*"
+            var action: String = "*"
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
-                bookmark.remove()
-                CloudKitManager.instance.remove(bookmark: bookmark, finishClosure: finishBlock)
+                CloudKitManager.instance.remove(bookmark: bookmark) { ckError in
+                    if let ckError = ckError {
+                        model.error = ckError
+                        self.finishBlock?(ckError)
+                        return
+                    }
+                    bookmark.remove()
+                }
                 action = "-"
-            }
-            else if var bookmark = Bookmark.create() {
+            } else if var bookmark = Bookmark.create() {
                 action = "+"
                 bookmark += model
-                CloudKitManager.instance.save(bookmark: bookmark, finishClosure: finishBlock)
-            }
-            else {
+                CloudKitManager.instance.save(bookmark: bookmark) { ckError in
+                    if let ckError = ckError {
+                        model.error = ckError
+                        self.finishBlock?(ckError)
+                        return
+                    }
+                    bookmark.remove()
+                }
+            } else {
                 fatalError()
             }
             Analytics.logFunction(function: "bookmark",
@@ -201,6 +211,5 @@ class BaseController : Controllable {
             model.isBookmarked = !(model.isBookmarked ?? false)
         }
     }
-    
-}
 
+}

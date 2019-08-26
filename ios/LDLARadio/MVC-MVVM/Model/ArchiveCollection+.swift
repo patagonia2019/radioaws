@@ -9,18 +9,18 @@
 import Foundation
 import CoreData
 
-extension ArchiveCollection : Modellable {
-    
+extension ArchiveCollection: Modellable {
+
     static func all() -> [ArchiveCollection]? {
         return all(predicate: nil,
                    sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)])
             as? [ArchiveCollection]
     }
-    
+
 }
 
-extension ArchiveCollection : Creational {
-    
+extension ArchiveCollection: Creational {
+
     /// Create bookmark entity programatically
     static func create() -> ArchiveCollection? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -34,7 +34,7 @@ extension ArchiveCollection : Creational {
 }
 
 extension ArchiveCollection {
-    
+
     /// Fetch an object by url
     static func search(byUrl url: String?) -> ArchiveCollection? {
         guard let url = url else { return nil }
@@ -44,7 +44,6 @@ extension ArchiveCollection {
         let object = try? context.fetch(req).first
         return object
     }
-    
 
     /// Returns the streams for a given name.
     static func search(byName name: String?) -> [ArchiveCollection]? {
@@ -56,17 +55,16 @@ extension ArchiveCollection {
         let array = try? context.fetch(req)
         return array
     }
-    
+
 }
 
-
 extension ArchiveCollection {
-    
+
     /// Update the `updatedAt` field in the entity when the model is created
     override public func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")
     }
-    
+
     /// Fetch an object by id
     static func search(byIdentifier id: String?) -> ArchiveCollection? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -76,21 +74,20 @@ extension ArchiveCollection {
         let array = try? context.fetch(req)
         return array?.first
     }
-    
+
     func thumbnailUrlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"
         }
         return nil
     }
-    
+
     func urlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/details/\(identifier)"
         }
         return nil
     }
-    
 
     func searchCollectionUrlString(page: Int = 1) -> String? {
         if let identifier = identifier {
@@ -99,10 +96,9 @@ extension ArchiveCollection {
         }
         return nil
     }
-    
 
     static func searchUrlString(withString string: String, page: Int = 1) -> String? {
         return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(string)+AND+mediatype:(audio)&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=10&page=\(page)"
     }
-    
+
 }

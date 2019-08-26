@@ -9,9 +9,8 @@
 import Foundation
 import AVFoundation
 
-protocol Downloadable : Searchable {
-    
+protocol Downloadable: Searchable {
+
     /// Returns the path of the downloaded instance of model (normaly podcast/audio/stream)
     func downloadedStream() -> URL?
 }
-
