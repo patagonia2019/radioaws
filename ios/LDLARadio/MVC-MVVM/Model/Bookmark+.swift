@@ -103,6 +103,20 @@ extension Bookmark {
         
     }
     
+    /// Using += as a overloading assignment operator for AudioPlay's in Bookmark entities
+    static func +=(bookmark: inout Bookmark, audioPlay: AudioPlay) {
+        bookmark.detail = audioPlay.detail
+        bookmark.id = audioPlay.id
+        bookmark.placeholder = audioPlay.placeholder
+        bookmark.subTitle = audioPlay.subTitle
+        bookmark.thumbnailUrl = audioPlay.thumbnailUrl
+        bookmark.title = audioPlay.title
+        bookmark.url = audioPlay.urlString
+        bookmark.section = audioPlay.section
+        bookmark.descript = audioPlay.descript
+        
+    }
+    
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
     static func +=(bookmark: inout Bookmark, catalogViewModel: CatalogViewModel) {
         bookmark.detail = catalogViewModel.detail.text

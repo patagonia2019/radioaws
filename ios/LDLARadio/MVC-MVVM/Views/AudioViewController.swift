@@ -501,7 +501,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
         if let audio = object as? AudioViewModel {
             Analytics.logFunction(function: "resize",
                                   parameters: ["audio": audio.title.text as AnyObject,
-//                                               "isPlaying": audio.isPlaying as AnyObject,
+                                               "isPlaying": audio.isPlaying as AnyObject,
                                                "didResize": newState as AnyObject,
                                                "url": audio.urlString() as AnyObject,
                                                "controller": titleForController() as AnyObject])

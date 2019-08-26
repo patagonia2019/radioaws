@@ -322,7 +322,8 @@ class StreamPlaybackManager: NSObject {
     }
     
     func playCurrentPosition() {
-        addPlayInfo()
+        setupNowPlaying()
+        setupRemoteCommandCenter()
         delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
         
         let position = audioPlay?.currentTime ?? 0.0
@@ -446,10 +447,9 @@ class StreamPlaybackManager: NSObject {
         }
     }
     
-    private func addPlayInfo() {
+    private func setupNowPlaying() {
         var nowPlayingInfo = [String : Any]()
         if let audioPlay = audioPlay {
-//            nowPlayingInfo[MPMediaItemPropertyTitle] = audioPlay.playing
             nowPlayingInfo[MPMediaItemPropertyArtist] = audioPlay.title
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audioPlay.subTitle
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
@@ -474,6 +474,85 @@ class StreamPlaybackManager: NSObject {
         }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
+    
+    private func setupRemoteCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget {event in
+            self.player.play()
+            return .success
+        }
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget {event in
+            self.player.pause()
+            return .success
+        }
+        commandCenter.bookmarkCommand.isEnabled = true
+        commandCenter.bookmarkCommand.localizedTitle = "Bookmark"
+        commandCenter.bookmarkCommand.addTarget { event in
+            self.changeAudioBookmark()
+            return .success
+        }
+        commandCenter.skipForwardCommand.isEnabled = true
+        commandCenter.skipForwardCommand.addTarget { event in
+            self.forward()
+            return .success
+        }
+        commandCenter.skipBackwardCommand.isEnabled = true
+        commandCenter.skipBackwardCommand.addTarget { event in
+            self.backward()
+            return .success
+        }
+        commandCenter.seekForwardCommand.isEnabled = true
+        commandCenter.seekForwardCommand.addTarget { event in
+            self.seekEnd()
+            return .success
+        }
+        commandCenter.seekBackwardCommand.isEnabled = true
+        commandCenter.seekBackwardCommand.addTarget { event in
+            self.playPosition(position: 0)
+            return .success
+        }
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if let event = event as? MPChangePlaybackPositionCommandEvent {
+                self.playPosition(position: event.positionTime)
+            }
+            return .success
+        }
+    }
+
+    func changeAudioBookmark() {
+        
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let audioPlay = audioPlay else { return }
+        BaseController.isBookmarkChanged = true
+        
+        context.performAndWait {
+            var action : String = "*"
+            if let bookmark = Bookmark.search(byUrl: audioPlay.urlString) {
+                bookmark.remove()
+                CloudKitManager.instance.remove(bookmark: bookmark)
+                action = "-"
+            }
+            else if var bookmark = Bookmark.create() {
+                action = "+"
+                bookmark += audioPlay
+                CloudKitManager.instance.save(bookmark: bookmark)
+            }
+            else {
+                fatalError()
+            }
+            Analytics.logFunction(function: "bookmark",
+                                  parameters: ["action": action as AnyObject,
+                                               "title": audioPlay.title as AnyObject,
+                                               "section": audioPlay.section as AnyObject,
+                                               "url": audioPlay.urlString as AnyObject])
+            
+            CoreDataManager.instance.save()
+        }
+    }
+
 }
 
 /// AssetPlaybackDelegate provides a common interface for StreamPlaybackManager to provide callbacks to its delegate.

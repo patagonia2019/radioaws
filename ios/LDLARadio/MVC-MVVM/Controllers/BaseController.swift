@@ -161,7 +161,6 @@ class BaseController : Controllable {
         changeCatalogBookmark(model: model(forSection: section, row: row) as? CatalogViewModel)
     }
     
-    
 
     func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
 
