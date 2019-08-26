@@ -167,6 +167,7 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
+        info = ""
         hasDuration = false
     }
     
@@ -262,6 +263,7 @@ class AudioViewModel : BaseViewModelProtocol {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
+        info = ""
         hasDuration = true
     }
     
@@ -365,6 +367,7 @@ extension AudioViewModel {
         isBookmarked = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
         reFillTitles()
+        info = ""
         hasDuration = false
     }
 }

@@ -196,7 +196,7 @@ class AudioViewController: UITableViewController {
     private func info(indexPath: IndexPath) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
-            showAlert(title: audio.title.text, message: audio.text, error: nil)
+            showAlert(title: audio.title.text, message: audio.info, error: nil)
         }
         else if let section = object as? CatalogViewModel {
             info(model: section)
@@ -391,7 +391,7 @@ class AudioViewController: UITableViewController {
         var isBookmarked : Bool? = false
         if let audio = object as? AudioViewModel {
             let stream = StreamPlaybackManager.instance
-            let isReady = stream.isReadyToPlay(url: audio.urlString())
+            let isReady = stream.isPlaying(url: audio.urlString())
             let playAction = UITableViewRowAction(style: .normal, title: isReady ? "Pause" : "Play") { (action, indexPath) in
                 
                 self.play(indexPath: indexPath)

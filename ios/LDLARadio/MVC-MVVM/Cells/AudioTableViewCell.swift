@@ -97,7 +97,7 @@ class AudioTableViewCell: UITableViewCell {
                 playButton.isHidden = false
                 playButton.isHighlighted = true
 
-                infoButton.isHidden = model?.text?.count ?? 0 > 0
+                infoButton.isHidden = !(model?.info.count ?? 0 > 0)
                 selectionStyle = model?.selectionStyle ?? .none
                 // show big logo, and hide thumbnail
                 logoView.isHidden = false
