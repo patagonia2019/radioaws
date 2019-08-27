@@ -178,6 +178,7 @@ class AudioTableViewCell: UITableViewCell {
         let isPlaying = model?.isPlaying ?? false
         let hasDuration = stream.hasDuration(url: model?.urlString())
 
+        repeatButton.isHidden = !hasDuration
         backwardButton.isHidden = !hasDuration
         forwardButton.isHidden = !hasDuration
         startOfStreamButton.isHidden = !hasDuration
@@ -204,7 +205,7 @@ class AudioTableViewCell: UITableViewCell {
         }
 
         let commandCenter = MPRemoteCommandCenter.shared()
-        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .off
+        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .one
 
     }
 
@@ -216,15 +217,6 @@ class AudioTableViewCell: UITableViewCell {
     @IBAction func playAction(_ sender: UIButton?) {
         playButton.isHighlighted = !playButton.isHighlighted
         delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
-    }
-
-    func startPlaying() {
-        setNeedsLayout()
-    }
-
-    func play() {
-        StreamPlaybackManager.instance.delegate = self
-        setNeedsLayout()
     }
 
     @IBAction func startOfStreamAction(_ sender: UIButton?) {
@@ -313,6 +305,8 @@ protocol AudioTableViewCellDelegate: class {
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool)
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool)
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, didUpdate newValue: Bool)
+    
 }
 
 /**
@@ -322,6 +316,8 @@ extension AudioTableViewCell: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
         Analytics.logError(error: error)
         layoutIfNeeded()
+        delegate?.audioTableViewCell(self, didUpdate: false)
+
     }
 
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
@@ -330,11 +326,13 @@ extension AudioTableViewCell: AssetPlaybackDelegate {
         } else {
             print("JF PAUSE")
         }
+        delegate?.audioTableViewCell(self, didUpdate: isPlaying)
         layoutIfNeeded()
     }
 
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
         print("JF CHANGE")
         layoutIfNeeded()
+        delegate?.audioTableViewCell(self, didUpdate: true)
     }
 }

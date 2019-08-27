@@ -20,7 +20,7 @@
                 <viewControllerPlaceholder referencedIdentifier="AudioViewController" id="kEF-Tm-fDg" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfA-HZ-FNB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2486" y="-641"/>
+            <point key="canvasLocation" x="2607" y="-546"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="6TM-Je-eAM">
@@ -574,6 +574,9 @@
                                                                     <variation key="heightClass=regular-widthClass=compact">
                                                                         <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
                                                                     </variation>
+                                                                    <connections>
+                                                                        <action selector="repeatAction:" destination="43R-O8-DGN" eventType="touchUpInside" id="wFh-V7-nRg"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bUT-Kz-chK">
                                                                     <rect key="frame" x="261" y="0.0" width="59" height="23.5"/>

@@ -116,4 +116,13 @@ extension AudioPlay {
         return AVURLAsset(url: url)
     }
 
+    func info() -> (String, String) {
+        var array = [String]()
+        for str in [title, subTitle, section, detail] {
+            if let str = str, str.count > 0 {
+                array.append(str)
+            }
+        }
+        return (array.joined(separator: ".\n"), detail ?? "")
+    }
 }

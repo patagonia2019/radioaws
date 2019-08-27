@@ -108,15 +108,26 @@ class AudioViewController: UITableViewController {
 
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        if controller is BookmarkController {
+            navigationItem.leftBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(AudioViewController.trashAction(_:)))]
+        }
+        else {
+            navigationItem.leftBarButtonItems = nil
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if !(controller is SearchController) {
             refresh()
         } else {
             reloadData()
         }
+        navigationController?.setToolbarHidden(false, animated: true)
     }
 
     private func titleForController() -> String? {
@@ -173,37 +184,46 @@ class AudioViewController: UITableViewController {
             tableView.isScrollEnabled = !isFullScreen
         }
 
-        let stream = StreamPlaybackManager.instance
-        let isPlaying = stream.isPlaying()
-        reloadToolbar(isHidden: !(isPlaying && !isFullScreen))
+        reloadToolbar()
     }
 
-    private func reloadToolbar(isHidden: Bool) {
-        navigationController?.setToolbarHidden(isHidden, animated: true)
-        if isHidden == false {
-            let stream = StreamPlaybackManager.instance
-            let isPlaying = stream.isPlaying()
-            let items = [
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:))),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: isPlaying ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:))),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            ]
-            navigationController?.toolbar.items = items
-        }
+    private func reloadToolbar() {
+        let stream = StreamPlaybackManager.instance
+        let isPlaying = stream.isPlaying()
+        let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: .info_circle))", style: .done, target: self, action: #selector(AudioViewController.info(_:)))
+        info.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: Commons.font.awesome, size: Commons.font.size.XXL)!], for: .normal)
+        
+        let size = CGSize(width: 40, height: 40)
+        let image = stream.image()
+        let imageView = UIImageView.init(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(origin: .zero, size: image?.size ?? size)
+        imageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: size.width).isActive = true
+
+        navigationController?.toolbar.items = [
+            UIBarButtonItem(customView: imageView),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:))),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: isPlaying ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:))),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            info,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
+        navigationController?.toolbar.setNeedsLayout()
     }
 
     @objc private func handleRewind(_ button: UIBarButtonItem) {
-        StreamPlaybackManager.instance.forward()
-        reloadToolbar(isHidden: false)
+        StreamPlaybackManager.instance.backward()
+        reloadData()
     }
 
     @objc private func handleFastForward(_ button: UIBarButtonItem) {
         StreamPlaybackManager.instance.forward()
-        reloadToolbar(isHidden: false)
+        reloadData()
     }
 
     @objc private func handlePlay(_ button: UIBarButtonItem) {
@@ -214,20 +234,24 @@ class AudioViewController: UITableViewController {
         } else {
             stream.playCurrentPosition()
         }
-        reloadToolbar(isHidden: false)
-
+        reloadData()
     }
 
     private func bookmark(indexPath: IndexPath, isReload: Bool = true) {
         let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             controller.changeAudioBookmark(model: audio)
-            audio.isBookmarked = !(audio.isBookmarked ?? false)
-            tableView.reloadRows(at: [indexPath], with: .fade)
+//            audio.isBookmarked = !(audio.isBookmarked ?? false)
+//            tableView.reloadRows(at: [indexPath], with: .fade)
         }
         if let section = object as? CatalogViewModel {
             self.controller.changeCatalogBookmark(model: section)
         }
+    }
+    
+    @objc private func info(_ sender: Any?) {
+        let audioPlayInfo = StreamPlaybackManager.instance.info()
+        showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: nil)
     }
 
     private func info(model: CatalogViewModel?) {
@@ -248,8 +272,11 @@ class AudioViewController: UITableViewController {
         if let audio = object as? AudioViewModel {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                 DispatchQueue.main.async {
+                    let cell = self.tableView.cellForRow(at: indexPath) as? AudioTableViewCell
+                    let stream = StreamPlaybackManager.instance
+                    stream.delegate = cell
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
-                    self.reloadToolbar(isHidden: !audio.isPlaying)
+                    self.reloadToolbar()
                     if audio.isPlaying {
                         self.reloadData()
                     }
@@ -326,6 +353,31 @@ class AudioViewController: UITableViewController {
         refresh(isClean: true, refreshControl: refreshControl)
     }
 
+    @IBAction func trashAction(_ sender: Any) {
+        let alert = UIAlertController(title: "Bookmark Reset", message: "Do you want to clean your bookmarks?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        let clean = UIAlertAction.init(title: "Clean", style: .destructive) { _ in
+            DispatchQueue.main.async {
+                SwiftSpinner.show(Quote.randomQuote())
+            }
+
+            Bookmark.clean()
+            CloudKitManager.instance.clean(finishClosure: { (error) in
+                if error != nil {
+                    self.showAlert(title: "Error", message: "Trying to clean", error: error)
+                    DispatchQueue.main.async {
+                        SwiftSpinner.hide()
+                    }
+                }
+                else {
+                    self.refresh(isClean: true)
+                }
+            })
+        }
+        alert.addAction(clean)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func shareAction(_ sender: Any) {
         share(indexPath: nil, controller: controller, tableView: tableView)
     }
@@ -426,7 +478,6 @@ class AudioViewController: UITableViewController {
             let stream = StreamPlaybackManager.instance
             let isPlaying = stream.isPlaying(url: audio.urlString())
             let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
-
                 self.play(indexPath: indexPath)
             }
             playAction.backgroundColor = .cayenne
@@ -584,7 +635,11 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool) {
+        
+    }
 
+    func audioTableViewCell(_ cell: AudioTableViewCell, didUpdate newValue: Bool) {
+        reloadData()
     }
 
 }

@@ -170,25 +170,29 @@ class BaseController: Controllable {
         context.performAndWait {
             var action: String = "*"
             if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
-                CloudKitManager.instance.remove(bookmark: bookmark) { ckError in
-                    if let ckError = ckError {
-                        model.error = ckError
-                        self.finishBlock?(ckError)
-                        return
+                CloudKitManager.instance.remove(bookmark: bookmark) { error in
+                    model.error = error
+                    if error == nil {
+                        // success on remove bookmark in the cloud, remove from DB
+                        bookmark.remove()
+                        model.isBookmarked = false
                     }
-                    bookmark.remove()
+                    self.finishBlock?(error)
                 }
                 action = "-"
             } else if var bookmark = Bookmark.create() {
                 action = "+"
                 bookmark += model
-                CloudKitManager.instance.save(bookmark: bookmark) { ckError in
-                    if let ckError = ckError {
-                        model.error = ckError
-                        self.finishBlock?(ckError)
-                        return
+                CloudKitManager.instance.save(bookmark: bookmark) { error in
+                    model.error = error
+                    if error != nil {
+                        // Error when trying to remove bookmark from the cloud
+                        bookmark.remove()
                     }
-                    bookmark.remove()
+                    else {
+                        model.isBookmarked = true
+                    }
+                    self.finishBlock?(error)
                 }
             } else {
                 fatalError()

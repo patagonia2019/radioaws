@@ -42,6 +42,7 @@ class Commons {
             case certificate = 0xf0a3
             case chevron_up = 0xf077
             case indent = 0xf03c
+            case info_circle = 0xf05a
             case music = 0xf001
         }
         public static func showAwesome(icon: FontAwesome) -> Character {

@@ -6,9 +6,9 @@ def sharedPods
     pod 'SwiftLint'
     pod 'AlamofireCoreData'
     pod 'JFCore', :git => 'https://github.com/patagonia2019/jfcore', :branch => 'master'
+    #pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
     pod 'Firebase/Analytics'
     pod 'AlamofireImage'
-    #pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
 end
 
 def iosPods

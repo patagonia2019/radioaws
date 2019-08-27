@@ -203,6 +203,10 @@ class StreamPlaybackManager: NSObject {
             break
         }
     }
+    
+    public func info() -> (String, String)? {
+        return audioPlay?.info()
+    }
 
     public func getCurrentTime() -> TimeInterval {
         if let currentItem = player.currentItem,
@@ -317,13 +321,13 @@ class StreamPlaybackManager: NSObject {
     }
 
     func playCurrentPosition() {
-        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
 
         let position = audioPlay?.currentTime ?? 0.0
         if position == 0.0 {
             audioPlay?.isPlaying = true
             player.play()
             updateRemoteCommandCenter()
+            delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
         } else {
             playPosition(position: position)
         }
@@ -338,6 +342,7 @@ class StreamPlaybackManager: NSObject {
             self.audioPlay?.isPlaying = true
             self.player.play()
             self.updateRemoteCommandCenter()
+            self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
         })
     }
 
@@ -435,6 +440,16 @@ class StreamPlaybackManager: NSObject {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
+    
+    public func image() -> UIImage? {
+        let size = CGSize(width: 40, height: 40)
+        guard let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo,
+            let artWork = nowPlayingInfo[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork,
+            let img = artWork.image(at: size)?.resized(to: size) else {
+                return UIImage.init(named: "Locos_de_la_azotea")
+        }
+        return img
+    }
 
     private func updateNowPlaying() {
         var nowPlayingInfo = [String: Any]()
@@ -447,9 +462,9 @@ class StreamPlaybackManager: NSObject {
                 nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (_) -> UIImage in
                     return placeholderImage
                 }
-
+                
                 let iv = UIImageView.init(image: placeholderImage)
-
+                
                 if let imageUrl = audioPlay.thumbnailUrl,
                     let url = URL(string: imageUrl) {
                     iv.af_setImage(withURL: url, placeholderImage: placeholderImage)
@@ -461,6 +476,7 @@ class StreamPlaybackManager: NSObject {
                     }
                 }
             }
+
         }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
@@ -559,7 +575,6 @@ class StreamPlaybackManager: NSObject {
                     if let bookError = bookError {
                         audioPlay.error = bookError.message()
                         self.delegate?.streamPlaybackManager(self, playerError: bookError)
-                    } else {
                         bookmark.remove()
                     }
                 }
