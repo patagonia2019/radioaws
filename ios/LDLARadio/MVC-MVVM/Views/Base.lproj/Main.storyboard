@@ -648,10 +648,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Phm-T4-jAa">
-                                            <rect key="frame" x="0.0" y="0.0" width="480" height="74.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="74.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SxF-s9-xnD">
-                                                    <rect key="frame" x="0.0" y="0.0" width="480" height="74.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="74.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zu2-Uv-7v1">
                                                             <rect key="frame" x="0.0" y="0.0" width="37.5" height="74.5"/>
@@ -666,13 +666,13 @@
                                                             </variation>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load more?" textAlignment="center" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G7b-f7-eYL">
-                                                            <rect key="frame" x="45.5" y="28" width="352" height="19"/>
+                                                            <rect key="frame" x="45.5" y="28" width="192" height="19"/>
                                                             <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pnp-jV-ncb">
-                                                            <rect key="frame" x="405.5" y="0.0" width="74.5" height="74.5"/>
+                                                            <rect key="frame" x="245.5" y="0.0" width="74.5" height="74.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="Pnp-jV-ncb" secondAttribute="height" multiplier="1:1" id="49N-wh-Ydl"/>
                                                             </constraints>

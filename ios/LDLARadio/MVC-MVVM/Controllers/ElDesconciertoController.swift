@@ -112,7 +112,7 @@ class ElDesconciertoController: BaseController {
     func changeCatalogBookmark(section: Int) {
         if section < models.count {
             let model = models[section]
-            changeCatalogBookmark(model: model)
+            Audio.changeCatalogBookmark(model: model)
         }
     }
 

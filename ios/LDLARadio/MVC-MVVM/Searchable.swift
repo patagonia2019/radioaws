@@ -53,7 +53,7 @@ extension Modellable where Self: ArchiveDoc {
     internal static var placeholderImageName: String { get { return "f0001-music"} }
 }
 
-extension Modellable where Self: AudioPlay {
+extension Modellable where Self: Audio {
 
     internal static var placeholderImageName: String { get { return "f0001-music"} }
 }

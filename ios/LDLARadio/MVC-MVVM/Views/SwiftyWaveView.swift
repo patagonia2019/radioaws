@@ -100,8 +100,8 @@ open class SwiftyWaveView: UIView {
         animatingStop = false
         animatingStart = true
         displayLink = CADisplayLink(target: self, selector: #selector(SwiftyWaveView.drawWaves))
-        displayLink!.frameInterval = 1
-        displayLink!.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+        displayLink?.preferredFramesPerSecond = 1
+        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
 
    public func stop() {

@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Analytics.stop()
+        CloudKitManager.instance.sync()
     }
 
     private func registerSettingsBundle() {
@@ -58,11 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func changeAppearance() {
         let aqua: UIColor = .aqua
-        let attributes = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
+        guard let font = UIFont(name: Commons.font.name, size: Commons.font.size.S) else {
+            fatalError()
+        }
+        let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: aqua]
         UINavigationBar.appearance().titleTextAttributes = attributes
 
-        let unselected = [NSAttributedString.Key.font: UIFont(name: Commons.font.name, size: Commons.font.size.S)!,
+        let unselected = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.steel]
 
         UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
@@ -85,3 +89,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+

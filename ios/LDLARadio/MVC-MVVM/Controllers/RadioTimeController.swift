@@ -175,18 +175,12 @@ class RadioTimeController: BaseController {
 
             CoreDataManager.instance.save()
             self.mainModel = CatalogViewModel(catalog: catalog)
- //           self.mainModel?.isExpanded = isExpanded ?? false
             self.lastUpdated = RTCatalog.lastUpdated()
 
             DispatchQueue.main.async {
                 finishClosure?(error)
             }
         }
-    }
-
-    func changeCatalogBookmark(section: Int) {
-
-        changeCatalogBookmark(model: modelInstance(inSection: section))
     }
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {

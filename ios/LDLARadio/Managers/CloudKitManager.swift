@@ -20,6 +20,7 @@ class CloudKitManager {
     let user: User
     var loggedIn: Bool = false
     var isReset: Bool = false
+    var audios = [CKRecord]()
 
     init() {
         container = CKContainer.default()
@@ -46,22 +47,11 @@ class CloudKitManager {
 
     private func queryAudioPlays(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         let predicate = NSPredicate(value: true)
-        let queryAudioPlay = CKQuery(recordType: "AudioPlay", predicate: predicate)
+        let queryAudioPlay = CKQuery(recordType: "Audio", predicate: predicate)
         privateDB.perform(queryAudioPlay, inZoneWith: nil) { results, error in
 
-            guard error == nil else {
-                DispatchQueue.main.async {
-                    let jferror = JFError(code: Int(errno),
-                                          desc: "Error",
-                                          reason: "Cannot download info",
-                                          suggestion: "Please check your internet connection",
-                                          underError: error as NSError?)
-                    finishClosure?(jferror)
-                }
-                return
-            }
-
             if let results = results {
+                self.audios.append(contentsOf: results)
                 RestApi.instance.context?.performAndWait {
                     for record in results {
                         print(record)
@@ -69,51 +59,23 @@ class CloudKitManager {
                             self.remove(withRecordID: record.recordID)
                         }
                         else {
-                            _ = AudioPlay.create(record: record)
+                            _ = Audio.create(record: record)
                         }
                     }
                 }
             }
 
             DispatchQueue.main.async {
-                finishClosure?(nil)
-            }
-        }
-    }
-
-    private func queryBookmarks(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        let predicate = NSPredicate(value: true)
-        let queryBookmark = CKQuery(recordType: "Bookmark", predicate: predicate)
-        privateDB.perform(queryBookmark, inZoneWith: nil) { results, error in
-
-            guard error == nil else {
-                DispatchQueue.main.async {
-                    let jferror = JFError(code: Int(errno),
-                                          desc: "Error",
-                                          reason: "Cannot download info",
-                                          suggestion: "Please check your internet connection",
-                                          underError: error as NSError?)
-                    finishClosure?(jferror)
+                var jferror : JFError? = nil
+                if let error = error {
+                    jferror = JFError(code: Int(errno),
+                                      desc: "Error",
+                                      reason: "Cannot sync cloud kit",
+                                      suggestion: "Please check your internet connection",
+                                      underError: error as NSError?)
                 }
-                return
+                finishClosure?(jferror)
             }
-
-            
-            if let results = results {
-                RestApi.instance.context?.performAndWait {
-                    for record in results {
-                        print(record)
-                        if self.isReset {
-                            self.remove(withRecordID: record.recordID)
-                        }
-                        else {
-                            _ = Bookmark.create(record: record)
-                        }
-                    }
-                }
-            }
-
-            self.queryAudioPlays(finishClosure: finishClosure)
         }
     }
 
@@ -125,7 +87,7 @@ class CloudKitManager {
             }
             return
         }
-        queryBookmarks(finishClosure: finishClosure)
+        queryAudioPlays(finishClosure: finishClosure)
     }
     
     func remove(withRecordID recordID: CKRecord.ID, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
@@ -149,156 +111,116 @@ class CloudKitManager {
 
     }
 
-    func remove(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func remove(audio: Audio?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if loggedIn == false {
             finishClosure?(nil)
             return
         }
 
-        guard let bookmark = bookmark,
-            let recordName = bookmark.recordID else {
+        guard let audio = audio,
+            let recordName = audio.recordID else {
                 finishClosure?(nil)
                 return
         }
 
         let recordId = CKRecord.ID.init(recordName: recordName)
         remove(withRecordID: recordId) { (error) in
-            bookmark.error = error?.message()
+            audio.error = error?.message()
             finishClosure?(error)
         }
     }
 
-    func save(bookmark: Bookmark?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func save(audio: Audio?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if loggedIn == false {
-            finishClosure?(nil)
-            return
-        }
-        remove(bookmark: bookmark) { (error) in
-            if error != nil {
-                bookmark?.error = error?.message()
-                return
-            }
-
-            guard let bookmark = bookmark else { return }
-            
-            let ckBookmark = CKRecord(recordType: "Bookmark")
-            if let detail = bookmark.detail as CKRecordValue? {
-                ckBookmark.setObject(detail, forKey: "detail")
-            }
-            if let id = bookmark.id as CKRecordValue? {
-                ckBookmark.setObject(id, forKey: "id")
-            }
-            if let placeholder = bookmark.placeholder as CKRecordValue? {
-                ckBookmark.setObject(placeholder, forKey: "placeholder")
-            }
-            ckBookmark.setObject(bookmark.section as CKRecordValue?, forKey: "section")
-            ckBookmark.setObject(bookmark.subTitle as CKRecordValue?, forKey: "subTitle")
-            ckBookmark.setObject(bookmark.thumbnailUrl as CKRecordValue?, forKey: "thumbnailUrl")
-            ckBookmark.setObject(bookmark.title as CKRecordValue?, forKey: "title")
-            ckBookmark.setObject(bookmark.url as CKRecordValue?, forKey: "url")
-            ckBookmark.setObject(bookmark.descript as CKRecordValue?, forKey: "descript")
-            
-            self.privateDB.save(ckBookmark, completionHandler: { record, error in
-                
-                DispatchQueue.main.async {
-                    
-                    guard error == nil else {
-                        
-                        let jferror = JFError(code: Int(errno),
-                                              desc: "Error",
-                                              reason: "Cannot save Bookmark",
-                                              suggestion: "Please check your internet connection",
-                                              underError: error as NSError?)
-                        bookmark.error = jferror.message()
-                        finishClosure?(jferror)
-                        return
-                    }
-                    bookmark.recordID = record?.recordID.recordName
-                    finishClosure?(nil)
-                }
-                
-            })
-
-        }
-    }
-
-    func remove(audioPlay: AudioPlay?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
-        if loggedIn == false {
-            finishClosure?(nil)
-            return
-        }
-
-        guard let audioPlay = audioPlay,
-            let recordName = audioPlay.recordID else {
-                finishClosure?(nil)
-                return
-        }
-
-
-        let recordId = CKRecord.ID.init(recordName: recordName)
-        remove(withRecordID: recordId) { (error) in
-            audioPlay.error = error?.message()
-            finishClosure?(error)
-        }
-    }
-
-    func save(audioPlay: AudioPlay?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+        audio?.cloudSynced = false
 
         if loggedIn == false {
             finishClosure?(nil)
             return
         }
         
-        remove(audioPlay: audioPlay) { (error) in
-            if error != nil {
-                audioPlay?.error = error?.message()
+        guard let audio = audio else {
+            finishClosure?(nil)
+            return
+        }
+
+        var ckAudio = audios.first { (record) -> Bool in
+            return record.recordID.recordName == audio.recordID
+        }
+        
+        if ckAudio == nil {
+            ckAudio = CKRecord(recordType: "Audio")
+        }
+        
+        ckAudio?.setObject(audio.currentTime as CKRecordValue?, forKey: "currentTime")
+        ckAudio?.setObject(audio.descript as CKRecordValue?, forKey: "descript")
+        ckAudio?.setObject(audio.detail as CKRecordValue?, forKey: "detail")
+        ckAudio?.setObject(audio.downloadFiles as CKRecordValue?, forKey: "downloadFiles")
+        ckAudio?.setObject(audio.hasDuration as CKRecordValue?, forKey: "hasDuration")
+        ckAudio?.setObject(audio.id as CKRecordValue?, forKey: "id")
+        ckAudio?.setObject(audio.isBookmark as CKRecordValue?, forKey: "isBookmark")
+        ckAudio?.setObject(audio.isDownloading as CKRecordValue?, forKey: "isDownloading")
+        ckAudio?.setObject(audio.isPlaying as CKRecordValue?, forKey: "isPlaying")
+        ckAudio?.setObject(audio.placeholder as CKRecordValue?, forKey: "placeholder")
+        ckAudio?.setObject(audio.recordID as CKRecordValue?, forKey: "recordID")
+        ckAudio?.setObject(audio.section as CKRecordValue?, forKey: "section")
+        ckAudio?.setObject(audio.subTitle as CKRecordValue?, forKey: "subTitle")
+        ckAudio?.setObject(audio.thumbnailUrl as CKRecordValue?, forKey: "thumbnailUrl")
+        ckAudio?.setObject(audio.title as CKRecordValue?, forKey: "title")
+        ckAudio?.setObject(audio.urlString as CKRecordValue?, forKey: "urlString")
+
+        if ckAudio?.recordID.recordName == nil {
+            guard let cloudKitAudio = ckAudio else {
+                finishClosure?(nil)
                 return
             }
-            guard let audioPlay = audioPlay else { return }
-            
-            let ckAudioPlay = CKRecord(recordType: "AudioPlay")
-            if let detail = audioPlay.detail as CKRecordValue? {
-                ckAudioPlay.setObject(detail, forKey: "detail")
-            }
-            if let id = audioPlay.id as CKRecordValue? {
-                ckAudioPlay.setObject(id, forKey: "id")
-            }
-            if let placeholder = audioPlay.placeholder as CKRecordValue? {
-                ckAudioPlay.setObject(placeholder, forKey: "placeholder")
-            }
-            ckAudioPlay.setObject(audioPlay.section as CKRecordValue?, forKey: "section")
-            ckAudioPlay.setObject(audioPlay.subTitle as CKRecordValue?, forKey: "subTitle")
-            ckAudioPlay.setObject(audioPlay.thumbnailUrl as CKRecordValue?, forKey: "thumbnailUrl")
-            ckAudioPlay.setObject(audioPlay.title as CKRecordValue?, forKey: "title")
-            ckAudioPlay.setObject(audioPlay.urlString as CKRecordValue?, forKey: "url")
-            ckAudioPlay.setObject(audioPlay.descript as CKRecordValue?, forKey: "descript")
-            
-            self.privateDB.save(ckAudioPlay, completionHandler: { record, error in
-
+            self.privateDB.save(cloudKitAudio, completionHandler: { record, error in
+                
                 DispatchQueue.main.async {
                     
                     guard error == nil else {
                         
                         let jferror = JFError(code: Int(errno),
                                               desc: "Error",
-                                              reason: "Cannot save Audioplay",
+                                              reason: "Cannot save Audio",
                                               suggestion: "Please check your internet connection",
                                               underError: error as NSError?)
-                        audioPlay.error = jferror.message()
+                        audio.error = jferror.message()
                         finishClosure?(jferror)
                         return
                     }
-                    audioPlay.recordID = record?.recordID.recordName
+                    audio.cloudSynced = true
+                    audio.recordID = record?.recordID.recordName
                     finishClosure?(nil)
                 }
-                
             })
-
         }
-
     }
 
+    func sync() {
+        if let dbAudios = Audio.all() {
+            for audio in dbAudios {
+                save(audio: audio)
+            }
+        }
+        modifyRecords(records: audios)
+    }
+
+    private func modifyRecords(records: [CKRecord]?) {
+        guard let records = records else {
+            return
+        }
+        let modifyRecords = CKModifyRecordsOperation(recordsToSave:records, recordIDsToDelete: nil)
+        modifyRecords.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.allKeys
+        modifyRecords.qualityOfService = QualityOfService.userInitiated
+        modifyRecords.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+            if let error = error {
+                print(error)
+            }
+        }
+        privateDB.add(modifyRecords)
+
+    }
     func clean(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         isReset = true
         if loggedIn == false {

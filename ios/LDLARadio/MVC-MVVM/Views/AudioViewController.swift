@@ -127,7 +127,6 @@ class AudioViewController: UITableViewController {
         } else {
             reloadData()
         }
-        navigationController?.setToolbarHidden(false, animated: true)
     }
 
     private func titleForController() -> String? {
@@ -173,47 +172,87 @@ class AudioViewController: UITableViewController {
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
         tableView.reloadData()
-        if let navigationBar = self.navigationController?.navigationBar,
-            let tabBar = self.navigationController?.tabBarController?.tabBar ??
+        if let navigationBar = navigationController?.navigationBar,
+            let tabBar = navigationController?.tabBarController?.tabBar ??
             self.tabBarController?.tabBar {
 
             navigationBar.isHidden = isFullScreen
             tabBar.isHidden = isFullScreen
-            navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
+            navigationController?.setToolbarHidden(!isFullScreen, animated: false)
+            navigationController?.toolbar.isHidden = !isFullScreen
             tableView.allowsSelection = !isFullScreen
             tableView.isScrollEnabled = !isFullScreen
         }
-
         reloadToolbar()
     }
 
     private func reloadToolbar() {
-        let stream = StreamPlaybackManager.instance
-        let isPlaying = stream.isPlaying()
-        let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: .info_circle))", style: .done, target: self, action: #selector(AudioViewController.info(_:)))
-        info.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: Commons.font.awesome, size: Commons.font.size.XXL)!], for: .normal)
         
-        let size = CGSize(width: 40, height: 40)
-        let image = stream.image()
-        let imageView = UIImageView.init(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(origin: .zero, size: image?.size ?? size)
-        imageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: size.width).isActive = true
+        guard let toolbar = navigationController?.toolbar else { return }
+        
+        let stream = StreamPlaybackManager.instance
+        
+        if stream.isReadyToPlay() == false || isFullScreen {
+            navigationController?.setToolbarHidden(true, animated: false)
+            navigationController?.toolbar.isHidden = true
+            return
+        }
+        navigationController?.setToolbarHidden(false, animated: false)
+        navigationController?.toolbar.isHidden = false
+        
+        var items = [UIBarButtonItem]()
 
-        navigationController?.toolbar.items = [
-            UIBarButtonItem(customView: imageView),
+        let image = stream.image()
+        if let image = image {
+            let size = CGSize(width: 40, height: 40)
+            let imageView = UIImageView.init(image: image)
+            imageView.contentMode = .scaleAspectFit
+            imageView.frame = CGRect(origin: .zero, size: image.size)
+            imageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
+            imageView.widthAnchor.constraint(equalToConstant: size.width).isActive = true
+            
+            items.append(contentsOf: [
+                UIBarButtonItem(customView: imageView)
+                ])
+        }
+        
+        if stream.hasDuration() {
+            items.append(contentsOf: [
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:)))
+                ])
+        }
+        items.append(contentsOf: [
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: isPlaying ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            info,
+            UIBarButtonItem(barButtonSystemItem: stream.isPlaying() ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        ]
-        navigationController?.toolbar.setNeedsLayout()
+        ])
+        
+        if stream.hasDuration() {
+            items.append(contentsOf: [
+                UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:)))
+                ])
+        }
+
+        if image != nil {
+            let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: .info_circle))", style: .done, target: self, action: #selector(AudioViewController.info(_:)))
+            guard let font = UIFont(name: Commons.font.awesome, size: Commons.font.size.XXL) else {
+                fatalError()
+            }
+            let attribute = [NSAttributedString.Key.font: font]
+            for state in [.normal, .selected] as [UIControl.State] {
+                info.setTitleTextAttributes(attribute, for: state)
+            }
+            info.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .selected)
+            items.append(contentsOf: [
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                info,
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            ])
+        }
+        toolbar.items = items
+        
+
     }
 
     @objc private func handleRewind(_ button: UIBarButtonItem) {
@@ -235,18 +274,6 @@ class AudioViewController: UITableViewController {
             stream.playCurrentPosition()
         }
         reloadData()
-    }
-
-    private func bookmark(indexPath: IndexPath, isReload: Bool = true) {
-        let object = self.controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            controller.changeAudioBookmark(model: audio)
-//            audio.isBookmarked = !(audio.isBookmarked ?? false)
-//            tableView.reloadRows(at: [indexPath], with: .fade)
-        }
-        if let section = object as? CatalogViewModel {
-            self.controller.changeCatalogBookmark(model: section)
-        }
     }
     
     @objc private func info(_ sender: Any?) {
@@ -430,7 +457,7 @@ class AudioViewController: UITableViewController {
             self.expand(model: model, section: section)
         }
         headerView?.actionBookmarkBlock = { model, isHighlighted in
-            self.controller.changeCatalogBookmark(model: model)
+            Audio.changeCatalogBookmark(model: model)
         }
         headerView?.infoBlock = { model in
             self.info(model: model)
@@ -491,7 +518,7 @@ class AudioViewController: UITableViewController {
         }
         if let isBookmarked = isBookmarked {
             let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (_, indexPath) in
-                self.bookmark(indexPath: indexPath)
+                self.controller.changeBookmark(indexPath: indexPath)
             }
             bookmarkAction.backgroundColor = isBookmarked ? .lavender : .blueberry
             actions.append(bookmarkAction)
@@ -519,7 +546,7 @@ class AudioViewController: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
             cell.model = section
             cell.actionBookmarkBlock = { catalog, isBookmarking in
-                self.controller.changeCatalogBookmark(at: indexPath.section, row: indexPath.row)
+                self.controller.changeBookmark(indexPath: indexPath)
             }
             cell.infoBlock = { catalog in
                 self.info(model: catalog)
@@ -562,7 +589,8 @@ extension AudioViewController: AudioTableViewCellDelegate {
 
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        bookmark(indexPath: indexPath)
+        controller.changeBookmark(indexPath: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {

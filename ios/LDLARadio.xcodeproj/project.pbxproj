@@ -32,7 +32,6 @@
 		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
 		9808512B22E782C40013B67C /* RNABand+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512A22E782C40013B67C /* RNABand+.swift */; };
 		9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512C22E7A2DD0013B67C /* RNAProgram+.swift */; };
-		9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
 		9808513922E8FBC80013B67C /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		9808513A22E8FBE80013B67C /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
@@ -43,6 +42,7 @@
 		980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */; };
 		980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980AA86022F6BA4100A30AAC /* FirebaseManager.swift */; };
 		980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */; };
+		9813DD74231A1C4C007EE1D4 /* PlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9813DD73231A1C4C007EE1D4 /* PlayerBar.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -85,7 +85,7 @@
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
 		98B1686F230B845400A61DBC /* SwiftyWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686E230B845300A61DBC /* SwiftyWaveView.swift */; };
-		98B16871230B8C9800A61DBC /* AudioPlay+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* AudioPlay+.swift */; };
+		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
 		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
 		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
@@ -159,7 +159,6 @@
 		9808512822E7513F0013B67C /* RNACurrentProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNACurrentProgram+.swift"; sourceTree = "<group>"; };
 		9808512A22E782C40013B67C /* RNABand+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNABand+.swift"; sourceTree = "<group>"; };
 		9808512C22E7A2DD0013B67C /* RNAProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAProgram+.swift"; sourceTree = "<group>"; };
-		9808513622E8FAA00013B67C /* Bookmark+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+.swift"; sourceTree = "<group>"; };
 		9808513C22E903730013B67C /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		9808514022EA49C60013B67C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		9808514322EAC0350013B67C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +167,7 @@
 		980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		980AA86022F6BA4100A30AAC /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		9813DD73231A1C4C007EE1D4 /* PlayerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBar.swift; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		98B1686E230B845300A61DBC /* SwiftyWaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyWaveView.swift; sourceTree = "<group>"; };
-		98B16870230B8C9800A61DBC /* AudioPlay+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioPlay+.swift"; sourceTree = "<group>"; };
+		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
 		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
 		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 				98B53CF823012730003F50EE /* ArchiveDoc+.swift */,
 				98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */,
 				98CF5C282303354F00830F8D /* ArchiveFile+.swift */,
-				9808513622E8FAA00013B67C /* Bookmark+.swift */,
+				98B16870230B8C9800A61DBC /* Audio+.swift */,
 				9808511A22E6D7040013B67C /* City+.swift */,
 				986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */,
 				98195FA822D83664006E7961 /* Quote+.swift */,
@@ -269,7 +269,6 @@
 				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
-				98B16870230B8C9800A61DBC /* AudioPlay+.swift */,
 				98B53CE622FFAB8D003F50EE /* User.swift */,
 			);
 			path = Model;
@@ -398,6 +397,7 @@
 				98D7149022EF937F00983818 /* Main.xib */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				9808511222E6A1C10013B67C /* AudioViewController.swift */,
+				9813DD73231A1C4C007EE1D4 /* PlayerBar.swift */,
 				983E01F822F5EBCC008370BA /* LaunchViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 				98B1686E230B845300A61DBC /* SwiftyWaveView.swift */,
@@ -762,14 +762,13 @@
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
 				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
-				98B16871230B8C9800A61DBC /* AudioPlay+.swift in Sources */,
+				98B16871230B8C9800A61DBC /* Audio+.swift in Sources */,
 				98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
 				986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */,
 				9808511122E69D990013B67C /* BaseController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
-				9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */,
 				98B53CE922FFE0EC003F50EE /* ArchiveOrgController.swift in Sources */,
 				98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
@@ -777,6 +776,7 @@
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				98B1686F230B845400A61DBC /* SwiftyWaveView.swift in Sources */,
 				9808513D22E903730013B67C /* BookmarkController.swift in Sources */,
+				9813DD74231A1C4C007EE1D4 /* PlayerBar.swift in Sources */,
 				9808510922E61E650013B67C /* RadioController.swift in Sources */,
 				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
 				9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */,
@@ -979,7 +979,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1004,7 +1004,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

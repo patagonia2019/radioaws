@@ -91,12 +91,12 @@ class BookmarkController: BaseController {
             self.models = [CatalogViewModel]()
 
             RestApi.instance.context?.performAndWait {
-                let all = Bookmark.all()
+                let all = Audio.all()
 
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
                 }), suggestions.count > 0 {
-                    let audios = suggestions.map({ AudioViewModel(bookmark: $0) })
+                    let audios = suggestions.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
 
                         let model = CatalogViewModel()
@@ -111,7 +111,7 @@ class BookmarkController: BaseController {
                 if let rnas = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
                 }), rnas.count > 0 {
-                    let audios = rnas.map({ AudioViewModel(bookmark: $0) })
+                    let audios = rnas.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
 
                         let model = CatalogViewModel()
@@ -126,7 +126,7 @@ class BookmarkController: BaseController {
                 if let rts = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
                 }), rts.count > 0 {
-                    let audios = rts.map({ AudioViewModel(bookmark: $0) })
+                    let audios = rts.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
                         let model = CatalogViewModel()
                         model.isExpanded = false
@@ -139,7 +139,7 @@ class BookmarkController: BaseController {
                 if let eds = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
                 }), eds.count > 0 {
-                    let audios = eds.map({ AudioViewModel(bookmark: $0) })
+                    let audios = eds.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
                         let model = CatalogViewModel()
                         model.isExpanded = false
@@ -152,7 +152,7 @@ class BookmarkController: BaseController {
                 if let files = all?.filter({ (bookmark) -> Bool in
                     return bookmark.section == AudioViewModel.ControllerName.archiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
                 }), files.count > 0 {
-                    let audios = files.map({ AudioViewModel(bookmark: $0) })
+                    let audios = files.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
                         let model = CatalogViewModel()
                         model.isExpanded = false
@@ -176,7 +176,7 @@ class BookmarkController: BaseController {
                 return
             }
 
-            if Bookmark.all()?.count ?? 0 == 0 {
+            if Audio.all()?.count ?? 0 == 0 {
                 forceUpdate = true
             }
         }

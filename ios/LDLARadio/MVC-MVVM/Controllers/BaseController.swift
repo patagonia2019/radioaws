@@ -45,8 +45,17 @@ class BaseController: Controllable {
                         if let other = model(forSection: j, row: k) as? AudioViewModel {
                             if other.isPlaying {
                                 if other.urlString() != audio.urlString() {
-                                    StreamPlaybackManager.instance.setAudioForPlayback(nil)
                                     other.isPlaying = false
+                                    
+                                    if let tmpAudioPlay = Audio.search(byUrl: other.url?.absoluteString) {
+                                        CloudKitManager.instance.save(audio: tmpAudioPlay) { ckError in
+                                            if let ckError = ckError {
+                                                audio.error = ckError
+                                                tmpAudioPlay.cloudSynced = false
+                                            }
+                                        }
+                                    }
+                                    StreamPlaybackManager.instance.setAudioForPlayback(nil)
                                 }
                             }
                         }
@@ -63,19 +72,13 @@ class BaseController: Controllable {
 
                 context.performAndWait {
 
-                    var tmpAudioPlay = AudioPlay.search(byUrl: audio.url?.absoluteString)
+                    var tmpAudioPlay = Audio.search(byUrl: audio.url?.absoluteString)
                     if tmpAudioPlay == nil {
-                        tmpAudioPlay = AudioPlay.create()
+                        tmpAudioPlay = Audio.create()
                     }
                     if var tmpAudioPlay = tmpAudioPlay {
                         tmpAudioPlay += audio
-                        CloudKitManager.instance.save(audioPlay: tmpAudioPlay) { ckError in
-                            if let ckError = ckError {
-                                audio.error = ckError
-                            } else {
-                                StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
-                            }
-                        }
+                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
                     }
                     if useRefresh && audio.error != nil {
                         CoreDataManager.instance.save()
@@ -141,79 +144,17 @@ class BaseController: Controllable {
 
         fatalError()
     }
-
-    func changeCatalogBookmark(model: CatalogViewModel?) {
-        guard let context = RestApi.instance.context else { fatalError() }
-        guard let model = model else {
-            return
+    
+    func changeBookmark(indexPath: IndexPath, isReload: Bool = true) {
+        let object = model(forSection: indexPath.section, row: indexPath.row)
+        if let model = object as? AudioViewModel {
+            Audio.changeAudioBookmark(model: model)
         }
-        for audio in model.audios {
-            changeAudioBookmark(model: audio, useRefresh: false)
+        else if let model = object as? CatalogViewModel {
+            Audio.changeCatalogBookmark(model: model)
         }
-        context.performAndWait {
-            CoreDataManager.instance.save()
-            refresh(finishClosure: finishBlock)
-        }
-
-    }
-
-    func changeCatalogBookmark(at section: Int, row: Int) {
-        changeCatalogBookmark(model: model(forSection: section, row: row) as? CatalogViewModel)
-    }
-
-    func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
-
-        guard let context = RestApi.instance.context else { fatalError() }
-        guard let model = model else { return }
-        BaseController.isBookmarkChanged = true
-
-        context.performAndWait {
-            var action: String = "*"
-            if let bookmark = Bookmark.search(byUrl: model.url?.absoluteString) {
-                CloudKitManager.instance.remove(bookmark: bookmark) { error in
-                    model.error = error
-                    if error == nil {
-                        // success on remove bookmark in the cloud, remove from DB
-                        bookmark.remove()
-                        model.isBookmarked = false
-                    }
-                    self.finishBlock?(error)
-                }
-                action = "-"
-            } else if var bookmark = Bookmark.create() {
-                action = "+"
-                bookmark += model
-                CloudKitManager.instance.save(bookmark: bookmark) { error in
-                    model.error = error
-                    if error != nil {
-                        // Error when trying to remove bookmark from the cloud
-                        bookmark.remove()
-                    }
-                    else {
-                        model.isBookmarked = true
-                    }
-                    self.finishBlock?(error)
-                }
-            } else {
-                fatalError()
-            }
-            Analytics.logFunction(function: "bookmark",
-                                  parameters: ["action": action as AnyObject,
-                                               "title": model.title.text as AnyObject,
-                                               "section": model.section as AnyObject,
-                                               "url": model.urlString() as AnyObject])
-
-            if useRefresh {
-                CoreDataManager.instance.save()
-            }
+        else {
+            fatalError()
         }
     }
-
-    func changeAudioBookmark(at section: Int, row: Int) {
-        if let model = model(forSection: section, row: row) as? AudioViewModel {
-            changeAudioBookmark(model: model)
-            model.isBookmarked = !(model.isBookmarked ?? false)
-        }
-    }
-
 }

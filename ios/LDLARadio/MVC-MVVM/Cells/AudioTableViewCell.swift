@@ -315,6 +315,7 @@ protocol AudioTableViewCellDelegate: class {
 extension AudioTableViewCell: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
         Analytics.logError(error: error)
+        model?.isPlaying = false
         layoutIfNeeded()
         delegate?.audioTableViewCell(self, didUpdate: false)
 
@@ -326,12 +327,15 @@ extension AudioTableViewCell: AssetPlaybackDelegate {
         } else {
             print("JF PAUSE")
         }
+        model?.isPlaying = isPlaying
+
         delegate?.audioTableViewCell(self, didUpdate: isPlaying)
         layoutIfNeeded()
     }
 
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
         print("JF CHANGE")
+        model?.isPlaying = true
         layoutIfNeeded()
         delegate?.audioTableViewCell(self, didUpdate: true)
     }

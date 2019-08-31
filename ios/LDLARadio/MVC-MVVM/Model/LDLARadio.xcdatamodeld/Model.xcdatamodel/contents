@@ -226,13 +226,15 @@
         </attribute>
         <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta" syncable="YES"/>
     </entity>
-    <entity name="AudioPlay" representedClassName=".AudioPlay" parentEntity="Model" syncable="YES" codeGenerationType="class">
+    <entity name="Audio" representedClassName=".Audio" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="cloudSynced" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="downloadFiles" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
         <attribute name="hasDuration" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isBookmark" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isDownloading" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isPlaying" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="placeholder" optional="YES" attributeType="String" syncable="YES"/>
@@ -244,6 +246,7 @@
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Bookmark" representedClassName=".Bookmark" parentEntity="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="cloudSynced" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
@@ -766,8 +769,8 @@
         <element name="ArchiveMeta" positionX="-684" positionY="-117" width="128" height="120"/>
         <element name="ArchiveResponse" positionX="-648" positionY="-81" width="128" height="105"/>
         <element name="ArchiveResponseHeader" positionX="-657" positionY="-99" width="128" height="90"/>
-        <element name="AudioPlay" positionX="-675" positionY="-108" width="128" height="270"/>
-        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="195"/>
+        <element name="Audio" positionX="-675" positionY="-108" width="128" height="300"/>
+        <element name="Bookmark" positionX="-207" positionY="-81" width="128" height="210"/>
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
         <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="135"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="90"/>

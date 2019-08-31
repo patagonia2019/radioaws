@@ -129,7 +129,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         if detail.text.count <= 0 {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
@@ -163,7 +163,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = false
@@ -225,7 +225,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         hasDuration = true
     }
@@ -256,7 +256,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmarked = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = true
@@ -272,24 +272,24 @@ class AudioViewModel: BaseViewModelProtocol {
     }
 
     /// initialization of the view model for bookmarked audios
-    init(bookmark: Bookmark?) {
-        section = bookmark?.section ?? ControllerName.bookmark.rawValue
-        detail.text = bookmark?.detail ?? ""
-        id = bookmark?.id ?? ""
-        placeholderImageName = bookmark?.placeholder
+    init(audio: Audio?) {
+        section = audio?.section ?? ControllerName.bookmark.rawValue
+        detail.text = audio?.detail ?? ""
+        id = audio?.id ?? ""
+        placeholderImageName = audio?.placeholder
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-        subTitle.text = bookmark?.subTitle ?? ""
-        if let imageUrl = bookmark?.thumbnailUrl,
+        subTitle.text = audio?.subTitle ?? ""
+        if let imageUrl = audio?.thumbnailUrl,
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
         }
-        if let audioUrl = bookmark?.url,
+        if let audioUrl = audio?.urlString,
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
         }
-        title.text = bookmark?.title ?? ""
+        title.text = audio?.title ?? ""
         isBookmarked = true
     }
 
@@ -299,7 +299,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool {
-        return Bookmark.search(byUrl: url?.absoluteString) != nil
+        return Audio.search(byUrl: url?.absoluteString)?.isBookmark ?? false
     }
 
     /// Use the url of the stream/audio as an AVURLAsset
@@ -355,7 +355,7 @@ extension AudioViewModel {
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
 
         isBookmarked = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isReadyToPlay(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = false

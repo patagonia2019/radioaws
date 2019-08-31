@@ -185,13 +185,13 @@ class SearchController: BaseController {
                 }
             }
 
-            if let bookmarks = Bookmark.search(byName: self.textToSearch), bookmarks.count > 0 {
-                let bookmarkModels = bookmarks.map({ AudioViewModel(bookmark: $0) })
-                if bookmarkModels.count > 0 {
+            if let audios = Audio.search(byName: self.textToSearch), audios.count > 0 {
+                let audioModels = audios.map({ AudioViewModel(audio: $0) })
+                if audioModels.count > 0 {
                     let model = CatalogViewModel()
                     model.isExpanded = false
                     model.title.text = AudioViewModel.ControllerName.bookmark.rawValue
-                    model.audios = bookmarkModels
+                    model.audios = audioModels
                     self.models.append(model)
                 }
             }
