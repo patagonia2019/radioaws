@@ -7,9 +7,25 @@
 //
 
 import UIKit
+import JFCore
 
 extension UIToolbar {
     
+    private func timeStringFor(seconds: Float) -> String? {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second, .minute, .hour]
+        formatter.zeroFormattingBehavior = .pad
+
+        guard let output = formatter.string(from: TimeInterval(seconds)) else {
+            return nil
+        }
+        if seconds < 3600 {
+            guard let rng = output.range(of: ":") else { return nil }
+            return String(output[rng.upperBound...])
+        }
+        return output
+    }
+
     func reloadToolbar() {
         
         let stream = StreamPlaybackManager.instance
@@ -22,7 +38,7 @@ extension UIToolbar {
         
         let image = stream.image()
         if let image = image {
-            let size = CGSize(width: 40, height: 40)
+            let size = CGSize(width: 56, height: 56)
             let imageView = UIImageView.init(image: image)
             imageView.contentMode = .scaleAspectFit
             imageView.frame = CGRect(origin: .zero, size: image.size)
@@ -33,9 +49,28 @@ extension UIToolbar {
         }
         
         if stream.hasDuration() {
+            let slider = UISlider(frame: CGRect(origin: .zero, size: CGSize(width: frame.size.width/4, height: frame.size.height)))
+            slider.minimumTrackTintColor = .lavender
+            slider.maximumTrackTintColor = .blueberry
+            let currentStreamTime = stream.getCurrentTime()
+            let totalStreamTime = stream.getTotalTime()
+            slider.value = Float(currentStreamTime)
+            slider.maximumValue = Float(totalStreamTime)
+            slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+            let currentTimeLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: 20, height: frame.size.height)))
+            currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
+
+            let totalTimeLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: 20, height: frame.size.height)))
+            totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
+            
             all.append(contentsOf: [
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(UIToolbar.handleRewind(_:)))
+                UIBarButtonItem(customView: currentTimeLabel),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(customView: slider),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(customView: totalTimeLabel),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
                 ])
         }
         all.append(contentsOf: [
@@ -44,18 +79,27 @@ extension UIToolbar {
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             ])
         
-        if stream.hasDuration() {
-            all.append(
-                UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(UIToolbar.handleFastForward(_:)))
-                )
-        }
-        
         if image != nil {
-            let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: .info_circle))", style: .done, target: self, action: #selector(UIToolbar.info(_:)))
+            let audioPlayInfo = StreamPlaybackManager.instance.info()
+            var isError = false
+            if let error = audioPlayInfo?.2, error.count > 0 {
+                isError = true
+            }
+            let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: isError ? .bug : .info_circle))", style: .done, target: self, action: #selector(UIToolbar.info(_:)))
             guard let font = UIFont(name: Commons.font.awesome, size: Commons.font.size.XXL) else {
                 fatalError()
             }
-            info.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
+            if isError {
+                info.setTitleTextAttributes([NSAttributedString.Key.font: font,
+                                             NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)
+            }
+            else {
+                info.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
+            }
+            info.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .highlighted)
+            info.customView?.heightAnchor.constraint(equalToConstant: 56).isActive = true
+            info.customView?.widthAnchor.constraint(equalToConstant: 56).isActive = true
+
             all.append(contentsOf: [
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 info,
@@ -63,18 +107,11 @@ extension UIToolbar {
                 ])
         }
         items = all
-        
-        
-    }
-
-    @objc private func handleRewind(_ button: UIBarButtonItem) {
-        StreamPlaybackManager.instance.backward()
-//        reloadData()
     }
     
-    @objc private func handleFastForward(_ button: UIBarButtonItem) {
-        StreamPlaybackManager.instance.forward()
-//        reloadData()
+    @objc private func sliderValueChanged(_ sender: UISlider?) {
+        let value = sender?.value ?? 0
+        StreamPlaybackManager.instance.playPosition(position: Double(value))
     }
     
     @objc private func handlePlay(_ button: UIBarButtonItem) {
@@ -85,17 +122,20 @@ extension UIToolbar {
         } else {
             stream.playCurrentPosition()
         }
-//        reloadData()
     }
     
     @objc private func info(_ sender: Any?) {
         let audioPlayInfo = StreamPlaybackManager.instance.info()
-        AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: nil)
+        var error: JFError?
+        if let errorMessage = audioPlayInfo?.2 {
+            error = JFError(code: 0, desc: errorMessage, reason: audioPlayInfo?.2, suggestion: "", path: "", line: "", url: "", underError: nil)
+        }
+        AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: error)
     }
 
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFits = super.sizeThatFits(size)
-        sizeThatFits.height = 64
+        sizeThatFits.height = 56
         return sizeThatFits
     }
 }

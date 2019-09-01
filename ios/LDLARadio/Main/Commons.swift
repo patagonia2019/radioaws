@@ -15,11 +15,13 @@ class Commons {
     struct font {
         static let name = "Arial"
         struct size {
-            static let XXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 34 : 20
-            static let XL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 28 : 18
-            static let L: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 24 : 16
-            static let M: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 20 : 14
-            static let S: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 18 : 12
+            static let XXXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 40 : 36
+            static let XXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 36 : 32
+            static let XL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 32 : 28
+            static let L: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 28 : 24
+            static let M: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 26 : 20
+            static let S: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 22 : 16
+            static let XS: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 18 : 12
         }
         static let awesome = "FontAwesome"
     }
@@ -38,6 +40,7 @@ class Commons {
             case apple_alt = 0xf5d1
             case ban = 0xf05e
             case battery_empty = 0xf244
+            case bug = 0xf188
             case cat = 0xf6be
             case certificate = 0xf0a3
             case chevron_up = 0xf077

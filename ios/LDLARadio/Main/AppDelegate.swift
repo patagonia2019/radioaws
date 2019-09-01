@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.S))
+        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.XS))
 
         changeAppearance()
 
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func changeAppearance() {
         let aqua: UIColor = .aqua
-        guard let font = UIFont(name: Commons.font.name, size: Commons.font.size.S) else {
+        guard let font = UIFont(name: Commons.font.name, size: Commons.font.size.XS) else {
             fatalError()
         }
         let attributes = [NSAttributedString.Key.font: font,

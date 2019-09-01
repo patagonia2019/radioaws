@@ -126,14 +126,14 @@ extension Audio {
         return AVURLAsset(url: url)
     }
 
-    func info() -> (String, String) {
+    func info() -> (String, String, String?, String?) {
         var array = [String]()
         for str in [title, subTitle, section, detail] {
             if let str = str, str.count > 0 {
                 array.append(str)
             }
         }
-        return (array.joined(separator: ".\n"), detail ?? "")
+        return (array.joined(separator: ".\n"), descript ?? "", errorTitle, errorMessage)
     }
     
     /// Fetch an objects not sync with cloud kit
@@ -184,9 +184,6 @@ extension Audio {
         BaseController.isBookmarkChanged = true
         
         isBookmark = !isBookmark
-//        CloudKitManager.instance.save(audio: self) { errorJf in
-//            self.error = errorJf?.message()
-//        }
         Analytics.logFunction(function: "bookmark",
                               parameters: ["action": isBookmark as AnyObject,
                                            "title": title as AnyObject,

@@ -331,7 +331,8 @@
         </userInfo>
     </entity>
     <entity name="Model" representedClassName=".Model" isAbstract="YES" syncable="YES" codeGenerationType="class">
-        <attribute name="error" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="errorMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="errorTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="Quote" representedClassName=".Quote" parentEntity="Model" syncable="YES" codeGenerationType="class">
@@ -774,7 +775,7 @@
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
         <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="135"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="90"/>
-        <element name="Model" positionX="-1.640625" positionY="-51.85546875" width="128" height="75"/>
+        <element name="Model" positionX="-1.640625" positionY="-51.85546875" width="128" height="90"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
         <element name="RNABand" positionX="-888.65625" positionY="-92.51171875" width="128" height="90"/>
         <element name="RNACurrentProgram" positionX="-685.109375" positionY="-48.92578125" width="128" height="135"/>

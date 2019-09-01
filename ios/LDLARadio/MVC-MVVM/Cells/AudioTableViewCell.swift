@@ -25,7 +25,6 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var bookmarkButton: UIButton!
 
     weak var delegate: AudioTableViewCellDelegate?
-    fileprivate let formatter = DateComponentsFormatter()
     let gradientBg = CAGradientLayer()
     let gradientPlayBg = CAGradientLayer()
 
@@ -85,9 +84,6 @@ class AudioTableViewCell: UITableViewCell {
         gradientPlayBg.frame = contentView.bounds
         gradientPlayBg.isHidden = false
         contentView.layer.insertSublayer(gradientPlayBg, at: 1)
-
-        formatter.allowedUnits = [.second, .minute, .hour]
-        formatter.zeroFormattingBehavior = .pad
     }
 
     override func prepareForReuse() {
@@ -101,6 +97,12 @@ class AudioTableViewCell: UITableViewCell {
 
         downloadProgressView.isHidden = true
         bookmarkButton.isHighlighted = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientPlayBg.frame = contentView.bounds
+        gradientBg.frame = contentView.bounds
     }
 
     @IBAction func bookmarkAction(_ sender: UIButton?) {

@@ -125,7 +125,8 @@ class CloudKitManager {
 
         let recordId = CKRecord.ID.init(recordName: recordName)
         remove(withRecordID: recordId) { (error) in
-            audio.error = error?.message()
+            audio.errorTitle = error?.title()
+            audio.errorMessage = error?.message()
             finishClosure?(error)
         }
     }
@@ -184,7 +185,8 @@ class CloudKitManager {
                                               reason: "Cannot save Audio",
                                               suggestion: "Please check your internet connection",
                                               underError: error as NSError?)
-                        audio.error = jferror.message()
+                        audio.errorTitle = jferror.title()
+                        audio.errorMessage = jferror.message()
                         finishClosure?(jferror)
                         return
                     }

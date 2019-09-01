@@ -17,15 +17,15 @@ class CatalogViewModel: BaseViewModelProtocol {
     let iconColor = UIColor.lavender
 
     var url: URL?
-    static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 44
+    static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 70
 
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.XS), isHidden: true, lines: 1)
 
     var isBookmarked: Bool?
-    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.XL), isHidden: true, lines: 1)
+    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.L), isHidden: true, lines: 1)
 
     var tree: String = ""
 
@@ -168,12 +168,6 @@ class CatalogViewModel: BaseViewModelProtocol {
         tree = superTree ?? ""
         detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
 
-        let sortByTitle = [NSSortDescriptor(key: "title", ascending: true)]
-        if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
-            archiveFiles.count > 0 {
-            audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
-        }
-
         if let imageUrl = archiveDoc?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let urlChecked = URL(string: imageUrl) {
             thumbnailUrl = urlChecked
@@ -211,6 +205,12 @@ class CatalogViewModel: BaseViewModelProtocol {
             isExpanded = nil
         } else {
             isExpanded = isAlreadyExpanded
+        }
+        
+        let sortByTitle = [NSSortDescriptor(key: "title", ascending: true)]
+        if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
+            archiveFiles.count > 0 {
+            audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
         }
     }
 

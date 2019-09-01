@@ -60,7 +60,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var title = LabelViewModel()
 
-    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: false, lines: 1)
+    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String?

@@ -95,7 +95,8 @@ class StreamPlaybackManager: NSObject {
                                 reason: "Audio Session failed",
                                 suggestion: "Please check the audio in your device",
                                 underError: error)
-            audio?.error = error.message()
+            audio?.errorTitle = error.title()
+            audio?.errorMessage = error.message()
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerError: error)
             }
@@ -223,7 +224,7 @@ class StreamPlaybackManager: NSObject {
         }
     }
     
-    public func info() -> (String, String)? {
+    public func info() -> (String, String, String?, String?)? {
         return audio?.info()
     }
 
@@ -260,6 +261,10 @@ class StreamPlaybackManager: NSObject {
 
     func isReadyToPlay(url: String? = nil) -> Bool {
         return isTryingToPlay(url: url ?? audio?.urlString) && readyForPlayback
+    }
+    
+    func isAboutToPlay(url: String? = nil) -> Bool {
+        return isTryingToPlay(url: url ?? audio?.urlString)
     }
 
     func isTryingToPlay(url: String?) -> Bool {
@@ -418,8 +423,8 @@ class StreamPlaybackManager: NSObject {
                                         reason: "Player cannot play",
                                         suggestion: "Please check your internet connection",
                                         underError: nil)
-
-                    audio?.error = error.message()
+                    audio?.errorTitle = error.title()
+                    audio?.errorMessage = error.message()
                     DispatchQueue.main.async {
                         self.delegate?.streamPlaybackManager(self, playerError: error)
                     }
@@ -456,7 +461,8 @@ class StreamPlaybackManager: NSObject {
                                         reason: "Player failed",
                                         suggestion: "Please check your internet connection",
                                         underError: playerItem.error as NSError?)
-                    audio?.error = error.message()
+                    audio?.errorTitle = error.title()
+                    audio?.errorMessage = error.message()
                     DispatchQueue.main.async {
                         self.delegate?.streamPlaybackManager(self, playerError: error)
                     }
@@ -727,7 +733,8 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                                         reason: "Audio Session failed",
                                         suggestion: "Please check the audio in your device",
                                         underError: nil)
-                    audio?.error = errorjf.message()
+                    audio?.errorTitle = errorjf.title()
+                    audio?.errorMessage = errorjf.message()
                     DispatchQueue.main.async {
                         self.delegate?.streamPlaybackManager(self, playerError: errorjf)
                     }

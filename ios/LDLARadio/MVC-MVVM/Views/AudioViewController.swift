@@ -17,6 +17,7 @@ class AudioViewController: UITableViewController {
     // MARK: Properties
 
     var isFullScreen: Bool = false
+    fileprivate var timerPlayed: Timer?
 
     @IBOutlet weak var refreshButton: UIBarButtonItem!
 
@@ -118,9 +119,18 @@ class AudioViewController: UITableViewController {
         else {
             navigationItem.leftBarButtonItems = nil
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
+        if let timerPlayed = timerPlayed {
+            timerPlayed.invalidate()
+        }
+
         let stream = StreamPlaybackManager.instance
-        stream.delegate = self
+        stream.delegate = nil
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -175,31 +185,33 @@ class AudioViewController: UITableViewController {
         navigationItem.prompt = controller.prompt()
         navigationItem.title = controller.title()
         tableView.reloadData()
-        if let navigationBar = navigationController?.navigationBar,
-            let tabBar = navigationController?.tabBarController?.tabBar ??
-            self.tabBarController?.tabBar {
-
-            navigationBar.isHidden = isFullScreen
-            tabBar.isHidden = isFullScreen
-            navigationController?.setToolbarHidden(!isFullScreen, animated: false)
-            navigationController?.toolbar.isHidden = !isFullScreen
-            tableView.allowsSelection = !isFullScreen
-            tableView.isScrollEnabled = !isFullScreen
-        }
-        reloadToolbar()
+        
+        reloadTimer()
     }
-
-    private func reloadToolbar() {
+    
+    private func reloadTimer() {
+        
+        let stream = StreamPlaybackManager.instance
+        stream.delegate = self
+        
+        if let timerPlayed = timerPlayed {
+            timerPlayed.invalidate()
+        }
+        
+        if stream.isReadyToPlay() {
+            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
+        }
+        else {
+            guard let toolbar = navigationController?.toolbar else { return }
+            navigationController?.setToolbarHidden(true, animated: false)
+            toolbar.isHidden = true
+        }
+    }
+    
+    @objc private func reloadToolbar() {
         
         guard let toolbar = navigationController?.toolbar else { return }
         
-        let stream = StreamPlaybackManager.instance
-        
-        if stream.isReadyToPlay() == false {
-            navigationController?.setToolbarHidden(true, animated: false)
-            navigationController?.toolbar.isHidden = true
-            return
-        }
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.toolbar.isHidden = false
         toolbar.reloadToolbar()
@@ -518,6 +530,6 @@ extension AudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
         print("JF CHANGE")
         _ = streamPlaybackManager.getCurrentTime()
-        reloadData()
+        reloadData()        
     }
 }
