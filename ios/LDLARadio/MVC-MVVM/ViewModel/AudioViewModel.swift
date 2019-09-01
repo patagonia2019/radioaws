@@ -309,21 +309,7 @@ class AudioViewModel: BaseViewModelProtocol {
     }
 
     func height() -> Float {
-        if isFullScreen {
-            return Float(UIScreen.main.bounds.size.height)
-        }
-        if isPlaying {
-            if hasDuration || StreamPlaybackManager.instance.hasDuration(url: urlString()) {
-                if UIScreen.main.bounds.size.height < 600 {
-                    return Float(UIScreen.main.bounds.size.height * 0.8)
-                }
-                return Float(UIScreen.main.bounds.size.height * 0.5)
-            } else {
-                return 300
-            }
-        } else {
-            return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
-        }
+        return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
     }
 }
 

@@ -162,7 +162,6 @@ class CloudKitManager {
         ckAudio?.setObject(audio.isDownloading as CKRecordValue?, forKey: "isDownloading")
         ckAudio?.setObject(audio.isPlaying as CKRecordValue?, forKey: "isPlaying")
         ckAudio?.setObject(audio.placeholder as CKRecordValue?, forKey: "placeholder")
-        ckAudio?.setObject(audio.recordID as CKRecordValue?, forKey: "recordID")
         ckAudio?.setObject(audio.section as CKRecordValue?, forKey: "section")
         ckAudio?.setObject(audio.subTitle as CKRecordValue?, forKey: "subTitle")
         ckAudio?.setObject(audio.thumbnailUrl as CKRecordValue?, forKey: "thumbnailUrl")

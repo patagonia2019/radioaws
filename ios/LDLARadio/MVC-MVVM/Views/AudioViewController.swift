@@ -118,6 +118,9 @@ class AudioViewController: UITableViewController {
         else {
             navigationItem.leftBarButtonItems = nil
         }
+        
+        let stream = StreamPlaybackManager.instance
+        stream.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -192,93 +195,14 @@ class AudioViewController: UITableViewController {
         
         let stream = StreamPlaybackManager.instance
         
-        if stream.isReadyToPlay() == false || isFullScreen {
+        if stream.isReadyToPlay() == false {
             navigationController?.setToolbarHidden(true, animated: false)
             navigationController?.toolbar.isHidden = true
             return
         }
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.toolbar.isHidden = false
-        
-        var items = [UIBarButtonItem]()
-
-        let image = stream.image()
-        if let image = image {
-            let size = CGSize(width: 40, height: 40)
-            let imageView = UIImageView.init(image: image)
-            imageView.contentMode = .scaleAspectFit
-            imageView.frame = CGRect(origin: .zero, size: image.size)
-            imageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
-            imageView.widthAnchor.constraint(equalToConstant: size.width).isActive = true
-            
-            items.append(contentsOf: [
-                UIBarButtonItem(customView: imageView)
-                ])
-        }
-        
-        if stream.hasDuration() {
-            items.append(contentsOf: [
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: .rewind, target: self, action: #selector(AudioViewController.handleRewind(_:)))
-                ])
-        }
-        items.append(contentsOf: [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: stream.isPlaying() ? .pause : .play, target: self, action: #selector(AudioViewController.handlePlay(_:))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        ])
-        
-        if stream.hasDuration() {
-            items.append(contentsOf: [
-                UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(AudioViewController.handleFastForward(_:)))
-                ])
-        }
-
-        if image != nil {
-            let info = UIBarButtonItem(title: "\(Commons.symbols.showAwesome(icon: .info_circle))", style: .done, target: self, action: #selector(AudioViewController.info(_:)))
-            guard let font = UIFont(name: Commons.font.awesome, size: Commons.font.size.XXL) else {
-                fatalError()
-            }
-            let attribute = [NSAttributedString.Key.font: font]
-            for state in [.normal, .selected] as [UIControl.State] {
-                info.setTitleTextAttributes(attribute, for: state)
-            }
-            info.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .selected)
-            items.append(contentsOf: [
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                info,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            ])
-        }
-        toolbar.items = items
-        
-
-    }
-
-    @objc private func handleRewind(_ button: UIBarButtonItem) {
-        StreamPlaybackManager.instance.backward()
-        reloadData()
-    }
-
-    @objc private func handleFastForward(_ button: UIBarButtonItem) {
-        StreamPlaybackManager.instance.forward()
-        reloadData()
-    }
-
-    @objc private func handlePlay(_ button: UIBarButtonItem) {
-        let stream = StreamPlaybackManager.instance
-        let isPlaying = stream.isPlaying()
-        if isPlaying {
-            stream.pause()
-        } else {
-            stream.playCurrentPosition()
-        }
-        reloadData()
-    }
-    
-    @objc private func info(_ sender: Any?) {
-        let audioPlayInfo = StreamPlaybackManager.instance.info()
-        showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: nil)
+        toolbar.reloadToolbar()
     }
 
     private func info(model: CatalogViewModel?) {
@@ -300,8 +224,6 @@ class AudioViewController: UITableViewController {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
                 DispatchQueue.main.async {
                     let cell = self.tableView.cellForRow(at: indexPath) as? AudioTableViewCell
-                    let stream = StreamPlaybackManager.instance
-                    stream.delegate = cell
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
                     self.reloadToolbar()
                     if audio.isPlaying {
@@ -670,4 +592,40 @@ extension AudioViewController: AudioTableViewCellDelegate {
         reloadData()
     }
 
+}
+
+/**
+ Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
+ */
+extension AudioViewController: AssetPlaybackDelegate {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
+        Analytics.logError(error: error)
+//
+//        model?.isPlaying = false
+//        layoutIfNeeded()
+//        delegate?.audioTableViewCell(self, didUpdate: false)
+//
+        self.showAlert(error: error)
+        reloadData()
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
+        if isPlaying {
+            print("JF FINALLY PLAYING")
+        } else {
+            print("JF PAUSE")
+        }
+        reloadData()
+//        model?.isPlaying = isPlaying
+//        delegate?.audioTableViewCell(self, didUpdate: isPlaying)
+//        layoutIfNeeded()
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
+        print("JF CHANGE")
+        reloadData()
+//        model?.isPlaying = true
+//        layoutIfNeeded()
+//        delegate?.audioTableViewCell(self, didUpdate: true)
+    }
 }

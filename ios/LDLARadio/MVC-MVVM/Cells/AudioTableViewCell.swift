@@ -49,7 +49,7 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var bugButton: UIButton!
 
-    fileprivate var timerPlayed: Timer?
+//    fileprivate var timerPlayed: Timer?
 
     var model: AudioViewModel? = nil {
         didSet {
@@ -80,7 +80,8 @@ class AudioTableViewCell: UITableViewCell {
                 }
             }
             bookmarkButton.isHighlighted = model?.isBookmarked ?? false
-            bugButton.isHidden = (model?.error != nil) ? false : true
+            bugButton.isHidden = true
+//            bugButton.isHidden = (model?.error != nil) ? false : true
             targetSoundButton.isHidden = true
             graphButton.isHidden = true
 
@@ -89,46 +90,24 @@ class AudioTableViewCell: UITableViewCell {
             let modelIsPlaying = model?.isPlaying ?? false
 
             if modelIsPlaying {
-                resizeButton.isHidden = false
-                resizeButton.isHighlighted = (model?.isFullScreen ?? false)
-
                 gradientPlayBg.isHidden = false
-                playButton.isHidden = false
-                playButton.isHighlighted = true
-
-                infoButton.isHidden = !(model?.info.count ?? 0 > 0)
-                selectionStyle = model?.selectionStyle ?? .none
-                // show big logo, and hide thumbnail
-                logoView.isHidden = false
-                thumbnailView.isHidden = true
-                playerStack.isHidden = false
-
-                if let timerPlayed = timerPlayed {
-                    timerPlayed.invalidate()
-                }
-
-                timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimePlayed), userInfo: nil, repeats: true)
-
             } else {
-                resizeButton.isHidden = true
                 gradientPlayBg.isHidden = true
-                playButton.isHighlighted = false
-                selectionStyle = .none
-                // show thumbnail, and hide logo
-                logoView.isHidden = true
-                thumbnailView.isHidden = false
-                playerStack.isHidden = true
-                progressStack.isHidden = true
-                if let timerPlayed = timerPlayed {
-                    timerPlayed.invalidate()
-                }
-
-                backwardButton.isHidden = true
-                forwardButton.isHidden = true
-                startOfStreamButton.isHidden = true
-                endOfStreamButton.isHidden = true
-
             }
+            resizeButton.isHidden = true
+            playButton.isHighlighted = false
+            selectionStyle = .none
+            // show thumbnail, and hide logo
+            logoView.isHidden = true
+            thumbnailView.isHidden = false
+            playerStack.isHidden = true
+            progressStack.isHidden = true
+            backwardButton.isHidden = true
+            forwardButton.isHidden = true
+            startOfStreamButton.isHidden = true
+            endOfStreamButton.isHidden = true
+            repeatButton.isHidden = true
+
 
             setNeedsLayout()
         }
@@ -173,39 +152,39 @@ class AudioTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        let stream = StreamPlaybackManager.instance
-        let currentStreamTime = stream.getCurrentTime()
-        let isPlaying = model?.isPlaying ?? false
-        let hasDuration = stream.hasDuration(url: model?.urlString())
-
-        repeatButton.isHidden = !hasDuration
-        backwardButton.isHidden = !hasDuration
-        forwardButton.isHidden = !hasDuration
-        startOfStreamButton.isHidden = !hasDuration
-        endOfStreamButton.isHidden = !hasDuration
-        progressStack.isHidden = !hasDuration
-        gradientBg.frame = contentView.bounds
-        gradientPlayBg.frame = contentView.bounds
-
-        playButton.isHighlighted = isPlaying
-        gradientPlayBg.isHidden = !isPlaying
-
-        if hasDuration {
-            let totalStreamTime = stream.getTotalTime()
-            sliderView.value = Float(currentStreamTime)
-            sliderView.maximumValue = Float(totalStreamTime)
-            currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
-            totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
-
-            if sliderView.value >= sliderView.maximumValue {
-                playButton.isHighlighted = false
-                gradientPlayBg.isHidden = true
-                stream.pause()
-            }
-        }
-
-        let commandCenter = MPRemoteCommandCenter.shared()
-        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .one
+//        let stream = StreamPlaybackManager.instance
+//        let currentStreamTime = stream.getCurrentTime()
+//        let isPlaying = model?.isPlaying ?? false
+//        let hasDuration = stream.hasDuration(url: model?.urlString())
+//
+//        repeatButton.isHidden = !hasDuration
+//        backwardButton.isHidden = !hasDuration
+//        forwardButton.isHidden = !hasDuration
+//        startOfStreamButton.isHidden = !hasDuration
+//        endOfStreamButton.isHidden = !hasDuration
+//        progressStack.isHidden = !hasDuration
+//        gradientBg.frame = contentView.bounds
+//        gradientPlayBg.frame = contentView.bounds
+//
+//        playButton.isHighlighted = isPlaying
+//        gradientPlayBg.isHidden = !isPlaying
+//
+//        if hasDuration {
+//            let totalStreamTime = stream.getTotalTime()
+//            sliderView.value = Float(currentStreamTime)
+//            sliderView.maximumValue = Float(totalStreamTime)
+//            currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
+//            totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
+//
+//            if sliderView.value >= sliderView.maximumValue {
+//                playButton.isHighlighted = false
+//                gradientPlayBg.isHidden = true
+//                stream.pause()
+//            }
+//        }
+//
+//        let commandCenter = MPRemoteCommandCenter.shared()
+//        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .one
 
     }
 
@@ -309,34 +288,3 @@ protocol AudioTableViewCellDelegate: class {
     
 }
 
-/**
- Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
- */
-extension AudioTableViewCell: AssetPlaybackDelegate {
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
-        Analytics.logError(error: error)
-        model?.isPlaying = false
-        layoutIfNeeded()
-        delegate?.audioTableViewCell(self, didUpdate: false)
-
-    }
-
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
-        if isPlaying {
-            print("JF FINALLY PLAYING")
-        } else {
-            print("JF PAUSE")
-        }
-        model?.isPlaying = isPlaying
-
-        delegate?.audioTableViewCell(self, didUpdate: isPlaying)
-        layoutIfNeeded()
-    }
-
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
-        print("JF CHANGE")
-        model?.isPlaying = true
-        layoutIfNeeded()
-        delegate?.audioTableViewCell(self, didUpdate: true)
-    }
-}

@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var userDefault: UserDefaults?
 
+    static var instance: AppDelegate {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+        return delegate
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
         // force english

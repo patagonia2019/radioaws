@@ -164,14 +164,28 @@ class StreamPlaybackManager: NSObject {
             }
             print("AVAudioSession.routeChange")
             break
-        case AVAudioSession.mediaServicesWereLostNotification: // item has failed to play to its end time
+        case AVAudioSession.mediaServicesWereLostNotification: // Posted when the media server is terminated.
             print("AVAudioSession.mediaServicesWereLost")
             break
-        case AVAudioSession.mediaServicesWereResetNotification: // media did not arrive in time to continue playback
+        case AVAudioSession.mediaServicesWereResetNotification: // Posted when the media server restarts.
             print("AVAudioSession.mediaServicesWereReset")
             break
-        case AVAudioSession.silenceSecondaryAudioHintNotification: // a new access log entry has been added
+        case AVAudioSession.silenceSecondaryAudioHintNotification: // Posted when the primary audio from other applications starts and stops.
             print("AVAudioSession.silenceSecondaryAudioHint")
+            // Determine hint type
+            guard let userInfo = note.userInfo,
+                let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
+                let type = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: typeValue) else {
+                    return
+            }
+            
+            if type == .begin {
+                // Other app audio started playing - mute secondary audio
+                pause()
+            } else {
+                // Other app audio stopped playing - restart secondary audio
+                playCurrentPosition()
+            }
             break
         default:
             print("AVAudioSession.default")
@@ -181,7 +195,7 @@ class StreamPlaybackManager: NSObject {
 
     @objc func playerItemNoteHandler(note: Notification) {
         switch note.name {
-        case .AVPlayerItemTimeJumped:
+        case .AVPlayerItemTimeJumped: // A notification that's posted when the item’s current time has changed discontinuously.
             print("AVPlayerItemTimeJumped")
             break
         case .AVPlayerItemDidPlayToEndTime: // item has played to its end time
@@ -194,10 +208,10 @@ class StreamPlaybackManager: NSObject {
             print("AVPlayerItemPlaybackStalled")
             break
         case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
-            print("AVPlayerItemNewAccessLogEntry")
+            print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
             break
         case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
-            print("AVPlayerItemNewErrorLogEntry")
+            print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
             break
         default:
             break
@@ -285,10 +299,10 @@ class StreamPlaybackManager: NSObject {
     }
 
     func pause() {
-        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
         audio?.isPlaying = false
         player.pause()
         updateRemoteCommandCenter()
+        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
     }
 
     func forward() {
@@ -433,7 +447,6 @@ class StreamPlaybackManager: NSObject {
             }
 
         case #keyPath(AVPlayer.currentItem):
-            delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
             playCurrentPosition()
 
         default:
