@@ -220,23 +220,9 @@ class AudioViewController: UITableViewController {
 
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
-                DispatchQueue.main.async {
-                    let cell = self.tableView.cellForRow(at: indexPath) as? AudioTableViewCell
-                    self.controller.play(forSection: indexPath.section, row: indexPath.row)
-                    self.reloadToolbar()
-                    if audio.isPlaying {
-                        self.reloadData()
-                    }
-                }
-            }) { (finished) in
-                if finished {
-                    if audio.isPlaying {
-                        self.showCellAtTop(at: indexPath)
-                    }
-                }
-            }
+        if object is AudioViewModel {
+            controller.play(forSection: indexPath.section, row: indexPath.row)
+            reloadData()
         } else if let section = object as? CatalogViewModel {
             if controller is RadioTimeController {
                 performSegue(withIdentifier: Commons.segue.catalog, sender: section)
@@ -259,20 +245,6 @@ class AudioViewController: UITableViewController {
             }
         }
 
-    }
-
-    private func showCellAtTop(at indexPath: IndexPath) {
-        if isFullScreen {
-            guard let cell = self.tableView.cellForRow(at: indexPath) else {
-                self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-                return
-            }
-            var point = cell.frame.origin
-            point.y += self.tableView.frame.origin.y
-            self.tableView.setContentOffset(point, animated: false)
-        } else {
-            self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-        }
     }
 
     private func expand(model: CatalogViewModel?, incrementPage: Bool = false, section: Int) {
@@ -520,78 +492,6 @@ extension AudioViewController: AudioTableViewCellDelegate {
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
-    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        play(indexPath: indexPath)
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            Analytics.logFunction(function: "resize",
-                                  parameters: ["audio": audio.title.text as AnyObject,
-                                               "isPlaying": audio.isPlaying as AnyObject,
-                                               "didResize": newState as AnyObject,
-                                               "url": audio.urlString() as AnyObject,
-                                               "controller": titleForController() as AnyObject])
-            isFullScreen = audio.isFullScreen
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
-                DispatchQueue.main.async {
-                    self.reloadData()
-                }
-            }) { (finished) in
-                if finished {
-                    self.showCellAtTop(at: indexPath)
-                }
-            }
-
-        }
-
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeTargetSound newState: Bool) {
-
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool) {
-        StreamPlaybackManager.instance.seekEnd()
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeOffset isBackward: Bool) {
-        let stream = StreamPlaybackManager.instance
-        if isBackward {
-            stream.backward()
-        } else {
-            stream.forward()
-        }
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newValue: Float) {
-        StreamPlaybackManager.instance.playPosition(position: Double(newValue))
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        info(indexPath: indexPath)
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            showAlert(title: audio.title.text, message: audio.text, error: audio.error)
-        }
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool) {
-        
-    }
-
-    func audioTableViewCell(_ cell: AudioTableViewCell, didUpdate newValue: Bool) {
-        reloadData()
-    }
-
 }
 
 /**
@@ -600,11 +500,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
 extension AudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
         Analytics.logError(error: error)
-//
-//        model?.isPlaying = false
-//        layoutIfNeeded()
-//        delegate?.audioTableViewCell(self, didUpdate: false)
-//
+
         self.showAlert(error: error)
         reloadData()
     }
@@ -615,17 +511,13 @@ extension AudioViewController: AssetPlaybackDelegate {
         } else {
             print("JF PAUSE")
         }
+        _ = streamPlaybackManager.getCurrentTime()
         reloadData()
-//        model?.isPlaying = isPlaying
-//        delegate?.audioTableViewCell(self, didUpdate: isPlaying)
-//        layoutIfNeeded()
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
         print("JF CHANGE")
+        _ = streamPlaybackManager.getCurrentTime()
         reloadData()
-//        model?.isPlaying = true
-//        layoutIfNeeded()
-//        delegate?.audioTableViewCell(self, didUpdate: true)
     }
 }

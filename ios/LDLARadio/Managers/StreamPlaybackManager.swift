@@ -96,7 +96,9 @@ class StreamPlaybackManager: NSObject {
                                 suggestion: "Please check the audio in your device",
                                 underError: error)
             audio?.error = error.message()
-            delegate?.streamPlaybackManager(self, playerError: error)
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerError: error)
+            }
             return
         }
 
@@ -209,6 +211,9 @@ class StreamPlaybackManager: NSObject {
             break
         case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
             print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+            }
             break
         case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
             print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
@@ -229,7 +234,9 @@ class StreamPlaybackManager: NSObject {
             let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
             audio?.currentTime = currentTime
             if audio?.hasDuration == false {
-                delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: player)
+                DispatchQueue.main.async {
+                    self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+                }
             }
             audio?.hasDuration = true
             return currentTime
@@ -295,6 +302,7 @@ class StreamPlaybackManager: NSObject {
     }
 
     func hasDuration(url: String? = nil) -> Bool {
+        _ = getCurrentTime()
         return isTryingToPlay(url: url ?? audio?.urlString) && audio?.hasDuration ?? false
     }
 
@@ -302,7 +310,9 @@ class StreamPlaybackManager: NSObject {
         audio?.isPlaying = false
         player.pause()
         updateRemoteCommandCenter()
-        delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: false)
+        DispatchQueue.main.async {
+            self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
+        }
     }
 
     func forward() {
@@ -341,7 +351,9 @@ class StreamPlaybackManager: NSObject {
             audio?.isPlaying = true
             player.play()
             updateRemoteCommandCenter()
-            delegate?.streamPlaybackManager(self, playerReadyToPlay: player, isPlaying: true)
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+            }
         } else {
             playPosition(position: position)
         }
@@ -356,7 +368,9 @@ class StreamPlaybackManager: NSObject {
             self.audio?.isPlaying = true
             self.player.play()
             self.updateRemoteCommandCenter()
-            self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+            }
         })
     }
 
@@ -406,7 +420,9 @@ class StreamPlaybackManager: NSObject {
                                         underError: nil)
 
                     audio?.error = error.message()
-                    delegate?.streamPlaybackManager(self, playerError: error)
+                    DispatchQueue.main.async {
+                        self.delegate?.streamPlaybackManager(self, playerError: error)
+                    }
                     return
             }
 
@@ -441,7 +457,9 @@ class StreamPlaybackManager: NSObject {
                                         suggestion: "Please check your internet connection",
                                         underError: playerItem.error as NSError?)
                     audio?.error = error.message()
-                    delegate?.streamPlaybackManager(self, playerError: error)
+                    DispatchQueue.main.async {
+                        self.delegate?.streamPlaybackManager(self, playerError: error)
+                    }
                 }
                 return
             }
@@ -710,7 +728,9 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                                         suggestion: "Please check the audio in your device",
                                         underError: nil)
                     audio?.error = errorjf.message()
-                    delegate?.streamPlaybackManager(self, playerError: errorjf)
+                    DispatchQueue.main.async {
+                        self.delegate?.streamPlaybackManager(self, playerError: errorjf)
+                    }
                     return
                 }
             } catch {
@@ -720,7 +740,9 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                                     suggestion: "Please check the audio in your device",
                                     underError: error as NSError)
 
-                delegate?.streamPlaybackManager(self, playerError: errorjf)
+                DispatchQueue.main.async {
+                    self.delegate?.streamPlaybackManager(self, playerError: errorjf)
+                }
             }
 
         }

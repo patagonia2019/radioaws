@@ -19,37 +19,15 @@ class AudioTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var logoView: UIImageView!
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
-    @IBOutlet weak var repeatButton: UIButton!
 
     weak var delegate: AudioTableViewCellDelegate?
     fileprivate let formatter = DateComponentsFormatter()
     let gradientBg = CAGradientLayer()
     let gradientPlayBg = CAGradientLayer()
-
-    // Player buttons
-    @IBOutlet weak var currentTimeLabel: UILabel!
-    @IBOutlet weak var totalTimeLabel: UILabel!
-    @IBOutlet weak var sliderView: UISlider!
-    @IBOutlet weak var startOfStreamButton: UIButton!
-    @IBOutlet weak var backwardButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var forwardButton: UIButton!
-    @IBOutlet weak var endOfStreamButton: UIButton!
-    @IBOutlet weak var resizeButton: UIButton!
-    @IBOutlet weak var targetSoundButton: UIButton!
-
-    @IBOutlet weak var graphButton: UIButton!
-    @IBOutlet weak var playerStack: UIStackView!
-    @IBOutlet weak var progressStack: UIStackView!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var bugButton: UIButton!
-
-//    fileprivate var timerPlayed: Timer?
 
     var model: AudioViewModel? = nil {
         didSet {
@@ -71,43 +49,21 @@ class AudioTableViewCell: UITableViewCell {
                 }
             }
 
-            logoView.image = model?.placeholderImage
-            thumbnailView.image = logoView.image
             if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
-                    self.thumbnailView.image = self.logoView.image
-                    self.model?.image = self.logoView.image
+                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
+                    self.model?.image = self.thumbnailView.image
                 }
             }
             bookmarkButton.isHighlighted = model?.isBookmarked ?? false
-            bugButton.isHidden = true
-//            bugButton.isHidden = (model?.error != nil) ? false : true
-            targetSoundButton.isHidden = true
-            graphButton.isHidden = true
 
-            infoButton.isHidden = true
-
-            let modelIsPlaying = model?.isPlaying ?? false
-
-            if modelIsPlaying {
+            if model?.isPlaying ?? false {
                 gradientPlayBg.isHidden = false
             } else {
                 gradientPlayBg.isHidden = true
             }
-            resizeButton.isHidden = true
-            playButton.isHighlighted = false
             selectionStyle = .none
             // show thumbnail, and hide logo
-            logoView.isHidden = true
             thumbnailView.isHidden = false
-            playerStack.isHidden = true
-            progressStack.isHidden = true
-            backwardButton.isHidden = true
-            forwardButton.isHidden = true
-            startOfStreamButton.isHidden = true
-            endOfStreamButton.isHidden = true
-            repeatButton.isHidden = true
-
 
             setNeedsLayout()
         }
@@ -143,148 +99,20 @@ class AudioTableViewCell: UITableViewCell {
             label?.numberOfLines = 1
         }
 
-        logoView.image = nil
         downloadProgressView.isHidden = true
         bookmarkButton.isHighlighted = false
-        infoButton.isHidden = true
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-//        let stream = StreamPlaybackManager.instance
-//        let currentStreamTime = stream.getCurrentTime()
-//        let isPlaying = model?.isPlaying ?? false
-//        let hasDuration = stream.hasDuration(url: model?.urlString())
-//
-//        repeatButton.isHidden = !hasDuration
-//        backwardButton.isHidden = !hasDuration
-//        forwardButton.isHidden = !hasDuration
-//        startOfStreamButton.isHidden = !hasDuration
-//        endOfStreamButton.isHidden = !hasDuration
-//        progressStack.isHidden = !hasDuration
-//        gradientBg.frame = contentView.bounds
-//        gradientPlayBg.frame = contentView.bounds
-//
-//        playButton.isHighlighted = isPlaying
-//        gradientPlayBg.isHidden = !isPlaying
-//
-//        if hasDuration {
-//            let totalStreamTime = stream.getTotalTime()
-//            sliderView.value = Float(currentStreamTime)
-//            sliderView.maximumValue = Float(totalStreamTime)
-//            currentTimeLabel.text = timeStringFor(seconds: Float(currentStreamTime))
-//            totalTimeLabel.text = timeStringFor(seconds: Float(totalStreamTime))
-//
-//            if sliderView.value >= sliderView.maximumValue {
-//                playButton.isHighlighted = false
-//                gradientPlayBg.isHidden = true
-//                stream.pause()
-//            }
-//        }
-//
-//        let commandCenter = MPRemoteCommandCenter.shared()
-//        repeatButton.isHighlighted = commandCenter.changeRepeatModeCommand.currentRepeatType == .one
-
     }
 
     @IBAction func bookmarkAction(_ sender: UIButton?) {
         bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
         delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
     }
-
-    @IBAction func playAction(_ sender: UIButton?) {
-        playButton.isHighlighted = !playButton.isHighlighted
-        delegate?.audioTableViewCell(self, didPlay: playButton.isHighlighted)
-    }
-
-    @IBAction func startOfStreamAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didChangePosition: 0)
-    }
-
-    @IBAction func endOfStreamAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didChangeToEnd: true)
-    }
-
-    @IBAction func backwardAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didChangeOffset: true)
-    }
-
-    @IBAction func forwardAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didChangeOffset: false)
-    }
-
-    @IBAction func graphAction(_ sender: UIButton?) {
-        graphButton.isHighlighted = !graphButton.isHighlighted
-        delegate?.audioTableViewCell(self, didShowGraph: graphButton.isHighlighted)
-    }
-
-    @IBAction func infoAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didShowInfo: infoButton.isHighlighted)
-    }
-
-    @IBAction func bugAction(_ sender: UIButton?) {
-        delegate?.audioTableViewCell(self, didShowBug: true)
-    }
-
-    @IBAction func repeatAction(_ sender: UIButton?) {
-        let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.changeRepeatModeCommand.currentRepeatType = repeatButton.isHighlighted ? .one : .off
-        setNeedsLayout()
-    }
-
-    @IBAction func resizeAction(_ sender: UIButton?) {
-        let isFullScreen = !(model?.isFullScreen ?? false)
-        model?.isFullScreen = isFullScreen
-        delegate?.audioTableViewCell(self, didResize: isFullScreen)
-    }
-
-    @IBAction func targetSoundAction(_ sender: UIButton?) {
-        targetSoundButton.isHighlighted = !targetSoundButton.isHighlighted
-        delegate?.audioTableViewCell(self, didChangeTargetSound: targetSoundButton.isHighlighted)
-    }
-
-    @IBAction func sliderValueChanged(_ sender: UISlider?) {
-        let value = sender?.value ?? 0
-        delegate?.audioTableViewCell(self, didChangePosition: value)
-        updateTimeLabel(with: value)
-    }
-
-    @objc fileprivate func updateTimePlayed() {
-        setNeedsLayout()
-    }
-
-    private func updateTimeLabel(with updatedTime: Float) {
-        currentTimeLabel.text = timeStringFor(seconds: updatedTime)
-    }
-
-    private func timeStringFor(seconds: Float) -> String? {
-        guard let output = formatter.string(from: TimeInterval(seconds)) else {
-            return nil
-        }
-        if seconds < 3600 {
-            guard let rng = output.range(of: ":") else { return nil }
-            return String(output[rng.upperBound...])
-        }
-        return output
-    }
-
 }
 
 protocol AudioTableViewCellDelegate: class {
 
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeOffset isBackward: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeToEnd toEnd: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangePosition newState: Float)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didResize newState: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didChangeTargetSound newState: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowGraph newValue: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowInfo newValue: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didShowBug newValue: Bool)
-    func audioTableViewCell(_ cell: AudioTableViewCell, didUpdate newValue: Bool)
     
 }
 
