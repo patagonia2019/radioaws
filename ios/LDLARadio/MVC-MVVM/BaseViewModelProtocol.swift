@@ -19,6 +19,6 @@ protocol BaseViewModelProtocol {
     var accessoryType: UITableViewCell.AccessoryType { get set }
     var title: LabelViewModel { get set }
     var detail: LabelViewModel { get set }
-    var isBookmarked: Bool? { get set }
+    var isBookmark: Bool? { get set }
     var section: String { get set }
 }

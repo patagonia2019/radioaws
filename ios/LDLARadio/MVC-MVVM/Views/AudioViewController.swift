@@ -294,7 +294,7 @@ class AudioViewController: UITableViewController {
                 SwiftSpinner.show(Quote.randomQuote())
             }
 
-            Bookmark.clean()
+            Audio.clean()
             CloudKitManager.instance.clean(finishClosure: { (error) in
                 if error != nil {
                     self.showAlert(title: "Error", message: "Trying to clean", error: error)
@@ -406,9 +406,9 @@ class AudioViewController: UITableViewController {
         var actions = [UITableViewRowAction]()
 
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        var isBookmarked: Bool? = false
+        var isBookmark: Bool? = false
+        let stream = StreamPlaybackManager.instance
         if let audio = object as? AudioViewModel {
-            let stream = StreamPlaybackManager.instance
             let isPlaying = stream.isPlaying(url: audio.urlString())
             let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
                 self.play(indexPath: indexPath)
@@ -416,17 +416,17 @@ class AudioViewController: UITableViewController {
             playAction.backgroundColor = .cayenne
             actions.append(playAction)
 
-            isBookmarked = audio.isBookmarked
+            isBookmark = audio.isBookmark
         }
 
         if let section = object as? CatalogViewModel {
-            isBookmarked = section.isBookmarked
+            isBookmark = section.isBookmark
         }
-        if let isBookmarked = isBookmarked {
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: isBookmarked ? "Delete" : "Add") { (_, indexPath) in
-                self.controller.changeBookmark(indexPath: indexPath)
+        if let isBookmark = isBookmark {
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPath) in
+                self.removeBookmark(indexPath: indexPath)
             }
-            bookmarkAction.backgroundColor = isBookmarked ? .lavender : .blueberry
+            bookmarkAction.backgroundColor = isBookmark ? .lavender : .blueberry
             actions.append(bookmarkAction)
         }
 
@@ -485,6 +485,24 @@ class AudioViewController: UITableViewController {
         }
         SwiftSpinner.hide()
     }
+    
+    private func removeBookmark(indexPath: IndexPath) {
+        if controller is BookmarkController {
+            _ = controller.remove(indexPath: indexPath) { error in
+                if let error = error {
+                    self.showAlert(title: error.title(), message: error.message(), error: error)
+                }
+                else {
+                    self.refresh()
+                }
+            }
+        }
+        else {
+            controller.changeBookmark(indexPath: indexPath)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+
+    }
 
 }
 
@@ -495,8 +513,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
 
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        controller.changeBookmark(indexPath: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        removeBookmark(indexPath: indexPath)
     }
 
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState) {

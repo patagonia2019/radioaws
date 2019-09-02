@@ -67,7 +67,7 @@ extension Audio {
 
     static func create(record: CKRecord) -> Audio? {
 
-        var audio: Audio? = Audio.search(byUrl: record["url"])
+        var audio: Audio? = Audio.search(byUrl: record["urlString"])
 
         if audio == nil {
             audio = Audio.create()
@@ -83,7 +83,7 @@ extension Audio {
         audio?.subTitle = record["subTitle"] as? String
         audio?.thumbnailUrl = record["thumbnailUrl"] as? String
         audio?.title = record["title"] as? String
-        audio?.urlString = record["url"] as? String
+        audio?.urlString = record["urlString"] as? String
         audio?.section = record["section"] as? String
         audio?.recordID = record.recordID.recordName
         audio?.descript = record["descript"] as? String
@@ -171,7 +171,7 @@ extension Audio {
                 fatalError()
             }
             audio?.changeBookmark(useRefresh: useRefresh)
-            model.isBookmarked = audio?.isBookmark
+            model.isBookmark = audio?.isBookmark
 
             if useRefresh {
                 CoreDataManager.instance.save()
@@ -184,10 +184,11 @@ extension Audio {
         BaseController.isBookmarkChanged = true
         
         isBookmark = !isBookmark
+        cloudSynced = false
         Analytics.logFunction(function: "bookmark",
                               parameters: ["action": isBookmark as AnyObject,
                                            "title": title as AnyObject,
                                            "section": section as AnyObject,
-                                           "url": urlString as AnyObject])
+                                           "urlString": urlString as AnyObject])
     }
 }

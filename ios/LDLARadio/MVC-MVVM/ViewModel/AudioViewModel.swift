@@ -50,7 +50,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var text: String?
 
-    var isBookmarked: Bool?
+    var isBookmark: Bool?
 
     var isDownloading: Bool = false
 
@@ -128,7 +128,7 @@ class AudioViewModel: BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
         }
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         if detail.text.count <= 0 {
@@ -162,7 +162,7 @@ class AudioViewModel: BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
         }
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""
@@ -224,7 +224,7 @@ class AudioViewModel: BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
         }
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         hasDuration = true
@@ -255,7 +255,7 @@ class AudioViewModel: BaseViewModelProtocol {
             let urlChecked = URL(string: audioUrl) {
             url = urlChecked
         }
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""
@@ -290,7 +290,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         title.text = audio?.title ?? ""
-        isBookmarked = true
+        isBookmark = true
     }
 
     func urlString() -> String? {
@@ -340,7 +340,7 @@ extension AudioViewModel {
         url = streamUrl(usingBaseUrl: station?.url1, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
 
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
         reFillTitles()
         info = ""

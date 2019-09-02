@@ -24,7 +24,7 @@ class CatalogViewModel: BaseViewModelProtocol {
 
     var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.XS), isHidden: true, lines: 1)
 
-    var isBookmarked: Bool?
+    var isBookmark: Bool?
     var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.L), isHidden: true, lines: 1)
 
     var tree: String = ""
@@ -111,7 +111,7 @@ class CatalogViewModel: BaseViewModelProtocol {
             })
         }
 
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         if audios.count > 0 && sections.count == 0 {
             isExpanded = nil
         }
@@ -144,7 +144,7 @@ class CatalogViewModel: BaseViewModelProtocol {
             }
         }
 
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
 
         text = detail.text
@@ -178,7 +178,7 @@ class CatalogViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
 
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
 
         var textStr = [String]()
         if tree.count > 0 {
@@ -234,27 +234,10 @@ class CatalogViewModel: BaseViewModelProtocol {
                 audios.append(audio)
             }
         }
-        isBookmarked = checkIfBookmarked()
+        isBookmark = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
 
         text = desconcierto?.obs ?? ""
-
-    }
-
-    /// initialization of the view model for bookmarked audios
-    init(bookmark: Bookmark?) {
-        id = bookmark?.id
-        section = bookmark?.section ?? AudioViewModel.ControllerName.bookmark.rawValue
-        title.text = bookmark?.subTitle ?? ""
-        tree = bookmark?.title ?? ""
-        detail.text = bookmark?.detail ?? ""
-        if let catalogUrl = bookmark?.url,
-            let urlChecked = URL(string: catalogUrl) {
-            url = urlChecked
-        }
-        isBookmarked = true
-
-        text = tree + ". " + detail.text
 
     }
 
@@ -262,7 +245,7 @@ class CatalogViewModel: BaseViewModelProtocol {
     func checkIfBookmarked() -> Bool? {
         if audios.count > 0 {
             return audios.filter({ (audio) -> Bool in
-                return audio.isBookmarked ?? false
+                return audio.isBookmark ?? false
             }).count == audios.count
         } else {
             return nil

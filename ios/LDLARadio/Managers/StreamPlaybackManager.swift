@@ -61,6 +61,8 @@ class StreamPlaybackManager: NSObject {
     private var audio: Audio? {
         willSet {
             audio?.isPlaying = false
+            audio?.cloudSynced = false
+
             let urlAsset = audio?.urlAsset()
             urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
             if ((urlAsset?.observationInfo) != nil) {
@@ -70,6 +72,8 @@ class StreamPlaybackManager: NSObject {
 
         didSet {
             audio?.isPlaying = false
+            audio?.cloudSynced = false
+
             if let urlAsset = audio?.urlAsset() {
                 urlAsset.resourceLoader.setDelegate(self, queue: .main)
                 urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
@@ -97,6 +101,8 @@ class StreamPlaybackManager: NSObject {
                                 underError: error)
             audio?.errorTitle = error.title()
             audio?.errorMessage = error.message()
+            audio?.cloudSynced = false
+
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerError: error)
             }
@@ -234,9 +240,16 @@ class StreamPlaybackManager: NSObject {
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
             let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
             audio?.currentTime = currentTime
+            audio?.cloudSynced = false
+
             if audio?.hasDuration == false {
                 DispatchQueue.main.async {
                     self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+                }
+            }
+            else {
+                if Int(audio?.currentTime ?? 0) % 300 == 0 {
+                    CloudKitManager.instance.sync()
                 }
             }
             audio?.hasDuration = true
@@ -280,6 +293,8 @@ class StreamPlaybackManager: NSObject {
         }
 
         audio?.isDownloading = false
+        audio?.cloudSynced = false
+
         if let audioUrl = audio?.downloadFiles?.popLast() {
             audio?.urlString = audioUrl
         }
@@ -313,10 +328,13 @@ class StreamPlaybackManager: NSObject {
 
     func pause() {
         audio?.isPlaying = false
+        audio?.cloudSynced = false
+
         player.pause()
         updateRemoteCommandCenter()
         DispatchQueue.main.async {
             self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
+            CloudKitManager.instance.sync()
         }
     }
 
@@ -354,10 +372,13 @@ class StreamPlaybackManager: NSObject {
         let position = audio?.currentTime ?? 0.0
         if position == 0.0 {
             audio?.isPlaying = true
+            audio?.cloudSynced = false
+
             player.play()
             updateRemoteCommandCenter()
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                CloudKitManager.instance.sync()
             }
         } else {
             playPosition(position: position)
@@ -371,10 +392,13 @@ class StreamPlaybackManager: NSObject {
         }
         player.seek(to: t, completionHandler: { _ in
             self.audio?.isPlaying = true
+            self.audio?.cloudSynced = false
+
             self.player.play()
             self.updateRemoteCommandCenter()
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                CloudKitManager.instance.sync()
             }
         })
     }
@@ -425,6 +449,8 @@ class StreamPlaybackManager: NSObject {
                                         underError: nil)
                     audio?.errorTitle = error.title()
                     audio?.errorMessage = error.message()
+                    audio?.cloudSynced = false
+
                     DispatchQueue.main.async {
                         self.delegate?.streamPlaybackManager(self, playerError: error)
                     }
@@ -449,6 +475,7 @@ class StreamPlaybackManager: NSObject {
                     readyForPlayback = false
 
                     audio?.isDownloading = true
+                    audio?.cloudSynced = false
                     let downloadTask = session.downloadTask(with: url)
                     downloadTask.taskDescription = audio?.urlString
                     downloadTask.resume()
@@ -463,6 +490,8 @@ class StreamPlaybackManager: NSObject {
                                         underError: playerItem.error as NSError?)
                     audio?.errorTitle = error.title()
                     audio?.errorMessage = error.message()
+                    audio?.cloudSynced = false
+
                     DispatchQueue.main.async {
                         self.delegate?.streamPlaybackManager(self, playerError: error)
                     }
@@ -541,18 +570,20 @@ class StreamPlaybackManager: NSObject {
             self.pause()
             return .success
         }
-        if let audio = audio {
-            commandCenter.bookmarkCommand.isEnabled = true
-            let isActive = audio.isBookmark
-            commandCenter.bookmarkCommand.isActive = audio.isBookmark
-            commandCenter.bookmarkCommand.localizedTitle = isActive ? "Remove Bookmark" : "Add Bookmark"
-            commandCenter.bookmarkCommand.addTarget { _ in
-                self.changeAudioBookmark()
-                return .success
-            }
-        } else {
+        
+        // TODO: bookmark should delete from bookmarkController
+//        if let audio = audio {
+//            commandCenter.bookmarkCommand.isEnabled = false
+//            let isActive = audio.isBookmark
+//            commandCenter.bookmarkCommand.isActive = audio.isBookmark
+//            commandCenter.bookmarkCommand.localizedTitle = isActive ? "Remove Bookmark" : "Add Bookmark"
+//            commandCenter.bookmarkCommand.addTarget { _ in
+//                self.changeAudioBookmark()
+//                return .success
+//            }
+//        } else {
             commandCenter.bookmarkCommand.isEnabled = false
-        }
+//        }
 
         commandCenter.skipForwardCommand.isEnabled = true
         commandCenter.skipForwardCommand.addTarget { _ in
@@ -574,13 +605,14 @@ class StreamPlaybackManager: NSObject {
             self.playPosition(position: 0)
             return .success
         }
-        commandCenter.changePlaybackPositionCommand.isEnabled = true
-        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
-            if let event = event as? MPChangePlaybackPositionCommandEvent {
-                self.playPosition(position: event.positionTime)
-            }
-            return .success
-        }
+        // TODO: it seems changePlaybackPositionCommand is not working
+        commandCenter.changePlaybackPositionCommand.isEnabled = false
+//        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+//            if let event = event as? MPChangePlaybackPositionCommandEvent {
+//                self.playPosition(position: event.positionTime)
+//            }
+//            return .success
+//        }
         commandCenter.changeRepeatModeCommand.isEnabled = true
         commandCenter.changeRepeatModeCommand.currentRepeatType = .off
 
@@ -720,6 +752,8 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                 let data = try Data(contentsOf: location, options: .mappedIfSafe)
 
                 audio?.downloadFiles = [String]()
+                audio?.cloudSynced = false
+
                 if let files = String.init(data: data, encoding: .ascii)?.components(separatedBy: "\n") {
                     for file in files {
                         if file.count > 0 {

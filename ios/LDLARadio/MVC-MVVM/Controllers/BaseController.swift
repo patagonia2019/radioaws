@@ -46,15 +46,6 @@ class BaseController: Controllable {
                             if other.isPlaying {
                                 if other.urlString() != audio.urlString() {
                                     other.isPlaying = false
-                                    
-                                    if let tmpAudioPlay = Audio.search(byUrl: other.url?.absoluteString) {
-                                        CloudKitManager.instance.save(audio: tmpAudioPlay) { ckError in
-                                            if let ckError = ckError {
-                                                audio.error = ckError
-                                                tmpAudioPlay.cloudSynced = false
-                                            }
-                                        }
-                                    }
                                     StreamPlaybackManager.instance.setAudioForPlayback(nil)
                                 }
                             }
@@ -76,13 +67,12 @@ class BaseController: Controllable {
                     if tmpAudioPlay == nil {
                         tmpAudioPlay = Audio.create()
                     }
+                    tmpAudioPlay?.cloudSynced = false
                     if var tmpAudioPlay = tmpAudioPlay {
                         tmpAudioPlay += audio
                         StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
                     }
-                    if useRefresh && audio.error != nil {
-                        CoreDataManager.instance.save()
-                    }
+                    CoreDataManager.instance.save()
                 }
             } else {
                 audio.isPlaying = false
@@ -156,5 +146,27 @@ class BaseController: Controllable {
         else {
             fatalError()
         }
+    }
+    
+    func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
+        let object = model(forSection: indexPath.section, row: indexPath.row)
+        let stream = StreamPlaybackManager.instance
+        if let model = object as? AudioViewModel,
+            let audio = Audio.search(byUrl: model.urlString()) {
+            if stream.isPlaying(url: audio.urlString) == true {
+                return false
+            }
+            CloudKitManager.instance.remove(audio: audio) { (error) in
+                if let error = error {
+                    model.error = error
+                }
+                else {
+                    audio.remove()
+                }
+                finishClosure?(error)
+            }
+            return true
+        }
+        return false
     }
 }

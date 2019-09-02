@@ -47,10 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
+        CloudKitManager.instance.sync()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Analytics.stop()
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
         CloudKitManager.instance.sync()
     }
 

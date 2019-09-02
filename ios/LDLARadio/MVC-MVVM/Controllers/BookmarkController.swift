@@ -167,10 +167,14 @@ class BookmarkController: BaseController {
 
         var forceUpdate = false
 
-        if isClean || BaseController.isBookmarkChanged {
+        if isClean {
+            Audio.clean()
             forceUpdate = true
-            BaseController.isBookmarkChanged = false
         } else {
+            if BaseController.isBookmarkChanged {
+                closure()
+            }
+            
             if self.models.count > 0 {
                 finishClosure?(nil)
                 return
@@ -184,7 +188,6 @@ class BookmarkController: BaseController {
         if forceUpdate && cloudKit.loggedIn {
 
             RestApi.instance.context?.performAndWait {
-                Bookmark.clean()
                 cloudKit.refresh { (error) in
                     if error != nil {
                         CoreDataManager.instance.rollback()

@@ -53,7 +53,7 @@ class AudioTableViewCell: UITableViewCell {
                     self.model?.image = self.thumbnailView.image
                 }
             }
-            bookmarkButton.isHighlighted = model?.isBookmarked ?? false
+            bookmarkButton.isHighlighted = model?.isBookmark ?? false
 
             if model?.isPlaying ?? false {
                 gradientPlayBg.isHidden = false
