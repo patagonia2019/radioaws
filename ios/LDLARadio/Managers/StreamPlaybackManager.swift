@@ -233,6 +233,10 @@ class StreamPlaybackManager: NSObject {
     public func info() -> (String, String, String?, String?)? {
         return audio?.info()
     }
+    
+    public func isBookmark() -> Bool {
+        return audio?.isBookmark ?? false
+    }
 
     public func getCurrentTime() -> TimeInterval {
         if let currentItem = player.currentItem,

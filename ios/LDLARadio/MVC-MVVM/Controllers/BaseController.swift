@@ -38,6 +38,7 @@ class BaseController: Controllable {
     func play(forSection section: Int, row: Int) {
 
         if let audio = model(forSection: section, row: row) as? AudioViewModel {
+
             if audio.isPlaying == false {
 
                 for j in 0..<numberOfSections() {
@@ -150,20 +151,22 @@ class BaseController: Controllable {
     
     func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
         let object = model(forSection: indexPath.section, row: indexPath.row)
-        let stream = StreamPlaybackManager.instance
         if let model = object as? AudioViewModel,
             let audio = Audio.search(byUrl: model.urlString()) {
-            if stream.isPlaying(url: audio.urlString) == true {
-                return false
+            if CloudKitManager.instance.loggedIn {
+                CloudKitManager.instance.remove(audio: audio) { (error) in
+                    if let error = error {
+                        model.error = error
+                    }
+                    else {
+                        audio.remove()
+                    }
+                    finishClosure?(error)
+                }
             }
-            CloudKitManager.instance.remove(audio: audio) { (error) in
-                if let error = error {
-                    model.error = error
-                }
-                else {
-                    audio.remove()
-                }
-                finishClosure?(error)
+            else {
+                audio.remove()
+                finishClosure?(nil)
             }
             return true
         }

@@ -18,7 +18,7 @@ class AudioViewController: UITableViewController {
 
     var isFullScreen: Bool = false
     fileprivate var timerPlayed: Timer?
-
+    
     @IBOutlet weak var refreshButton: UIBarButtonItem!
 
     var radioController = RadioController()
@@ -423,10 +423,11 @@ class AudioViewController: UITableViewController {
             isBookmark = section.isBookmark
         }
         if let isBookmark = isBookmark {
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: "Delete") { (_, indexPath) in
+            let actionTitle = controller is BookmarkController || isBookmark ? "Delete" : "Add"
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: actionTitle) { (_, indexPath) in
                 self.removeBookmark(indexPath: indexPath)
             }
-            bookmarkAction.backgroundColor = isBookmark ? .lavender : .blueberry
+            bookmarkAction.backgroundColor = controller is BookmarkController || isBookmark ? .lavender : .blueberry
             actions.append(bookmarkAction)
         }
 

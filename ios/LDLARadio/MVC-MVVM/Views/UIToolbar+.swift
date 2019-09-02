@@ -100,11 +100,18 @@ extension UIToolbar {
             info.customView?.heightAnchor.constraint(equalToConstant: 56).isActive = true
             info.customView?.widthAnchor.constraint(equalToConstant: 56).isActive = true
 
+            let bookImage = UIImage(named: stream.isBookmark() ? "f5d1-apple-alt-solid" : "apple-alt-line")
+            let bookmark = UIBarButtonItem(image: bookImage, style: .done, target: self, action: #selector(UIToolbar.changeBookmark(_:)))
+            
             all.append(contentsOf: [
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 info,
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                bookmark,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
                 ])
+            
+            
         }
         items = all
     }
@@ -124,13 +131,21 @@ extension UIToolbar {
         }
     }
     
+    @objc private func changeBookmark(_ sender: Any?) {
+        StreamPlaybackManager.instance.changeAudioBookmark()
+        reloadToolbar()
+    }
+    
     @objc private func info(_ sender: Any?) {
         let audioPlayInfo = StreamPlaybackManager.instance.info()
         var error: JFError?
         if let errorMessage = audioPlayInfo?.2 {
             error = JFError(code: 0, desc: errorMessage, reason: audioPlayInfo?.2, suggestion: "", path: "", line: "", url: "", underError: nil)
+            AppDelegate.instance.window?.rootViewController?.showAlert(title: error?.title(), message: error?.message(), error: nil)
         }
-        AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: error)
+        else {
+            AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: error)
+        }
     }
 
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
