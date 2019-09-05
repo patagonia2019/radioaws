@@ -40,6 +40,9 @@ class CatalogTableViewCell: UITableViewCell {
                             self.iconView.isHidden = false
                             self.thumbnailView.isHidden = true
                         }
+                        else {
+                            self.portraitThumbnail()
+                        }
                     }
                 } else {
                     thumbnailView.isHidden = true
@@ -50,6 +53,12 @@ class CatalogTableViewCell: UITableViewCell {
             infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
 
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        portraitThumbnail()
     }
 
     override func prepareForReuse() {
@@ -84,4 +93,13 @@ class CatalogTableViewCell: UITableViewCell {
             fatalError()
         }
     }
+    
+    private func portraitThumbnail() {
+        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
+        thumbnailView?.layer.borderWidth = 1
+        if let width = thumbnailView?.layer.bounds.size.width {
+            thumbnailView?.layer.cornerRadius = width / 2
+        }
+    }
+
 }

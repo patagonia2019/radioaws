@@ -62,6 +62,7 @@ class StreamPlaybackManager: NSObject {
         willSet {
             audio?.isPlaying = false
             audio?.cloudSynced = false
+            readyForPlayback = false
 
             let urlAsset = audio?.urlAsset()
             urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
@@ -218,9 +219,9 @@ class StreamPlaybackManager: NSObject {
             break
         case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
             print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
-            DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
-            }
+//            DispatchQueue.main.async {
+//                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+//            }
             break
         case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
             print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
@@ -243,20 +244,22 @@ class StreamPlaybackManager: NSObject {
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
             let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
-            audio?.currentTime = currentTime
-            audio?.cloudSynced = false
-
-            if audio?.hasDuration == false {
-                DispatchQueue.main.async {
-                    self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+            if audio?.currentTime != currentTime {
+                audio?.isPlaying = true
+                if audio?.hasDuration == false {
+                    audio?.hasDuration = true
+                    self.delegate?.streamPlaybackManager(self, playerCurrentItemDidDetectDuration: self.player, duration: currentTime)
                 }
             }
             else {
-                if Int(audio?.currentTime ?? 0) % 300 == 0 {
-                    CloudKitManager.instance.sync()
-                }
+                audio?.isPlaying = false
             }
-            audio?.hasDuration = true
+            audio?.currentTime = currentTime
+            audio?.cloudSynced = false
+
+            if Int(audio?.currentTime ?? 0) % 300 == 0 {
+                CloudKitManager.instance.sync()
+            }
             return currentTime
         }
         return 0
@@ -270,6 +273,10 @@ class StreamPlaybackManager: NSObject {
             return TimeInterval(CMTimeGetSeconds(currentItem.duration))
         }
         return 0
+    }
+    
+    func isPaused() -> Bool {
+        return player.rate == 0
     }
 
     func isPlaying(url: String? = nil) -> Bool {
@@ -331,6 +338,9 @@ class StreamPlaybackManager: NSObject {
     }
 
     func pause() {
+        if audio?.isPlaying == false {
+            return
+        }
         audio?.isPlaying = false
         audio?.cloudSynced = false
 
@@ -338,7 +348,7 @@ class StreamPlaybackManager: NSObject {
         updateRemoteCommandCenter()
         DispatchQueue.main.async {
             self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
-            CloudKitManager.instance.sync()
+            CloudKitManager.instance.sync(force: true)
         }
     }
 
@@ -378,11 +388,16 @@ class StreamPlaybackManager: NSObject {
             audio?.isPlaying = true
             audio?.cloudSynced = false
 
-            player.play()
-            updateRemoteCommandCenter()
             DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
-                CloudKitManager.instance.sync()
+                self.player.play()
+                self.updateRemoteCommandCenter()
+                if self.hasDuration() == false {
+                    self.audio?.isPlaying = true
+                    DispatchQueue.main.async {
+                        self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                    }
+                }
+                CloudKitManager.instance.sync(force: true)
             }
         } else {
             playPosition(position: position)
@@ -394,17 +409,19 @@ class StreamPlaybackManager: NSObject {
         if position > 0 {
             t = CMTime.init(seconds: position, preferredTimescale: 1)
         }
-        player.seek(to: t, completionHandler: { _ in
-            self.audio?.isPlaying = true
-            self.audio?.cloudSynced = false
-
-            self.player.play()
-            self.updateRemoteCommandCenter()
-            DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
-                CloudKitManager.instance.sync()
-            }
-        })
+        DispatchQueue.main.async {
+            self.player.seek(to: t, completionHandler: { _ in
+                self.audio?.cloudSynced = false
+                
+                self.player.play()
+                self.updateRemoteCommandCenter()
+                if self.hasDuration() == false {
+                    self.audio?.isPlaying = true
+                    self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                }
+                CloudKitManager.instance.sync(force: true)
+            })
+        }
     }
 
     func isPlayingUrl(urlString: String?) -> Bool {
@@ -587,6 +604,7 @@ class StreamPlaybackManager: NSObject {
 //            }
 //        } else {
             commandCenter.bookmarkCommand.isEnabled = false
+        commandCenter.likeCommand.isEnabled = true
 //        }
 
         commandCenter.skipForwardCommand.isEnabled = true
@@ -629,11 +647,17 @@ class StreamPlaybackManager: NSObject {
 
         context.performAndWait {
 
-            if let audio = Audio.search(byUrl: audio.urlString) {
-                audio.changeBookmark(useRefresh: true)
+            var audiotmp: Audio?
+            if let audiotmp2 = Audio.search(byUrl: audio.urlString) {
+                audiotmp = audiotmp2
+            } else if let audiotmp2 = Audio.create() {
+                audiotmp = audiotmp2
+                audiotmp? += audio
             } else {
                 fatalError()
             }
+            audio.changeBookmark()
+            
             CoreDataManager.instance.save()
         }
         perform(#selector(updateRemoteCommandCenter), with: nil, afterDelay: 0.2)
@@ -649,6 +673,9 @@ protocol AssetPlaybackDelegate: class {
 
     /// This is called when the internal AVPlayer's currentItem has changed.
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer)
+
+    /// This is called when the internal AVPlayer's detects duration.
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval)
 
     /// This is called when the internal AVPlayer in StreamPlaybackManager finds an error.
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError)

@@ -89,7 +89,11 @@ class AudioViewController: UITableViewController {
     }
 
     // MARK: UIViewController
-
+    deinit {
+        let stream = StreamPlaybackManager.instance
+        stream.delegate = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -108,6 +112,11 @@ class AudioViewController: UITableViewController {
         }
 
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        
+        if let toolbar = navigationController?.toolbar {
+            let stream = StreamPlaybackManager.instance
+            stream.delegate = toolbar
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,10 +136,7 @@ class AudioViewController: UITableViewController {
         if let timerPlayed = timerPlayed {
             timerPlayed.invalidate()
         }
-
-        let stream = StreamPlaybackManager.instance
-        stream.delegate = nil
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -192,13 +198,12 @@ class AudioViewController: UITableViewController {
     private func reloadTimer() {
         
         let stream = StreamPlaybackManager.instance
-        stream.delegate = self
         
         if let timerPlayed = timerPlayed {
             timerPlayed.invalidate()
         }
         
-        if stream.isReadyToPlay() {
+        if stream.isAboutToPlay() {
             timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
         }
         else {
@@ -207,14 +212,15 @@ class AudioViewController: UITableViewController {
             toolbar.isHidden = true
         }
     }
-    
+
     @objc private func reloadToolbar() {
         
         guard let toolbar = navigationController?.toolbar else { return }
         
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.toolbar.isHidden = false
-        toolbar.reloadToolbar()
+        toolbar.setNeedsLayout()
+        toolbar.setNeedsDisplay()
     }
 
     private func info(model: CatalogViewModel?) {
@@ -233,8 +239,12 @@ class AudioViewController: UITableViewController {
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
-            controller.play(forSection: indexPath.section, row: indexPath.row)
-            reloadData()
+            DispatchQueue.global(qos: .background).async {
+                self.controller.play(forSection: indexPath.section, row: indexPath.row)
+                DispatchQueue.main.async {
+                    self.reloadData()
+                }
+            }
         } else if let section = object as? CatalogViewModel {
             if controller is RadioTimeController {
                 performSegue(withIdentifier: Commons.segue.catalog, sender: section)
@@ -379,13 +389,8 @@ class AudioViewController: UITableViewController {
         if isFullScreen {
             return 0
         }
-        let model = controller.modelInstance(inSection: section)
         let h = controller.heightForHeader(at: section)
-        if model?.isExpanded ?? false {
-            return h * 1.5
-        } else {
-            return h
-        }
+        return h
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -502,9 +507,7 @@ class AudioViewController: UITableViewController {
             controller.changeBookmark(indexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-
     }
-
 }
 
 /**
@@ -512,6 +515,11 @@ class AudioViewController: UITableViewController {
  */
 extension AudioViewController: AudioTableViewCellDelegate {
 
+    func audioTableViewCell(_ cell: AudioTableViewCell, infoDidTap newState: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        info(indexPath: indexPath)
+    }
+    
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         removeBookmark(indexPath: indexPath)
@@ -524,30 +532,3 @@ extension AudioViewController: AudioTableViewCellDelegate {
 
 }
 
-/**
- Extend `AudioViewController` to conform to the `AssetPlaybackDelegate` protocol.
- */
-extension AudioViewController: AssetPlaybackDelegate {
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
-        Analytics.logError(error: error)
-
-        self.showAlert(error: error)
-        reloadData()
-    }
-    
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
-        if isPlaying {
-            print("JF FINALLY PLAYING")
-        } else {
-            print("JF PAUSE")
-        }
-        _ = streamPlaybackManager.getCurrentTime()
-        reloadData()
-    }
-    
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
-        print("JF CHANGE")
-        _ = streamPlaybackManager.getCurrentTime()
-        reloadData()        
-    }
-}

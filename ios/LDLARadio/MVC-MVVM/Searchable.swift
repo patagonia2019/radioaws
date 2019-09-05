@@ -30,22 +30,22 @@ extension Modellable where Self: RNAStation {
 
 extension Modellable where Self: Stream {
 
-    internal static var placeholderImageName: String { get { return "f0001-music"} }
+    internal static var placeholderImageName: String { get { return "transistor_radio_logo"} }
 }
 
 extension Modellable where Self: RTCatalog {
 
-    internal static var placeholderImageName: String { get { return "f0001-music"} }
+    internal static var placeholderImageName: String { get { return "radiotime"} }
 }
 
 extension Modellable where Self: ArchiveCollection {
 
-    internal static var placeholderImageName: String { get { return "f0001-music"} }
+    internal static var placeholderImageName: String { get { return "archive.org"} }
 }
 
 extension Modellable where Self: ArchiveDoc {
 
-    internal static var placeholderImageName: String { get { return "f0001-music"} }
+    internal static var placeholderImageName: String { get { return "archive.org"} }
 }
 
 extension Modellable where Self: Audio {

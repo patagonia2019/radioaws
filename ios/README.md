@@ -160,6 +160,8 @@ Here there are 4 classes to make Unit Testing: __LDLARadioTests__, __RTCatalogTe
 
 ### Singleton for RestAPI and model & network management.
 
+### CloudKit integration
+
 ### Observers: KVO and Notifications
 
 ### Protocols

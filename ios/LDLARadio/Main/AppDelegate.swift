@@ -47,7 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        CloudKitManager.instance.sync()
+        CloudKitManager.instance.sync(force: true)
+        CoreDataManager.instance.save()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -55,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        CloudKitManager.instance.sync()
+        CloudKitManager.instance.sync(force: true)
     }
 
     private func registerSettingsBundle() {
@@ -67,12 +68,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func changeAppearance() {
-        let aqua: UIColor = .aqua
+        let defaultColor: UIColor = .midnight
         guard let font = UIFont(name: Commons.font.name, size: Commons.font.size.XS) else {
             fatalError()
         }
         let attributes = [NSAttributedString.Key.font: font,
-                          NSAttributedString.Key.foregroundColor: aqua]
+                          NSAttributedString.Key.foregroundColor: defaultColor]
         UINavigationBar.appearance().titleTextAttributes = attributes
 
         let unselected = [NSAttributedString.Key.font: font,
@@ -80,17 +81,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes(attributes, for: .selected)
+        UIBarButtonItem.appearance().setTitleTextAttributes(unselected, for: .normal)
 
         let tabBar = UITabBar.appearance()
         tabBar.isTranslucent = true
-        tabBar.tintColor = aqua
-        tabBar.barTintColor = UIColor.turquoise
+        tabBar.tintColor = defaultColor
+        tabBar.barTintColor = .turquoise
 
         let tableView = UITableView.appearance()
-        tableView.backgroundColor = UIColor.mercury
+        tableView.backgroundColor = .mercury
 
         let cell = UITableViewCell.appearance()
-        cell.backgroundColor = UIColor.mercury
+        cell.backgroundColor = .mercury
+        
+        let toolbar = UIToolbar.appearance()
+        toolbar.isTranslucent = true
+        toolbar.tintColor = UIColor.black
+        toolbar.barTintColor = .turquoise
+        toolbar.backgroundColor = .turquoise
     }
 
     @objc func defaultsChanged() {

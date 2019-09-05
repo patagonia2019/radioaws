@@ -69,7 +69,7 @@ class ArchiveOrgController: BaseController {
         if let audioModel = subModel as? AudioViewModel {
             return CGFloat(audioModel.height())
         }
-        return CGFloat(CatalogViewModel.cellheight) * 1.5
+        return CGFloat(CatalogViewModel.cellheight) * 1.2
     }
 
     private func updateModels() {

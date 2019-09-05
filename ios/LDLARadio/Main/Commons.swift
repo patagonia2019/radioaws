@@ -12,6 +12,26 @@ import UIKit
 
 class Commons {
 
+    enum toolBar: Int {
+        typealias RawValue = Int
+        case spinner = 1001
+        case image
+        case slider
+        case currentTime
+        case totalTime
+        case playPause
+        case info
+        case bookmark
+    }
+    
+    struct size {
+        static let toolbarHeight: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 56
+        static let toolbarSpinnerSize: CGSize = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? CGSize(width: 100, height: 100) : CGSize(width: 40, height: 40)
+        static let toolbarImageSize: CGSize = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? CGSize(width: 100, height: 100) : CGSize(width: 34, height: 34)
+        static let toolbarLabelWidth: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 100 : 50
+        static let toolbarButtonFontSize: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 50 : 30
+    }
+
     struct font {
         static let name = "Arial"
         struct size {
@@ -22,6 +42,7 @@ class Commons {
             static let M: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 26 : 20
             static let S: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 22 : 16
             static let XS: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 18 : 12
+            static let XXS: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 14 : 8
         }
         static let awesome = "FontAwesome"
     }
@@ -47,6 +68,8 @@ class Commons {
             case indent = 0xf03c
             case info_circle = 0xf05a
             case music = 0xf001
+            case pause_circle = 0xf28b
+            case play_circle = 0xf144
         }
         public static func showAwesome(icon: FontAwesome) -> Character {
             return Character(UnicodeScalar(icon.rawValue) ?? "?")

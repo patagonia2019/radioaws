@@ -109,6 +109,7 @@
 		98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
+		98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		98E935FC230ED074008621AE /* BaseProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E935FB230ED074008621AE /* BaseProtocolTests.swift */; };
 		98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
@@ -488,6 +489,7 @@
 				428139EB1CE44B7300972264 /* Frameworks */,
 				428139EC1CE44B7300972264 /* Resources */,
 				6CE87B9F3FBDAB5D9DC48DC1 /* [CP] Embed Pods Frameworks */,
+				98FE7666232147A900C5E3FE /* Run Script SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -591,6 +593,7 @@
 				98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */,
 				98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */,
 				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
+				98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
@@ -685,6 +688,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		98FE7666232147A900C5E3FE /* Run Script SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --config .swiftlint.yml\n";
 		};
 		CDAA705B651B01B8F729FD7A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

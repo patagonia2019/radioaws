@@ -129,7 +129,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmark = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
         if detail.text.count <= 0 {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
@@ -163,7 +163,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmark = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = false
@@ -225,7 +225,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmark = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
         hasDuration = true
     }
@@ -256,7 +256,7 @@ class AudioViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
         isBookmark = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = true
@@ -341,7 +341,7 @@ extension AudioViewModel {
             ?? streamUrl(usingBaseUrl: station?.url2, port: station?.port, bandUri: isAm ? station?.amUri : station?.fmUri)
 
         isBookmark = checkIfBookmarked()
-        isPlaying = StreamPlaybackManager.instance.isPlaying(url: urlString())
+        isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
         info = ""
         hasDuration = false

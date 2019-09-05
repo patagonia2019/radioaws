@@ -35,6 +35,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
         paintBgView()
         expandButton?.setTitleColor(UIColor.aqua, for: .normal)
         expandButton?.setTitleColor(UIColor.blueberry, for: .highlighted)
+        portraitThumbnail()
     }
 
     override func prepareForReuse() {
@@ -73,6 +74,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
                 thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
                     if response.error == nil {
                         self.thumbnailView?.isHidden = false
+                        self.portraitThumbnail()
                     }
                 }
             }
@@ -118,10 +120,18 @@ class HeaderTableView: UITableViewHeaderFooterView {
     private func paintBgView() {
         gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
         gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
-        gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+        gradientBg.colors = [UIColor.steel.cgColor, UIColor.white.cgColor]
         if let bgView = bgView {
             gradientBg.frame = bgView.bounds
             bgView.layer.insertSublayer(gradientBg, at: 0)
+        }
+    }
+    
+    private func portraitThumbnail() {
+        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
+        thumbnailView?.layer.borderWidth = 1
+        if let width = thumbnailView?.layer.bounds.size.width {
+            thumbnailView?.layer.cornerRadius = width / 2
         }
     }
 

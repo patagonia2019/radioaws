@@ -108,6 +108,20 @@ extension Audio {
         audio.section = audioViewModel.section
         audio.descript = audioViewModel.text
     }
+    
+    /// Using += as a overloading assignment operator
+    static func +=(audio: inout Audio, other: Audio) {
+        audio.detail = other.detail
+        audio.id = other.id
+        audio.placeholder = other.placeholder
+        audio.subTitle = other.subTitle
+        audio.thumbnailUrl = other.thumbnailUrl
+        audio.title = other.title
+        audio.urlString = other.urlString
+        audio.section = other.section
+        audio.descript = other.descript
+        audio.isBookmark = other.isBookmark
+    }
 
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
     static func +=(audio: inout Audio, catalogViewModel: CatalogViewModel) {

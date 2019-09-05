@@ -23,6 +23,7 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
+    @IBOutlet weak var infoButton: UIButton!
 
     weak var delegate: AudioTableViewCellDelegate?
     let gradientBg = CAGradientLayer()
@@ -48,12 +49,13 @@ class AudioTableViewCell: UITableViewCell {
                 }
             }
 
+            thumbnailView.image = model?.placeholderImage
             if let thumbnailUrl = model?.thumbnailUrl {
                 thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
                     self.model?.image = self.thumbnailView.image
+                    self.portraitThumbnail()
                 }
             }
-//            bookmarkButton.isHighlighted = model?.isBookmark ?? false
 
             if model?.isPlaying ?? false {
                 gradientPlayBg.isHidden = false
@@ -62,7 +64,7 @@ class AudioTableViewCell: UITableViewCell {
             }
             selectionStyle = .none
             // show thumbnail, and hide logo
-            thumbnailView.isHidden = false
+            infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
 
             setNeedsLayout()
         }
@@ -84,6 +86,7 @@ class AudioTableViewCell: UITableViewCell {
         gradientPlayBg.frame = contentView.bounds
         gradientPlayBg.isHidden = false
         contentView.layer.insertSublayer(gradientPlayBg, at: 1)
+        portraitThumbnail()
     }
 
     override func prepareForReuse() {
@@ -97,6 +100,8 @@ class AudioTableViewCell: UITableViewCell {
 
         downloadProgressView.isHidden = true
         bookmarkButton.isHighlighted = false
+        infoButton.isHidden = true
+        thumbnailView.image = nil
     }
     
     override func layoutSubviews() {
@@ -109,12 +114,31 @@ class AudioTableViewCell: UITableViewCell {
         bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
         delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
     }
+    
+    @IBAction func infoAction(_ sender: UIButton?) {
+        
+        if sender == infoButton {
+            delegate?.audioTableViewCell(self, infoDidTap: true)
+        } else {
+            fatalError()
+        }
+    }
+    
+    private func portraitThumbnail() {
+        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
+        thumbnailView?.layer.borderWidth = 1
+        if let width = thumbnailView?.layer.bounds.size.width {
+            thumbnailView?.layer.cornerRadius = width / 2
+        }
+    }
+
 }
 
 protocol AudioTableViewCellDelegate: class {
 
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
-    
+    func audioTableViewCell(_ cell: AudioTableViewCell, infoDidTap newState: Bool)
+
 }
 
