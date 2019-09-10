@@ -130,7 +130,10 @@ extension UIToolbar {
             playPause?.setTitleColor(.steel, for: .highlighted)
             playPause?.titleLabel?.font = font
             playPause?.addTarget(self, action: #selector(UIToolbar.handlePlay(_:)), for: .touchUpInside)
-            
+            playPause?.heightAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            playPause?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            playPause?.frame.size = CGSize(width: Commons.size.toolbarButtonFontSize, height: Commons.size.toolbarButtonFontSize)
+
             if let playPause = playPause {
                 let button = UIBarButtonItem(customView: playPause)
                 button.tag = Commons.toolBar.playPause.rawValue
@@ -173,7 +176,10 @@ extension UIToolbar {
             infoButton?.setTitleColor(.steel, for: .highlighted)
             infoButton?.titleLabel?.font = font
             infoButton?.addTarget(self, action: #selector(UIToolbar.handleInfo(_:)), for: .touchUpInside)
-            
+            infoButton?.heightAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            infoButton?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            infoButton?.frame.size = CGSize(width: Commons.size.toolbarButtonFontSize, height: Commons.size.toolbarButtonFontSize)
+
             if let infoButton = infoButton {
                 let button = UIBarButtonItem(customView: infoButton)
                 button.tag = Commons.toolBar.info.rawValue
@@ -215,7 +221,10 @@ extension UIToolbar {
         if bookmarkButton == nil {
             bookmarkButton = UIButton(type: .custom)
             bookmarkButton?.addTarget(self, action: #selector(UIToolbar.handleBookmark(_:)), for: .touchUpInside)
-            
+            bookmarkButton?.heightAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            bookmarkButton?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+            bookmarkButton?.frame.size = CGSize(width: Commons.size.toolbarButtonFontSize, height: Commons.size.toolbarButtonFontSize)
+
             if let bookmarkButton = bookmarkButton {
                 let button = UIBarButtonItem(customView: bookmarkButton)
                 button.tag = Commons.toolBar.bookmark.rawValue
@@ -377,15 +386,16 @@ extension UIToolbar {
     }
     
     @objc private func handleBookmark(_ sender: Any?) {
-        StreamPlaybackManager.instance.changeAudioBookmark()
-        _ = reloadBookmark()
+        StreamPlaybackManager.instance.changeAudioBookmark { _ in
+            _ = self.reloadBookmark()
+        }
     }
     
     @objc private func handleInfo(_ sender: Any?) {
         let audioPlayInfo = StreamPlaybackManager.instance.info()
         var error: JFError?
-        if let errorMessage = audioPlayInfo?.2 {
-            error = JFError(code: 0, desc: errorMessage, reason: audioPlayInfo?.2, suggestion: "", path: "", line: "", url: "", underError: nil)
+        if audioPlayInfo?.2 != nil {
+            error = JFError(code: 0, desc: audioPlayInfo?.2, reason: audioPlayInfo?.3, suggestion: "", path: "", line: "", url: "", underError: nil)
             AppDelegate.instance.window?.rootViewController?.showAlert(title: error?.title(), message: error?.message(), error: nil)
         }
         else {

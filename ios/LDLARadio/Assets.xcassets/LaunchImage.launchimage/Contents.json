@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2688h",
-      "filename" : "Launch-2688x1242.png",
+      "filename" : "Launch-2688x1242.jpeg",
       "minimum-system-version" : "12.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -31,7 +31,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "1792h",
-      "filename" : "Launch-1792x828.png",
+      "filename" : "Launch-1792x828.jpeg",
       "minimum-system-version" : "12.0",
       "orientation" : "landscape",
       "scale" : "2x"
@@ -49,7 +49,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2436h",
-      "filename" : "Launch-2436x1125.png",
+      "filename" : "Launch-2436x1125.jpeg",
       "minimum-system-version" : "11.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -67,7 +67,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "Launch-2208x1242.png",
+      "filename" : "Launch-2208x1242.jpeg",
       "minimum-system-version" : "8.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -109,7 +109,7 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-1024x768.png",
+      "filename" : "Launch-1024x768-1.jpeg",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "1x"
@@ -125,7 +125,7 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-2048x1536.png",
+      "filename" : "Launch-2048x1536-1.jpeg",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -169,14 +169,14 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-1024x748.png",
+      "filename" : "Launch-1024x748.jpeg",
       "extent" : "to-status-bar",
       "scale" : "1x"
     },
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-1024x768-1.png",
+      "filename" : "Launch-1024x768.jpeg",
       "extent" : "full-screen",
       "scale" : "1x"
     },
@@ -197,14 +197,14 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-2048x1496.png",
+      "filename" : "Launch-2048x1496.jpeg",
       "extent" : "to-status-bar",
       "scale" : "2x"
     },
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Launch-2048x1536-1.png",
+      "filename" : "Launch-2048x1536.jpeg",
       "extent" : "full-screen",
       "scale" : "2x"
     }

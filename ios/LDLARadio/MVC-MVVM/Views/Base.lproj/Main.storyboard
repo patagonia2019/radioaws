@@ -59,19 +59,7 @@
                     <view key="view" contentMode="scaleToFill" id="U8I-aF-VpI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXi-X8-PLZ" customClass="PDFView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="height" secondItem="U8I-aF-VpI" secondAttribute="height" id="r5Y-he-Qct"/>
-                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="centerY" secondItem="U8I-aF-VpI" secondAttribute="centerY" id="unF-0c-W5j"/>
-                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="width" secondItem="U8I-aF-VpI" secondAttribute="width" id="wWf-Cu-7mY"/>
-                            <constraint firstItem="EXi-X8-PLZ" firstAttribute="centerX" secondItem="U8I-aF-VpI" secondAttribute="centerX" id="yIe-TY-So1"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Developer: Javier Fuchs" prompt="Los Locos de la Azotea" id="hmp-Q2-wgr">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="cz8-R2-efb">
@@ -80,9 +68,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="pdfView" destination="EXi-X8-PLZ" id="AGA-qF-Vw2"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VXy-jF-VnN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -557,7 +542,7 @@
         <image name="server-solid" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Sht-Hj-5qE"/>
+        <segue reference="RGi-Dz-VcV"/>
         <segue reference="bKx-nu-J1L"/>
     </inferredMetricsTieBreakers>
 </document>

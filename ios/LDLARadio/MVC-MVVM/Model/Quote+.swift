@@ -60,7 +60,7 @@ extension Quote {
         if n == 0 {
             return nil
         }
-        let rnd = Int(arc4random())%n
+        let rnd = Int(arc4random()%UInt32(n))
         return array?[rnd]
     }
 

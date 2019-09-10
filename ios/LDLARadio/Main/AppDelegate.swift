@@ -38,6 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         changeAppearance()
 
+        let stream = StreamPlaybackManager.instance
+        stream.setAudioForPlayback(nil)
+        
         return true
     }
 

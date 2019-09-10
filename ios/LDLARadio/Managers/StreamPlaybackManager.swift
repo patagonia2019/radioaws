@@ -40,7 +40,6 @@ class StreamPlaybackManager: NSObject {
 
     /// The instance of AVPlayer that will be used for playback of StreamPlaybackManager.playerItem.
     private let player = AVPlayer()
-    private let playerVC = AVPlayerViewController()
 
     /// A Bool tracking if the AVPlayerItem.status has changed to .readyToPlay for the current StreamPlaybackManager.playerItem.
     private var readyForPlayback = false
@@ -56,6 +55,27 @@ class StreamPlaybackManager: NSObject {
             playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
         }
     }
+    private var audioUrlAsset: AVURLAsset? {
+        willSet {
+            if let url = audioUrlAsset {
+                url.resourceLoader.setDelegate(nil, queue: .main)
+                if ((url.observationInfo) != nil) {
+                    url.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+                }
+            }
+        }
+        didSet {
+            if let url = audioUrlAsset {
+                url.resourceLoader.setDelegate(self, queue: .main)
+                url.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+            }
+            else {
+                playerItem = nil
+                player.replaceCurrentItem(with: nil)
+                readyForPlayback = false
+            }
+        }
+    }
 
     /// The Stream that is currently being loaded for playback.
     private var audio: Audio? {
@@ -63,26 +83,12 @@ class StreamPlaybackManager: NSObject {
             audio?.isPlaying = false
             audio?.cloudSynced = false
             readyForPlayback = false
-
-            let urlAsset = audio?.urlAsset()
-            urlAsset?.resourceLoader.setDelegate(nil, queue: .main)
-            if ((urlAsset?.observationInfo) != nil) {
-                urlAsset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
-            }
         }
 
         didSet {
             audio?.isPlaying = false
             audio?.cloudSynced = false
-
-            if let urlAsset = audio?.urlAsset() {
-                urlAsset.resourceLoader.setDelegate(self, queue: .main)
-                urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
-            } else {
-                playerItem = nil
-                player.replaceCurrentItem(with: nil)
-                readyForPlayback = false
-            }
+            audioUrlAsset = audio?.urlAsset()
         }
     }
 
@@ -95,18 +101,17 @@ class StreamPlaybackManager: NSObject {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowBluetooth, .allowAirPlay, .allowBluetoothA2DP, .defaultToSpeaker, .duckOthers])
             try audioSession.setActive(true)
         } catch let error as NSError {
+            #if DEBUG
             let error = JFError(code: Int(errno),
                                 desc: "Error",
                                 reason: "Audio Session failed",
                                 suggestion: "Please check the audio in your device",
                                 underError: error)
-            audio?.errorTitle = error.title()
-            audio?.errorMessage = error.message()
-            audio?.cloudSynced = false
-
+            
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerError: error)
             }
+            #endif
             return
         }
 
@@ -463,10 +468,11 @@ class StreamPlaybackManager: NSObject {
                         reload()
                         return
                     }
+                    let reason = audio?.title ?? "this resource"
                     let error = JFError(code: Int(errno),
                                         desc: "Error",
-                                        reason: "Player cannot play",
-                                        suggestion: "Please check your internet connection",
+                                        reason: "Player cannot play \(reason).",
+                                        suggestion: "Please check your internet connection or try with another audio.",
                                         underError: nil)
                     audio?.errorTitle = error.title()
                     audio?.errorMessage = error.message()
@@ -592,20 +598,8 @@ class StreamPlaybackManager: NSObject {
             return .success
         }
         
-        // TODO: bookmark should delete from bookmarkController
-//        if let audio = audio {
-//            commandCenter.bookmarkCommand.isEnabled = false
-//            let isActive = audio.isBookmark
-//            commandCenter.bookmarkCommand.isActive = audio.isBookmark
-//            commandCenter.bookmarkCommand.localizedTitle = isActive ? "Remove Bookmark" : "Add Bookmark"
-//            commandCenter.bookmarkCommand.addTarget { _ in
-//                self.changeAudioBookmark()
-//                return .success
-//            }
-//        } else {
-            commandCenter.bookmarkCommand.isEnabled = false
+        commandCenter.bookmarkCommand.isEnabled = false
         commandCenter.likeCommand.isEnabled = true
-//        }
 
         commandCenter.skipForwardCommand.isEnabled = true
         commandCenter.skipForwardCommand.addTarget { _ in
@@ -640,7 +634,7 @@ class StreamPlaybackManager: NSObject {
 
     }
 
-    func changeAudioBookmark() {
+    func changeAudioBookmark(finish: ((_ error: JFError?) -> Void)? = nil) {
         guard let context = RestApi.instance.context else { fatalError() }
         guard let audio = audio else { return }
         BaseController.isBookmarkChanged = true
@@ -659,6 +653,7 @@ class StreamPlaybackManager: NSObject {
             audio.changeBookmark()
             
             CoreDataManager.instance.save()
+            finish?(nil)
         }
         perform(#selector(updateRemoteCommandCenter), with: nil, afterDelay: 0.2)
     }
