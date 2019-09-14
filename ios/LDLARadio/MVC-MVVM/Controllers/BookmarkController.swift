@@ -94,8 +94,7 @@ class BookmarkController: BaseController {
                 let all = Audio.all()
 
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue
-                }), suggestions.count > 0 {
+                    return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue}), suggestions.count > 0 {
                     let audios = suggestions.map({ AudioViewModel(audio: $0) })
                     if audios.count > 0 {
 
@@ -168,7 +167,6 @@ class BookmarkController: BaseController {
         var forceUpdate = false
 
         if isClean {
-            Audio.clean()
             forceUpdate = true
         } else {
             if BaseController.isBookmarkChanged {
@@ -207,6 +205,40 @@ class BookmarkController: BaseController {
         model?.isExpanded = !(model?.isExpanded ?? false)
 
         finishClosure?(nil)
+    }
+
+    func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
+        let object = model(forSection: indexPath.section, row: indexPath.row)
+        
+        if let model = object as? AudioViewModel,
+            let audio = Audio.search(byUrl: model.urlString()) {
+            if CloudKitManager.instance.loggedIn {
+                CloudKitManager.instance.remove(audio: audio) { (error) in
+                    if let error = error {
+                        model.error = error
+                    }
+                    else {
+                        audio.remove()
+                        self.models.removeAll { (ct) -> Bool in
+                            return ct.urlString() == model.urlString()
+                        }
+                    }
+                    finishClosure?(error)
+                }
+            }
+            else {
+                audio.remove()
+                let catalog = models[indexPath.section]
+                var audios = catalog.audios
+                audios.removeAll { (audiovm) -> Bool in
+                    return audiovm.urlString() == model.urlString()
+                }
+                catalog.audios = audios
+                finishClosure?(nil)
+            }
+            return true
+        }
+        return false
     }
 
 }

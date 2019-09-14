@@ -1,0 +1,549 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest-Main-Attributes: 0LPzhBh4mQ9plSv/uqd4keWkBho=
+SHA1-Digest-Manifest: qbaKy/vC8+Zawvmp0jalimTPDPg=
+Created-By: 1.8.0_101 (Oracle Corporation)
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileSystem.js
+SHA1-Digest: HhpIEj3WUCs0MX14SNXSky/PWdk=
+
+Name: assets/www/img/fondo.png
+SHA1-Digest: yEI9j95nbrL3tp8xIX0eCV/OQp8=
+
+Name: assets/www/lib/ionic/js/angular-ui/angular-ui-router.js
+SHA1-Digest: ZLfQu+Jzy4+7Zes8WurvlRM2qBc=
+
+Name: assets/www/lib/ionic/js/ionic.bundle.min.js
+SHA1-Digest: A35CyKEtmwU00uPt3Yw+K1RPw3k=
+
+Name: assets/www/resources/android/splash/drawable-land-mdpi-screen.pn
+ g
+SHA1-Digest: TiQ1s+faVR4a2dEfe8Hem8oJGJU=
+
+Name: assets/www/lib/ionic/scss/_tabs.scss
+SHA1-Digest: cKRMSYdfrz678yk4mtF+Bo5ln7U=
+
+Name: assets/www/plugins/io.litehelpers.cordova.sqlite/www/SQLitePlugi
+ n.js
+SHA1-Digest: KcCnH//cPyUCXvx/cEBI4JNup6o=
+
+Name: assets/www/lib/ionic/scss/_bar.scss
+SHA1-Digest: 4xQQ0Re2O7kcuN0pEkg+nnHYu4g=
+
+Name: assets/www/templates/facebook.html
+SHA1-Digest: AAvkTk1PTT4cm+h6TwngBgZHVoo=
+
+Name: assets/www/lib/ionic/js/angular/angular-sanitize.min.js
+SHA1-Digest: mZvt1VP19Ut4S5Y1icFzIiLEwgA=
+
+Name: assets/www/lib/ionic/scss/_grid.scss
+SHA1-Digest: HNzTW8nmG5ig+qzPC9iWOWy8TKE=
+
+Name: assets/www/lib/ionic/scss/_list.scss
+SHA1-Digest: CPmwqd1ovffh5q2FiqQA5u8zdOk=
+
+Name: assets/www/js/app.js
+SHA1-Digest: MJfQxppoG7uI0xoZcSXBdHU5u7g=
+
+Name: assets/www/img/default.png
+SHA1-Digest: vWxa12cme+g/mLuGmDDJYUs8PV8=
+
+Name: assets/www/lib/ionic/js/ionic.bundle.js
+SHA1-Digest: mqLOGEVz7HwSBB+/HeeaYt0+SQg=
+
+Name: assets/www/templates/prueba.html
+SHA1-Digest: PoanX/ODM8I0zEtWBq7Hivg59QY=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/fileSystems-roots
+ .js
+SHA1-Digest: vjPUZHQeY6kFY4SsBOAikFpTgDI=
+
+Name: assets/www/templates/cabecera.html
+SHA1-Digest: hoMtCpaCepPENM8Ge5JkJ+3CEJM=
+
+Name: assets/www/lib/ionic/js/angular/angular-sanitize.js
+SHA1-Digest: 3CJGi3kn3wl+RhGLYNWQuW9Q+AM=
+
+Name: assets/www/lib/ionic/js/ionic.js
+SHA1-Digest: CjBdY+fPfyca10qAlEYIb2J2h5c=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileEntry.js
+SHA1-Digest: PQ5HhgtrLCYxMwS+ZdnQOe78fv4=
+
+Name: assets/www/lib/ionic/scss/_menu.scss
+SHA1-Digest: C84WJ5RGJWiYl0ZC6EuLShEH3p8=
+
+Name: assets/www/lib/ionic/scss/_type.scss
+SHA1-Digest: Vmi1WTh33DsErDm7gqHGR7XrsWQ=
+
+Name: res/drawable-xxhdpi-v4/ic_action_remove.png
+SHA1-Digest: 9Utk4+aXETSKYQP8/+rs1q75Fn8=
+
+Name: assets/www/lib/ionic/js/angular/angular.min.js
+SHA1-Digest: LtrfzvV3rsTEIaeUAlrMndS5SGk=
+
+Name: assets/www/cordova-js-src/plugin/android/app.js
+SHA1-Digest: DyNoltEL4yj1M0KRnp7t1ESe+Fo=
+
+Name: assets/www/img/twitter.png
+SHA1-Digest: 5mwGFQkK9VnHE35NgY/Ri6qmUxA=
+
+Name: assets/www/index.html
+SHA1-Digest: 3g/Dxy13M5ky+iXuhBvXgRQlkdU=
+
+Name: assets/www/lib/ionic/scss/_platform.scss
+SHA1-Digest: J3py3wdfmaih1ZPVk27yYOBxio0=
+
+Name: assets/www/lib/ionic/scss/_action-sheet.scss
+SHA1-Digest: ye/Xl2T9tXC35S1gdO4bJvHJkL8=
+
+Name: assets/www/templates/footer.html
+SHA1-Digest: lrc9Lq5MGc6XNWxERJ1SQU5DsbU=
+
+Name: assets/www/lib/ionic/scss/_slide-box.scss
+SHA1-Digest: 4Dse3bp+iMHRpvnjR32UO9V2QJo=
+
+Name: assets/www/lib/ionic/scss/_progress.scss
+SHA1-Digest: npZTveMYYKigfOOYhCDGPw/PEl8=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileUploadResult.
+ js
+SHA1-Digest: kEiLEJiSsW6/RyjMbxkP0PRBwbE=
+
+Name: res/drawable-xxhdpi-v4/ic_action_next_item.png
+SHA1-Digest: VCkMmGnd+0Re/Zh47VJcIYoV8xY=
+
+Name: assets/www/lib/ionic/scss/_backdrop.scss
+SHA1-Digest: m07hEvSWLEogySDspWPT4LAatOE=
+
+Name: assets/www/img/play.png
+SHA1-Digest: qm0sjuVh7pswc47zD4v4H72LKlY=
+
+Name: assets/www/img/icono.png
+SHA1-Digest: xWInQNIYEODwYFkmAcIdXOGRyzQ=
+
+Name: assets/www/img/delete.png
+SHA1-Digest: fEiyA4zzNTMjQj+CC1xpfvH/GBM=
+
+Name: res/drawable-xxxhdpi-v4/icon.png
+SHA1-Digest: 86lxUj6ZNA6Zl6vMXJ638UYWC2g=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/android/FileSyste
+ m.js
+SHA1-Digest: Wz6gZH6rl7rxxmAFOGSd9udF2P4=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/Flags.js
+SHA1-Digest: Alj7wQ4AM0IdjevbjItLDrMZSMo=
+
+Name: assets/www/templates/error.html
+SHA1-Digest: cDBl8d9Vd2yQ+JjqBoQ/zWgcNIY=
+
+Name: assets/www/templates/programacion.html
+SHA1-Digest: RZCAyhSFmlOOi1q94USInYbi0RE=
+
+Name: resources.arsc
+SHA1-Digest: rBRi2xH+OF8IrHdMpdrQFE1zTL4=
+
+Name: assets/www/lib/ionic/scss/ionicons/ionicons.scss
+SHA1-Digest: MGejbErKLShPB4fiVic7b+xHoX8=
+
+Name: res/drawable-mdpi-v4/ic_action_previous_item.png
+SHA1-Digest: V4xdGX7AIrCXT0Ii5jKxZlGz/aE=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileUploadOptions
+ .js
+SHA1-Digest: 6pQ90x1Ru+qcMBSV84YnqVVD9fE=
+
+Name: assets/www/img/stop.png
+SHA1-Digest: XZelJaPNYHyYOVEeFwOv/EKzVHQ=
+
+Name: assets/www/lib/ionic/scss/_range.scss
+SHA1-Digest: DdqnLuGgFpHecydzYmm8y2PhndY=
+
+Name: AndroidManifest.xml
+SHA1-Digest: P6yfM3XL4e8cUkNKDT3WUFU+OLs=
+
+Name: assets/www/lib/ionic/scss/_items.scss
+SHA1-Digest: fq/sBwJMfybm6V7QeBw84+zKwtM=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileReader.js
+SHA1-Digest: hVNEo2sQ6lC9Rei56B6SV4ien/o=
+
+Name: assets/www/lib/ionic/scss/_button-bar.scss
+SHA1-Digest: ltBmQ+5xWyzaY2qqU2qLofG3KfY=
+
+Name: assets/www/resources/android/icon/drawable-xxxhdpi-icon.png
+SHA1-Digest: /4Gz+e9RCP6jTYDWnTv8AANYpF8=
+
+Name: assets/www/plugins/org.apache.cordova.inappbrowser/www/inappbrow
+ ser.js
+SHA1-Digest: ay/Yl3yzdBSprmO7Tyaaa0yGBE8=
+
+Name: assets/www/cordova-js-src/android/nativeapiprovider.js
+SHA1-Digest: 38WtpiAj5vmsHOuyTUe8kYOXH14=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/Entry.js
+SHA1-Digest: dkwPvF5e6kDFOjwoPqUsj9o69mY=
+
+Name: res/xml/config.xml
+SHA1-Digest: qnOafEbqDb0d8nRvVYfWWLoyqz0=
+
+Name: assets/www/templates/reproducir.html
+SHA1-Digest: G3Hbe8hF5LNUwzWvepgylh0OC0A=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileError.js
+SHA1-Digest: UApGFfym2OG7F8hrdoTicGKx33E=
+
+Name: assets/www/resources/android/splash/drawable-port-xxxhdpi-screen
+ .png
+SHA1-Digest: /Xnt0SAT42dP9w20UxIRifFVc2I=
+
+Name: assets/www/lib/ionic/fonts/ionicons.eot
+SHA1-Digest: bK+7ZTZPb9A7ZvZNAQDSviw+/Ww=
+
+Name: assets/www/plugins/com.ionic.keyboard/www/keyboard.js
+SHA1-Digest: SCF+mshTEmzttsesFPSxTqGuvLs=
+
+Name: res/drawable-mdpi-v4/ic_action_next_item.png
+SHA1-Digest: ZzISkM7wLyAw7HkVAX3PN79mc5w=
+
+Name: assets/www/img/cargando.gif
+SHA1-Digest: 1AK64yZPN9Gl6rca7bFqZ+VxLL8=
+
+Name: assets/www/lib/ionic/scss/ionicons/_ionicons-variables.scss
+SHA1-Digest: wk+BqJAiNDJaKRBjUe9+x7u/BC8=
+
+Name: assets/www/resources/android/splash/drawable-land-ldpi-screen.pn
+ g
+SHA1-Digest: K+4aojafEtbzeTo21ejMzMzN45w=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/DirectoryReader.j
+ s
+SHA1-Digest: tUxEe8/h8Qdglt8wMDDdqsJJF0s=
+
+Name: assets/www/js/ng-cordova.min.js
+SHA1-Digest: JeGFnd12gzm0bNIcGrvsPxrAI/8=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/DirectoryEntry.js
+SHA1-Digest: 8ynlMgG8AktYRqnz3OexmgGdOmk=
+
+Name: assets/www/lib/ionic/scss/_select.scss
+SHA1-Digest: 7RLSvmJzNKbILU2FU7BJOEi+OlI=
+
+Name: res/drawable-xhdpi-v4/ic_action_remove.png
+SHA1-Digest: EhvoyAdNZQu17Um9w6vEbO8Q4yc=
+
+Name: lib/armeabi/libsqlc-native-driver.so
+SHA1-Digest: jyGe0aiq31I/yEXsFphbM7XKXc4=
+
+Name: lib/x86_64/libsqlc-native-driver.so
+SHA1-Digest: YyQIQcs9reXbteq96oWnvHp0mkI=
+
+Name: assets/www/lib/ionic/js/ionic-angular.js
+SHA1-Digest: 26m600z12HfQnQKM/MTqfBdRXOw=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/resolveLocalFileS
+ ystemURI.js
+SHA1-Digest: CO6/yXhrCjxn9E1YaLQCFofauH4=
+
+Name: assets/www/resources/android/splash/drawable-port-hdpi-screen.pn
+ g
+SHA1-Digest: v9xk6NLHeOStZTeKDswaDJbyPNw=
+
+Name: res/drawable-hdpi-v4/ic_action_next_item.png
+SHA1-Digest: if3MCCMitp+rQkSVaFJf812cKSw=
+
+Name: res/drawable-xhdpi-v4/ic_action_previous_item.png
+SHA1-Digest: uG+ZFVmiP0FBZK49mU+oFNFtrpk=
+
+Name: assets/www/lib/ionic/scss/_radio.scss
+SHA1-Digest: 0cXLRthvimb83Hz2N5D9pp+Mg+Y=
+
+Name: assets/www/lib/ionic/css/ionic.css
+SHA1-Digest: ZjS+ewPjWPa81NnsJCD0fH2lhuQ=
+
+Name: assets/www/lib/ionic/js/angular/angular-animate.min.js
+SHA1-Digest: fZnULCYMa15al5ciU7cgGWXdY3c=
+
+Name: assets/www/resources/Splash.png
+SHA1-Digest: B0eaZPm2oqrP10ClAnaP26Nk7U0=
+
+Name: assets/www/lib/ionic/js/angular/angular-resource.min.js
+SHA1-Digest: 8ZVgZp4u7gNeZWsJM7k0loWzrUM=
+
+Name: assets/www/templates/emisoras.html
+SHA1-Digest: EpkKAH03ieGx0qEgZ6Bd4l1/zsM=
+
+Name: res/drawable-mdpi-v4/icon.png
+SHA1-Digest: OH/7VDdN+llPb4iQz0pXSidYimg=
+
+Name: assets/www/plugins/org.apache.cordova.media/www/MediaError.js
+SHA1-Digest: jv0P4aaygOX2y6OGBirK4HFFAWM=
+
+Name: assets/www/cordova-js-src/exec.js
+SHA1-Digest: zSlTRU8HxUISyyqDCPgSSJgcj+g=
+
+Name: assets/www/plugins/org.apache.cordova.device/www/device.js
+SHA1-Digest: cOuYWLX5bhqZeZbiL0n7jPkPb9A=
+
+Name: assets/www/lib/ionic/fonts/ionicons.ttf
+SHA1-Digest: tygzvklItBVQdfq2YD/K4/hXHto=
+
+Name: assets/www/lib/ionic/js/angular/angular.js
+SHA1-Digest: 1o2NpULq7BSwtxsoRcmU3kjT+is=
+
+Name: res/drawable-port-mdpi-v4/screen.png
+SHA1-Digest: 0rA0H8kBjK4N04o4fW+Xp/EO+xA=
+
+Name: assets/www/img/mensaje2.png
+SHA1-Digest: tigMExO3iqjdjQnw0C80oOBYdZ4=
+
+Name: res/drawable-xxhdpi-v4/ic_action_previous_item.png
+SHA1-Digest: MMQuqfVCNxhbSTH40JlRn05/z90=
+
+Name: assets/www/cordova-js-src/platform.js
+SHA1-Digest: WMSkc0u+fBApAiUe86W9D5KufB4=
+
+Name: res/drawable-port-ldpi-v4/screen.png
+SHA1-Digest: C59yojRWu7o2pRjVKoyz9I94y0o=
+
+Name: assets/www/lib/ionic/scss/ionicons/_ionicons-icons.scss
+SHA1-Digest: Z0cNjJ6Bi4Cag/NLiUAgReoBKBc=
+
+Name: assets/www/lib/ionic/scss/ionicons/_ionicons-animation.scss
+SHA1-Digest: rXfMMiV3KYXi9197kn492pEzgeg=
+
+Name: assets/www/cordova.js
+SHA1-Digest: TYYoWHJ0cC1CvKxrpgm2xvQeiUI=
+
+Name: res/drawable-hdpi-v4/icon.png
+SHA1-Digest: WxOzlNo2HuGjTsTggmiU7cFchz4=
+
+Name: assets/www/lib/ionic/scss/_animations.scss
+SHA1-Digest: wmBwh9FUHZgZhVh5eZIa++SY8G4=
+
+Name: assets/www/lib/ionic/fonts/ionicons.woff
+SHA1-Digest: S2/VHqSoaEVSG3FdjFKzwd3AkYo=
+
+Name: assets/www/lib/ionic/scss/_badge.scss
+SHA1-Digest: EzEoFDV56Rfi8nzbSshkA9J9O7k=
+
+Name: assets/www/lib/ionic/css/ionic.css_old
+SHA1-Digest: TqyYoPeaFSN1eKOLEhRUs66moCA=
+
+Name: assets/www/css/style.css
+SHA1-Digest: ExOTWrAUUzfMSwV+PpSRrNITYSM=
+
+Name: assets/www/templates/noticias.html
+SHA1-Digest: THX6QEJGtX4sZxe/vONSzHte7sY=
+
+Name: assets/www/resources/android/splash/drawable-port-ldpi-screen.pn
+ g
+SHA1-Digest: aPGoY0e/tKgy/P/84nQw3pVQ2/s=
+
+Name: assets/www/lib/ionic/scss/ionic.scss
+SHA1-Digest: LqCYnbyd4D80tkG3l5F0833F1BU=
+
+Name: assets/www/resources/android/icon/drawable-xhdpi-icon.png
+SHA1-Digest: ieL76vt38TjZQfx92U9TW8VYq+k=
+
+Name: assets/www/plugins/org.apache.cordova.media/www/Media.js
+SHA1-Digest: 2pFh7V0K0acQc+pX8dltzcUBno4=
+
+Name: assets/www/lib/ionic/scss/_popover.scss
+SHA1-Digest: YpZLG8ZQ0D1BCOb+nZ60H8ONCNg=
+
+Name: assets/www/lib/ionic/scss/_mixins.scss
+SHA1-Digest: pmnqpSqswQvWaa40qKoHUcgjZeQ=
+
+Name: assets/www/lib/ionic/scss/_popup.scss
+SHA1-Digest: Q25u/ZSk/7ou5RB/zj8LC+wBLfU=
+
+Name: assets/www/templates/menu.html
+SHA1-Digest: L4dfhO68u/03jQt0aEsnX7LELYo=
+
+Name: assets/www/lib/ionic/js/angular/angular-animate.js
+SHA1-Digest: IwdS1JzNTTTqufps9c+k0QJZrHc=
+
+Name: assets/www/cordova-js-src/android/promptbasednativeapi.js
+SHA1-Digest: JIRUfP79NI5t078vJIq/tww/QEA=
+
+Name: assets/www/lib/ionic/version.json
+SHA1-Digest: 39iw/6FMrSAsFUixRcmEPLCo2b4=
+
+Name: assets/www/resources/android/icon/drawable-ldpi-icon.png
+SHA1-Digest: nZZ9vmaave7NrenT9cQRRm7UDJI=
+
+Name: lib/x86/libsqlc-native-driver.so
+SHA1-Digest: 7uJ6Lxfe+CVmYeGuWXt0YeAXAww=
+
+Name: assets/www/resources/android/icon/drawable-mdpi-icon.png
+SHA1-Digest: 6+0rns+TQwltr71YrGHhQ6GyTuI=
+
+Name: res/drawable-xhdpi-v4/icon.png
+SHA1-Digest: oXBAzaoJWJPxje/tMLDAUGBmLEk=
+
+Name: assets/www/lib/ionic/scss/_checkbox.scss
+SHA1-Digest: RWPRgrz8AuMH+RB+0mwluPSpric=
+
+Name: assets/www/resources/android/splash/splash.png
+SHA1-Digest: Beijdg78oE2oNlz3nJrA3aexgIQ=
+
+Name: assets/www/lib/ionic/css/ionic.min.css
+SHA1-Digest: 7nVGcX1F3U5Z3c8XAufxJrDwTUs=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/fileSystems.js
+SHA1-Digest: ilWnyNWFsv2WOOG5W30VIZWnEGs=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/LocalFileSystem.j
+ s
+SHA1-Digest: plNT0lmkqp3WjBCGf9wgs3Gx7V8=
+
+Name: lib/arm64-v8a/libsqlc-native-driver.so
+SHA1-Digest: rIST4AOLFzHfsQEBzumSUPA8Vog=
+
+Name: assets/www/lib/ionic/scss/_button.scss
+SHA1-Digest: IQyG9Ofi+AqVmLaBq2ZsPQWB6PI=
+
+Name: assets/www/cordova_plugins.js
+SHA1-Digest: TY65ccbXlmZLGy9s8eRs1dC+TV0=
+
+Name: res/drawable-hdpi-v4/ic_action_previous_item.png
+SHA1-Digest: M1GfB2VNcCSehXeSgRHXvHxnf3E=
+
+Name: assets/www/lib/ionic/scss/_toggle.scss
+SHA1-Digest: j9HKlOvS1fsolt1bGCkeYsM3ZyA=
+
+Name: assets/www/lib/ionic/scss/_modal.scss
+SHA1-Digest: uGo9Q36Fjnm8aruuQxN1l6cld44=
+
+Name: assets/www/lib/ionic/scss/_form.scss
+SHA1-Digest: 6Q5wdw50X9NDT9aTmqqJUa9wc5s=
+
+Name: res/drawable-ldpi-v4/icon.png
+SHA1-Digest: Pmr6jr1ZJ4DkaahKjUnzuE35fhU=
+
+Name: res/drawable-xxhdpi-v4/icon.png
+SHA1-Digest: DBbhBlCF8VL7hF0JttocxE9AxGI=
+
+Name: assets/www/lib/ionic/scss/_transitions.scss
+SHA1-Digest: ALgfrvnKlU7hL/SfAx36bk0m2S0=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/Metadata.js
+SHA1-Digest: c1Ob3UPLibuWJUN9fr+/O3n67dM=
+
+Name: res/drawable-xhdpi-v4/ic_action_next_item.png
+SHA1-Digest: vId0P8iSrMw9IbpTh7JhARxcbHc=
+
+Name: res/drawable-mdpi-v4/ic_action_remove.png
+SHA1-Digest: Xm1eOMvIE8MEYmU9ms+pWE8RPv0=
+
+Name: assets/www/lib/ionic/scss/ionicons/_ionicons-font.scss
+SHA1-Digest: 9RHdR+7owguARgzjM1E9ztCfrWo=
+
+Name: assets/www/img/mensaje.png
+SHA1-Digest: swatclxIARA6MS7OMsjGxKs1c0I=
+
+Name: assets/www/templates/contacto.html
+SHA1-Digest: 74sbNzxLPR3OgmL0o5Z0MlVj8ds=
+
+Name: assets/www/resources/android/icon/drawable-hdpi-icon.png
+SHA1-Digest: MxpUPhKu2if7xxKS3UEpzEaUH/4=
+
+Name: assets/www/img/facebook.png
+SHA1-Digest: qTrPDAEV9NtH3EQjwSt9q8rcFRk=
+
+Name: assets/www/lib/ionic/js/angular-ui/angular-ui-router.min.js
+SHA1-Digest: 0joIdDs5tZvEmsKS0VzgY+NoF90=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/FileWriter.js
+SHA1-Digest: nEb5ORmgutbSXypY2TabRKTa8BI=
+
+Name: assets/www/img/errorred.png
+SHA1-Digest: BmPcqoA2phzglX73Y53csWeCr+4=
+
+Name: assets/www/img/star.png
+SHA1-Digest: BfL5BLjm7rQ9Cd+SruCcnYiYGTE=
+
+Name: assets/www/lib/ionic/scss/_util.scss
+SHA1-Digest: bzNhCnlns5eoaByI4qnePfwloXU=
+
+Name: assets/www/templates/favoritos.html
+SHA1-Digest: vOMhs1qvSYseBixnvOzSJTJ46L4=
+
+Name: assets/www/img/Splash.png
+SHA1-Digest: F6Kg/rRMWQNssPT9QKwzZbSdAD8=
+
+Name: assets/www/img/calendar.png
+SHA1-Digest: EqZniSWIfQFQmmFDbxaYoAcvgdM=
+
+Name: assets/www/lib/ionic/fonts/ionicons.svg
+SHA1-Digest: SjnsyHeur/NDyOgTK8ZvZ9ngbME=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/fileSystemPaths.j
+ s
+SHA1-Digest: xH4TwtWJt21Hb00hqBN/0Iba8lM=
+
+Name: assets/www/lib/ionic/js/ionic-angular.min.js
+SHA1-Digest: 53FE9t1V3Kep32VEA8qa+eGEx2U=
+
+Name: assets/www/resources/android/icon/drawable-xxhdpi-icon.png
+SHA1-Digest: 3s+DFBcuX2PmxCah/a92tgkNRXo=
+
+Name: assets/www/img/delete - copia.png
+SHA1-Digest: UlCL72T5NaFcUWVDoQF0rNmOa5s=
+
+Name: assets/www/lib/ionic/scss/_variables.scss
+SHA1-Digest: 8giRBFx8EFjDvQFzMCPaPibaGgk=
+
+Name: assets/www/lib/ionic/scss/_reset.scss
+SHA1-Digest: F0HoY7GRW5C4C8wqXtgvLOu1fhE=
+
+Name: assets/www/js/controllers.js
+SHA1-Digest: /IFo9ZvfSMfaWs6/sxUjHLFIhXA=
+
+Name: assets/www/lib/ionic/js/ionic.min.js
+SHA1-Digest: yZH3AWlwZMvvSZLsEvZMpkpeYPg=
+
+Name: assets/www/lib/ionic/scss/_scaffolding.scss
+SHA1-Digest: vRB9JPp4eddzYZXdUac7Ue3uVEc=
+
+Name: assets/www/resources/android/splash/drawable-port-xxhdpi-screen.
+ png
+SHA1-Digest: jzKwhuDDWNoJi2mLND3ABFFMaTw=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/requestFileSystem
+ .js
+SHA1-Digest: JKw9bM0E9dhqrA4diPiZn1es6d8=
+
+Name: assets/www/lib/ionic/scss/_loading.scss
+SHA1-Digest: vu3nnBwVfPPD7wLvmgqEj1mxmKY=
+
+Name: lib/armeabi-v7a/libsqlc-native-driver.so
+SHA1-Digest: Lu+Qw3qXXiPFHAQz3LoBwAKw0UQ=
+
+Name: assets/www/resources/icon.png
+SHA1-Digest: WO/ai0B9GopBBBdtRUmpz5aWO6U=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/File.js
+SHA1-Digest: YPhD1mSyZ/ocm2+e+GdZavbUrzM=
+
+Name: assets/www/resources/android/splash/drawable-port-xhdpi-screen.p
+ ng
+SHA1-Digest: Lw+IGyGR4DPcbyEBgtEKI8+n5pw=
+
+Name: res/drawable-hdpi-v4/ic_action_remove.png
+SHA1-Digest: 4yiGHHAsMSLLJvngmTVlLn1qOUI=
+
+Name: assets/www/lib/ionic/js/angular/angular-resource.js
+SHA1-Digest: PLSBFoowuHRSysLRd8Rj9HqBF0U=
+
+Name: classes.dex
+SHA1-Digest: RnNdXJuhyejCJJnZn21aPmel/Oc=
+
+Name: assets/www/resources/android/splash/drawable-port-mdpi-screen.pn
+ g
+SHA1-Digest: vHTUc71kYSXXcgIuztpj1sGDxw0=
+
+Name: assets/www/plugins/org.apache.cordova.file/www/ProgressEvent.js
+SHA1-Digest: SFJb8bpsdjun545+JW7iiMuY/aA=
+

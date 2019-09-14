@@ -47,7 +47,7 @@ class BaseController: Controllable {
                             if other.isPlaying {
                                 if other.urlString() != audio.urlString() {
                                     other.isPlaying = false
-                                    StreamPlaybackManager.instance.setAudioForPlayback(nil)
+                                    StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
                                 }
                             }
                         }
@@ -71,13 +71,19 @@ class BaseController: Controllable {
                     tmpAudioPlay?.cloudSynced = false
                     if var tmpAudioPlay = tmpAudioPlay {
                         tmpAudioPlay += audio
-                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay)
+                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay, audio.image)
                     }
                     CoreDataManager.instance.save()
                 }
             } else {
-                audio.isPlaying = false
-                StreamPlaybackManager.instance.pause()
+                guard let context = RestApi.instance.context else { fatalError() }
+                
+                context.performAndWait {
+                    audio.isPlaying = false
+                    CoreDataManager.instance.save()
+                }
+                
+                StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
             }
         }
     }
@@ -149,27 +155,4 @@ class BaseController: Controllable {
         }
     }
     
-    func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
-        let object = model(forSection: indexPath.section, row: indexPath.row)
-        if let model = object as? AudioViewModel,
-            let audio = Audio.search(byUrl: model.urlString()) {
-            if CloudKitManager.instance.loggedIn {
-                CloudKitManager.instance.remove(audio: audio) { (error) in
-                    if let error = error {
-                        model.error = error
-                    }
-                    else {
-                        audio.remove()
-                    }
-                    finishClosure?(error)
-                }
-            }
-            else {
-                audio.remove()
-                finishClosure?(nil)
-            }
-            return true
-        }
-        return false
-    }
 }

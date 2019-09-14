@@ -1,0 +1,41 @@
+<ion-view>
+    <ion-nav-title style="float:left;">
+      <a href="#/app/emisoras">Emisoras</a>
+    </ion-nav-title>
+	<ion-content>
+	<!--<div data-ng-init="programacion();" class="item item-body"
+       style="border-color: #fff;  padding-left:0px; padding-right:0px; padding-top:0px;">-->
+   <div ng-include="'templates/cabecera.html'"></div>
+	   
+	<div data-ng-init="programacion();" class="item item-body"
+       style="border-color: #fff;  padding-left:0px; padding-right:0px; padding-top:0px;">
+			<div class="row"style="margin:0px; padding:0px;">
+				<div class="col">
+					<div id="noticias">
+						<div id="cargando_noticias" style="margin-left:25%; margin-right:25%; margin-top:25%;">
+							<img class="imagen" src="img/cargando.gif" />
+						</div>
+                        
+						<div class="list" ng-if="error_programacion == ''">
+                            <a class="item" href="#" ng-repeat="item in prog">
+                              <!--<img src="img/icono.png" ng-if="item[0].image == ''">
+                              <img src="{{item[0].image}}" ng-if="item[0].image != ''">-->
+                              <h2>{{item.p.conductor}}</h2>
+							  <h4>{{item[0].start}} a {{item[0].end}}</h4>
+                              <p>{{item.p.description}}</p>
+                            </a>
+                        </div>
+						
+                        <div  ng-if="error_programacion">
+                            <br /><br /><br />
+                            <h2 style="text-align:center; font-weight:bold;">Programación no disponible.</h2>
+                        </div>
+					</div>
+				</div>
+			</div>
+	</div>
+	</ion-content>
+    <ion-footer-bar style="border-top:1px solid gray;" >
+       <div ng-include="'templates/footer.html'" style="width:100%;" ></div>
+    </ion-footer-bar>
+</ion-view>

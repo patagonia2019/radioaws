@@ -29,8 +29,13 @@ extension Modellable where Self: RNAStation {
 }
 
 extension Modellable where Self: Stream {
-
+    
     internal static var placeholderImageName: String { get { return "transistor_radio_logo"} }
+}
+
+extension Modellable where Self: Desconcierto {
+
+    internal static var placeholderImageName: String { get { return "logo-quique-pesoa-app-200"} }
 }
 
 extension Modellable where Self: RTCatalog {
@@ -40,12 +45,12 @@ extension Modellable where Self: RTCatalog {
 
 extension Modellable where Self: ArchiveCollection {
 
-    internal static var placeholderImageName: String { get { return "archive.org"} }
+    internal static var placeholderImageName: String { get { return "archiveorg"} }
 }
 
 extension Modellable where Self: ArchiveDoc {
 
-    internal static var placeholderImageName: String { get { return "archive.org"} }
+    internal static var placeholderImageName: String { get { return "archiveorg"} }
 }
 
 extension Modellable where Self: Audio {

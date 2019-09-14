@@ -19,13 +19,16 @@ class CatalogViewModel: BaseViewModelProtocol {
     var url: URL?
     static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 100 : 70
 
+    var placeholderImageName: String?
+    var placeholderImage: UIImage?
+
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.name, size: Commons.font.size.XS), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.regular, size: Commons.font.size.XS), isHidden: true, lines: 1)
 
     var isBookmark: Bool?
-    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.blueberry, font: UIFont(name: Commons.font.name, size: Commons.font.size.M), isHidden: true, lines: 1)
+    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.font.bold, size: Commons.font.size.M), isHidden: true, lines: 1)
 
     var tree: String = ""
 
@@ -115,6 +118,12 @@ class CatalogViewModel: BaseViewModelProtocol {
         if audios.count > 0 && sections.count == 0 {
             isExpanded = nil
         }
+        
+        placeholderImageName = RTCatalog.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
@@ -148,6 +157,12 @@ class CatalogViewModel: BaseViewModelProtocol {
         isExpanded = isAlreadyExpanded
 
         text = detail.text
+        
+        placeholderImageName = ArchiveDoc.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
     }
 
     init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false, superTree: String?) {
@@ -212,6 +227,12 @@ class CatalogViewModel: BaseViewModelProtocol {
             archiveFiles.count > 0 {
             audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
         }
+        
+        placeholderImageName = ArchiveDoc.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
+
     }
 
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
@@ -238,6 +259,11 @@ class CatalogViewModel: BaseViewModelProtocol {
         isExpanded = isAlreadyExpanded
 
         text = desconcierto?.obs ?? ""
+
+        placeholderImageName = Desconcierto.placeholderImageName
+        if let imageName = placeholderImageName {
+            placeholderImage = UIImage.init(named: imageName)
+        }
 
     }
 

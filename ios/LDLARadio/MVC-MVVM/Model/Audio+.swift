@@ -15,7 +15,12 @@ import JFCore
 extension Audio: Modellable {
 
     static func all() -> [Audio]? {
-        return all(predicate: nil, sortDescriptors: nil) as? [Audio]
+        let sortedBy = [
+            NSSortDescriptor(key: "isBookmark", ascending: false),
+            NSSortDescriptor(key: "updatedAt", ascending: true),
+            NSSortDescriptor(key: "title", ascending: true)
+        ]
+        return all(predicate: nil, sortDescriptors: sortedBy) as? [Audio]
     }
 
 }
@@ -107,7 +112,8 @@ extension Audio {
         audio.urlString = audioViewModel.url?.absoluteString
         audio.section = audioViewModel.section
         audio.descript = audioViewModel.text
-    }
+        audio.isBookmark = audioViewModel.isBookmark ?? false
+  }
     
     /// Using += as a overloading assignment operator
     static func +=(audio: inout Audio, other: Audio) {
@@ -205,4 +211,6 @@ extension Audio {
                                            "section": section as AnyObject,
                                            "urlString": urlString as AnyObject])
     }
+    
+    
 }

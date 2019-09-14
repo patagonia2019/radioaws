@@ -25,7 +25,7 @@ class LoadTableViewCell: UITableViewCell {
 
     func start() {
         titleView.text = "Loading..."
-        titleView.textColor = UIColor.blueberry
+        titleView.textColor = UIColor.spring
         spinner.startAnimating()
     }
 

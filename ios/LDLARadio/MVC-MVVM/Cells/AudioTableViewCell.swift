@@ -86,6 +86,9 @@ class AudioTableViewCell: UITableViewCell {
         gradientPlayBg.frame = contentView.bounds
         gradientPlayBg.isHidden = false
         contentView.layer.insertSublayer(gradientPlayBg, at: 1)
+        
+        infoButton.setTitleColor(.cerulean, for: .normal)
+        infoButton.setTitleColor(.nobel, for: .highlighted)
         portraitThumbnail()
     }
 
@@ -129,6 +132,9 @@ class AudioTableViewCell: UITableViewCell {
         thumbnailView?.layer.borderWidth = 1
         if let width = thumbnailView?.layer.bounds.size.width {
             thumbnailView?.layer.cornerRadius = width / 2
+        }
+        if model?.isPlaying ?? false {
+            StreamPlaybackManager.instance.setUpdateImage(thumbnailView.image)
         }
     }
 

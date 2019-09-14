@@ -40,7 +40,11 @@ class StreamPlaybackManager: NSObject {
 
     /// The instance of AVPlayer that will be used for playback of StreamPlaybackManager.playerItem.
     private let player = AVPlayer()
-
+    
+    private var imageLogo : UIImage? = UIImage.init(named: "transistor_radio_logo")
+    func image() -> UIImage? {
+        return imageLogo ?? UIImage.init(named: "transistor_radio_logo")
+    }
     /// A Bool tracking if the AVPlayerItem.status has changed to .readyToPlay for the current StreamPlaybackManager.playerItem.
     private var readyForPlayback = false
 
@@ -83,14 +87,17 @@ class StreamPlaybackManager: NSObject {
             audio?.isPlaying = false
             audio?.cloudSynced = false
             readyForPlayback = false
+            updateRemoteCommandCenter()
         }
 
         didSet {
             audio?.isPlaying = false
             audio?.cloudSynced = false
             audioUrlAsset = audio?.urlAsset()
+            updateRemoteCommandCenter()
         }
     }
+
 
     // MARK: Initialization
     override private init() {
@@ -224,9 +231,9 @@ class StreamPlaybackManager: NSObject {
             break
         case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
             print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
-//            DispatchQueue.main.async {
-//                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
-//            }
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+            }
             break
         case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
             print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
@@ -313,11 +320,7 @@ class StreamPlaybackManager: NSObject {
 
         if let audioUrl = audio?.downloadFiles?.popLast() {
             audio?.urlString = audioUrl
-        }
-
-        if let urlAsset = audio?.urlAsset() {
-            urlAsset.resourceLoader.setDelegate(self, queue: .main)
-            urlAsset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+            audioUrlAsset = audio?.urlAsset()
         }
     }
 
@@ -398,9 +401,7 @@ class StreamPlaybackManager: NSObject {
                 self.updateRemoteCommandCenter()
                 if self.hasDuration() == false {
                     self.audio?.isPlaying = true
-                    DispatchQueue.main.async {
-                        self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
-                    }
+                    self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
                 CloudKitManager.instance.sync(force: true)
             }
@@ -439,7 +440,7 @@ class StreamPlaybackManager: NSObject {
      is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
      and handle KVO cleanup.
      */
-    func setAudioForPlayback(_ sender: Audio?) {
+    func setAudioForPlayback(_ sender: Audio?, _ image: UIImage?) {
         if  sender?.urlString != nil &&
             sender?.urlString?.count ?? 0 > 0 &&
             self.audio?.urlString == sender?.urlString {
@@ -447,6 +448,11 @@ class StreamPlaybackManager: NSObject {
         } else {
             audio = sender
         }
+        setUpdateImage(image)
+    }
+    
+    func setUpdateImage(_ image: UIImage?) {
+        imageLogo = image ?? UIImage.init(named: "transistor_radio_logo")
     }
 
      // MARK: KVO
@@ -464,66 +470,19 @@ class StreamPlaybackManager: NSObject {
         case #keyPath(AVURLAsset.isPlayable):
             guard let urlAsset = audio?.urlAsset(),
                 urlAsset.isPlayable == true else {
-                    if audio?.downloadFiles?.count ?? 0 > 0 {
-                        reload()
-                        return
-                    }
-                    let reason = audio?.title ?? "this resource"
-                    let error = JFError(code: Int(errno),
-                                        desc: "Error",
-                                        reason: "Player cannot play \(reason).",
-                                        suggestion: "Please check your internet connection or try with another audio.",
-                                        underError: nil)
-                    audio?.errorTitle = error.title()
-                    audio?.errorMessage = error.message()
-                    audio?.cloudSynced = false
-
-                    DispatchQueue.main.async {
-                        self.delegate?.streamPlaybackManager(self, playerError: error)
-                    }
+                    retry()
                     return
             }
-
             playerItem = AVPlayerItem(asset: urlAsset)
             player.replaceCurrentItem(with: playerItem)
         case #keyPath(AVPlayerItem.status):
             guard let playerItem = playerItem else { return }
-            if playerItem.status == .readyToPlay {
-                if !readyForPlayback {
-                    readyForPlayback = true
-                    playCurrentPosition()
-                }
-            } else if playerItem.status == .failed {
-                // Check if the url could be downloaded (probably as .pls)
-                if let urlString = audio?.urlString,
-                    let url = URL(string: urlString),
-                    audio?.isDownloading == false,
-                    audio?.downloadFiles == nil {
-                    readyForPlayback = false
-
-                    audio?.isDownloading = true
-                    audio?.cloudSynced = false
-                    let downloadTask = session.downloadTask(with: url)
-                    downloadTask.taskDescription = audio?.urlString
-                    downloadTask.resume()
-                } else if audio?.downloadFiles?.count ?? 0 > 0 {
-                    reload()
-                    return
-                } else {
-                    let error = JFError(code: Int(errno),
-                                        desc: "Error",
-                                        reason: "Player failed",
-                                        suggestion: "Please check your internet connection",
-                                        underError: playerItem.error as NSError?)
-                    audio?.errorTitle = error.title()
-                    audio?.errorMessage = error.message()
-                    audio?.cloudSynced = false
-
-                    DispatchQueue.main.async {
-                        self.delegate?.streamPlaybackManager(self, playerError: error)
-                    }
-                }
-                return
+            if playerItem.status == .readyToPlay, !readyForPlayback {
+                readyForPlayback = true
+                playCurrentPosition()
+            }
+            else if playerItem.status == .failed {
+                retry()
             }
 
         case #keyPath(AVPlayer.currentItem):
@@ -534,16 +493,39 @@ class StreamPlaybackManager: NSObject {
         }
     }
     
-    public func image() -> UIImage? {
-        let size = CGSize(width: 40, height: 40)
-        guard let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo,
-            let artWork = nowPlayingInfo[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork,
-            let img = artWork.image(at: size)?.resized(to: size) else {
-                return nil
+    private func retry() {
+        // Check if the url could be downloaded (probably as .pls)
+        if let urlString = audio?.urlString,
+            let url = URL(string: urlString),
+            audio?.isDownloading == false,
+            audio?.downloadFiles == nil {
+            readyForPlayback = false
+            
+            audio?.isDownloading = true
+            audio?.cloudSynced = false
+            let downloadTask = session.downloadTask(with: url)
+            downloadTask.taskDescription = audio?.urlString
+            downloadTask.resume()
+        } else if audio?.downloadFiles?.count ?? 0 > 0 {
+            reload()
+            return
+        } else {
+            let error = JFError(code: Int(errno),
+                                desc: "Error",
+                                reason: "Player failed",
+                                suggestion: "Please check your internet connection",
+                                underError: playerItem?.error as NSError?)
+            audio?.errorTitle = error.title()
+            audio?.errorMessage = error.message()
+            audio?.cloudSynced = false
+            
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerError: error)
+            }
         }
-        return img
-    }
 
+    }
+    
     private func updateNowPlaying() {
         var nowPlayingInfo = [String: Any]()
         if let audio = audio {
@@ -551,25 +533,12 @@ class StreamPlaybackManager: NSObject {
             nowPlayingInfo[MPMediaItemPropertyArtist] = audio.title
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio.subTitle
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
-            if let placeholderImage = UIImage.init(named: "Locos_de_la_azotea") {
-                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: placeholderImage.size) { (_) -> UIImage in
-                    return placeholderImage
-                }
-                
-                let iv = UIImageView.init(image: placeholderImage)
-                
-                if let imageUrl = audio.thumbnailUrl,
-                    let url = URL(string: imageUrl) {
-                    iv.af_setImage(withURL: url, placeholderImage: placeholderImage)
-                    if  let image = iv.image,
-                        let imageCopy = image.copy() as? UIImage {
-                        nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: imageCopy.size) { (_) -> UIImage in
-                            return imageCopy
-                        }
-                    }
+            
+            if let image = image() {
+                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: image.size) { (_) -> UIImage in
+                    return image
                 }
             }
-
         }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }

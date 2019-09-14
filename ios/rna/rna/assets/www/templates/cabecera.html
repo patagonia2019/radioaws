@@ -1,0 +1,25 @@
+	<div class="row" style="background-image:url('{{imagen_programa}}'); background-repeat: no-repeat; background-size: 100%; margin-top:0px; min-height:120px;">
+	    <div class="col">
+	  		<h1 style="margin:0px; margin-top:19%;"><div class="titulo">{{nombre_emisora}}<br /></div></h1>
+			<!--<h3 style="margin:0px;"><div class="leyenda">La radio pública</div><h3>-->
+	    </div>
+	</div>
+
+	<div class="row" style="margin:0px; padding:0px;">
+	  <div class="col">
+		<div class="tabs">
+		  <a ng-if="url_streaming_am != ''" class="tab-item" href="#/app/emisoras/{{id}}/am">
+			{{url_streaming_label_am}}
+		  </a>
+		  <a ng-if="url_streaming_fm != ''" class="tab-item" href="#/app/emisoras/{{id}}/fm">
+			{{url_streaming_label_fm}}
+		  </a>
+		  <a ng-if="url_web != ''" class="tab-item" href="#/app/noticias/{{id}}">
+			Noticias
+		  </a>
+		 <!-- <a class="tab-item" href="#/app/programacion/{{id}}">
+			Programación
+		</a> -->
+		</div>
+	  </div>
+	</div>

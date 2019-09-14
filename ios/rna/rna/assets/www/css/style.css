@@ -1,0 +1,82 @@
+/* Empty. Add your own CSS if you like */
+.img_icono {
+	width:40%;
+}
+.imagen{
+	width:100%;
+    /*height:20%;
+	margin-left:20%;
+	margin-right:20%;*/
+}
+.my-item {
+  left: 0;
+  right: 0;
+}
+
+.seccion_redes{
+  background-color: #009FE0;
+  color: #444;
+  position: relative;
+  z-index: 0;
+  display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 0px;
+  border-style: solid;
+  font-size: 16px;
+  display: flex;
+  padding: 0;
+  width: 100%;
+  background-image: url("img/background.png");
+}
+
+.col h1 {
+	font-weight:bold;
+	text-align:center;
+}
+.col h3 {
+	font-weight:bold;
+	text-align:center;
+}
+.leyenda {
+	text-align:left;
+	color: #FFFFFF;
+	font-size:18px;
+	font-weight:bold;
+}
+.dial {
+    width:100%;
+    /*font-size:19px;*/
+	font-size:xx-large;
+	text-align:center;
+	font-weight:bold;
+	color: #FFBF00;
+	margin-bottom:15px;
+	line-height: 90%;
+}
+
+.titulo_programa_vivo {
+	font-weight: bold;
+	text-align:left;
+	color:#000;
+}
+
+.titulo {
+	/*font-weight:bold;*/
+	text-align:left;
+	color: #FFFFFF;
+}
+
+.am {
+	width:100%;
+	padding-top:0%;
+	position:relative;
+	float:left;
+}
+
+.fm {
+	width:100%;
+	padding-top:5%;
+	position:relative;
+	float:left;
+}

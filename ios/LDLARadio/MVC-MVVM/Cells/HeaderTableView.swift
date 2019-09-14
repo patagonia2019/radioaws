@@ -33,8 +33,8 @@ class HeaderTableView: UITableViewHeaderFooterView {
 
     override func awakeFromNib() {
         paintBgView()
-        expandButton?.setTitleColor(UIColor.aqua, for: .normal)
-        expandButton?.setTitleColor(UIColor.blueberry, for: .highlighted)
+        expandButton?.setTitleColor(UIColor.tangerine, for: .normal)
+        expandButton?.setTitleColor(UIColor.plum, for: .highlighted)
         portraitThumbnail()
     }
 
@@ -120,7 +120,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
     private func paintBgView() {
         gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
         gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
-        gradientBg.colors = [UIColor.steel.cgColor, UIColor.white.cgColor]
+        gradientBg.colors = [UIColor.magnesium.cgColor, UIColor.mercury.cgColor]
         if let bgView = bgView {
             gradientBg.frame = bgView.bounds
             bgView.layer.insertSublayer(gradientBg, at: 0)

@@ -34,12 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.name, size: Commons.font.size.XS))
+        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.regular, size: Commons.font.size.XS))
 
         changeAppearance()
-
-        let stream = StreamPlaybackManager.instance
-        stream.setAudioForPlayback(nil)
         
         return true
     }
@@ -72,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func changeAppearance() {
         let defaultColor: UIColor = .midnight
-        guard let font = UIFont(name: Commons.font.name, size: Commons.font.size.XS) else {
+        guard let font = UIFont(name: Commons.font.regular, size: Commons.font.size.XS) else {
             fatalError()
         }
         let attributes = [NSAttributedString.Key.font: font,

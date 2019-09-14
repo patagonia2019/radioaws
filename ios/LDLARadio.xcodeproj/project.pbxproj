@@ -84,7 +84,6 @@
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
-		98B1686F230B845400A61DBC /* SwiftyWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686E230B845300A61DBC /* SwiftyWaveView.swift */; };
 		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
 		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
@@ -200,7 +199,6 @@
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
-		98B1686E230B845300A61DBC /* SwiftyWaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyWaveView.swift; sourceTree = "<group>"; };
 		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
 		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
 		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -401,7 +399,6 @@
 				9813DD73231A1C4C007EE1D4 /* UIToolbar+.swift */,
 				983E01F822F5EBCC008370BA /* LaunchViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
-				98B1686E230B845300A61DBC /* SwiftyWaveView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -429,7 +426,7 @@
 				9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */,
 				9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */,
 				70D4EC031E304A9B008DE753 /* common.css */,
-				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+				9864BF902327D9C2004B98AE /* Font */,
 				98195FAA22D845C2006E7961 /* quotes2.json */,
 				70D4EC071E3064EA008DE753 /* LDLARadio.html */,
 				703373A31E28343600E6D458 /* Settings.bundle */,
@@ -447,6 +444,14 @@
 				9825BDD622EB758D00E418F2 /* Downloadable.swift */,
 			);
 			name = Protocol;
+			sourceTree = "<group>";
+		};
+		9864BF902327D9C2004B98AE /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+			);
+			name = Font;
 			sourceTree = "<group>";
 		};
 		987DA0BD22D663E700F34BD3 /* LDLARadioTests */ = {
@@ -795,7 +800,6 @@
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				9808512722E6E6640013B67C /* RNAStation+.swift in Sources */,
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
-				98B1686F230B845400A61DBC /* SwiftyWaveView.swift in Sources */,
 				9808513D22E903730013B67C /* BookmarkController.swift in Sources */,
 				9813DD74231A1C4C007EE1D4 /* UIToolbar+.swift in Sources */,
 				9808510922E61E650013B67C /* RadioController.swift in Sources */,

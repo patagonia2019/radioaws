@@ -26,10 +26,10 @@ class AudioViewModel: BaseViewModelProtocol {
 
     enum ControllerName: String {
         case playing = "Playing"
-        case suggestion = "Suggestion"
+        case suggestion = "Los Locos"
         case radioTime = "Radio Time"
         case rna = "RNA"
-        case bookmark = "Bookmark"
+        case bookmark = "My Pick"
         case desconcierto = "El Desconcierto"
         case archiveOrg = "Archive.org"
         case archiveMainModelOrg = "Archive.org "
@@ -46,7 +46,7 @@ class AudioViewModel: BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.none
 
-    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.regular, size: Commons.font.size.S), isHidden: true, lines: 1)
 
     var text: String?
 
@@ -60,7 +60,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var title = LabelViewModel()
 
-    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.name, size: Commons.font.size.S), isHidden: false, lines: 1)
+    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.bold, size: Commons.font.size.S), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String?
@@ -115,7 +115,7 @@ class AudioViewModel: BaseViewModelProtocol {
         }
         text = textStr.joined(separator: ". ")
 
-        placeholderImageName = Stream.placeholderImageName
+        placeholderImageName = RTCatalog.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
@@ -211,7 +211,7 @@ class AudioViewModel: BaseViewModelProtocol {
         textStr.append(archiveFile?.detail?.doc?.descript ?? archiveFile?.description ?? "")
         text = textStr.joined(separator: "\n")
 
-        placeholderImageName = Stream.placeholderImageName
+        placeholderImageName = ArchiveDoc.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
@@ -243,7 +243,7 @@ class AudioViewModel: BaseViewModelProtocol {
         subTitle.text = ""
         detail.text = "El Desconcierto, de Quique Pesoa"
 
-        placeholderImageName = Stream.placeholderImageName
+        placeholderImageName = Desconcierto.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }

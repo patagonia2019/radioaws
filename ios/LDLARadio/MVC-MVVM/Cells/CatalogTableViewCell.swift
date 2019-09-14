@@ -32,10 +32,11 @@ class CatalogTableViewCell: UITableViewCell {
                 selectionStyle = model.selectionStyle
                 accessoryType = model.accessoryType
 
+                thumbnailView.image = model.placeholderImage
                 if let thumbnailUrl = model.thumbnailUrl {
                     thumbnailView.isHidden = false
                     iconView.isHidden = true
-                    thumbnailView.af_setImage(withURL: thumbnailUrl) { (response) in
+                    thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (response) in
                         if response.error != nil {
                             self.iconView.isHidden = false
                             self.thumbnailView.isHidden = true

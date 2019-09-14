@@ -123,7 +123,7 @@ class AudioViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         if controller is BookmarkController {
-            navigationItem.leftBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(AudioViewController.trashAction(_:)))]
+            navigationItem.leftBarButtonItems = [trashButton]
         }
         else {
             navigationItem.leftBarButtonItems = nil
@@ -166,6 +166,24 @@ class AudioViewController: UITableViewController {
         tableView.addSubview(refreshControl)
 
     }
+    
+    lazy var trashButton : UIBarButtonItem = {
+        let trash = UIButton(type: .custom)
+        trash.addTarget(self, action: #selector(AudioViewController.trashAction(_:)), for: .touchUpInside)
+        trash.heightAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+        trash.widthAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
+        trash.frame.size = CGSize(width: Commons.size.toolbarButtonFontSize, height: Commons.size.toolbarButtonFontSize)
+        guard let font = UIFont(name: Commons.font.awesome, size: 30) else {
+            fatalError()
+        }
+        trash.setTitleColor(.maraschino, for: .normal)
+        trash.setTitleColor(.steel, for: .highlighted)
+        trash.titleLabel?.font = font
+        trash.setTitle("\(Commons.symbols.showAwesome(icon: .trash))", for: .normal)
+
+        let button = UIBarButtonItem(customView: trash)
+        return button
+    }()
 
     func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
 
@@ -494,7 +512,7 @@ class AudioViewController: UITableViewController {
     
     private func removeBookmark(indexPath: IndexPath) {
         if controller is BookmarkController {
-            _ = controller.remove(indexPath: indexPath) { error in
+            _ = (controller as? BookmarkController)?.remove(indexPath: indexPath) { error in
                 if let error = error {
                     self.showAlert(title: error.title(), message: error.message(), error: error)
                 }

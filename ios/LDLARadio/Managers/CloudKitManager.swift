@@ -179,7 +179,9 @@ class CloudKitManager {
         ckAudio?.setObject(audio.currentTime as CKRecordValue?, forKey: "currentTime")
         ckAudio?.setObject(audio.descript as CKRecordValue?, forKey: "descript")
         ckAudio?.setObject(audio.detail as CKRecordValue?, forKey: "detail")
-        ckAudio?.setObject(audio.downloadFiles as CKRecordValue?, forKey: "downloadFiles")
+        if let downloadFiles = audio.downloadFiles, downloadFiles.count > 0 {
+            ckAudio?.setObject(downloadFiles as CKRecordValue?, forKey: "downloadFiles")
+        }
         ckAudio?.setObject(audio.hasDuration as CKRecordValue?, forKey: "hasDuration")
         ckAudio?.setObject(audio.id as CKRecordValue?, forKey: "id")
         ckAudio?.setObject(audio.isBookmark as CKRecordValue?, forKey: "isBookmark")
@@ -241,9 +243,9 @@ class CloudKitManager {
         modifyRecords.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.allKeys
         modifyRecords.qualityOfService = QualityOfService.userInitiated
         modifyRecords.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-            print("savedRecords: \(savedRecords)")
             RestApi.instance.context?.performAndWait {
                 if let savedRecords = savedRecords {
+                    print("savedRecords: \(savedRecords)")
                     for saveRecord in savedRecords {
                         if let audio = Audio.search(byUrl: saveRecord["urlString"]) {
                             audio.cloudSynced = true
