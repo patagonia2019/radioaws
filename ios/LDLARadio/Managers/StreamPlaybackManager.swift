@@ -199,21 +199,31 @@ class StreamPlaybackManager: NSObject {
             currentItem.duration.isValid && currentItem.duration.isNumeric {
             print("audio currentTime \(CMTimeGetSeconds(currentItem.currentTime()))")
             let currentTime = TimeInterval(CMTimeGetSeconds(currentItem.currentTime()))
-            if audio?.currentTime != currentTime {
+            if audio?.currentTime != currentTime && player.rate != 0 {
                 audio?.isPlaying = true
                 if audio?.hasDuration == false {
                     audio?.hasDuration = true
                     self.delegate?.streamPlaybackManager(self, playerCurrentItemDidDetectDuration: self.player, duration: currentTime)
                 }
             }
-            else {
+            else if player.rate == 0 {
                 audio?.isPlaying = false
             }
             audio?.currentTime = currentTime
             audio?.cloudSynced = false
 
-            if Int(audio?.currentTime ?? 0) % 300 == 0 {
-                CloudKitManager.instance.sync()
+            if let time = audio?.currentTime,
+                time > 0 {
+                var sync: Bool = false
+                if Int(time) % 300 == 0 {
+                    sync = true
+                }
+                if time >= getTotalTime() {
+                    restart()
+                }
+                if sync {
+                    CloudKitManager.instance.sync()
+                }
             }
             return currentTime
         }
@@ -230,10 +240,6 @@ class StreamPlaybackManager: NSObject {
         return 0
     }
     
-    func isPaused() -> Bool {
-        return player.rate == 0
-    }
-
     func isPlaying(url: String? = nil) -> Bool {
         return isReadyToPlay(url: url ?? audio?.urlString) && audio?.isPlaying ?? false
     }
@@ -287,25 +293,47 @@ class StreamPlaybackManager: NSObject {
         _ = getCurrentTime()
         return isTryingToPlay(url: url ?? audio?.urlString) && audio?.hasDuration ?? false
     }
-
-    func pause() {
+    
+    func restart(_ shouldPlay: Bool = false) {
         if audio?.isPlaying == false {
             return
         }
+        pause()
+        DispatchQueue.main.async {
+            self.player.seek(to: .zero, completionHandler: { success in
+                self.audio?.cloudSynced = false
+                
+                if shouldPlay {
+                    self.player.play()
+                    if self.hasDuration() == false {
+                        self.audio?.isPlaying = true
+                        self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                    }
+                    self.updateRemoteCommandCenter()
+                }
+            })
+        }
+    }
+    
+    func isPaused() -> Bool {
+        return player.rate == 0
+    }
+
+    func pause() {
         audio?.isPlaying = false
         audio?.cloudSynced = false
 
         player.pause()
-        updateRemoteCommandCenter()
         DispatchQueue.main.async {
             self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
-            CloudKitManager.instance.sync(force: true)
+            self.updateRemoteCommandCenter()
         }
     }
 
     func forward() {
         if canStepForward() {
             let position = getCurrentTime() + 60
+            pause()
             playPosition(position: position)
         }
     }
@@ -313,6 +341,7 @@ class StreamPlaybackManager: NSObject {
     func backward() {
         if canStepBackward() {
             let position = getCurrentTime() - 60
+            pause()
             playPosition(position: position)
         }
     }
@@ -320,6 +349,7 @@ class StreamPlaybackManager: NSObject {
     func seekEnd() {
         if canGoToEnd() {
             let position = getTotalTime() - 60
+            pause()
             playPosition(position: position)
         }
     }
@@ -333,6 +363,9 @@ class StreamPlaybackManager: NSObject {
     }
 
     func playCurrentPosition() {
+        if audio?.isPlaying == true {
+            return
+        }
 
         let position = audio?.currentTime ?? 0.0
         if position == 0.0 {
@@ -341,12 +374,10 @@ class StreamPlaybackManager: NSObject {
 
             DispatchQueue.main.async {
                 self.player.play()
-                self.updateRemoteCommandCenter()
                 if self.hasDuration() == false {
-                    self.audio?.isPlaying = true
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
-                CloudKitManager.instance.sync(force: true)
+                self.updateRemoteCommandCenter()
             }
         } else {
             playPosition(position: position)
@@ -354,23 +385,24 @@ class StreamPlaybackManager: NSObject {
     }
 
     func playPosition(position: Double) {
+        if self.audio?.isPlaying == true {
+            return
+        }
+        self.audio?.isPlaying = true
         var t = CMTime.zero
         if position > 0 {
             t = CMTime.init(seconds: position, preferredTimescale: 1)
         }
         DispatchQueue.main.async {
-            let playerRate = self.player.rate
             self.player.seek(to: t, completionHandler: { success in
-                self.player.rate = playerRate
                 self.audio?.cloudSynced = false
                 
                 self.player.play()
-                self.updateRemoteCommandCenter()
                 if self.hasDuration() == false {
                     self.audio?.isPlaying = true
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
-                CloudKitManager.instance.sync(force: true)
+                self.updateRemoteCommandCenter()
             })
         }
     }
@@ -470,57 +502,120 @@ class StreamPlaybackManager: NSObject {
         updateNowPlaying()
 
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.playCommand.isEnabled = false
-        commandCenter.togglePlayPauseCommand.isEnabled = true
-        commandCenter.togglePlayPauseCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if self.isPlaying() == false {
+                self.playCurrentPosition()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+//        commandCenter.togglePlayPauseCommand.isEnabled = true
+//        commandCenter.togglePlayPauseCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+//            if self.isPlaying() {
+//                self.pause()
+//            } else {
+//                self.playCurrentPosition()
+//            }
+//            return .success
+//        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { event in
             if self.isPlaying() {
                 self.pause()
-            } else {
-                self.playCurrentPosition()
+                return .success
             }
-            return .success
+            return .commandFailed
         }
+
         commandCenter.bookmarkCommand.isEnabled = true
+        commandCenter.bookmarkCommand.localizedTitle = isBookmark() ? "remove" : "add"
         commandCenter.bookmarkCommand.localizedShortTitle = isBookmark() ? "-" : "+"
-        commandCenter.bookmarkCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            self.changeAudioBookmark(finish: { (error) in
-                self.updateRemoteCommandCenter()
-            })
-            return .success
-        }
-        commandCenter.likeCommand.isEnabled = true
-
-        commandCenter.skipForwardCommand.isEnabled = true
-        commandCenter.skipForwardCommand.addTarget { _ in
-            self.forward()
-            return .success
-        }
-        commandCenter.skipBackwardCommand.isEnabled = true
-        commandCenter.skipBackwardCommand.addTarget { _ in
-            self.backward()
-            return .success
-        }
-        commandCenter.seekForwardCommand.isEnabled = true
-        commandCenter.seekForwardCommand.addTarget { _ in
-            self.seekEnd()
-            return .success
-        }
-        commandCenter.seekBackwardCommand.isEnabled = true
-        commandCenter.seekBackwardCommand.addTarget { _ in
-            self.playPosition(position: 0)
-            return .success
-        }
-        // TODO: it seems changePlaybackPositionCommand is not working
-        commandCenter.changePlaybackPositionCommand.isEnabled = false
-        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
-            if let event = event as? MPChangePlaybackPositionCommandEvent {
-                self.playPosition(position: event.positionTime)
+        commandCenter.bookmarkCommand.isActive = isBookmark()
+        commandCenter.bookmarkCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if commandCenter.bookmarkCommand.isEnabled {
+                if commandCenter.bookmarkCommand.isActive != self.isBookmark() {
+                    return .commandFailed
+                }
+                commandCenter.bookmarkCommand.isEnabled = false
+                self.changeAudioBookmark(finish: { (error) in
+                    commandCenter.bookmarkCommand.isEnabled = true
+                })
+                return .success
             }
-            return .success
+            return .commandFailed
         }
-        commandCenter.changeRepeatModeCommand.isEnabled = true
-        commandCenter.changeRepeatModeCommand.currentRepeatType = .off
+        
+        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if commandCenter.likeCommand.isEnabled {
+                commandCenter.likeCommand.isEnabled = false
+                self.changeAudioBookmark(finish: { (error) in
+                    commandCenter.likeCommand.isEnabled = true
+                })
+                return .success
+            }
+            return .commandFailed
+        }
 
+        let canStep = canStepForward()
+
+        commandCenter.skipForwardCommand.isEnabled = canStep
+        commandCenter.skipForwardCommand.addTarget { event in
+            if commandCenter.skipForwardCommand.isEnabled {
+                commandCenter.skipForwardCommand.isEnabled = false
+                self.forward()
+                return .success
+            }
+            return .commandFailed
+        }
+        commandCenter.skipBackwardCommand.isEnabled = canStep
+        commandCenter.skipBackwardCommand.addTarget { event in
+            if commandCenter.skipBackwardCommand.isEnabled {
+                commandCenter.skipBackwardCommand.isEnabled = false
+                self.backward()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        commandCenter.seekForwardCommand.isEnabled = canStep
+        commandCenter.seekForwardCommand.addTarget { event in
+            if commandCenter.seekForwardCommand.isEnabled {
+                commandCenter.seekForwardCommand.isEnabled = false
+                self.seekEnd()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        commandCenter.seekBackwardCommand.isEnabled = canStep
+        commandCenter.seekBackwardCommand.addTarget { event in
+            if commandCenter.seekBackwardCommand.isEnabled {
+                commandCenter.seekBackwardCommand.isEnabled = false
+                self.playPosition(position: 0)
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        // TODO: it seems changePlaybackPositionCommand is not working
+        commandCenter.changePlaybackPositionCommand.isEnabled = canStep
+        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if commandCenter.changePlaybackPositionCommand.isEnabled {
+                commandCenter.changePlaybackPositionCommand.isEnabled = false
+                if let event = event as? MPChangePlaybackPositionCommandEvent {
+                    self.playPosition(position: event.positionTime)
+                }
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        commandCenter.changeRepeatModeCommand.isEnabled = canStep
+        commandCenter.changeRepeatModeCommand.currentRepeatType = .off
     }
 
     func changeAudioBookmark(finish: ((_ error: JFError?) -> Void)? = nil) {

@@ -16,9 +16,7 @@ extension Audio: Modellable {
 
     static func all() -> [Audio]? {
         let sortedBy = [
-            NSSortDescriptor(key: "isBookmark", ascending: false),
-            NSSortDescriptor(key: "updatedAt", ascending: true),
-            NSSortDescriptor(key: "title", ascending: true)
+            NSSortDescriptor(key: "updatedAt", ascending: false)
         ]
         return all(predicate: nil, sortDescriptors: sortedBy) as? [Audio]
     }

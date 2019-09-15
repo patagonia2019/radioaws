@@ -83,7 +83,7 @@ extension UIToolbar {
         }
         
         let stream = StreamPlaybackManager.instance
-        if stream.isPaused() || stream.isPlaying() {
+        if stream.isReadyToPlay() {
             spinnerView?.stopAnimating()
         }
         else {
@@ -331,7 +331,7 @@ extension UIToolbar {
             slider?.heightAnchor.constraint(equalToConstant: rect.size.height).isActive = true
             slider?.tag = tag
         }
-        if !stream.isPaused() && stream.isPlaying() {
+        if stream.isPlaying() {
             slider?.value = currentTime
             slider?.maximumValue = totalTime
         }
@@ -356,7 +356,7 @@ extension UIToolbar {
         }
         let stream = StreamPlaybackManager.instance
 
-        if !stream.isPaused() && stream.isPlaying() {
+        if stream.isPlaying() {
             label?.text = timeStringFor(seconds: Float(streamTime))
         }
         
@@ -414,6 +414,13 @@ extension UIToolbar {
         })?.customView as? UILabel else {
             return
         }
+        
+        let spinnerView : UIActivityIndicatorView? = items?.first(where: { (item) -> Bool in
+            return item.tag == Commons.toolBar.spinner.rawValue
+        })?.customView as? UIActivityIndicatorView
+        spinnerView?.startAnimating()
+        
+
         currentTimeLabel.text = timeStringFor(seconds: sliderNewValue)
         bigCurrentTimeLabel?.text = currentTimeLabel.text
         if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.alpha == 0 {
@@ -434,7 +441,9 @@ extension UIToolbar {
         let value = sender?.value ?? 0
         print("JF.slider.sliderStart: \(value)")
         StreamPlaybackManager.instance.pause()
+        
         DispatchQueue.main.async {
+            
             self.reloadCurrentTimeLabel(value)
         }
     }
@@ -516,6 +525,11 @@ extension UIToolbar {
                 stream.pause()
                 color = UIColor.strawberry
             } else {
+                let spinnerView : UIActivityIndicatorView? = items?.first(where: { (item) -> Bool in
+                    return item.tag == Commons.toolBar.spinner.rawValue
+                })?.customView as? UIActivityIndicatorView
+                spinnerView?.startAnimating()
+
                 stream.playCurrentPosition()
                 color = UIColor.salmon
             }
@@ -606,10 +620,22 @@ extension UIToolbar: AssetPlaybackDelegate {
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
+        setNeedsLayout()
+
         if isPlaying {
-            setNeedsLayout()
+            
+            let spinnerView : UIActivityIndicatorView? = items?.first(where: { (item) -> Bool in
+                return item.tag == Commons.toolBar.spinner.rawValue
+            })?.customView as? UIActivityIndicatorView
+            spinnerView?.stopAnimating()
+            
             print("JF FINALLY PLAYING")
         } else {
+            let spinnerView : UIActivityIndicatorView? = items?.first(where: { (item) -> Bool in
+                return item.tag == Commons.toolBar.spinner.rawValue
+            })?.customView as? UIActivityIndicatorView
+            spinnerView?.stopAnimating()
+            
             print("JF PAUSE")
         }
     }
@@ -620,8 +646,6 @@ extension UIToolbar: AssetPlaybackDelegate {
     }
  
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval) {
-        if !streamPlaybackManager.isPaused() {
-            setNeedsLayout()
-        }
+        setNeedsLayout()
     }
 }

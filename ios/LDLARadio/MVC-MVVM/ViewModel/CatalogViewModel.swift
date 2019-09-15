@@ -222,7 +222,7 @@ class CatalogViewModel: BaseViewModelProtocol {
             isExpanded = isAlreadyExpanded
         }
         
-        let sortByTitle = [NSSortDescriptor(key: "title", ascending: true)]
+        let sortByTitle = [NSSortDescriptor(key: "updatedAt", ascending: true)]
         if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
             archiveFiles.count > 0 {
             audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })

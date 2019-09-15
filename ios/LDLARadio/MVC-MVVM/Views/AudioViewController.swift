@@ -192,7 +192,9 @@ class AudioViewController: UITableViewController {
                             SwiftSpinner.show(Quote.randomQuote())
         }) { (error) in
             if let error = error {
-                self.showAlert(error: error)
+                DispatchQueue.main.async {
+                    self.showAlert(error: error)
+                }
                 Analytics.logError(error: error)
             }
             refreshControl?.endRefreshing()
@@ -257,10 +259,17 @@ class AudioViewController: UITableViewController {
     private func play(indexPath: IndexPath, isReload: Bool = true) {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
-            DispatchQueue.global(qos: .background).async {
-                self.controller.play(forSection: indexPath.section, row: indexPath.row)
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let model = object as? AudioViewModel {
+                    model.isPlaying = !model.isPlaying
                     self.reloadData()
+                    model.isPlaying = !model.isPlaying
+                }
+                DispatchQueue.global(qos: .background).async {
+                    self.controller.play(forSection: indexPath.section, row: indexPath.row)
+                    DispatchQueue.main.async {
+                        self.reloadData()
+                    }
                 }
             }
         } else if let section = object as? CatalogViewModel {
@@ -297,7 +306,9 @@ class AudioViewController: UITableViewController {
             }
         }, finishClosure: { (error) in
             if let error = error {
-                self.showAlert(error: error)
+                DispatchQueue.main.async {
+                    self.showAlert(error: error)
+                }
                 Analytics.logError(error: error)
             }
             SwiftSpinner.hide()
