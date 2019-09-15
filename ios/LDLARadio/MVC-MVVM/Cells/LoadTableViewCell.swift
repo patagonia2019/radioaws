@@ -17,7 +17,16 @@ class LoadTableViewCell: UITableViewCell {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
 
     override func prepareForReuse() {
+        clear()
+    }
+    
+    func tryAgain() {
+        titleView.text = "Please try again with another search term."
+        titleView.textColor = UIColor.nickel
+        spinner.stopAnimating()
+    }
 
+    func clear() {
         titleView.text = "Tap to load more..."
         titleView.textColor = UIColor.lavender
         spinner.stopAnimating()

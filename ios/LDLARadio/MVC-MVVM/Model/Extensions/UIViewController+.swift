@@ -15,11 +15,11 @@ extension UIViewController {
 
         var shareUrl: URL?
         var image: UIImage?
+        text.append("Hey!")
         if  let tableView = tableView,
             let indexPath = indexPath,
             let controller = controller,
             let object = controller.model(forSection: indexPath.section, row: indexPath.row) {
-            text.append("Hey!")
             if let audio = object as? AudioViewModel {
                 text.append("Play \"\(audio.title.text)\" Enjoy! ;)")
                 let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell
@@ -30,6 +30,18 @@ extension UIViewController {
                 shareUrl = section.url
             }
             text.append("\n")
+        }
+        else {
+            let stream = StreamPlaybackManager.instance
+            image = stream.image()
+            // title, subTitle, section, detail
+            if let info = stream.info() {
+                let title = info.0
+                text.append("Play \"\(title)\" Enjoy! ;)")
+                if let urlString = stream.urlString() {
+                    shareUrl = URL(string: urlString)
+                }
+            }
         }
 
         text.append("Hurry up! Download \"Los Locos de la Azotea\" from https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1")

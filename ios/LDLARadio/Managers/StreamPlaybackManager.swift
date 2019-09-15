@@ -159,92 +159,12 @@ class StreamPlaybackManager: NSObject {
 
     }
 
-    @objc func audioSessionNoteHandler(note: Notification) {
-        switch note.name {
-            /* Registered listeners will be notified when the system has interrupted the audio session and when
-             the interruption has ended.  Check the notification's userInfo dictionary for the interruption type -- either begin or end.
-             In the case of an end interruption notification, check the userInfo dictionary for AVAudioSessionInterruptionOptions that
-             indicate whether audio playback should resume.
-             In cases where the interruption is a consequence of the application being suspended, the info dictionary will contain
-             AVAudioSessionInterruptionWasSuspendedKey, with the boolean value set to true.
-             */
-        case AVAudioSession.interruptionNotification:
-            print("AVAudioSession.interruption")
-            break
-
-            /* Registered listeners will be notified when a route change has occurred.  Check the notification's userInfo dictionary for the
-             route change reason and for a description of the previous audio route.
-             */
-        case AVAudioSession.routeChangeNotification:
-            if let userInfo = note.userInfo {
-                if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? Int {
-                    if reason == AVAudioSession.RouteChangeReason.oldDeviceUnavailable.hashValue {
-                        // headphones plugged out
-                        playCurrentPosition()
-                    }
-                }
-            }
-            print("AVAudioSession.routeChange")
-            break
-        case AVAudioSession.mediaServicesWereLostNotification: // Posted when the media server is terminated.
-            print("AVAudioSession.mediaServicesWereLost")
-            break
-        case AVAudioSession.mediaServicesWereResetNotification: // Posted when the media server restarts.
-            print("AVAudioSession.mediaServicesWereReset")
-            break
-        case AVAudioSession.silenceSecondaryAudioHintNotification: // Posted when the primary audio from other applications starts and stops.
-            print("AVAudioSession.silenceSecondaryAudioHint")
-            // Determine hint type
-            guard let userInfo = note.userInfo,
-                let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
-                let type = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: typeValue) else {
-                    return
-            }
-            
-            if type == .begin {
-                // Other app audio started playing - mute secondary audio
-                pause()
-            } else {
-                // Other app audio stopped playing - restart secondary audio
-                playCurrentPosition()
-            }
-            break
-        default:
-            print("AVAudioSession.default")
-            break
-        }
-    }
-
-    @objc func playerItemNoteHandler(note: Notification) {
-        switch note.name {
-        case .AVPlayerItemTimeJumped: // A notification that's posted when the item’s current time has changed discontinuously.
-            print("AVPlayerItemTimeJumped")
-            break
-        case .AVPlayerItemDidPlayToEndTime: // item has played to its end time
-            print("AVPlayerItemDidPlayToEndTime")
-            break
-        case .AVPlayerItemFailedToPlayToEndTime: // item has failed to play to its end time
-            print("AVPlayerItemFailedToPlayToEndTime")
-            break
-        case .AVPlayerItemPlaybackStalled: // media did not arrive in time to continue playback
-            print("AVPlayerItemPlaybackStalled")
-            break
-        case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
-            print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
-            DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
-            }
-            break
-        case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
-            print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
-            break
-        default:
-            break
-        }
-    }
-    
     public func info() -> (String, String, String?, String?)? {
         return audio?.info()
+    }
+    
+    public func urlString() -> String? {
+        return audio?.urlString
     }
     
     public func isBookmark() -> Bool {
@@ -626,6 +546,91 @@ class StreamPlaybackManager: NSObject {
         }
         perform(#selector(updateRemoteCommandCenter), with: nil, afterDelay: 0.2)
     }
+
+    @objc func audioSessionNoteHandler(note: Notification) {
+        switch note.name {
+            /* Registered listeners will be notified when the system has interrupted the audio session and when
+             the interruption has ended.  Check the notification's userInfo dictionary for the interruption type -- either begin or end.
+             In the case of an end interruption notification, check the userInfo dictionary for AVAudioSessionInterruptionOptions that
+             indicate whether audio playback should resume.
+             In cases where the interruption is a consequence of the application being suspended, the info dictionary will contain
+             AVAudioSessionInterruptionWasSuspendedKey, with the boolean value set to true.
+             */
+        case AVAudioSession.interruptionNotification:
+            print("AVAudioSession.interruption")
+            break
+            
+            /* Registered listeners will be notified when a route change has occurred.  Check the notification's userInfo dictionary for the
+             route change reason and for a description of the previous audio route.
+             */
+        case AVAudioSession.routeChangeNotification:
+            if let userInfo = note.userInfo {
+                if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? Int {
+                    if reason == AVAudioSession.RouteChangeReason.oldDeviceUnavailable.hashValue {
+                        // headphones plugged out
+                        playCurrentPosition()
+                    }
+                }
+            }
+            print("AVAudioSession.routeChange")
+            break
+        case AVAudioSession.mediaServicesWereLostNotification: // Posted when the media server is terminated.
+            print("AVAudioSession.mediaServicesWereLost")
+            break
+        case AVAudioSession.mediaServicesWereResetNotification: // Posted when the media server restarts.
+            print("AVAudioSession.mediaServicesWereReset")
+            break
+        case AVAudioSession.silenceSecondaryAudioHintNotification: // Posted when the primary audio from other applications starts and stops.
+            print("AVAudioSession.silenceSecondaryAudioHint")
+            // Determine hint type
+            guard let userInfo = note.userInfo,
+                let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
+                let type = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: typeValue) else {
+                    return
+            }
+            
+            if type == .begin {
+                // Other app audio started playing - mute secondary audio
+                pause()
+            } else {
+                // Other app audio stopped playing - restart secondary audio
+                playCurrentPosition()
+            }
+            break
+        default:
+            print("AVAudioSession.default")
+            break
+        }
+    }
+    
+    @objc func playerItemNoteHandler(note: Notification) {
+        switch note.name {
+        case .AVPlayerItemTimeJumped: // A notification that's posted when the item’s current time has changed discontinuously.
+            print("AVPlayerItemTimeJumped")
+            break
+        case .AVPlayerItemDidPlayToEndTime: // item has played to its end time
+            print("AVPlayerItemDidPlayToEndTime")
+            break
+        case .AVPlayerItemFailedToPlayToEndTime: // item has failed to play to its end time
+            print("AVPlayerItemFailedToPlayToEndTime")
+            break
+        case .AVPlayerItemPlaybackStalled: // media did not arrive in time to continue playback
+            print("AVPlayerItemPlaybackStalled")
+            break
+        case .AVPlayerItemNewAccessLogEntry: // a new access log entry has been added
+            print("AVPlayerItemNewAccessLogEntry: \(playerItem?.accessLog().debugDescription ?? "")")
+            DispatchQueue.main.async {
+                self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+            }
+            break
+        case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
+            print("AVPlayerItemNewErrorLogEntry: \(playerItem?.errorLog().debugDescription ?? "")")
+            break
+        default:
+            break
+        }
+    }
+    
 
 }
 

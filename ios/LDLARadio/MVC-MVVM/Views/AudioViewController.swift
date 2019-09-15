@@ -487,7 +487,15 @@ class AudioViewController: UITableViewController {
         if controller is BookmarkController {
             cell.titleView?.text = "You should tap on the Apple button to get some."
         } else if controller is SearchController {
-            cell.titleView?.text = "Please try again with another search term."
+            if (controller as? SearchController)?.numberOfRows(inSection: indexPath.section) == 0 {
+                cell.tryAgain()
+            }
+            else {
+                cell.clear()
+            }
+        }
+        else {
+            cell.clear()
         }
         return cell
     }

@@ -130,23 +130,25 @@ class ArchiveOrgController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
+        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
+
         if incrementPage, let page = model?.page {
             model?.page = page + 1
+            model?.isExpanded = true
+            archiveCollection?.isExpanded = true
         }
-
-        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
 
         if incrementPage == false {
             if let isExpanded = model?.isExpanded {
                 model?.isExpanded = !isExpanded
                 archiveCollection?.isExpanded = !isExpanded
             }
-
-        if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
-            finishClosure?(nil)
-            return
+            
+            if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
+                finishClosure?(nil)
+                return
             }
-
+            
             if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
                 self.updateModels()
                 finishClosure?(nil)

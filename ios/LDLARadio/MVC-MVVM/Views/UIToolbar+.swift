@@ -294,13 +294,14 @@ extension UIToolbar {
             }
             all.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         }
-        if let currentTimeLabel = createRoundLabel(tag: .bigCurrentTime), currentTimeLabel.alpha == 1 && stream.isPlaying() {
+        let mainRect = UIScreen.main.bounds
+        if let currentTimeLabel = createRoundLabel(tag: .bigCurrentTime, rect: mainRect), currentTimeLabel.alpha == 1 && stream.isPlaying() {
             UIView.animate(withDuration: 3.0, animations: {
                 currentTimeLabel.alpha = 0
             })
 
         }
-        _ = createRoundLabel(tag: .message)
+        _ = createRoundLabel(tag: .message, rect: mainRect)
 
         return all
     }
@@ -316,7 +317,7 @@ extension UIToolbar {
         var firstTime = false
         if slider == nil {
             firstTime = true
-            let width = UIScreen.main.bounds.size.width / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 2 : 4)
+            let width = rect.size.width / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 2 : 4)
             slider = UISlider(frame: .zero)
             slider?.minimumTrackTintColor = .lemon
             slider?.maximumTrackTintColor = .lime
@@ -362,7 +363,7 @@ extension UIToolbar {
         return label
     }
     
-    private func createRoundLabel(tag: Commons.toolBar) -> UILabel? {
+    private func createRoundLabel(tag: Commons.toolBar, rect: CGRect) -> UILabel? {
         let mainView = AppDelegate.instance.window
         
         var label : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
@@ -373,7 +374,7 @@ extension UIToolbar {
             guard let font = UIFont(name: Commons.font.bold, size: Commons.font.size.XXXXL) else {
                 fatalError()
             }
-            let length = UIScreen.main.bounds.size.width / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 4 : 2)
+            let length = min(rect.size.width, rect.size.height) / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 4 : 2)
             label = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
             label?.textAlignment = .center
             label?.adjustsFontSizeToFitWidth = true
@@ -390,7 +391,7 @@ extension UIToolbar {
                 mainView?.addSubview(label)
             }
         }
-        label?.center = mainView?.center ?? CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
+        label?.center = mainView?.center ?? CGPoint(x: rect.midX, y: rect.midY)
         
         return label
     }
@@ -442,6 +443,19 @@ extension UIToolbar {
         StreamPlaybackManager.instance.playPosition(position: Double(value))
     }
     
+    private func hideBigCurrentTime() {
+        let mainView = AppDelegate.instance.window
+        let bigCurrentTimeLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
+            return item.tag == Commons.toolBar.bigCurrentTime.rawValue
+        }) as? UILabel
+        
+        if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.alpha == 1 {
+            UIView.animate(withDuration: 3.0, animations: {
+                bigCurrentTimeLabel.alpha = 0
+            })
+        }
+    }
+    
     @objc private func handlePlay(_ button: UIBarButtonItem) {
         
         showMessage { () -> (UIColor, String) in
@@ -470,6 +484,8 @@ extension UIToolbar {
     }
     
     private func showMessage(action: (() -> (UIColor, String))) {
+        hideBigCurrentTime()
+        
         let mainView = AppDelegate.instance.window
         let messageLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
             return item.tag == Commons.toolBar.message.rawValue
@@ -519,6 +535,7 @@ extension UIToolbar {
         else {
             AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: error)
         }
+        
     }
     
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
