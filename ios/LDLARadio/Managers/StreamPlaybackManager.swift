@@ -98,6 +98,29 @@ class StreamPlaybackManager: NSObject {
         }
     }
 
+    /**
+     Replaces the currently playing `Stream`, if any, with a new `Stream`. If nil
+     is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
+     and handle KVO cleanup.
+     */
+    func setAudioForPlayback(_ sender: Audio?, _ image: UIImage?) {
+        if  sender?.urlString != nil &&
+            sender?.urlString?.count ?? 0 > 0 &&
+            audio?.urlString != nil &&
+            audio?.urlString == sender?.urlString {
+            playCurrentPosition()
+        } else {
+            pause()
+            audio = sender
+        }
+        setUpdateImage(image)
+    }
+    
+    func setUpdateImage(_ image: UIImage?) {
+        imageLogo = image ?? UIImage.init(named: "transistor_radio_logo")
+    }
+    
+
 
     // MARK: Initialization
     override private init() {
@@ -336,7 +359,9 @@ class StreamPlaybackManager: NSObject {
             t = CMTime.init(seconds: position, preferredTimescale: 1)
         }
         DispatchQueue.main.async {
-            self.player.seek(to: t, completionHandler: { _ in
+            let playerRate = self.player.rate
+            self.player.seek(to: t, completionHandler: { success in
+                self.player.rate = playerRate
                 self.audio?.cloudSynced = false
                 
                 self.player.play()
@@ -353,26 +378,6 @@ class StreamPlaybackManager: NSObject {
     func isPlayingUrl(urlString: String?) -> Bool {
         guard let urlString = urlString else { return false }
         return urlString == audio?.urlString
-    }
-
-    /**
-     Replaces the currently playing `Stream`, if any, with a new `Stream`. If nil
-     is passed, `StreamPlaybackManager` will handle unloading the existing `Stream`
-     and handle KVO cleanup.
-     */
-    func setAudioForPlayback(_ sender: Audio?, _ image: UIImage?) {
-        if  sender?.urlString != nil &&
-            sender?.urlString?.count ?? 0 > 0 &&
-            self.audio?.urlString == sender?.urlString {
-            playCurrentPosition()
-        } else {
-            audio = sender
-        }
-        setUpdateImage(image)
-    }
-    
-    func setUpdateImage(_ image: UIImage?) {
-        imageLogo = image ?? UIImage.init(named: "transistor_radio_logo")
     }
 
      // MARK: KVO
@@ -448,16 +453,14 @@ class StreamPlaybackManager: NSObject {
     
     private func updateNowPlaying() {
         var nowPlayingInfo = [String: Any]()
-        if let audio = audio {
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  TimeInterval(audio.currentTime)
-            nowPlayingInfo[MPMediaItemPropertyArtist] = audio.title
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio.subTitle
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
-            
-            if let image = image() {
-                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: image.size) { (_) -> UIImage in
-                    return image
-                }
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  TimeInterval(audio?.currentTime ?? 0)
+        nowPlayingInfo[MPMediaItemPropertyArtist] = audio?.title
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio?.subTitle
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
+        
+        if let image = image() {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.init(boundsSize: image.size) { (_) -> UIImage in
+                return image
             }
         }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
@@ -467,11 +470,7 @@ class StreamPlaybackManager: NSObject {
         updateNowPlaying()
 
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.playCommand.isEnabled = true
-        commandCenter.playCommand.addTarget {_ in
-            self.playCurrentPosition()
-            return .success
-        }
+        commandCenter.playCommand.isEnabled = false
         commandCenter.togglePlayPauseCommand.isEnabled = true
         commandCenter.togglePlayPauseCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in
             if self.isPlaying() {
@@ -481,13 +480,14 @@ class StreamPlaybackManager: NSObject {
             }
             return .success
         }
-        commandCenter.pauseCommand.isEnabled = true
-        commandCenter.pauseCommand.addTarget {_ in
-            self.pause()
+        commandCenter.bookmarkCommand.isEnabled = true
+        commandCenter.bookmarkCommand.localizedShortTitle = isBookmark() ? "-" : "+"
+        commandCenter.bookmarkCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.changeAudioBookmark(finish: { (error) in
+                self.updateRemoteCommandCenter()
+            })
             return .success
         }
-        
-        commandCenter.bookmarkCommand.isEnabled = false
         commandCenter.likeCommand.isEnabled = true
 
         commandCenter.skipForwardCommand.isEnabled = true
@@ -512,12 +512,12 @@ class StreamPlaybackManager: NSObject {
         }
         // TODO: it seems changePlaybackPositionCommand is not working
         commandCenter.changePlaybackPositionCommand.isEnabled = false
-//        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
-//            if let event = event as? MPChangePlaybackPositionCommandEvent {
-//                self.playPosition(position: event.positionTime)
-//            }
-//            return .success
-//        }
+        commandCenter.changePlaybackPositionCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+            if let event = event as? MPChangePlaybackPositionCommandEvent {
+                self.playPosition(position: event.positionTime)
+            }
+            return .success
+        }
         commandCenter.changeRepeatModeCommand.isEnabled = true
         commandCenter.changeRepeatModeCommand.currentRepeatType = .off
 
@@ -525,21 +525,20 @@ class StreamPlaybackManager: NSObject {
 
     func changeAudioBookmark(finish: ((_ error: JFError?) -> Void)? = nil) {
         guard let context = RestApi.instance.context else { fatalError() }
-        guard let audio = audio else { return }
         BaseController.isBookmarkChanged = true
 
         context.performAndWait {
 
             var audiotmp: Audio?
-            if let audiotmp2 = Audio.search(byUrl: audio.urlString) {
+            if let audiotmp2 = Audio.search(byUrl: audio?.urlString) {
                 audiotmp = audiotmp2
             } else if let audiotmp2 = Audio.create() {
                 audiotmp = audiotmp2
-                audiotmp? += audio
+                audiotmp? += audio!
             } else {
                 fatalError()
             }
-            audio.changeBookmark()
+            audio?.changeBookmark()
             
             CoreDataManager.instance.save()
             finish?(nil)

@@ -16,6 +16,7 @@ class Commons {
         typealias RawValue = Int
         case spinner = 1001
         case image
+        case bigImage
         case slider
         case bigCurrentTime
         case message

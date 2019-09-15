@@ -98,27 +98,29 @@ extension UIToolbar {
         let stream = StreamPlaybackManager.instance
         
         let image = stream.image()
-        var imageView : UIImageView? = items?.first(where: { (item) -> Bool in
+        var imageButton: UIButton? = items?.first(where: { (item) -> Bool in
             return item.tag == Commons.toolBar.image.rawValue
-        })?.customView as? UIImageView
+        })?.customView as? UIButton
         
-        if imageView == nil {
-            imageView = UIImageView.init(image: image)
-            imageView?.contentMode = .scaleAspectFit
+        if imageButton == nil {
+            imageButton = UIButton(type: .custom)
+            imageButton?.setImage(image, for: .normal)
+            imageButton?.imageView?.contentMode = .scaleAspectFit
+            imageButton?.addTarget(self, action: #selector(UIToolbar.handleImage(_:)), for: .touchUpInside)
             let size = Commons.size.toolbarImageSize
-            imageView?.frame = CGRect(origin: .zero, size: size)
-            imageView?.layer.cornerRadius = size.width/2
-            imageView?.layer.masksToBounds = true
-            imageView?.heightAnchor.constraint(equalToConstant: size.height).isActive = true
-            imageView?.widthAnchor.constraint(equalToConstant: size.width).isActive = true
-            if let imageView = imageView {
-                let button = UIBarButtonItem(customView: imageView)
+            imageButton?.frame = CGRect(origin: .zero, size: size)
+            imageButton?.layer.cornerRadius = size.width/2
+            imageButton?.layer.masksToBounds = true
+            imageButton?.heightAnchor.constraint(equalToConstant: size.height).isActive = true
+            imageButton?.widthAnchor.constraint(equalToConstant: size.width).isActive = true
+            if let imageButton = imageButton {
+                let button = UIBarButtonItem(customView: imageButton)
                 button.tag = Commons.toolBar.image.rawValue
                 all.append(button)
             }
         }
         else {
-            imageView?.image = image
+            imageButton?.setImage(image, for: .normal)
         }
         return all
     }
@@ -443,17 +445,62 @@ extension UIToolbar {
         StreamPlaybackManager.instance.playPosition(position: Double(value))
     }
     
-    private func hideBigCurrentTime() {
+    private func hideMessages() {
         let mainView = AppDelegate.instance.window
         let bigCurrentTimeLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
             return item.tag == Commons.toolBar.bigCurrentTime.rawValue
         }) as? UILabel
+        let imageButton: UIButton? = mainView?.subviews.first(where: { (item) -> Bool in
+            return item.tag == Commons.toolBar.bigImage.rawValue
+        }) as? UIButton
         
-        if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.alpha == 1 {
-            UIView.animate(withDuration: 3.0, animations: {
-                bigCurrentTimeLabel.alpha = 0
-            })
+        UIView.animate(withDuration: 1.0, animations: {
+            if bigCurrentTimeLabel?.alpha == 1 {
+                bigCurrentTimeLabel?.alpha = 0
+            }
+            if imageButton?.alpha == 1 {
+                imageButton?.alpha = 0
+            }
+        })
+    }
+    
+    @objc private func handleImage(_ sender: Any?) {
+        let mainView = AppDelegate.instance.window
+        
+        let stream = StreamPlaybackManager.instance
+        let image = stream.image()
+        
+        var imageButton: UIButton? = mainView?.subviews.first(where: { (item) -> Bool in
+            return item.tag == Commons.toolBar.bigImage.rawValue
+        }) as? UIButton
+
+        let rect = UIScreen.main.bounds
+
+        if imageButton == nil {
+            imageButton = UIButton(type: .custom)
+            imageButton?.imageView?.contentMode = .scaleAspectFill
+            imageButton?.addTarget(self, action: #selector(UIToolbar.handleImage(_:)), for: .touchUpInside)
+            let length = CGFloat.minimum(rect.size.width, rect.size.height) * 0.8
+            let size = CGSize(width: length, height: length)
+            imageButton?.frame = CGRect(origin: .zero, size: size)
+            imageButton?.layer.cornerRadius = 8
+            imageButton?.layer.masksToBounds = true
+            imageButton?.layer.borderColor = UIColor.nobel.cgColor
+            imageButton?.layer.borderWidth = 1
+            imageButton?.alpha = 0
+            imageButton?.heightAnchor.constraint(equalToConstant: size.height).isActive = true
+            imageButton?.widthAnchor.constraint(equalToConstant: size.width).isActive = true
+            imageButton?.tag = Commons.toolBar.bigImage.rawValue
+            if let imageButton = imageButton {
+                mainView?.addSubview(imageButton)
+            }
         }
+        imageButton?.setBackgroundImage(image, for: .normal)
+        imageButton?.center = mainView?.center ?? CGPoint(x: rect.midX, y: rect.midY)
+        
+        UIView.animate(withDuration: 1.0, animations: {
+            imageButton?.alpha = (imageButton?.alpha ?? 0 == 0) ? 1 : 0
+        })
     }
     
     @objc private func handlePlay(_ button: UIBarButtonItem) {
@@ -484,7 +531,7 @@ extension UIToolbar {
     }
     
     private func showMessage(action: (() -> (UIColor, String))) {
-        hideBigCurrentTime()
+        hideMessages()
         
         let mainView = AppDelegate.instance.window
         let messageLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
@@ -526,6 +573,8 @@ extension UIToolbar {
     }
     
     @objc private func handleInfo(_ sender: Any?) {
+        hideMessages()
+        
         let audioPlayInfo = StreamPlaybackManager.instance.info()
         var error: JFError?
         if audioPlayInfo?.2 != nil {
