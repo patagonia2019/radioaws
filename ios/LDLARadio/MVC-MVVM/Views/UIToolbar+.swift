@@ -107,6 +107,8 @@ extension UIToolbar {
             imageView?.contentMode = .scaleAspectFit
             let size = Commons.size.toolbarImageSize
             imageView?.frame = CGRect(origin: .zero, size: size)
+            imageView?.layer.cornerRadius = size.width/2
+            imageView?.layer.masksToBounds = true
             imageView?.heightAnchor.constraint(equalToConstant: size.height).isActive = true
             imageView?.widthAnchor.constraint(equalToConstant: size.width).isActive = true
             if let imageView = imageView {
@@ -267,67 +269,18 @@ extension UIToolbar {
         
         let stream = StreamPlaybackManager.instance
         
-        var slider : UISlider? = items?.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.slider.rawValue
-        })?.customView as? UISlider
-        var currentTimeLabel : UILabel? = items?.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.currentTime.rawValue
-        })?.customView as? UILabel
-        var totalTimeLabel : UILabel? = items?.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.totalTime.rawValue
-        })?.customView as? UILabel
-        
-
-        var firstTime = false
-        if slider == nil {
-            firstTime = true
-            slider = UISlider(frame: CGRect(origin: .zero, size: CGSize(width: rect.size.width/4, height: rect.size.height)))
-            slider?.minimumTrackTintColor = .lemon
-            slider?.maximumTrackTintColor = .lime
-            slider?.tintColor = .aqua
-            slider?.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
-            slider?.addTarget(self, action: #selector(sliderEnd(_:)), for: .touchUpInside)
-            slider?.addTarget(self, action: #selector(sliderStart(_:)), for: .touchDown)
-            slider?.widthAnchor.constraint(equalToConstant: rect.size.width/4).isActive = true
-            slider?.tag = Commons.toolBar.slider.rawValue
-        }
         let currentStreamTime = Float(stream.getCurrentTime())
-        print("JF.slider.reload: \(currentStreamTime)")
         let totalStreamTime = Float(stream.getTotalTime())
-        if !stream.isPaused() && stream.isPlaying() {
-            slider?.value = currentStreamTime
-            slider?.maximumValue = totalStreamTime
-        }
+        
+        let (firstTime, slider) = createSlider(rect: rect, currentTime: currentStreamTime, totalTime: totalStreamTime)
         
         guard let font = UIFont(name: Commons.font.regular, size: UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? Commons.font.size.S : Commons.font.size.XS) else {
             fatalError()
         }
         
-        if currentTimeLabel == nil {
-            currentTimeLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: Commons.size.toolbarLabelWidth, height: rect.size.height)))
-            currentTimeLabel?.font = font
-            currentTimeLabel?.textAlignment = .right
-            currentTimeLabel?.textColor = .clover
-            currentTimeLabel?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarLabelWidth).isActive = true
-            currentTimeLabel?.tag = Commons.toolBar.currentTime.rawValue
-        }
-        if !stream.isPaused() && stream.isPlaying() {
-            currentTimeLabel?.text = timeStringFor(seconds: currentStreamTime)
-        }
-        
-        if totalTimeLabel == nil {
-            totalTimeLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: Commons.size.toolbarLabelWidth, height: rect.size.height)))
-            totalTimeLabel?.textAlignment = .left
-            totalTimeLabel?.font = font
-            totalTimeLabel?.textColor = .clover
-            totalTimeLabel?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarLabelWidth).isActive = true
-            totalTimeLabel?.tag = Commons.toolBar.totalTime.rawValue
-        }
-        if !stream.isPaused() && stream.isPlaying() {
-            totalTimeLabel?.font = font
-            totalTimeLabel?.text = timeStringFor(seconds: totalStreamTime)
-        }
-        
+        let currentTimeLabel = createToolbarLabel(rect: rect, streamTime: currentStreamTime, font: font, tag: .currentTime, textAlignment: .right)
+        let totalTimeLabel = createToolbarLabel(rect: rect, streamTime: totalStreamTime, font: font, tag: .totalTime, textAlignment: .left)
+
         if firstTime {
             for item in [currentTimeLabel, slider, totalTimeLabel] {
                 if let item = item {
@@ -341,82 +294,105 @@ extension UIToolbar {
             }
             all.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         }
+        if let currentTimeLabel = createRoundLabel(tag: .bigCurrentTime), currentTimeLabel.alpha == 1 && stream.isPlaying() {
+            UIView.animate(withDuration: 3.0, animations: {
+                currentTimeLabel.alpha = 0
+            })
 
-        if stream.hasDuration() && totalStreamTime > 0 {
-            currentTimeLabel?.isHidden = false
-            slider?.isHidden = false
-            totalTimeLabel?.isHidden = false
         }
-        else {
-            currentTimeLabel?.isHidden = true
-            slider?.isHidden = true
-            totalTimeLabel?.isHidden = true
+        _ = createRoundLabel(tag: .message)
+
+        return all
+    }
+    
+    private func createSlider(rect: CGRect, currentTime: Float, totalTime: Float) -> (Bool, UISlider?) {
+        let stream = StreamPlaybackManager.instance
+        
+        let tag = Commons.toolBar.slider.rawValue
+        var slider : UISlider? = items?.first(where: { (item) -> Bool in
+            return item.tag == tag
+        })?.customView as? UISlider
+        
+        var firstTime = false
+        if slider == nil {
+            firstTime = true
+            let width = UIScreen.main.bounds.size.width / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 2 : 4)
+            slider = UISlider(frame: .zero)
+            slider?.minimumTrackTintColor = .lemon
+            slider?.maximumTrackTintColor = .lime
+            slider?.tintColor = .aqua
+            slider?.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+            slider?.addTarget(self, action: #selector(sliderEnd(_:)), for: .touchUpInside)
+            slider?.addTarget(self, action: #selector(sliderStart(_:)), for: .touchDown)
+            slider?.widthAnchor.constraint(equalToConstant: width).isActive = true
+            slider?.heightAnchor.constraint(equalToConstant: rect.size.height).isActive = true
+            slider?.tag = tag
+        }
+        if !stream.isPaused() && stream.isPlaying() {
+            slider?.value = currentTime
+            slider?.maximumValue = totalTime
         }
         
+        slider?.isHidden = stream.hasDuration() && totalTime > 0 ? false : true
+
+        return (firstTime, slider)
+    }
+    
+    private func createToolbarLabel(rect: CGRect, streamTime: Float, font: UIFont?, tag: Commons.toolBar, textAlignment: NSTextAlignment) -> UILabel? {
+        var label : UILabel? = items?.first(where: { (item) -> Bool in
+            return item.tag == tag.rawValue
+        })?.customView as? UILabel
+
+        if label == nil {
+            label = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: Commons.size.toolbarLabelWidth, height: rect.size.height)))
+            label?.font = font
+            label?.textAlignment = textAlignment
+            label?.textColor = .clover
+            label?.widthAnchor.constraint(equalToConstant: Commons.size.toolbarLabelWidth).isActive = true
+            label?.tag = tag.rawValue
+        }
+        let stream = StreamPlaybackManager.instance
+
+        if !stream.isPaused() && stream.isPlaying() {
+            label?.text = timeStringFor(seconds: Float(streamTime))
+        }
+        
+        label?.isHidden = stream.hasDuration() && streamTime > 0 ? false : true
+        
+        return label
+    }
+    
+    private func createRoundLabel(tag: Commons.toolBar) -> UILabel? {
         let mainView = AppDelegate.instance.window
         
-        var bigCurrentTimeLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.bigCurrentTime.rawValue
+        var label : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
+            return item.tag == tag.rawValue
         }) as? UILabel
-        
-        if bigCurrentTimeLabel == nil {
+
+        if label == nil {
             guard let font = UIFont(name: Commons.font.bold, size: Commons.font.size.XXXXL) else {
                 fatalError()
             }
-            
-            let length = UIScreen.main.bounds.size.width / 2
-            bigCurrentTimeLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
-            bigCurrentTimeLabel?.textAlignment = .center
-            bigCurrentTimeLabel?.layer.cornerRadius = length / 2
-            bigCurrentTimeLabel?.layer.borderColor = UIColor.nobel.cgColor
-            bigCurrentTimeLabel?.layer.borderWidth = 1
-            bigCurrentTimeLabel?.layer.backgroundColor = UIColor.cantaloupe.cgColor
-            bigCurrentTimeLabel?.textColor = .clover
-            bigCurrentTimeLabel?.shadowColor = .magnesium
-            bigCurrentTimeLabel?.font = font
-            bigCurrentTimeLabel?.alpha = 0.8
-            bigCurrentTimeLabel?.isHidden = true
-            bigCurrentTimeLabel?.tag = Commons.toolBar.bigCurrentTime.rawValue
-            if let bigCurrentTimeLabel = bigCurrentTimeLabel {
-                mainView?.addSubview(bigCurrentTimeLabel)
+            let length = UIScreen.main.bounds.size.width / (UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 4 : 2)
+            label = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
+            label?.textAlignment = .center
+            label?.adjustsFontSizeToFitWidth = true
+            label?.layer.cornerRadius = length / 2
+            label?.layer.borderColor = UIColor.nobel.cgColor
+            label?.layer.borderWidth = 1
+            label?.layer.backgroundColor = UIColor.cantaloupe.cgColor
+            label?.textColor = .clover
+            label?.shadowColor = .magnesium
+            label?.font = font
+            label?.alpha = 0.0
+            label?.tag = tag.rawValue
+            if let label = label {
+                mainView?.addSubview(label)
             }
-            bigCurrentTimeLabel?.center = mainView?.center ?? CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
         }
-
-        if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.isHidden == false && stream.isPlaying() {
-            bigCurrentTimeLabel.isHidden = true
-        }
+        label?.center = mainView?.center ?? CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
         
-        
-        var messageLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.message.rawValue
-        }) as? UILabel
-        
-        if messageLabel == nil {
-            guard let font = UIFont(name: Commons.font.bold, size: Commons.font.size.XXXL) else {
-                fatalError()
-            }
-            
-            let length = UIScreen.main.bounds.size.width / 2
-            messageLabel = UILabel.init(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
-            messageLabel?.textAlignment = .center
-            messageLabel?.layer.cornerRadius = length / 2
-            messageLabel?.layer.borderColor = UIColor.nobel.cgColor
-            messageLabel?.layer.borderWidth = 1
-            messageLabel?.layer.backgroundColor = UIColor.eggplant.cgColor
-            messageLabel?.textColor = .clover
-            messageLabel?.shadowColor = .magnesium
-            messageLabel?.font = font
-            messageLabel?.alpha = 0
-            messageLabel?.tag = Commons.toolBar.message.rawValue
-            if let messageLabel = messageLabel {
-                mainView?.addSubview(messageLabel)
-            }
-            messageLabel?.center = mainView?.center ?? CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
-
-        }
-        
-        return all
+        return label
     }
     
     private func reloadCurrentTimeLabel(_ sliderNewValue: Float? = nil) {
@@ -437,8 +413,8 @@ extension UIToolbar {
         }
         currentTimeLabel.text = timeStringFor(seconds: sliderNewValue)
         bigCurrentTimeLabel?.text = currentTimeLabel.text
-        if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.isHidden == true {
-            bigCurrentTimeLabel.isHidden = false
+        if let bigCurrentTimeLabel = bigCurrentTimeLabel, bigCurrentTimeLabel.alpha == 0 {
+            bigCurrentTimeLabel.alpha = 1
         }
 
     }
@@ -467,56 +443,72 @@ extension UIToolbar {
     }
     
     @objc private func handlePlay(_ button: UIBarButtonItem) {
-        let stream = StreamPlaybackManager.instance
-        let isPlaying = stream.isPlaying()
         
+        showMessage { () -> (UIColor, String) in
+            let stream = StreamPlaybackManager.instance
+            let isPlaying = stream.isPlaying()
+            
+            var color: UIColor = .black
+            var text: String = ""
+            
+            if isPlaying {
+                stream.pause()
+                color = UIColor.strawberry
+            } else {
+                stream.playCurrentPosition()
+                color = UIColor.salmon
+            }
+            _ = self.reloadPlayPause()
+            
+            if isPlaying {
+                text = "pause"
+            } else {
+                text = "play"
+            }
+            return (color, text)
+        }
+    }
+    
+    private func showMessage(action: (() -> (UIColor, String))) {
         let mainView = AppDelegate.instance.window
         let messageLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
             return item.tag == Commons.toolBar.message.rawValue
         }) as? UILabel
-
-        if isPlaying {
-            stream.pause()
-            messageLabel?.layer.backgroundColor = UIColor.strawberry.cgColor
-        } else {
-            stream.playCurrentPosition()
-            messageLabel?.layer.backgroundColor = UIColor.salmon.cgColor
-        }
-        _ = self.reloadPlayPause()
-
-        if isPlaying {
-            messageLabel?.text = "Paused"
-        } else {
-            messageLabel?.text = "Playing"
-        }
+        
+        let (color, message) = action()
+        messageLabel?.layer.backgroundColor = color.cgColor
+        messageLabel?.text = message
         messageLabel?.alpha = 1
         UIView.animate(withDuration: 3.0, animations: {
             messageLabel?.alpha = 0
         })
+
     }
     
     @objc private func handleBookmark(_ sender: Any?) {
-        let stream = StreamPlaybackManager.instance
-        let mainView = AppDelegate.instance.window
-        let messageLabel : UILabel? = mainView?.subviews.first(where: { (item) -> Bool in
-            return item.tag == Commons.toolBar.message.rawValue
-        }) as? UILabel
+        showMessage { () -> (UIColor, String) in
+            let stream = StreamPlaybackManager.instance
+            let isBookmark = stream.isBookmark()
+            
+            var color: UIColor = .black
+            var text: String = ""
+            
+            if isBookmark {
+                stream.pause()
+                color = UIColor.silver
+                text = "remove"
+            } else {
+                stream.playCurrentPosition()
+                color = UIColor.bublegum
+                text = "add"
+            }
+            StreamPlaybackManager.instance.changeAudioBookmark { _ in
+                _ = self.reloadBookmark()
+            }
 
-        if stream.isBookmark() {
-            messageLabel?.layer.backgroundColor = UIColor.silver.cgColor
-            messageLabel?.text = "removed"
-        } else {
-            messageLabel?.layer.backgroundColor = UIColor.bublegum.cgColor
-            messageLabel?.text = "added"
-        }
-        StreamPlaybackManager.instance.changeAudioBookmark { _ in
-            _ = self.reloadBookmark()
+            return (color, text)
         }
 
-        messageLabel?.alpha = 1
-        UIView.animate(withDuration: 3.0, animations: {
-            messageLabel?.alpha = 0
-        })
     }
     
     @objc private func handleInfo(_ sender: Any?) {
