@@ -494,11 +494,9 @@ extension UIToolbar {
             var text: String = ""
             
             if isBookmark {
-                stream.pause()
                 color = UIColor.silver
                 text = "remove"
             } else {
-                stream.playCurrentPosition()
                 color = UIColor.bublegum
                 text = "add"
             }
