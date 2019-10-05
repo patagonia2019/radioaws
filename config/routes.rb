@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :archivecatalogs
+  resources :archive_org_audios
   resources :desconciertos
   resources :sessions
   resources :thefts

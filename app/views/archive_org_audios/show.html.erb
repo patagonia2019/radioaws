@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Identifier:</strong>
+  <%= @archive_org_audio.identifier %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @archive_org_audio.title %>
+</p>
+
+<p>
+  <strong>Subtitle:</strong>
+  <%= @archive_org_audio.subtitle %>
+</p>
+
+<p>
+  <strong>Detail:</strong>
+  <%= @archive_org_audio.detail %>
+</p>
+
+<%= link_to 'Edit', edit_archive_org_audio_path(@archive_org_audio) %> |
+<%= link_to 'Back', archive_org_audios_path %>

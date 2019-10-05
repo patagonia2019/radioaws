@@ -69,6 +69,6 @@ class DesconciertosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def desconcierto_params
-      params.require(:desconcierto).permit(:at_date, :url1, :url2, :url3)
+      params.require(:desconcierto).permit(:at_date, :url1, :url2, :url3, :obs)
     end
 end

@@ -9,6 +9,7 @@
       <th>Url1</th>
       <th>Url2</th>
       <th>Url3</th>
+      <th>Obs</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= desconcierto.url1 %></td>
         <td><%= desconcierto.url2 %></td>
         <td><%= desconcierto.url3 %></td>
+        <td><%= desconcierto.obs %></td>
         <td><%= link_to 'Show', desconcierto %></td>
         <td><%= link_to 'Edit', edit_desconcierto_path(desconcierto) %></td>
         <td><%= link_to 'Destroy', desconcierto, method: :delete, data: { confirm: 'Are you sure?' } %></td>

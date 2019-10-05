@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190726014315) do
+ActiveRecord::Schema.define(version: 20190818221612) do
+
+  create_table "archive_org_audios", force: :cascade do |t|
+    t.string   "url"
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "identifer"
+  end
+
+  create_table "archivecatalogs", force: :cascade do |t|
+    t.string   "identifier"
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string   "name"
@@ -33,6 +52,7 @@ ActiveRecord::Schema.define(version: 20190726014315) do
     t.string   "url3"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "obs"
   end
 
   create_table "districts", force: :cascade do |t|

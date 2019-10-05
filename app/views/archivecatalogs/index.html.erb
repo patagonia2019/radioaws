@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Archivecatalogs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Identifier</th>
+      <th>Title</th>
+      <th>Subtitle</th>
+      <th>Detail</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @archivecatalogs.each do |archivecatalog| %>
+      <tr>
+        <td><%= archivecatalog.identifier %></td>
+        <td><%= archivecatalog.title %></td>
+        <td><%= archivecatalog.subtitle %></td>
+        <td><%= archivecatalog.detail %></td>
+        <td><%= link_to 'Show', archivecatalog %></td>
+        <td><%= link_to 'Edit', edit_archivecatalog_path(archivecatalog) %></td>
+        <td><%= link_to 'Destroy', archivecatalog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Archivecatalog', new_archivecatalog_path %>

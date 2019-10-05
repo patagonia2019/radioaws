@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Archive Org Audios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Identifier</th>
+      <th>Title</th>
+      <th>Subtitle</th>
+      <th>Detail</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @archive_org_audios.each do |archive_org_audio| %>
+      <tr>
+        <td><%= archive_org_audio.identifier %></td>
+        <td><%= archive_org_audio.title %></td>
+        <td><%= archive_org_audio.subtitle %></td>
+        <td><%= archive_org_audio.detail %></td>
+        <td><%= link_to 'Show', archive_org_audio %></td>
+        <td><%= link_to 'Edit', edit_archive_org_audio_path(archive_org_audio) %></td>
+        <td><%= link_to 'Destroy', archive_org_audio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Archive Org Audio', new_archive_org_audio_path %>

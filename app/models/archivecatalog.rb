@@ -1,0 +1,2 @@
+class Archivecatalog < ApplicationRecord
+end

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Identifier:</strong>
+  <%= @archivecatalog.identifier %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @archivecatalog.title %>
+</p>
+
+<p>
+  <strong>Subtitle:</strong>
+  <%= @archivecatalog.subtitle %>
+</p>
+
+<p>
+  <strong>Detail:</strong>
+  <%= @archivecatalog.detail %>
+</p>
+
+<%= link_to 'Edit', edit_archivecatalog_path(@archivecatalog) %> |
+<%= link_to 'Back', archivecatalogs_path %>

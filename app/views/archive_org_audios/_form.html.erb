@@ -1,0 +1,37 @@
+<%= form_for(archive_org_audio) do |f| %>
+  <% if archive_org_audio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(archive_org_audio.errors.count, "error") %> prohibited this archive_org_audio from being saved:</h2>
+
+      <ul>
+      <% archive_org_audio.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :identifier %>
+    <%= f.text_field :identifier %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :subtitle %>
+    <%= f.text_field :subtitle %>
+  </div>
+
+  <div class="field">
+    <%= f.label :detail %>
+    <%= f.text_field :detail %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+class ArchiveOrgAudio < ApplicationRecord
+end
