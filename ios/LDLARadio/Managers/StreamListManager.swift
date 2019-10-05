@@ -13,7 +13,7 @@ import JFCore
 
 struct StreamListManager {
     // MARK: Properties
-    
+
     static var instance = StreamListManager()
 
     /// Notification for when download progress has changed.
@@ -23,13 +23,13 @@ struct StreamListManager {
 
     /// The internal array of Stream structs.
     private var streams = [Stream]()
-    
+
     // MARK: Initialization
-    
+
     init() {
         update(tryRequest: true)
     }
-    
+
     mutating func update(tryRequest: Bool = false) {
         // try memory
         if streams.count == 0 {
@@ -41,7 +41,7 @@ struct StreamListManager {
             setup()
         }
     }
-    
+
     func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/streams.json", type: Many<Stream>.self) { error1, _ in
             if finish == nil {
@@ -67,8 +67,7 @@ struct StreamListManager {
             finish?(error1)
         }
     }
-    
-    
+
     /// Function to obtain all the albums sorted by title
     func streamsFetch() -> [Stream]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -78,17 +77,15 @@ struct StreamListManager {
         let array = try? context.fetch(req)
         return array
     }
-    
+
     // MARK: Stream access
-    
+
     private func save() {
         guard let context = RestApi.instance.context else {
             fatalError("fatal: no core data context manager")
         }
         try? context.save()
     }
-    
-    
 
     private func rollback() {
         guard let context = RestApi.instance.context else {
@@ -97,11 +94,10 @@ struct StreamListManager {
         context.rollback()
     }
 
-
     func clean() {
         Stream.clean()
     }
-    
+
     func reset() {
         setup()
     }

@@ -9,104 +9,142 @@
 import UIKit
 import AlamofireImage
 import JFCore
+import AVKit
+import MediaPlayer
 
 class AudioTableViewCell: UITableViewCell {
     // MARK: Properties
-    
-    static let reuseIdentifier = "AudioTableViewCellIdentifier"
-    
+
+    static let reuseIdentifier: String = "AudioTableViewCell"
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var logoView: UIImageView!
+    @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var downloadStateLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var bookmarkButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var infoButton: UIButton!
+
     weak var delegate: AudioTableViewCellDelegate?
-    
-    var model : AudioViewModel? = nil {
+    let gradientBg = CAGradientLayer()
+    let gradientPlayBg = CAGradientLayer()
+
+    var model: AudioViewModel? = nil {
         didSet {
-            if let detail = model?.detail, detail.count > 0 {
-                downloadStateLabel.text = detail
-                downloadStateLabel.textColor = model?.detailColor
-                downloadStateLabel.font = model?.detailFont
-            }
-            else {
-                downloadStateLabel.isHidden = true
-                titleLabel.numberOfLines = 3
-            }
-            if let subTitle = model?.subTitle, subTitle.count > 0 {
-                subtitleLabel.text = subTitle
-                subtitleLabel.textColor = model?.subTitleColor
-                subtitleLabel.font = model?.subTitleFont
-            }
-            else {
-                subtitleLabel.isHidden = true
-                titleLabel.numberOfLines += 2
-            }
-            titleLabel.text = model?.title
-            titleLabel.textColor = model?.titleColor
-            titleLabel.font = model?.titleFont
-            logoView.image = model?.placeholderImage
-            if let thumbnailUrl = model?.thumbnailUrl {
-                logoView.alpha = 0.5
-                logoView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (response) in
-                    if response.error != nil {
-                        self.logoView.alpha = 0.5
-                    }
-                    else {
-                        self.logoView.alpha = 1.0
+            let labels = [downloadStateLabel, subtitleLabel, titleLabel]
+            let texts = [model?.detail, model?.subTitle, model?.title]
+            for i in 0..<3 {
+                if let text = texts[i]?.text, text.count > 0 {
+                    labels[i]?.isHidden = false
+                    labels[i]?.text = text
+                    labels[i]?.textColor = texts[i]?.color
+                    labels[i]?.font = texts[i]?.font
+                } else {
+                    labels[i]?.isHidden = true
+                    if i == 0 {
+                        titleLabel.numberOfLines = 3
+                    } else if i == 1 {
+                        titleLabel.numberOfLines += 2
                     }
                 }
             }
-            bookmarkButton.isHighlighted = model?.isBookmarked ?? false
-            selectionStyle = model?.selectionStyle ?? .none
+
+            thumbnailView.image = model?.placeholderImage
+            if let thumbnailUrl = model?.thumbnailUrl {
+                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
+                    self.model?.image = self.thumbnailView.image
+                    self.portraitThumbnail()
+                }
+            }
+
+            if model?.isPlaying ?? false {
+                gradientPlayBg.isHidden = false
+            } else {
+                gradientPlayBg.isHidden = true
+            }
+            selectionStyle = .none
+            // show thumbnail, and hide logo
+            infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
+
+            setNeedsLayout()
         }
     }
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientBg.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+        gradientBg.frame = contentView.bounds
+        contentView.layer.insertSublayer(gradientBg, at: 0)
+        gradientBg.isHidden = false
+
+        gradientPlayBg.startPoint = CGPoint.init(x: 0, y: 1)
+        gradientPlayBg.endPoint = CGPoint.init(x: 1, y: 1)
+        gradientPlayBg.colors = [UIColor.turquoise.cgColor, UIColor.aqua.cgColor]
+        gradientPlayBg.frame = contentView.bounds
+        gradientPlayBg.isHidden = false
+        contentView.layer.insertSublayer(gradientPlayBg, at: 1)
+        
+        infoButton.setTitleColor(.cerulean, for: .normal)
+        infoButton.setTitleColor(.nobel, for: .highlighted)
+        portraitThumbnail()
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         for label in [ downloadStateLabel, subtitleLabel, titleLabel] {
             label?.text = ""
             label?.isHidden = false
             label?.numberOfLines = 1
         }
-        
-        logoView.image = nil
-        downloadProgressView.isHidden = true
-        playButton.isHighlighted = false
-        bookmarkButton.isHighlighted = false
 
+        downloadProgressView.isHidden = true
+        bookmarkButton.isHighlighted = false
+        infoButton.isHidden = true
+        thumbnailView.image = nil
     }
     
-    @IBAction func playAction(_ sender: UIButton?) {
-        if sender == playButton {
-            delegate?.audioTableViewCell(self, didPlay: true)
-        }
-        else {
-            fatalError()
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientPlayBg.frame = contentView.bounds
+        gradientBg.frame = contentView.bounds
     }
 
     @IBAction func bookmarkAction(_ sender: UIButton?) {
+        bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
+        delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
+    }
     
-        if sender == bookmarkButton {
-            bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
-            delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
-        }
-        else {
+    @IBAction func infoAction(_ sender: UIButton?) {
+        
+        if sender == infoButton {
+            delegate?.audioTableViewCell(self, infoDidTap: true)
+        } else {
             fatalError()
+        }
+    }
+    
+    private func portraitThumbnail() {
+        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
+        thumbnailView?.layer.borderWidth = 1
+        if let width = thumbnailView?.layer.bounds.size.width {
+            thumbnailView?.layer.cornerRadius = width / 2
+        }
+        if model?.isPlaying ?? false {
+            StreamPlaybackManager.instance.setUpdateImage(thumbnailView.image)
         }
     }
 
 }
 
 protocol AudioTableViewCellDelegate: class {
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, downloadStateDidChange newState: Stream.DownloadState)
-
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool)
+    func audioTableViewCell(_ cell: AudioTableViewCell, infoDidTap newState: Bool)
 
-    func audioTableViewCell(_ cell: AudioTableViewCell, didPlay newState: Bool)
 }
+

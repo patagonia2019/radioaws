@@ -9,8 +9,8 @@
 import Foundation
 import Groot
 
-extension Quote : Modellable {
-    
+extension Quote: Modellable {
+
     /// Function to obtain all the quotes
     static func all() -> [Quote]? {
         return all(predicate: nil,
@@ -21,7 +21,7 @@ extension Quote : Modellable {
 }
 
 extension Quote {
-    
+
     /// Converstion between json file into a Dictionary
     private static func fromJsonFile(name: String) -> [[String: Any]]? {
         // Parse and insert media
@@ -36,7 +36,7 @@ extension Quote {
         }
         return nil
     }
-    
+
     /// Create the instances using a json file
     private static func create() {
         do {
@@ -48,12 +48,11 @@ extension Quote {
                 _ = try object(withEntityName: "Quote", fromJSONDictionary: obj, inContext: context)
             }
             try context.save()
-        }
-        catch {
+        } catch {
             print("error = \(error)")
         }
     }
-    
+
     /// Use a quote randomly
     private static func queryRandomly() -> Quote? {
         let array = all()
@@ -61,7 +60,7 @@ extension Quote {
         if n == 0 {
             return nil
         }
-        let rnd = Int(arc4random())%n
+        let rnd = Int(arc4random()%UInt32(n))
         return array?[rnd]
     }
 
@@ -73,7 +72,7 @@ extension Quote {
         create()
         return queryRandomly()
     }
-    
+
     /// Show the quote as string
     static func randomQuote() -> String {
         guard let quote = random(),

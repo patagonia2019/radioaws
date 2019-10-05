@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "teeth-open-solid-1.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "teeth-open-solid.png"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

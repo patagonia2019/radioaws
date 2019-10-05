@@ -3,12 +3,15 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 def sharedPods
+    pod 'SwiftLint'
     pod 'AlamofireCoreData'
-    pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
+    pod 'JFCore', :git => 'https://github.com/patagonia2019/jfcore', :branch => 'master'
+    #pod 'JFCore', :path => '/Users/fox/patagonia2019/jfcore'
+    pod 'Firebase/Analytics'
+    pod 'AlamofireImage'
 end
 
 def iosPods
-  pod 'AlamofireImage'
   pod 'SwiftSpinner'
 end
 

@@ -2,7 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Image.png"
+      "filename" : "music-1.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "music.png"
     }
   ],
   "info" : {

@@ -1,0 +1,20 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "Launch-2048x1536.jpeg"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "Launch-1536x2008.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "Launch-2048x1496.jpeg"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

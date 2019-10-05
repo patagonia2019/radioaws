@@ -3,6 +3,10 @@
     {
       "idiom" : "universal",
       "filename" : "apple-alt-jf.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "apple-alt-jf-IPAD.png"
     }
   ],
   "info" : {

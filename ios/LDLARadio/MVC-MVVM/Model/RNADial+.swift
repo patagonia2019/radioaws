@@ -9,11 +9,11 @@
 import Foundation
 import CoreData
 
-extension RNADial : Modellable {
-    
+extension RNADial: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNADial]? {
         return all(predicate: nil, sortDescriptors: nil) as? [RNADial]
     }
-    
+
 }

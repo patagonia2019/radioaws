@@ -3,6 +3,10 @@
     {
       "idiom" : "universal",
       "filename" : "apple-alt-solid.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "apple-alt-solid-ipad.png"
     }
   ],
   "info" : {

@@ -9,26 +9,35 @@
 import Foundation
 import CoreData
 
-extension RNAStation : Modellable {
-    
+extension RNAStation: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNAStation]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "lastName", ascending: true)]) as? [RNAStation]
     }
-    
+
 }
 
-extension RNAStation {
-    /// placeholder for thumbnails in streams
-    static let placeholderImageName: String = "RNA-256x256bb"
+extension RNAStation: Searchable {
 
-    /// Fetch an instance using the id
-    static func searchBy(id: String?) -> RNAStation? {
+    /// Fetch an object by url
+    static func search(byUrl url: String?) -> RNAStation? {
+        guard let url = url else { return nil }
         guard let context = RestApi.instance.context else { fatalError() }
         let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
-        guard let id = id else { return nil }
-        req.predicate = NSPredicate(format: "id = %@", id)
-        let station = try? context.fetch(req).first
-        return station
+        req.predicate = NSPredicate(format: "url1 = %@ OR url2 = %@", url, url)
+        let object = try? context.fetch(req).first
+        return object
     }
+
+    /// Returns the streams for a given name.
+    static func search(byName name: String?) -> [RNAStation]? {
+        guard let context = RestApi.instance.context else { fatalError() }
+        guard let name = name else { return nil }
+        let req = NSFetchRequest<RNAStation>(entityName: "RNAStation")
+        req.predicate = NSPredicate(format: "lastName = %@ OR lastName CONTAINS[cd] %@ OR firstName = %@ OR firstName CONTAINS[cd] %@", name, name, name, name)
+        let array = try? context.fetch(req)
+        return array
+    }
+
 }

@@ -3,6 +3,10 @@
     {
       "idiom" : "universal",
       "filename" : "f557-archway-solid.png"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "archway-solid.png"
     }
   ],
   "info" : {

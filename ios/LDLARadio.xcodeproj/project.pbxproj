@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421AAB651CE4FCCB007444CA /* RadioViewController.swift */; };
 		424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */; };
 		425DD0A51D0D146900F96325 /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */; };
@@ -15,7 +14,6 @@
 		428139F71CE44B7300972264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428139F51CE44B7300972264 /* Main.storyboard */; };
 		428139F91CE44B7300972264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428139F81CE44B7300972264 /* Assets.xcassets */; };
 		42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42813A051CE44F9700972264 /* StreamPersistenceManager.swift */; };
-		703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A91E291DF600E6D458 /* WebViewController.swift */; };
 		7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7073F3B61E155C05004DBB59 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		70D4EC041E304A9B008DE753 /* common.css in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC031E304A9B008DE753 /* common.css */; };
 		70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */ = {isa = PBXBuildFile; fileRef = 70D4EC071E3064EA008DE753 /* LDLARadio.html */; };
@@ -24,30 +22,27 @@
 		9808510B22E638D90013B67C /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510A22E638D90013B67C /* Date+.swift */; };
 		9808510F22E691F10013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808511122E69D990013B67C /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511022E69D990013B67C /* BaseController.swift */; };
-		9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511222E6A1C10013B67C /* BaseAudioViewController.swift */; };
-		9808511522E6A7910013B67C /* RadioTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511422E6A7910013B67C /* RadioTimeViewController.swift */; };
+		9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511222E6A1C10013B67C /* AudioViewController.swift */; };
 		9808511B22E6D7040013B67C /* City+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511A22E6D7040013B67C /* City+.swift */; };
 		9808511D22E6D7410013B67C /* Station+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511C22E6D7410013B67C /* Station+.swift */; };
 		9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808511E22E6DA950013B67C /* StreamListManager.swift */; };
 		9808512122E6DD370013B67C /* RNADial+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512022E6DD370013B67C /* RNADial+.swift */; };
-		9808512322E6DE330013B67C /* RNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512222E6DE330013B67C /* RNAViewController.swift */; };
 		9808512522E6DE520013B67C /* RNAController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512422E6DE520013B67C /* RNAController.swift */; };
 		9808512722E6E6640013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
 		9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512822E7513F0013B67C /* RNACurrentProgram+.swift */; };
 		9808512B22E782C40013B67C /* RNABand+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512A22E782C40013B67C /* RNABand+.swift */; };
 		9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512C22E7A2DD0013B67C /* RNAProgram+.swift */; };
-		9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513322E8F4E40013B67C /* BookmarkTests.swift */; };
-		9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9824386922DCFD6400B418F9 /* AudioViewModel.swift */; };
-		9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
-		9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513622E8FAA00013B67C /* Bookmark+.swift */; };
 		9808513922E8FBC80013B67C /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		9808513A22E8FBE80013B67C /* Stream+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DD0A41D0D146900F96325 /* Stream+.swift */; };
 		9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808512622E6E6640013B67C /* RNAStation+.swift */; };
 		9808513D22E903730013B67C /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513C22E903730013B67C /* BookmarkController.swift */; };
-		9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808513E22E9040D0013B67C /* BookmarkViewController.swift */; };
 		9808514122EA49C60013B67C /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514022EA49C60013B67C /* Data+.swift */; };
 		9808514222EA70B60013B67C /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808510E22E691F10013B67C /* String+.swift */; };
 		9808514422EAC0350013B67C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808514322EAC0350013B67C /* AboutViewController.swift */; };
+		980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */; };
+		980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980AA86022F6BA4100A30AAC /* FirebaseManager.swift */; };
+		980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */; };
+		9813DD74231A1C4C007EE1D4 /* UIToolbar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9813DD73231A1C4C007EE1D4 /* UIToolbar+.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -70,14 +65,52 @@
 		9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD822ECE5AB00E418F2 /* Model+.swift */; };
 		9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
 		9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */; };
+		983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */; };
+		983E01F022F459D2008370BA /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01EF22F459D2008370BA /* LabelViewModel.swift */; };
+		983E01F722F5E845008370BA /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 703373A31E28343600E6D458 /* Settings.bundle */; };
+		983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E01F822F5EBCC008370BA /* LaunchViewController.swift */; };
+		983E01FB22F65E6E008370BA /* Modellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD322EB710B00E418F2 /* Modellable.swift */; };
+		983E01FC22F65E70008370BA /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
+		983E01FD22F65E73008370BA /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD622EB758D00E418F2 /* Downloadable.swift */; };
+		983E020122F6775E008370BA /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E020022F6775E008370BA /* SearchController.swift */; };
+		9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
+		9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */; };
+		986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
+		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
+		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
 		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
+		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
+		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
+		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
+		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
+		98B53CE922FFE0EC003F50EE /* ArchiveOrgController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */; };
+		98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */; };
+		98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */; };
+		98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */; };
+		98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */; };
+		98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */; };
+		98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */; };
+		98B53CF72301192E003F50EE /* ArchiveCollection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */; };
+		98B53CF923012730003F50EE /* ArchiveDoc+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF823012730003F50EE /* ArchiveDoc+.swift */; };
+		98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CF823012730003F50EE /* ArchiveDoc+.swift */; };
 		98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7C22DDEC030025B437 /* RNATests.swift */; };
-		98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */; };
+		98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */; };
+		98CF5C2723032BC000830F8D /* ArchiveDetail+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */; };
+		98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
+		98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
+		98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */; };
+		98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */; };
+		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
+		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
+		98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
+		98E935FC230ED074008621AE /* BaseProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E935FB230ED074008621AE /* BaseProtocolTests.swift */; };
+		98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,7 +127,6 @@
 /* Begin PBXFileReference section */
 		0FE7D9B5057B5AF2DC72259D /* Pods-LDLARadioTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41A5E03699C4A53519AD1FFC /* Pods-LDLARadioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadioTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests.release.xcconfig"; sourceTree = "<group>"; };
-		421AAB651CE4FCCB007444CA /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RadioViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StreamPlaybackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		42554D4B1D09EEDC0040BD4F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		425DD0A41D0D146900F96325 /* Stream+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stream+.swift"; sourceTree = "<group>"; };
@@ -108,7 +140,6 @@
 		47F749A1AD4E4959FB881877 /* Pods-LDLARadio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LDLARadio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LDLARadio/Pods-LDLARadio.debug.xcconfig"; sourceTree = "<group>"; };
 		703373A31E28343600E6D458 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		703373A71E284C1800E6D458 /* CityListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityListManager.swift; sourceTree = "<group>"; };
-		703373A91E291DF600E6D458 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		7073F3B61E155C05004DBB59 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		708AAD9F1E27B586004D88C3 /* StationListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationListManager.swift; sourceTree = "<group>"; };
 		70D4EC031E304A9B008DE753 /* common.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = common.css; sourceTree = "<group>"; };
@@ -118,26 +149,25 @@
 		9808510A22E638D90013B67C /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		9808510E22E691F10013B67C /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		9808511022E69D990013B67C /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
-		9808511222E6A1C10013B67C /* BaseAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAudioViewController.swift; sourceTree = "<group>"; };
-		9808511422E6A7910013B67C /* RadioTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTimeViewController.swift; sourceTree = "<group>"; };
+		9808511222E6A1C10013B67C /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		9808511A22E6D7040013B67C /* City+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+.swift"; sourceTree = "<group>"; };
 		9808511C22E6D7410013B67C /* Station+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Station+.swift"; sourceTree = "<group>"; };
 		9808511E22E6DA950013B67C /* StreamListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamListManager.swift; sourceTree = "<group>"; };
 		9808512022E6DD370013B67C /* RNADial+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNADial+.swift"; sourceTree = "<group>"; };
-		9808512222E6DE330013B67C /* RNAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAViewController.swift; sourceTree = "<group>"; };
 		9808512422E6DE520013B67C /* RNAController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAController.swift; sourceTree = "<group>"; };
 		9808512622E6E6640013B67C /* RNAStation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAStation+.swift"; sourceTree = "<group>"; };
 		9808512822E7513F0013B67C /* RNACurrentProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNACurrentProgram+.swift"; sourceTree = "<group>"; };
 		9808512A22E782C40013B67C /* RNABand+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNABand+.swift"; sourceTree = "<group>"; };
 		9808512C22E7A2DD0013B67C /* RNAProgram+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RNAProgram+.swift"; sourceTree = "<group>"; };
-		9808513322E8F4E40013B67C /* BookmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTests.swift; sourceTree = "<group>"; };
-		9808513622E8FAA00013B67C /* Bookmark+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+.swift"; sourceTree = "<group>"; };
 		9808513C22E903730013B67C /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
-		9808513E22E9040D0013B67C /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		9808514022EA49C60013B67C /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		9808514322EAC0350013B67C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javier.fuchs.about.pdf; sourceTree = "<group>"; };
 		9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = com.mobilepatagonia.LDLARadio.sqlite3; sourceTree = "<group>"; };
+		980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		980AA86022F6BA4100A30AAC /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		9813DD73231A1C4C007EE1D4 /* UIToolbar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIToolbar+.swift"; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -155,13 +185,40 @@
 		9825BDD622EB758D00E418F2 /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		9825BDD822ECE5AB00E418F2 /* Model+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+.swift"; sourceTree = "<group>"; };
 		9825BDDB22ECEF4900E418F2 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
+		983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelProtocol.swift; sourceTree = "<group>"; };
+		983E01EF22F459D2008370BA /* LabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
+		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		983E020022F6775E008370BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMetaCrash.json; sourceTree = "<group>"; };
+		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
+		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
+		986EBCC822EE49CF001AAF0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/LDLARadio.html; sourceTree = "<group>"; };
 		987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		987DA0B622D6465600F34BD3 /* RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
+		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
+		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
+		98B53CE622FFAB8D003F50EE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveOrgController.swift; sourceTree = "<group>"; };
+		98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveMeta+.swift"; sourceTree = "<group>"; };
+		98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMeta.json; sourceTree = "<group>"; };
+		98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgDetail.json; sourceTree = "<group>"; };
+		98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveCollection+.swift"; sourceTree = "<group>"; };
+		98B53CF823012730003F50EE /* ArchiveDoc+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDoc+.swift"; sourceTree = "<group>"; };
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
-		98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewModel.swift; sourceTree = "<group>"; };
+		98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDetail+.swift"; sourceTree = "<group>"; };
+		98CF5C282303354F00830F8D /* ArchiveFile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveFile+.swift"; sourceTree = "<group>"; };
+		98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchiveOrgMainModelController.swift; sourceTree = "<group>"; };
+		98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTableViewCell.swift; sourceTree = "<group>"; };
+		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
+		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
+		98E935FB230ED074008621AE /* BaseProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocolTests.swift; sourceTree = "<group>"; };
+		98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTests.swift; sourceTree = "<group>"; };
 		BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LDLARadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -171,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */,
 				7073F3B71E155C05004DBB59 /* AVFoundation.framework in Frameworks */,
 				DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */,
 			);
@@ -190,22 +248,27 @@
 		425DD0A11D0CF18200F96325 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				980DA23B22EE77FA00B32154 /* Extensions */,
 				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
-				425DD0A41D0D146900F96325 /* Stream+.swift */,
-				98195FA822D83664006E7961 /* Quote+.swift */,
-				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
+				98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */,
+				98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */,
+				98B53CF823012730003F50EE /* ArchiveDoc+.swift */,
+				98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */,
+				98CF5C282303354F00830F8D /* ArchiveFile+.swift */,
+				98B16870230B8C9800A61DBC /* Audio+.swift */,
 				9808511A22E6D7040013B67C /* City+.swift */,
-				9808512022E6DD370013B67C /* RNADial+.swift */,
-				9808512622E6E6640013B67C /* RNAStation+.swift */,
-				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
-				9808513622E8FAA00013B67C /* Bookmark+.swift */,
-				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
+				986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */,
+				98195FA822D83664006E7961 /* Quote+.swift */,
 				9808512A22E782C40013B67C /* RNABand+.swift */,
+				9808512822E7513F0013B67C /* RNACurrentProgram+.swift */,
+				9808512022E6DD370013B67C /* RNADial+.swift */,
+				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
+				9808512622E6E6640013B67C /* RNAStation+.swift */,
+				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
-				9808510A22E638D90013B67C /* Date+.swift */,
-				9808514022EA49C60013B67C /* Data+.swift */,
-				9808510E22E691F10013B67C /* String+.swift */,
+				425DD0A41D0D146900F96325 /* Stream+.swift */,
+				98B53CE622FFAB8D003F50EE /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -234,6 +297,7 @@
 		428139F01CE44B7300972264 /* LDLARadio */ = {
 			isa = PBXGroup;
 			children = (
+				98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */,
 				428139F81CE44B7300972264 /* Assets.xcassets */,
 				428139FD1CE44B7300972264 /* Info.plist */,
 				9808512F22E8B2730013B67C /* Main */,
@@ -251,8 +315,10 @@
 				424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */,
 				987DA0B622D6465600F34BD3 /* RestApi.swift */,
 				9808511E22E6DA950013B67C /* StreamListManager.swift */,
+				98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */,
 				708AAD9F1E27B586004D88C3 /* StationListManager.swift */,
 				703373A71E284C1800E6D458 /* CityListManager.swift */,
+				980AA86022F6BA4100A30AAC /* FirebaseManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -260,6 +326,7 @@
 		7073F3B51E155C05004DBB59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				98B53CE222FFA106003F50EE /* CloudKit.framework */,
 				7073F3B61E155C05004DBB59 /* AVFoundation.framework */,
 				EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */,
 				BFA13C1F2122517030A403A2 /* Pods_LDLARadioTests.framework */,
@@ -280,6 +347,8 @@
 			isa = PBXGroup;
 			children = (
 				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
+				98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */,
+				98D7148E22EF876C00983818 /* HeaderTableView.swift */,
 				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
 			);
 			path = Cells;
@@ -298,11 +367,23 @@
 			path = "MVC-MVVM";
 			sourceTree = "<group>";
 		};
+		980DA23B22EE77FA00B32154 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				98B1686C230B6D2900A61DBC /* UIColor+.swift */,
+				9808514022EA49C60013B67C /* Data+.swift */,
+				9808510A22E638D90013B67C /* Date+.swift */,
+				9808510E22E691F10013B67C /* String+.swift */,
+				980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		9824386B22DD189200B418F9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				983E01EF22F459D2008370BA /* LabelViewModel.swift */,
 				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
-				98C7DD7E22DFBAC40025B437 /* CatalogTableViewModel.swift */,
 				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
 			);
 			path = ViewModel;
@@ -312,13 +393,11 @@
 			isa = PBXGroup;
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
-				9808511222E6A1C10013B67C /* BaseAudioViewController.swift */,
+				98D7149022EF937F00983818 /* Main.xib */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
-				421AAB651CE4FCCB007444CA /* RadioViewController.swift */,
-				9808511422E6A7910013B67C /* RadioTimeViewController.swift */,
-				9808512222E6DE330013B67C /* RNAViewController.swift */,
-				9808513E22E9040D0013B67C /* BookmarkViewController.swift */,
-				703373A91E291DF600E6D458 /* WebViewController.swift */,
+				9808511222E6A1C10013B67C /* AudioViewController.swift */,
+				9813DD73231A1C4C007EE1D4 /* UIToolbar+.swift */,
+				983E01F822F5EBCC008370BA /* LaunchViewController.swift */,
 				9808514322EAC0350013B67C /* AboutViewController.swift */,
 			);
 			path = Views;
@@ -328,10 +407,14 @@
 			isa = PBXGroup;
 			children = (
 				9808511022E69D990013B67C /* BaseController.swift */,
-				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
+				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
+				98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */,
+				98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */,
+				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
 				9808513C22E903730013B67C /* BookmarkController.swift */,
+				983E020022F6775E008370BA /* SearchController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -339,10 +422,11 @@
 		9824386E22DD1A0A00B418F9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */,
 				9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */,
 				9808514922EACDDF0013B67C /* javier.fuchs.about.pdf */,
 				70D4EC031E304A9B008DE753 /* common.css */,
-				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+				9864BF902327D9C2004B98AE /* Font */,
 				98195FAA22D845C2006E7961 /* quotes2.json */,
 				70D4EC071E3064EA008DE753 /* LDLARadio.html */,
 				703373A31E28343600E6D458 /* Settings.bundle */,
@@ -353,6 +437,7 @@
 		9825BDD522EB712B00E418F2 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */,
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
 				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
@@ -361,14 +446,26 @@
 			name = Protocol;
 			sourceTree = "<group>";
 		};
+		9864BF902327D9C2004B98AE /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */,
+			);
+			name = Font;
+			sourceTree = "<group>";
+		};
 		987DA0BD22D663E700F34BD3 /* LDLARadioTests */ = {
 			isa = PBXGroup;
 			children = (
 				98195FBC22DBFBFE006E7961 /* BaseTests.swift */,
+				98E935FB230ED074008621AE /* BaseProtocolTests.swift */,
+				98B53CEE23004E03003F50EE /* ArchiveOrgMeta.json */,
+				9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */,
+				98B53CF22300FBC4003F50EE /* ArchiveOrgDetail.json */,
 				987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */,
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
-				9808513322E8F4E40013B67C /* BookmarkTests.swift */,
+				98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */,
 				987DA0C022D663E700F34BD3 /* Info.plist */,
 			);
 			path = LDLARadioTests;
@@ -397,6 +494,7 @@
 				428139EB1CE44B7300972264 /* Frameworks */,
 				428139EC1CE44B7300972264 /* Resources */,
 				6CE87B9F3FBDAB5D9DC48DC1 /* [CP] Embed Pods Frameworks */,
+				98FE7666232147A900C5E3FE /* Run Script SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -444,7 +542,19 @@
 						LastSwiftUpdateCheck = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.Siri = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -483,9 +593,16 @@
 			files = (
 				428139F91CE44B7300972264 /* Assets.xcassets in Resources */,
 				98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */,
+				983E01F722F5E845008370BA /* Settings.bundle in Resources */,
 				98195FAB22D845C2006E7961 /* quotes2.json in Resources */,
+				98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */,
+				98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */,
+				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
+				98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
+				98D7149122EF938000983818 /* Main.xib in Resources */,
+				986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */,
 				70D4EC041E304A9B008DE753 /* common.css in Resources */,
 				428139F71CE44B7300972264 /* Main.storyboard in Resources */,
 				9825BDDF22ED00B200E418F2 /* javier.fuchs.about.pdf in Resources */,
@@ -496,6 +613,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */,
+				9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */,
+				98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,18 +654,22 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireCoreData.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -570,7 +694,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CDAA705B651B01B8F729FD7A /* [CP] Embed Pods Frameworks */ = {
+		98FE7666232147A900C5E3FE /* Run Script SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -578,20 +702,40 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
-				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "Run Script SwiftLint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --config .swiftlint.yml\n";
+		};
+		CDAA705B651B01B8F729FD7A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LDLARadioTests/Pods-LDLARadioTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
+				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireCoreData.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -607,46 +751,61 @@
 			files = (
 				98195FBB22DBB944006E7961 /* RestApi.swift in Sources */,
 				987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */,
+				983E01F022F459D2008370BA /* LabelViewModel.swift in Sources */,
 				9808511B22E6D7040013B67C /* City+.swift in Sources */,
+				98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */,
 				9808514122EA49C60013B67C /* Data+.swift in Sources */,
+				986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */,
 				9825BDDC22ECEF4900E418F2 /* Searchable.swift in Sources */,
-				9808511322E6A1C10013B67C /* BaseAudioViewController.swift in Sources */,
+				980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */,
+				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
+				98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
+				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
-				9808511522E6A7910013B67C /* RadioTimeViewController.swift in Sources */,
+				980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
+				98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */,
+				98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */,
+				98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
-				421AAB661CE4FCCB007444CA /* RadioViewController.swift in Sources */,
 				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
+				983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
-				703373AA1E291DF600E6D458 /* WebViewController.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
+				98B53CF923012730003F50EE /* ArchiveDoc+.swift in Sources */,
+				98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
-				98C7DD7F22DFBAC40025B437 /* CatalogTableViewModel.swift in Sources */,
-				9808512322E6DE330013B67C /* RNAViewController.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
+				98B53CE722FFAB8D003F50EE /* User.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
-				9808513F22E9040D0013B67C /* BookmarkViewController.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
+				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
+				98B16871230B8C9800A61DBC /* Audio+.swift in Sources */,
+				98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
+				986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */,
 				9808511122E69D990013B67C /* BaseController.swift in Sources */,
 				987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */,
-				9808513722E8FAA00013B67C /* Bookmark+.swift in Sources */,
+				98B53CE922FFE0EC003F50EE /* ArchiveOrgController.swift in Sources */,
+				98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				9808512722E6E6640013B67C /* RNAStation+.swift in Sources */,
 				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
 				9808513D22E903730013B67C /* BookmarkController.swift in Sources */,
+				9813DD74231A1C4C007EE1D4 /* UIToolbar+.swift in Sources */,
 				9808510922E61E650013B67C /* RadioController.swift in Sources */,
 				426CB1A01D054A3F0044B8A7 /* AudioTableViewCell.swift in Sources */,
 				9808512D22E7A2DD0013B67C /* RNAProgram+.swift in Sources */,
+				98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */,
 				9808510F22E691F10013B67C /* String+.swift in Sources */,
 				9808514422EAC0350013B67C /* AboutViewController.swift in Sources */,
 				9808511D22E6D7410013B67C /* Station+.swift in Sources */,
@@ -658,18 +817,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
-				9808513822E8FB9D0013B67C /* Bookmark+.swift in Sources */,
-				9808513522E8F68B0013B67C /* AudioViewModel.swift in Sources */,
 				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
+				98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
+				98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */,
 				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
+				98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
 				987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */,
+				983E01FC22F65E70008370BA /* Searchable.swift in Sources */,
+				98CF5C2723032BC000830F8D /* ArchiveDetail+.swift in Sources */,
+				98B53CF72301192E003F50EE /* ArchiveCollection+.swift in Sources */,
 				98C7DD7B22DD65050025B437 /* RTCatalog+.swift in Sources */,
+				98E935FC230ED074008621AE /* BaseProtocolTests.swift in Sources */,
+				983E01FD22F65E73008370BA /* Downloadable.swift in Sources */,
+				983E01FB22F65E6E008370BA /* Modellable.swift in Sources */,
+				9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
-				9808513422E8F4E50013B67C /* BookmarkTests.swift in Sources */,
 				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,
 				9808514222EA70B60013B67C /* String+.swift in Sources */,
 				9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */,
@@ -699,6 +865,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				7A6DA202209754560004126A /* en */,
+				986EBCC822EE49CF001AAF0A /* Base */,
 			);
 			name = LDLARadio.html;
 			sourceTree = "<group>";
@@ -825,6 +992,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
@@ -836,7 +1004,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -849,6 +1017,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
@@ -860,7 +1029,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

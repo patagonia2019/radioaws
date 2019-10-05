@@ -13,7 +13,7 @@ import JFCore
 
 struct StationListManager {
     // MARK: Properties
-    
+
     /// A singleton instance of StationListManager.
     static var instance = StationListManager()
 
@@ -24,13 +24,13 @@ struct StationListManager {
 
     /// The internal array of Station structs.
     private var stations = [Station]()
-    
+
     // MARK: Initialization
-    
+
     init() {
         update(tryRequest: true)
     }
-    
+
     mutating func update(tryRequest: Bool = false) {
         // try memory
         if stations.count == 0 {
@@ -42,7 +42,7 @@ struct StationListManager {
             setup()
         }
     }
-    
+
     func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/stations.json", type: Many<Station>.self) { error, _ in
             if let finish = finish {
@@ -57,7 +57,6 @@ struct StationListManager {
         }
     }
 
-    
     func clean() {
         Station.clean()
     }

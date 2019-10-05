@@ -9,8 +9,8 @@
 import Foundation
 import CoreData
 
-extension City : Modellable {
-    
+extension City: Modellable {
+
     /// Function to obtain all the albums sorted by title
     static func all() -> [City]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]) as? [City]

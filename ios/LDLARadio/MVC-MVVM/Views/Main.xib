@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="fontawesome-webfont.ttf">
+            <string>FontAwesome</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="LDLARadio" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMn-wc-ut7">
+                    <rect key="frame" x="0.0" y="-10" width="540" height="60"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0S-Qz-QFX">
+                            <rect key="frame" x="0.0" y="12" width="540" height="48"/>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="m8n-iJ-bl2">
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
+                            <subviews>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1Y-oK-ri8">
+                                    <rect key="frame" x="-30" y="0.0" width="30" height="60"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="r1Y-oK-ri8" secondAttribute="height" multiplier="0.5:1" id="5bq-F2-MJz"/>
+                                    </constraints>
+                                    <state key="normal" image="apple-alt-line">
+                                        <color key="titleColor" red="0.84465640779999995" green="0.51457053419999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <state key="highlighted" image="f5d1-apple-alt-solid"/>
+                                    <connections>
+                                        <action selector="bookmarkAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="yn8-u2-Bq4"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDu-TF-z6Y">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="ZDu-TF-z6Y" secondAttribute="height" multiplier="0.5:1" id="3Xp-QJ-9El"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
+                                    <state key="normal" title="">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <state key="highlighted" title="">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="l3n-9B-1W0"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgN-ad-36E">
+                                    <rect key="frame" x="36" y="6" width="412" height="48"/>
+                                    <connections>
+                                        <action selector="expandAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="cBZ-MJ-cyf"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soG-3m-Nz5">
+                                    <rect key="frame" x="454" y="0.0" width="30" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="LTW-rR-krx"/>
+                                        <constraint firstAttribute="width" secondItem="soG-3m-Nz5" secondAttribute="height" multiplier="0.5:1" id="Ncv-gL-T7s"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="30"/>
+                                    <state key="normal" title="">
+                                        <color key="titleColor" red="0.0" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <variation key="heightClass=regular-widthClass=compact">
+                                        <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="26"/>
+                                    </variation>
+                                    <connections>
+                                        <action selector="infoAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="MAg-jw-pGY"/>
+                                    </connections>
+                                </button>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="38Z-dc-wfH">
+                                    <rect key="frame" x="490" y="5" width="50" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="38Z-dc-wfH" secondAttribute="height" multiplier="1:1" id="Clj-gi-3pZ"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="BgN-ad-36E" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" multiplier="0.8" id="G7k-BT-gy1"/>
+                                <constraint firstItem="ZDu-TF-z6Y" firstAttribute="width" secondItem="ZDu-TF-z6Y" secondAttribute="height" multiplier="0.5:1" id="Zmh-JP-hRy"/>
+                                <constraint firstItem="r1Y-oK-ri8" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" id="b75-TH-f5K"/>
+                                <constraint firstItem="38Z-dc-wfH" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" constant="-10" id="xfI-qu-uiD"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" multiplier="1.2" id="2v1-dI-X7p"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="3ej-bv-GYU"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="RZU-Jn-fFm"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="dTb-Xx-mMe"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="dpB-zq-nPj"/>
+                        <constraint firstItem="J0S-Qz-QFX" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" multiplier="0.8" id="gfk-rJ-IH7"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="irT-1B-nFL"/>
+                        <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="l5q-GT-u36"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerX" secondItem="PBz-vr-rax" secondAttribute="centerX" id="GMR-ss-frX"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="height" secondItem="OUZ-ye-H4L" secondAttribute="height" id="dPk-rh-eXX"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="centerY" secondItem="PBz-vr-rax" secondAttribute="centerY" constant="-10" id="lPX-Bh-d6P"/>
+                <constraint firstItem="bMn-wc-ut7" firstAttribute="width" secondItem="OUZ-ye-H4L" secondAttribute="width" id="o6r-Pb-X9J"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="PBz-vr-rax"/>
+            <connections>
+                <outlet property="bgView" destination="J0S-Qz-QFX" id="CYr-Wh-Qwv"/>
+                <outlet property="bookmarkButton" destination="r1Y-oK-ri8" id="zly-ow-6G1"/>
+                <outlet property="expandButton" destination="ZDu-TF-z6Y" id="dhi-1i-8eY"/>
+                <outlet property="infoButton" destination="soG-3m-Nz5" id="tKY-aH-DHd"/>
+                <outlet property="thumbnailView" destination="38Z-dc-wfH" id="Tbh-na-3P8"/>
+                <outlet property="titleButton" destination="BgN-ad-36E" id="VrB-Ab-jVu"/>
+            </connections>
+            <point key="canvasLocation" x="847.5" y="124.11971830985915"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="apple-alt-line" width="17" height="19"/>
+        <image name="f5d1-apple-alt-solid" width="17" height="20"/>
+    </resources>
+</document>

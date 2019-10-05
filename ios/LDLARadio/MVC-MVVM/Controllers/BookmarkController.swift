@@ -10,61 +10,235 @@ import Foundation
 import JFCore
 
 class BookmarkController: BaseController {
-    
+
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "BookmarkController.didRefreshNotification")
-        
-    var models = [AudioViewModel]()
-    
-    override var useRefresh : Bool {
-        return false
+
+    let cloudKit: CloudKitManager = CloudKitManager.instance
+
+    private var models = [CatalogViewModel]()
+
+    override var useRefresh: Bool {
+        return cloudKit.loggedIn
     }
 
     override init() {
+        super.init()
     }
-    
+
     override func prompt() -> String {
         return "Bookmarks"
     }
 
-    override func numberOfRows(inSection section: Int) -> Int {
+    override func numberOfSections() -> Int {
         return models.count
     }
-    
+
+    override func numberOfRows(inSection section: Int) -> Int {
+        var count: Int = 0
+        if section < models.count {
+            let model = models[section]
+            if model.isExpanded == false {
+                return 0
+            }
+            count = model.sections.count + model.audios.count
+        }
+        return count > 0 ? count : 1
+    }
+
+    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+        if section < models.count {
+            let model = models[section]
+            return model
+        }
+        return models.first
+    }
+
     override func model(forSection section: Int, row: Int) -> Any? {
-        if row < models.count {
-            return models[row]
+        if section < models.count {
+            let model = models[section]
+            if row < (model.sections.count + model.audios.count) {
+                if row < model.sections.count {
+                    return model.sections[row]
+                }
+                let audioRow = row - model.sections.count
+                if audioRow < model.audios.count {
+                    return model.audios[audioRow]
+                }
+            } else {
+                if row < model.audios.count {
+                    return model.audios[row]
+                }
+            }
         }
         return nil
     }
-    
+
     override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        return CGFloat(AudioViewModel.height())
+        let subModel = model(forSection: section, row: row)
+        if let audioModel = subModel as? AudioViewModel {
+            return CGFloat(audioModel.height())
+        }
+        return CGFloat(CatalogViewModel.cellheight)
     }
-    
+
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 startClosure: (() -> Void)? = nil,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+
+        let closure = {
+
+            self.models = [CatalogViewModel]()
+
+            RestApi.instance.context?.performAndWait {
+                let all = Audio.all()
+
+                if let suggestions = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue}), suggestions.count > 0 {
+                    let audios = suggestions.map({ AudioViewModel(audio: $0) })
+                    if audios.count > 0 {
+
+                        let model = CatalogViewModel()
+                        model.isExpanded = false
+                        model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
+                        model.audios = audios
+                        self.models.append(model)
+
+                    }
+                }
+
+                if let rnas = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
+                }), rnas.count > 0 {
+                    let audios = rnas.map({ AudioViewModel(audio: $0) })
+                    if audios.count > 0 {
+
+                        let model = CatalogViewModel()
+                        model.isExpanded = false
+                        model.title.text = AudioViewModel.ControllerName.rna.rawValue
+                        model.audios = audios
+                        self.models.append(model)
+
+                    }
+                }
+
+                if let rts = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
+                }), rts.count > 0 {
+                    let audios = rts.map({ AudioViewModel(audio: $0) })
+                    if audios.count > 0 {
+                        let model = CatalogViewModel()
+                        model.isExpanded = false
+                        model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
+                        model.audios = audios
+                        self.models.append(model)
+                    }
+                }
+
+                if let eds = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
+                }), eds.count > 0 {
+                    let audios = eds.map({ AudioViewModel(audio: $0) })
+                    if audios.count > 0 {
+                        let model = CatalogViewModel()
+                        model.isExpanded = false
+                        model.title.text = AudioViewModel.ControllerName.desconcierto.rawValue
+                        model.audios = audios
+                        self.models.append(model)
+                    }
+                }
+
+                if let files = all?.filter({ (bookmark) -> Bool in
+                    return bookmark.section == AudioViewModel.ControllerName.archiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
+                }), files.count > 0 {
+                    let audios = files.map({ AudioViewModel(audio: $0) })
+                    if audios.count > 0 {
+                        let model = CatalogViewModel()
+                        model.isExpanded = false
+                        model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
+                        model.audios = audios
+                        self.models.append(model)
+                    }
+                }
+                finishClosure?(nil)
+            }
+        }
+
+        var forceUpdate = false
+
+        if isClean {
+            forceUpdate = true
+        } else {
+            if BaseController.isBookmarkChanged {
+                closure()
+            }
+            
+            if self.models.count > 0 {
+                finishClosure?(nil)
+                return
+            }
+
+            if Audio.all()?.count ?? 0 == 0 {
+                forceUpdate = true
+            }
+        }
+
+        if forceUpdate && cloudKit.loggedIn {
+
+            RestApi.instance.context?.performAndWait {
+                cloudKit.refresh { (error) in
+                    if error != nil {
+                        CoreDataManager.instance.rollback()
+                    } else {
+                        CoreDataManager.instance.save()
+                    }
+                    closure()
+                }
+            }
+        } else {
+            closure()
+        }
+    }
+
+    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+
+        model?.isExpanded = !(model?.isExpanded ?? false)
+
+        finishClosure?(nil)
+    }
+
+    func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
+        let object = model(forSection: indexPath.section, row: indexPath.row)
         
-        finishBlock = finishClosure
-        
-        startClosure?()
-        
-        RestApi.instance.context?.performAndWait {
-            let all = Bookmark.all()
-            models = all?.map({ AudioViewModel(bookmark: $0) }) ?? [AudioViewModel]()
-            if let bDate = Bookmark.lastUpdated(),
-                let lastDate = lastUpdated {
-                if bDate > lastDate {
-                    self.lastUpdated = bDate
+        if let model = object as? AudioViewModel,
+            let audio = Audio.search(byUrl: model.urlString()) {
+            if CloudKitManager.instance.loggedIn {
+                CloudKitManager.instance.remove(audio: audio) { (error) in
+                    if let error = error {
+                        model.error = error
+                    }
+                    else {
+                        audio.remove()
+                        self.models.removeAll { (ct) -> Bool in
+                            return ct.urlString() == model.urlString()
+                        }
+                    }
+                    finishClosure?(error)
                 }
             }
             else {
-                self.lastUpdated = Date()
+                audio.remove()
+                let catalog = models[indexPath.section]
+                var audios = catalog.audios
+                audios.removeAll { (audiovm) -> Bool in
+                    return audiovm.urlString() == model.urlString()
+                }
+                catalog.audios = audios
+                finishClosure?(nil)
             }
-            finishClosure?(nil)
+            return true
         }
+        return false
     }
 
 }
