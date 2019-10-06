@@ -137,7 +137,7 @@
 		42554D4B1D09EEDC0040BD4F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		425DD0A41D0D146900F96325 /* Stream+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stream+.swift"; sourceTree = "<group>"; };
 		426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AudioTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		428139EE1CE44B7300972264 /* LDLARadio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDLARadio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		428139EE1CE44B7300972264 /* Radio 3.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radio 3.1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		428139F11CE44B7300972264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		428139F61CE44B7300972264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		428139F81CE44B7300972264 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -298,7 +298,7 @@
 		428139EF1CE44B7300972264 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				428139EE1CE44B7300972264 /* LDLARadio.app */,
+				428139EE1CE44B7300972264 /* Radio 3.1.app */,
 				987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */,
 			);
 			name = Products;
@@ -516,7 +516,7 @@
 			);
 			name = LDLARadio;
 			productName = LDLARadio;
-			productReference = 428139EE1CE44B7300972264 /* LDLARadio.app */;
+			productReference = 428139EE1CE44B7300972264 /* Radio 3.1.app */;
 			productType = "com.apple.product-type.application";
 		};
 		987DA0BB22D663E700F34BD3 /* LDLARadioTests */ = {
@@ -1015,12 +1015,14 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Radio 3.1";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1040,12 +1042,14 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Radio 3.1";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

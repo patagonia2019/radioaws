@@ -34,13 +34,12 @@ extension UIToolbar {
         all.append(contentsOf: reloadBookmark())
 
         clipsToBounds = false
-
-        if let toolbarItems = items,
-            !all.isEmpty && !toolbarItems.isEmpty && toolbarItems.count < all.count {
+        
+        if !all.isEmpty && !(items?.isEmpty ?? false) && (items?.count ?? 0) < all.count {
             items = all
         }
     }
-
+    
     private func awesomeFont() -> UIFont? {
         return UIFont(name: Commons.Font.awesome, size: Commons.Size.toolbarButtonFontSize)
     }
@@ -83,11 +82,12 @@ extension UIToolbar {
         }
 
         let stream = StreamPlaybackManager.instance
-        if !(stream.isReadyToPlay() && stream.isPlaying()) {
-            spinnerView?.stopAnimating()
-        } else {
+        if stream.isLoading() {
             spinnerView?.startAnimating()
+        } else {
+            spinnerView?.stopAnimating()
         }
+
         return all
     }
 

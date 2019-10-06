@@ -83,16 +83,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let unselected = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.steel]
 
-        UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
-        UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
-
-        UIBarButtonItem.appearance().setTitleTextAttributes(attributes, for: .selected)
-        UIBarButtonItem.appearance().setTitleTextAttributes(unselected, for: .normal)
-
         let tabBar = UITabBar.appearance()
-        tabBar.isTranslucent = true
-        tabBar.tintColor = defaultColor
-        tabBar.barTintColor = .turquoise
+        
+        if #available(iOS 13.0, *) {
+            let tabBarItemAppearance = UITabBarItemAppearance(style: .inline)
+            tabBarItemAppearance.normal.titleTextAttributes = unselected
+            tabBarItemAppearance.normal.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -(Commons.Size.toolbarHeight / 5))
+            tabBarItemAppearance.selected.titleTextAttributes = attributes
+            tabBarItemAppearance.selected.titlePositionAdjustment = tabBarItemAppearance.normal.titlePositionAdjustment
+            let tabBarAppearance = UITabBarAppearance(idiom: .pad)
+            tabBarAppearance.inlineLayoutAppearance = tabBarItemAppearance
+            tabBarAppearance.selectionIndicatorTintColor = defaultColor
+            tabBar.standardAppearance = tabBarAppearance
+        } else {
+            UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
+            UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
+            UIBarButtonItem.appearance().setTitleTextAttributes(attributes, for: .selected)
+            UIBarButtonItem.appearance().setTitleTextAttributes(unselected, for: .normal)
+            tabBar.isTranslucent = true
+            tabBar.tintColor = defaultColor
+            tabBar.barTintColor = .turquoise
+        }
 
         let tableView = UITableView.appearance()
         tableView.backgroundColor = .mercury
@@ -111,4 +122,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefault = UserDefaults.standard
     }
 
+}
+
+extension UITabBar {
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = Commons.Size.toolbarHeight
+        return sizeThatFits
+    }
 }

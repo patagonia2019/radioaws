@@ -32,7 +32,7 @@ class Commons {
     }
 
     struct Size {
-        static let toolbarHeight: CGFloat = isPad() ? 120 : 56
+        static let toolbarHeight: CGFloat = isPad() ? 120 : 70
         static let toolbarSpinnerSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarImageSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarLabelWidth: CGFloat = isPad() ? 100 : 50

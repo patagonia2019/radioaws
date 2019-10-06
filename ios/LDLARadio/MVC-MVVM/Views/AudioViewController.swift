@@ -17,6 +17,7 @@ class AudioViewController: UITableViewController {
     // MARK: Properties
 
     var isFullScreen: Bool = false
+    var lastTitleName: String = AudioViewModel.ControllerName.suggestion.rawValue
     fileprivate var timerPlayed: Timer?
 
     @IBOutlet weak var refreshButton: UIBarButtonItem!
@@ -121,13 +122,15 @@ class AudioViewController: UITableViewController {
 
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
+        navigationController?.setToolbarHidden(true, animated: false)
+
         if let toolbar = navigationController?.toolbar {
+            toolbar.isHidden = true
             let stream = StreamPlaybackManager.instance
             stream.delegate = toolbar
         }
-
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -160,8 +163,13 @@ class AudioViewController: UITableViewController {
     }
 
     private func titleForController() -> String? {
-        let titleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
-        return titleName
+        if !Thread.isMainThread {
+            Log.error("NOT Main Thread")
+            return lastTitleName
+        }
+
+        lastTitleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title ?? lastTitleName
+        return lastTitleName
     }
 
     /// Refresh control to allow pull to refresh
@@ -259,9 +267,13 @@ class AudioViewController: UITableViewController {
     @objc private func reloadToolbar() {
 
         guard let toolbar = navigationController?.toolbar else { return }
+        if var rect = tabBarController?.tabBar.frame {
+            rect.origin.y -= rect.size.height
+            toolbar.frame = rect
+        }
 
         navigationController?.setToolbarHidden(false, animated: false)
-        navigationController?.toolbar.isHidden = false
+        toolbar.isHidden = false
         toolbar.setNeedsLayout()
         toolbar.setNeedsDisplay()
     }

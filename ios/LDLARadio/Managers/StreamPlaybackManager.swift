@@ -18,8 +18,9 @@ class StreamPlaybackManager: NSObject {
     /// Singleton for StreamPlaybackManager.
     static let instance = StreamPlaybackManager()
 
-//    private var observerContext = 0
     var observers = [NSKeyValueObservation]()
+    
+    var isLoadingNow: Bool = false
 
     weak var delegate: AssetPlaybackDelegate?
 
@@ -52,7 +53,6 @@ class StreamPlaybackManager: NSObject {
     /// The AVPlayerItem associated with StreamPlaybackManager.asset.urlAsset
     private var playerItem: AVPlayerItem? {
         didSet {
-//            playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
             if let observer = playerItem?.observe(\.status, options: [.initial, .new], changeHandler: { (urlAsset, change) in
                 Log.debug("👁‍🗨playerItem: urlAsset %@, status = (%@ -> %@)", urlAsset, change.oldValue?.rawValue ?? 0, change.newValue?.rawValue ?? 0)
                 guard let playerItem = self.playerItem else { return }
@@ -120,6 +120,7 @@ class StreamPlaybackManager: NSObject {
             sender?.urlString?.count ?? 0 > 0 &&
             audio?.urlString != nil &&
             audio?.urlString == sender?.urlString {
+            isLoadingNow = true
             playCurrentPosition()
         } else {
             pause()
@@ -256,6 +257,10 @@ class StreamPlaybackManager: NSObject {
     func isReadyToPlay(url: String? = nil) -> Bool {
         return isTryingToPlay(url: url ?? audio?.urlString) && readyForPlayback
     }
+    
+    func isLoading() -> Bool {
+        return isLoadingNow
+    }
 
     func isAboutToPlay(url: String? = nil) -> Bool {
         return isTryingToPlay(url: url ?? audio?.urlString)
@@ -384,6 +389,7 @@ class StreamPlaybackManager: NSObject {
             DispatchQueue.main.async {
                 self.player.play()
                 if self.hasDuration() == false {
+                    self.isLoadingNow = false
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
                 self.updateRemoteCommandCenter()
@@ -405,8 +411,8 @@ class StreamPlaybackManager: NSObject {
         DispatchQueue.main.async {
             self.player.seek(to: t, completionHandler: { _ in
                 self.audio?.cloudSynced = false
-
                 self.player.play()
+                self.isLoadingNow = false
                 if self.hasDuration() == false {
                     self.audio?.isPlaying = true
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
@@ -420,43 +426,6 @@ class StreamPlaybackManager: NSObject {
         guard let urlString = urlString else { return false }
         return urlString == audio?.urlString
     }
-
-     // MARK: KVO
-//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-//        guard context == &observerContext else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//            return
-//        }
-//
-//        guard let keyPath = keyPath else {
-//            return
-//        }
-//
-//        switch keyPath {
-//        case #keyPath(AVURLAsset.isPlayable):
-//            guard let urlAsset = audio?.urlAsset(),
-//                urlAsset.isPlayable == true else {
-//                    retry()
-//                    return
-//            }
-//            playerItem = AVPlayerItem(asset: urlAsset)
-//            player.replaceCurrentItem(with: playerItem)
-//        case #keyPath(AVPlayerItem.status):
-//            guard let playerItem = playerItem else { return }
-//            if playerItem.status == .readyToPlay, !readyForPlayback {
-//                readyForPlayback = true
-//                playCurrentPosition()
-//            } else if playerItem.status == .failed {
-//                retry()
-//            }
-//
-//        case #keyPath(AVPlayer.currentItem):
-//            playCurrentPosition()
-//
-//        default:
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//        }
-//    }
 
     private func retry() {
         // Check if the url could be downloaded (probably as .pls)
@@ -520,16 +489,6 @@ class StreamPlaybackManager: NSObject {
             }
             return .commandFailed
         }
-
-//        commandCenter.togglePlayPauseCommand.isEnabled = true
-//        commandCenter.togglePlayPauseCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
-//            if self.isPlaying() {
-//                self.pause()
-//            } else {
-//                self.playCurrentPosition()
-//            }
-//            return .success
-//        }
 
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { _ in
