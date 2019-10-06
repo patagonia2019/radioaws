@@ -32,12 +32,12 @@ struct StreamListManager {
 
     mutating func update(tryRequest: Bool = false) {
         // try memory
-        if streams.count == 0 {
+        if streams.isEmpty {
             // Try the database
             streams = streamsFetch() ?? [Stream]()
         }
         // try request
-        if tryRequest && streams.count == 0 {
+        if tryRequest && streams.isEmpty {
             setup()
         }
     }

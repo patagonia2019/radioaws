@@ -12,7 +12,11 @@ import UIKit
 
 class Commons {
 
-    enum toolBar: Int {
+    static func isPad() -> Bool {
+        return UIScreen.main.traitCollection.userInterfaceIdiom == .pad
+    }
+
+    enum Toolbar: Int {
         typealias RawValue = Int
         case spinner = 1001
         case image
@@ -26,40 +30,40 @@ class Commons {
         case info
         case bookmark
     }
-    
-    struct size {
-        static let toolbarHeight: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 56
+
+    struct Size {
+        static let toolbarHeight: CGFloat = isPad() ? 120 : 56
         static let toolbarSpinnerSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarImageSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
-        static let toolbarLabelWidth: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 100 : 50
-        static let toolbarButtonFontSize: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 50 : 30
+        static let toolbarLabelWidth: CGFloat = isPad() ? 100 : 50
+        static let toolbarButtonFontSize: CGFloat = isPad() ? 50 : 30
     }
 
-    struct font {
+    struct Font {
         static let regular = "Arial"
         static let bold = "Arial-BoldMT"
-        struct size {
-            static let XXXXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 60 : 50
-            static let XXXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 40 : 36
-            static let XXL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 36 : 32
-            static let XL: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 32 : 28
-            static let L: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 28 : 24
-            static let M: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 26 : 20
-            static let S: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 22 : 16
-            static let XS: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 18 : 12
-            static let XXS: CGFloat = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 14 : 8
+        struct Size {
+            static let XXXXL: CGFloat = isPad() ? 60 : 50
+            static let XXXL: CGFloat = isPad() ? 40 : 36
+            static let XXL: CGFloat = isPad() ? 36 : 32
+            static let XL: CGFloat = isPad() ? 32 : 28
+            static let L: CGFloat = isPad() ? 28 : 24
+            static let M: CGFloat = isPad() ? 26 : 20
+            static let S: CGFloat = isPad() ? 22 : 16
+            static let XS: CGFloat = isPad() ? 18 : 12
+            static let XXS: CGFloat = isPad() ? 14 : 8
         }
         static let awesome = "FontAwesome"
     }
 
-    struct segue {
+    struct Segue {
         static let catalog = "recursiveCatalog"
         static let archiveorg = "recursiveArchiveOrg"
         static let search = "searchAudio"
         static let radio = "radioViewController"
     }
 
-    public struct symbols {
+    public struct Symbol {
         // Use https://fontawesome.com/cheatsheet?from=io
         enum FontAwesome: Int {
             case angry = 0xf556

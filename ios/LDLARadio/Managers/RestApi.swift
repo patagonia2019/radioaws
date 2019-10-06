@@ -159,17 +159,17 @@ class RestApi {
         finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
         let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
-        print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\n")
+        Log.debug("START %@", request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))
         Analytics.logFunction(function: "request", parameters: ["url": url as AnyObject])
         request.responseInsert(context: context, type: T.self) { response in
             context.performAndWait({
-                print("\n\(request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))\n")
+                Log.debug("FINISH %@", request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))
                 var error: JFError?
                 if response.error != nil {
                     var desc = "Error"
                     var suggestion = "Please try again later"
                     var reason = String(response.dataAsString().prefix(256))
-                    if reason.count == 0 {
+                    if reason.isEmpty {
                         desc = "The server is not responding the request"
                         suggestion = "Please check your internet connection"
                         reason = "Empty response"

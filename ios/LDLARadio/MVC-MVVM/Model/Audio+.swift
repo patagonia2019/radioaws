@@ -100,7 +100,7 @@ extension Audio {
 
 extension Audio {
     /// Using += as a overloading assignment operator for AudioViewModel's in Audio entities
-    static func +=(audio: inout Audio, audioViewModel: AudioViewModel) {
+    static func += (audio: inout Audio, audioViewModel: AudioViewModel) {
         audio.detail = audioViewModel.detail.text
         audio.id = audioViewModel.id
         audio.placeholder = audioViewModel.placeholderImageName
@@ -112,9 +112,9 @@ extension Audio {
         audio.descript = audioViewModel.text
         audio.isBookmark = audioViewModel.isBookmark ?? false
   }
-    
+
     /// Using += as a overloading assignment operator
-    static func +=(audio: inout Audio, other: Audio) {
+    static func += (audio: inout Audio, other: Audio) {
         audio.detail = other.detail
         audio.id = other.id
         audio.placeholder = other.placeholder
@@ -128,7 +128,7 @@ extension Audio {
     }
 
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
-    static func +=(audio: inout Audio, catalogViewModel: CatalogViewModel) {
+    static func += (audio: inout Audio, catalogViewModel: CatalogViewModel) {
         audio.detail = catalogViewModel.detail.text
         audio.subTitle = catalogViewModel.title.text
         audio.title = catalogViewModel.tree
@@ -147,13 +147,13 @@ extension Audio {
     func info() -> (String, String, String?, String?) {
         var array = [String]()
         for str in [title, subTitle, section, detail] {
-            if let str = str, str.count > 0 {
+            if let str = str, !str.isEmpty {
                 array.append(str)
             }
         }
         return (array.joined(separator: ".\n"), descript ?? "", errorTitle, errorMessage)
     }
-    
+
     /// Fetch an objects not sync with cloud kit
     static func unsyncs() -> [Audio]? {
         guard let context = RestApi.instance.context else { fatalError() }
@@ -171,13 +171,13 @@ extension Audio {
             changeAudioBookmark(model: audio, useRefresh: false)
         }
     }
-    
+
     static func changeAudioBookmark(model: AudioViewModel?, useRefresh: Bool = true) {
-        
+
         guard let context = RestApi.instance.context else { fatalError() }
         guard let model = model else { fatalError() }
         BaseController.isBookmarkChanged = true
-        
+
         context.performAndWait {
             var audio: Audio?
             if let audiotmp = Audio.search(byUrl: model.url?.absoluteString) {
@@ -198,9 +198,9 @@ extension Audio {
     }
 
     func changeBookmark(useRefresh: Bool = true) {
-        
+
         BaseController.isBookmarkChanged = true
-        
+
         isBookmark = !isBookmark
         cloudSynced = false
         Analytics.logFunction(function: "bookmark",
@@ -209,6 +209,5 @@ extension Audio {
                                            "section": section as AnyObject,
                                            "urlString": urlString as AnyObject])
     }
-    
-    
+
 }

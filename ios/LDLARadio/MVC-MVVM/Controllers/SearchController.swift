@@ -29,7 +29,7 @@ class SearchController: BaseController {
     }
 
     init(withText text: String?) {
-        if let text = text, text.count > 0 {
+        if let text = text, !text.isEmpty {
             textToSearch = text
         }
     }
@@ -43,7 +43,7 @@ class SearchController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count: Int = 0
+        var rows: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
@@ -52,9 +52,9 @@ class SearchController: BaseController {
             if model.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
                 return model.sections.count + 1
             }
-            count = model.sections.count + model.audios.count
+            rows = model.sections.count + model.audios.count
         }
-        return count > 0 ? count : 1
+        return rows > 0 ? rows : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -103,7 +103,7 @@ class SearchController: BaseController {
             isAlreadyDone = false
         }
 
-        if textToSearch.count == 0 {
+        if textToSearch.isEmpty {
             finishClosure?(nil)
             return
         }
@@ -111,11 +111,11 @@ class SearchController: BaseController {
         models = [CatalogViewModel]()
 
         RestApi.instance.context?.performAndWait {
-            if let rnaStations = RNAStation.search(byName: textToSearch), rnaStations.count > 0 {
+            if let rnaStations = RNAStation.search(byName: textToSearch), !rnaStations.isEmpty {
                 let amModels = rnaStations.filter({ (station) -> Bool in
-                    return station.amUri?.count ?? 0 > 0
+                    station.amUri?.count ?? 0 > 0
                 }).map({ AudioViewModel(stationAm: $0) })
-                if amModels.count > 0 {
+                if !amModels.isEmpty {
                     let model = CatalogViewModel()
                     model.isExpanded = false
                     model.audios = amModels
@@ -125,10 +125,11 @@ class SearchController: BaseController {
                 }
 
                 let fmModels = rnaStations.filter({ (station) -> Bool in
-                    return station.fmUri?.count ?? 0 > 0
+                    guard let fmUri = station.fmUri else { return false }
+                    return !fmUri.isEmpty
                 }).map({ AudioViewModel(stationFm: $0) })
 
-                if fmModels.count > 0 {
+                if !fmModels.isEmpty {
                     let model = CatalogViewModel()
                     model.isExpanded = false
                     model.audios = fmModels
@@ -138,9 +139,9 @@ class SearchController: BaseController {
                 }
             }
 
-            if let streams = Stream.search(byName: textToSearch), streams.count > 0 {
+            if let streams = Stream.search(byName: textToSearch), !streams.isEmpty {
                 let streamModels = streams.map({ AudioViewModel(stream: $0) })
-                if streamModels.count > 0 {
+                if !streamModels.isEmpty {
                     let model = CatalogViewModel()
                     model.isExpanded = false
                     model.section = AudioViewModel.ControllerName.suggestion.rawValue
@@ -149,10 +150,10 @@ class SearchController: BaseController {
                     models.append(model)
                 }
             }
-            
-            if let audios = Audio.search(byName: self.textToSearch), audios.count > 0 {
+
+            if let audios = Audio.search(byName: self.textToSearch), !audios.isEmpty {
                 let audioModels = audios.map({ AudioViewModel(audio: $0) })
-                if audioModels.count > 0 {
+                if !audioModels.isEmpty {
                     let model = CatalogViewModel()
                     model.isExpanded = false
                     model.audios = audioModels
@@ -165,7 +166,7 @@ class SearchController: BaseController {
         }
 
         let closure = {
-            if let catalogs = RTCatalog.search(byName: self.textToSearch), catalogs.count > 0 {
+            if let catalogs = RTCatalog.search(byName: self.textToSearch), !catalogs.isEmpty {
                 var audiosTmp = [AudioViewModel]()
 
                 let model = CatalogViewModel()
@@ -175,7 +176,7 @@ class SearchController: BaseController {
                     if element.isAudio(), element.url?.count ?? 0 > 0 {
                         let viewModel = AudioViewModel(audio: element)
                         if audiosTmp.first(where: { (avm) -> Bool in
-                            return avm.url == viewModel.url
+                            avm.url == viewModel.url
                         }) == nil {
                             audiosTmp.append(viewModel)
                         }
@@ -183,24 +184,24 @@ class SearchController: BaseController {
                         model.sections.append(CatalogViewModel(catalog: element))
                     }
                 }
-                if audiosTmp.count > 0 {
+                if !audiosTmp.isEmpty {
                     model.audios = audiosTmp
                 }
-                if model.sections.count > 0 && model.audios.count > 0 {
+                if !model.sections.isEmpty && !model.audios.isEmpty {
                     self.models.append(model)
                 }
                 model.section = AudioViewModel.ControllerName.radioTime.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
             }
 
-            if let archiveOrgs = ArchiveDoc.search(byName: self.textToSearch), archiveOrgs.count > 0 {
+            if let archiveOrgs = ArchiveDoc.search(byName: self.textToSearch), !archiveOrgs.isEmpty {
                 let model = CatalogViewModel()
                 model.isExpanded = true
                 model.sections = archiveOrgs.map({ CatalogViewModel(archiveDoc: $0, superTree: "") })
                 model.section = AudioViewModel.ControllerName.archiveOrg.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
 
-                if model.sections.count > 0 {
+                if !model.sections.isEmpty {
                     if self.page == 1 {
                         self.page = model.sections.count / 10 + 1
                     }
@@ -218,7 +219,7 @@ class SearchController: BaseController {
             Analytics.logFunction(function: "search",
                                   parameters: ["text": textToSearch as AnyObject])
 
-            RadioTimeController.search(text: textToSearch, finishClosure: { (error) in
+            RadioTimeController.search(text: textToSearch, finishClosure: { (_) in
 
                 ArchiveOrgController.search(text: self.textToSearch,
                                             pageNumber: self.page,

@@ -11,7 +11,7 @@ import UIKit
 extension UIColor {
 
     static func color(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1.0) -> UIColor {
-        return UIColor(red: r/255, green: g/255, blue: b/255, alpha: a)
+        return UIColor(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
     }
     static var licorice = UIColor.black
     static var lead = UIColor.init(white: 0.1, alpha: 1)

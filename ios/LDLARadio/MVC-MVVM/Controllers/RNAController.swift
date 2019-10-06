@@ -43,8 +43,8 @@ class RNAController: BaseController {
                 return 0
             }
         }
-        let count: Int = (section == 0) ? amModels.count : fmModels.count
-        return count > 0 ? count : 1
+        let rows: Int = (section == 0) ? amModels.count : fmModels.count
+        return rows > 0 ? rows : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -101,7 +101,7 @@ class RNAController: BaseController {
 
         if isClean == false {
             updateModels()
-            if fmModels.count > 0 && amModels.count > 0 {
+            if !fmModels.isEmpty && !amModels.isEmpty {
                 finishClosure?(nil)
                 return
             }
@@ -161,9 +161,9 @@ class RNAController: BaseController {
     }
 
     private func updateStations(stations: [RNAStation],
-                              isAm: Bool = false,
-                              finishClosure: ((_ error: Error?) -> Void)? = nil) {
-        if stations.count == 0 {
+                                isAm: Bool = false,
+                                finishClosure: ((_ error: Error?) -> Void)? = nil) {
+        if stations.isEmpty {
             finishClosure?(nil)
             return
         }
@@ -172,7 +172,7 @@ class RNAController: BaseController {
 
         let station = stationsToUpdate.popLast()
 
-        updateProgram(forStation: station, isAm: isAm) { (error) in
+        updateProgram(forStation: station, isAm: isAm) { (_) in
             self.updateBand(forStation: station, isAm: isAm) { _ in
                 self.updateStations(stations: stationsToUpdate, isAm: isAm, finishClosure: finishClosure)
             }
@@ -210,10 +210,11 @@ class RNAController: BaseController {
             }
         }
     }
-
+    
     private func updateBand(forStation station: RNAStation?,
-                               isAm: Bool = false,
-                               finishClosure: ((_ error: Error?) -> Void)? = nil) {
+                            isAm: Bool = false,
+                            finishClosure: ((_ error: Error?) -> Void)? = nil) {
+        
         guard let stationId = station?.id else {
             finishClosure?(nil)
             return

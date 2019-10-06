@@ -83,6 +83,12 @@
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
+		989E41EB2349FF0100975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
+		989E41EC234A06B700975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
+		989E41F0234A090F00975B91 /* SomeOtherTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */; };
+		989E41F2234A094500975B91 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41F1234A094500975B91 /* LoggerTests.swift */; };
+		989E41F3234A095000975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
 		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
@@ -198,6 +204,10 @@
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		989E41E82348993400975B91 /* NSOrderedSet+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+.swift"; sourceTree = "<group>"; };
+		989E41EA2349FF0100975B91 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeOtherTimeTests.swift; sourceTree = "<group>"; };
+		989E41F1234A094500975B91 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
 		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
@@ -312,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				42813A051CE44F9700972264 /* StreamPersistenceManager.swift */,
+				989E41EA2349FF0100975B91 /* Log.swift */,
 				424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */,
 				987DA0B622D6465600F34BD3 /* RestApi.swift */,
 				9808511E22E6DA950013B67C /* StreamListManager.swift */,
@@ -375,6 +386,7 @@
 				9808510A22E638D90013B67C /* Date+.swift */,
 				9808510E22E691F10013B67C /* String+.swift */,
 				980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */,
+				989E41E82348993400975B91 /* NSOrderedSet+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -466,6 +478,8 @@
 				98195FB622DB7C21006E7961 /* RTCatalogTests.swift */,
 				98C7DD7C22DDEC030025B437 /* RNATests.swift */,
 				98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */,
+				989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */,
+				989E41F1234A094500975B91 /* LoggerTests.swift */,
 				987DA0C022D663E700F34BD3 /* Info.plist */,
 			);
 			path = LDLARadioTests;
@@ -710,7 +724,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --config .swiftlint.yml\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		CDAA705B651B01B8F729FD7A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -770,6 +784,7 @@
 				98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */,
 				98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */,
 				98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */,
+				989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
 				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
@@ -782,6 +797,7 @@
 				98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */,
 				98195FA322D81B55006E7961 /* Commons.swift in Sources */,
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
+				989E41EB2349FF0100975B91 /* Log.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
 				98B53CE722FFAB8D003F50EE /* User.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
@@ -816,9 +832,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				989E41F3234A095000975B91 /* Log.swift in Sources */,
 				98195FBA22DB85F4006E7961 /* RestApi.swift in Sources */,
 				9825BDDA22ECE5B300E418F2 /* Model+.swift in Sources */,
 				98C7DD7D22DDEC030025B437 /* RNATests.swift in Sources */,
+				989E41F2234A094500975B91 /* LoggerTests.swift in Sources */,
 				98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */,
@@ -835,8 +853,10 @@
 				983E01FD22F65E73008370BA /* Downloadable.swift in Sources */,
 				983E01FB22F65E6E008370BA /* Modellable.swift in Sources */,
 				9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */,
+				989E41EC234A06B700975B91 /* NSOrderedSet+.swift in Sources */,
 				9808513922E8FBC80013B67C /* Commons.swift in Sources */,
 				9825BDCF22EB414B00E418F2 /* Data+.swift in Sources */,
+				989E41F0234A090F00975B91 /* SomeOtherTimeTests.swift in Sources */,
 				9808514222EA70B60013B67C /* String+.swift in Sources */,
 				9808513B22E8FBF50013B67C /* RNAStation+.swift in Sources */,
 			);
@@ -922,7 +942,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -975,7 +995,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

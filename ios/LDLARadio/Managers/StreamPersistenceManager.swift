@@ -55,7 +55,9 @@ class StreamPersistenceManager: NSObject {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
             try AVAudioSession.sharedInstance().setActive(true)
-        } catch let error as NSError { print(error) }
+        } catch let error as NSError {
+            Log.error("error = %@", error.debugDescription)
+        }
 
         // Create the configuration for the AVAssetDownloadURLSession.
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "AAPL-Identifier")
@@ -128,11 +130,9 @@ class StreamPersistenceManager: NSObject {
     func assetForStream(withName name: String) -> Stream? {
         var asset: Stream?
 
-        for (_, assetValue) in activeDownloadsMap {
-            if name == assetValue.url {
-                asset = assetValue
-                break
-            }
+        for (_, assetValue) in activeDownloadsMap where name == assetValue.url {
+            asset = assetValue
+            break
         }
 
         return asset
@@ -148,7 +148,7 @@ class StreamPersistenceManager: NSObject {
         let userDefaults = UserDefaults.standard
 
         // Check if there is a file URL stored for this asset.
-        guard let name = asset.url else { return .notDownloaded}
+        guard let name = asset.url else { return .notDownloaded }
 
         if let localFileLocation = userDefaults.value(forKey: name) as? String {
             // Check if the file exists on disk
@@ -164,10 +164,8 @@ class StreamPersistenceManager: NSObject {
         }
 
         // Check if there are any active downloads in flight.
-        for (_, assetValue) in activeDownloadsMap {
-            if asset.url == assetValue.url {
-                return .downloading
-            }
+        for (_, assetValue) in activeDownloadsMap where asset.url == assetValue.url {
+            return .downloading
         }
 
         return .notDownloaded
@@ -193,7 +191,7 @@ class StreamPersistenceManager: NSObject {
                 NotificationCenter.default.post(name: StreamDownloadStateChangedNotification, object: nil, userInfo: userInfo)
             }
         } catch {
-            print("An error occured deleting the file: \(error)")
+            Log.error("An error occured deleting the file: %@", error.localizedDescription)
         }
     }
 
@@ -201,14 +199,12 @@ class StreamPersistenceManager: NSObject {
     func cancelDownload(for asset: Stream) {
         var task: AVAssetDownloadTask?
 
-        for (taskKey, assetVal) in activeDownloadsMap {
-            if asset == assetVal {
-                guard let taskObj = taskKey as? AVAssetDownloadTask else {
-                    continue
-                }
-                task = taskObj
-                break
+        for (taskKey, assetVal) in activeDownloadsMap where asset == assetVal {
+            guard let taskObj = taskKey as? AVAssetDownloadTask else {
+                continue
             }
+            task = taskObj
+            break
         }
 
         task?.cancel()
@@ -282,7 +278,7 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
 
                     userDefaults.removeObject(forKey: name)
                 } catch {
-                    print("An error occured trying to delete the contents on disk for \(String(describing: asset.url)): \(error)")
+                    Log.error("An error occured trying to delete the contents on disk for %@: %@", asset.url ?? "", error.localizedDescription)
                 }
 
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.notDownloaded.rawValue
@@ -313,10 +309,12 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                  Create a mutable copy of the AVMediaSelection reference saved in
                  `AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didResolve:)`.
                  */
-                let mediaSelection = originalMediaSelection.mutableCopy() as! AVMutableMediaSelection
+                guard let mediaSelection = originalMediaSelection.mutableCopy() as? AVMutableMediaSelection else { return }
 
                 // Select the AVMediaSelectionOption in the AVMediaSelectionGroup we found earlier.
-                mediaSelection.select(mediaSelectionPair.mediaSelectionOption!, in: mediaSelectionPair.mediaSelectionGroup!)
+                guard let mediaSelectionOption = mediaSelectionPair.mediaSelectionOption,
+                    let mediaSelectionGroup = mediaSelectionPair.mediaSelectionGroup else { return }
+                mediaSelection.select(mediaSelectionOption, in: mediaSelectionGroup)
 
                 /*
                  Ask the `URLSession` to vend a new `AVAssetDownloadTask` using
@@ -342,7 +340,9 @@ extension StreamPersistenceManager: AVAssetDownloadDelegate {
                 task.resume()
 
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.downloading.rawValue
-                userInfo[Stream.Keys.downloadSelectionDisplayName] = mediaSelectionPair.mediaSelectionOption!.displayName
+                if let mediaSelectionOption = mediaSelectionPair.mediaSelectionOption {
+                    userInfo[Stream.Keys.downloadSelectionDisplayName] = mediaSelectionOption.displayName
+                }
             } else {
                 // All additional media selections have been downloaded.
                 userInfo[Stream.Keys.downloadState] = Stream.DownloadState.downloaded.rawValue

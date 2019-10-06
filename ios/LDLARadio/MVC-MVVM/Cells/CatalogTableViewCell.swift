@@ -40,8 +40,7 @@ class CatalogTableViewCell: UITableViewCell {
                         if response.error != nil {
                             self.iconView.isHidden = false
                             self.thumbnailView.isHidden = true
-                        }
-                        else {
+                        } else {
                             self.portraitThumbnail()
                         }
                     }
@@ -55,16 +54,16 @@ class CatalogTableViewCell: UITableViewCell {
 
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         portraitThumbnail()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.text = "\(Commons.symbols.showAwesome(icon: .battery_empty))"
+        iconView.text = "\(Commons.Symbol.showAwesome(icon: .battery_empty))"
         iconView.textColor = .red
         thumbnailView.isHidden = true
         iconView.isHidden = true
@@ -94,7 +93,7 @@ class CatalogTableViewCell: UITableViewCell {
             fatalError()
         }
     }
-    
+
     private func portraitThumbnail() {
         thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
         thumbnailView?.layer.borderWidth = 1

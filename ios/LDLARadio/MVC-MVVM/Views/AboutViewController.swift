@@ -25,16 +25,20 @@ class AboutViewController: BaseViewController {
                     pdfView.displayDirection = .vertical
                     pdfView.document = pdfDocument
                 }
-                pdfView.widthAnchor.constraint(equalToConstant: view.bounds.size.width)
-                pdfView.heightAnchor.constraint(equalToConstant: view.bounds.size.height)
-                pdfView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-                pdfView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
                 view.addSubview(pdfView)
+                pdfView.widthAnchor.constraint(equalToConstant: view.bounds.size.width).isActive = true
+                pdfView.heightAnchor.constraint(equalToConstant: view.bounds.size.height).isActive = true
+                pdfView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+                pdfView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
             } else {
                 let req = URLRequest(url: URL.init(fileURLWithPath: path))
                 let webView = UIWebView(frame: view.bounds)
-                webView.loadRequest(req)
                 view.addSubview(webView)
+                webView.loadRequest(req)
+                webView.widthAnchor.constraint(equalToConstant: view.bounds.size.width).isActive = true
+                webView.heightAnchor.constraint(equalToConstant: view.bounds.size.height).isActive = true
+                webView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+                webView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
             }
         }
 

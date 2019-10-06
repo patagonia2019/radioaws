@@ -32,12 +32,12 @@ struct CityListManager {
 
     mutating func update(tryRequest: Bool = false) {
         // try memory
-        if cities.count == 0 {
+        if cities.isEmpty {
             // Try the database
             cities = City.all() ?? [City]()
         }
         // try request
-        if tryRequest && cities.count == 0 {
+        if tryRequest && cities.isEmpty {
             setup()
         }
     }

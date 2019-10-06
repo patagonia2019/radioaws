@@ -30,8 +30,7 @@ extension UIViewController {
                 shareUrl = section.url
             }
             text.append("\n")
-        }
-        else {
+        } else {
             let stream = StreamPlaybackManager.instance
             image = stream.image()
             // title, subTitle, section, detail

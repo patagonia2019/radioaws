@@ -9,6 +9,8 @@
 import XCTest
 import Groot
 
+@testable import LDLARadio
+
 class ArchiveTests: BaseTests {
 
     func testModelArchiveOrgMeta() {
@@ -18,11 +20,11 @@ class ArchiveTests: BaseTests {
         }
 
         do {
-            let meta: ArchiveMeta = try object(withEntityName: "ArchiveMeta", fromJSONDictionary: archiveOrgMetaJSON(), inContext: context) as! ArchiveMeta
+            let meta: ArchiveMeta? = try object(withEntityName: "ArchiveMeta", fromJSONDictionary: archiveOrgMetaJSON(), inContext: context) as? ArchiveMeta
 
             XCTAssertNotNil(meta)
-            XCTAssertEqual(meta.response?.docs?.count, 1)
-            guard let doc = meta.response?.docs?.firstObject as? ArchiveDoc else {
+            XCTAssertEqual(meta?.response?.docs?.count, 1)
+            guard let doc = meta?.response?.docs?.firstObject as? ArchiveDoc else {
                 XCTFail()
                 return
             }
@@ -136,7 +138,7 @@ class ArchiveTests: BaseTests {
             XCTAssertNotNil(meta)
             let response = meta?.response
             XCTAssertNotNil(response)
-            XCTAssertEqual(response?.numFound, 4173)
+            XCTAssertEqual(response?.numFound, 4174)
             let docs = response?.docs
             XCTAssertEqual(docs?.count, 10)
             let doc = docs?.firstObject as? ArchiveDoc
@@ -147,7 +149,7 @@ class ArchiveTests: BaseTests {
             XCTAssertNotNil(another)
             XCTAssertEqual(another?.title, "X Minus One - Single Episodes")
             expect.fulfill()
-        }
+    }
         waitForExpectations(timeout: RestApi.Constants.Service.timeout, handler: { (error) in
             XCTAssertNil(error)
         })
@@ -161,13 +163,17 @@ class ArchiveTests: BaseTests {
         }
 
         do {
-            let detail: ArchiveDetail = try object(withEntityName: "ArchiveDetail", fromJSONDictionary: archiveOrgDetailJSON(), inContext: context) as! ArchiveDetail
+            let detail: ArchiveDetail? = try object(withEntityName: "ArchiveDetail", fromJSONDictionary: archiveOrgDetailJSON(), inContext: context) as? ArchiveDetail
 
             XCTAssertNotNil(detail)
-            XCTAssertEqual(detail.files?.count, 2)
-            if let files = detail.files {
+            XCTAssertEqual(detail?.files?.count, 2)
+            if let files = detail?.files {
                 for (k, v) in files {
-                    let arcFile = try object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
+                    guard let v = v as? JSONDictionary else {
+                        XCTFail()
+                        return
+                    }
+                    let arcFile = try object(withEntityName: "ArchiveFile", fromJSONDictionary: v, inContext: context) as? ArchiveFile
                     XCTAssertNotNil(arcFile)
                     arcFile?.original = k as? String
                     XCTAssertEqual(arcFile?.original, k as? String)
@@ -220,7 +226,11 @@ class ArchiveTests: BaseTests {
             XCTAssertEqual(detail?.dir, "/23/items/Book5HarryPotter")
             if let files = detail?.files {
                 for (k, v) in files {
-                    let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
+                    guard let v = v as? JSONDictionary else {
+                        XCTFail()
+                        return
+                    }
+                    let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: v, inContext: context) as? ArchiveFile
                     XCTAssertNotNil(arcFile)
                     arcFile?.original = k as? String
                     XCTAssertEqual(arcFile?.original, k as? String)
@@ -253,7 +263,11 @@ class ArchiveTests: BaseTests {
             XCTAssertEqual(detail?.dir, "/8/items/alice_in_wonderland_librivox")
             if let files = detail?.files {
                 for (k, v) in files {
-                    let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: v as! JSONDictionary, inContext: context) as? ArchiveFile
+                    guard let v = v as? JSONDictionary else {
+                        XCTFail()
+                        return
+                    }
+                    let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: v, inContext: context) as? ArchiveFile
                     XCTAssertNotNil(arcFile)
                     arcFile?.original = k as? String
                     XCTAssertEqual(arcFile?.original, k as? String)

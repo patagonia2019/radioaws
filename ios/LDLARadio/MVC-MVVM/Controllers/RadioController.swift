@@ -22,13 +22,13 @@ class RadioController: BaseController {
     init(withStreams streams: [Stream]?) {
         super.init()
         models = streams?.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
-            return model.url?.absoluteString.count ?? 0 > 0
+            model.url?.absoluteString.count ?? 0 > 0
         }) ?? [AudioViewModel]()
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        let count: Int = models.count
-        return count > 0 ? count : 1
+        let rows: Int = models.count
+        return rows > 0 ? rows : 1
     }
 
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -55,18 +55,18 @@ class RadioController: BaseController {
 
     private func updateModels() {
         if let streams = Stream.all()?.filter({ (stream) -> Bool in
-            return stream.url?.count ?? 0 > 0
+            stream.url?.count ?? 0 > 0
         }) {
             models = streams.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
-                return model.url?.absoluteString.count ?? 0 > 0
+                model.url?.absoluteString.count ?? 0 > 0
             })
         }
         lastUpdated = Stream.lastUpdated()
     }
 
     override func privateRefresh(isClean: Bool = false,
-                                prompt: String,
-                                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 prompt: String,
+                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         var resetInfo = false
         if isClean {
@@ -75,7 +75,7 @@ class RadioController: BaseController {
 
         if resetInfo == false {
             updateModels()
-            if models.count > 0 {
+            if !models.isEmpty {
                 finishClosure?(nil)
                 return
             }

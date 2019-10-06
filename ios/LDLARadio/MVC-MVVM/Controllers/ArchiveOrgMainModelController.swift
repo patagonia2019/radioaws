@@ -24,7 +24,7 @@ class ArchiveOrgMainModelController: BaseController {
         var n = 0
         if let model = mainModel {
             n = model.sections.count
-            n += (model.audios.count > 0 ? 1 : 0)
+            n += (model.audios.isEmpty ? 0 : 1)
         }
         return n
     }
@@ -34,20 +34,20 @@ class ArchiveOrgMainModelController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count: Int = 0
+        var rows: Int = 0
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
-                print ("\(subModel.title) \((subModel.isExpanded ?? false) ? "-" : "+")")
+                Log.debug("%@ %@", subModel.title.text, (subModel.isExpanded ?? false) ? "-" : "+")
                 if subModel.isExpanded == false {
                     return 0
                 }
-                count = subModel.sections.count + subModel.audios.count
+                rows = subModel.sections.count + subModel.audios.count
             } else {
-                count = model.audios.count
+                rows = model.audios.count
             }
         }
-        return count > 0 ? count : 2
+        return rows > 0 ? rows : 2
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {

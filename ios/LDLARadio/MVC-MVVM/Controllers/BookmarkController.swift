@@ -35,15 +35,15 @@ class BookmarkController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count: Int = 0
+        var rows: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
                 return 0
             }
-            count = model.sections.count + model.audios.count
+            rows = model.sections.count + model.audios.count
         }
-        return count > 0 ? count : 1
+        return rows > 0 ? rows : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -94,9 +94,9 @@ class BookmarkController: BaseController {
                 let all = Audio.all()
 
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue}), suggestions.count > 0 {
+                    bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue}), !suggestions.isEmpty {
                     let audios = suggestions.map({ AudioViewModel(audio: $0) })
-                    if audios.count > 0 {
+                    if !audios.isEmpty {
 
                         let model = CatalogViewModel()
                         model.isExpanded = false
@@ -108,10 +108,10 @@ class BookmarkController: BaseController {
                 }
 
                 if let rnas = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.rna.rawValue
-                }), rnas.count > 0 {
+                    bookmark.section == AudioViewModel.ControllerName.rna.rawValue
+                }), !rnas.isEmpty {
                     let audios = rnas.map({ AudioViewModel(audio: $0) })
-                    if audios.count > 0 {
+                    if !audios.isEmpty {
 
                         let model = CatalogViewModel()
                         model.isExpanded = false
@@ -123,10 +123,10 @@ class BookmarkController: BaseController {
                 }
 
                 if let rts = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
-                }), rts.count > 0 {
+                    bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
+                }), !rts.isEmpty {
                     let audios = rts.map({ AudioViewModel(audio: $0) })
-                    if audios.count > 0 {
+                    if !audios.isEmpty {
                         let model = CatalogViewModel()
                         model.isExpanded = false
                         model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
@@ -136,10 +136,10 @@ class BookmarkController: BaseController {
                 }
 
                 if let eds = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
-                }), eds.count > 0 {
+                    bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
+                }), !eds.isEmpty {
                     let audios = eds.map({ AudioViewModel(audio: $0) })
-                    if audios.count > 0 {
+                    if !audios.isEmpty {
                         let model = CatalogViewModel()
                         model.isExpanded = false
                         model.title.text = AudioViewModel.ControllerName.desconcierto.rawValue
@@ -149,10 +149,10 @@ class BookmarkController: BaseController {
                 }
 
                 if let files = all?.filter({ (bookmark) -> Bool in
-                    return bookmark.section == AudioViewModel.ControllerName.archiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
-                }), files.count > 0 {
+                    bookmark.section == AudioViewModel.ControllerName.archiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
+                }), !files.isEmpty {
                     let audios = files.map({ AudioViewModel(audio: $0) })
-                    if audios.count > 0 {
+                    if !audios.isEmpty {
                         let model = CatalogViewModel()
                         model.isExpanded = false
                         model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
@@ -172,13 +172,13 @@ class BookmarkController: BaseController {
             if BaseController.isBookmarkChanged {
                 closure()
             }
-            
-            if self.models.count > 0 {
+
+            if !models.isEmpty {
                 finishClosure?(nil)
                 return
             }
 
-            if Audio.all()?.count ?? 0 == 0 {
+            if Audio.all()?.isEmpty ?? false {
                 forceUpdate = true
             }
         }
@@ -209,29 +209,27 @@ class BookmarkController: BaseController {
 
     func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
         let object = model(forSection: indexPath.section, row: indexPath.row)
-        
+
         if let model = object as? AudioViewModel,
             let audio = Audio.search(byUrl: model.urlString()) {
             if CloudKitManager.instance.loggedIn {
                 CloudKitManager.instance.remove(audio: audio) { (error) in
                     if let error = error {
                         model.error = error
-                    }
-                    else {
+                    } else {
                         audio.remove()
                         self.models.removeAll { (ct) -> Bool in
-                            return ct.urlString() == model.urlString()
+                            ct.urlString() == model.urlString()
                         }
                     }
                     finishClosure?(error)
                 }
-            }
-            else {
+            } else {
                 audio.remove()
                 let catalog = models[indexPath.section]
                 var audios = catalog.audios
                 audios.removeAll { (audiovm) -> Bool in
-                    return audiovm.urlString() == model.urlString()
+                    audiovm.urlString() == model.urlString()
                 }
                 catalog.audios = audios
                 finishClosure?(nil)

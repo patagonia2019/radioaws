@@ -34,7 +34,7 @@ class AudioTableViewCell: UITableViewCell {
             let labels = [downloadStateLabel, subtitleLabel, titleLabel]
             let texts = [model?.detail, model?.subTitle, model?.title]
             for i in 0..<3 {
-                if let text = texts[i]?.text, text.count > 0 {
+                if let text = texts[i]?.text, !text.isEmpty {
                     labels[i]?.isHidden = false
                     labels[i]?.text = text
                     labels[i]?.textColor = texts[i]?.color
@@ -86,7 +86,7 @@ class AudioTableViewCell: UITableViewCell {
         gradientPlayBg.frame = contentView.bounds
         gradientPlayBg.isHidden = false
         contentView.layer.insertSublayer(gradientPlayBg, at: 1)
-        
+
         infoButton.setTitleColor(.cerulean, for: .normal)
         infoButton.setTitleColor(.nobel, for: .highlighted)
         portraitThumbnail()
@@ -106,7 +106,7 @@ class AudioTableViewCell: UITableViewCell {
         infoButton.isHidden = true
         thumbnailView.image = nil
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientPlayBg.frame = contentView.bounds
@@ -117,16 +117,16 @@ class AudioTableViewCell: UITableViewCell {
         bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
         delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
     }
-    
+
     @IBAction func infoAction(_ sender: UIButton?) {
-        
+
         if sender == infoButton {
             delegate?.audioTableViewCell(self, infoDidTap: true)
         } else {
             fatalError()
         }
     }
-    
+
     private func portraitThumbnail() {
         thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
         thumbnailView?.layer.borderWidth = 1
@@ -147,4 +147,3 @@ protocol AudioTableViewCellDelegate: class {
     func audioTableViewCell(_ cell: AudioTableViewCell, infoDidTap newState: Bool)
 
 }
-

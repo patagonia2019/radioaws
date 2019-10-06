@@ -27,7 +27,7 @@ class RTCatalogTests: BaseTests {
             XCTAssertEqual(catalog.title, "Browse")
             XCTAssertEqual(catalog.sections?.count, 2)
             let section = catalog.sections?.first(where: { (section) -> Bool in
-                return (section as? RTCatalog)?.text == "Music"
+                (section as? RTCatalog)?.text == "Music"
             }) as? RTCatalog
             XCTAssertNotNil(section)
             XCTAssertEqual(section?.url, "http://opml.radiotime.com/Browse.ashx?c=music")
@@ -49,7 +49,7 @@ class RTCatalogTests: BaseTests {
             XCTAssertEqual(guide.title, "Music")
             XCTAssertEqual(guide.sections?.count, 2)
             let section = guide.sections?.first(where: { (theme) -> Bool in
-                return (theme as? RTCatalog)?.text == "50's"
+                (theme as? RTCatalog)?.text == "50's"
             }) as? RTCatalog
             XCTAssertNotNil(section)
             XCTAssertEqual(section?.url, "http://opml.radiotime.com/Browse.ashx?id=g390")
@@ -72,13 +72,13 @@ class RTCatalogTests: BaseTests {
             XCTAssertEqual(guide.sections?.count, 2)
 
             let outline = guide.sections?.first(where: { (section) -> Bool in
-                return (section as? RTCatalog)?.key == "stations"
+                (section as? RTCatalog)?.key == "stations"
             }) as? RTCatalog
             XCTAssertNotNil(outline)
             XCTAssertEqual(outline?.text, "Stations")
 
             let channel = outline?.audios?.array.first(where: { (c) -> Bool in
-                return (c as? RTCatalog)?.presetId == "s216185"
+                (c as? RTCatalog)?.presetId == "s216185"
             }) as? RTCatalog
             XCTAssertNotNil(channel)
             XCTAssertEqual(channel?.image, "http://cdn-radiotime-logos.tunein.com/s216185q.png")

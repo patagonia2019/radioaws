@@ -9,6 +9,8 @@
 import XCTest
 import Groot
 
+@testable import LDLARadio
+
 class RNATests: BaseTests {
 
     func testModelEmisoras() {
@@ -18,12 +20,12 @@ class RNATests: BaseTests {
         }
 
         do {
-            let dial: RNADial = try object(withEntityName: "RNADial", fromJSONDictionary: rnaEmisorasJSON(), inContext: context) as! RNADial
+            let dial: RNADial? = try object(withEntityName: "RNADial", fromJSONDictionary: rnaEmisorasJSON(), inContext: context) as? RNADial
 
             XCTAssertNotNil(dial)
-            XCTAssertEqual(dial.stations?.count, 2)
+            XCTAssertEqual(dial?.stations?.count, 2)
             let order = [NSSortDescriptor.init(key: "lastName", ascending: true)]
-            guard let station = dial.stations?.sortedArray(using: order).first as? RNAStation else {
+            guard let station = dial?.stations?.sortedArray(using: order).first as? RNAStation else {
                 XCTFail()
                 return
             }
@@ -64,11 +66,11 @@ class RNATests: BaseTests {
         }
 
         do {
-            let program: RNACurrentProgram = try object(withEntityName: "RNACurrentProgram", fromJSONDictionary: RNACurrentProgramJSON(), inContext: context) as! RNACurrentProgram
+            let program: RNACurrentProgram? = try object(withEntityName: "RNACurrentProgram", fromJSONDictionary: RNACurrentProgramJSON(), inContext: context) as? RNACurrentProgram
 
             XCTAssertNotNil(program)
-            XCTAssertEqual(program.name, "LRA 30 Radio Nacional San Carlos de Bariloche")
-            XCTAssertEqual(program.programName, "La radio de todos")
+            XCTAssertEqual(program?.name, "LRA 30 Radio Nacional San Carlos de Bariloche")
+            XCTAssertEqual(program?.programName, "La radio de todos")
         } catch {
             XCTFail("error: \(error)")
         }
@@ -76,12 +78,12 @@ class RNATests: BaseTests {
 
     func testRequestModelProgram() {
         let expect = expectation(description: "listar_programacion_actual")
-        RestApi.instance.requestRNA(usingQuery: "/api/listar_programacion_actual/34/AM.json", type: RNACurrentProgram.self) { (error, program) in
+        RestApi.instance.requestRNA(usingQuery: "/api/listar_programacion_actual/1/AM.json", type: RNACurrentProgram.self) { (error, program) in
 
             XCTAssertNil(error)
             XCTAssertNotNil(program)
-            XCTAssertEqual(program?.name, "LRA 30 Radio Nacional San Carlos de Bariloche")
-            XCTAssertEqual(program?.programName, "La radio de todos")
+            XCTAssertEqual(program?.name, "El jardín Nacional")
+            XCTAssertEqual(program?.programName, "José Sbrocco desde Tucumán")
 
             expect.fulfill()
         }
@@ -96,13 +98,13 @@ class RNATests: BaseTests {
             return
         }
         do {
-            let band: RNABand = try object(withEntityName: "RNABand", fromJSONDictionary: rnaDayProgramsJSON(), inContext: context) as! RNABand
+            let band: RNABand? = try object(withEntityName: "RNABand", fromJSONDictionary: rnaDayProgramsJSON(), inContext: context) as? RNABand
 
             XCTAssertNotNil(band)
-            XCTAssertEqual(band.programs?.count, 17)
+            XCTAssertEqual(band?.programs?.count, 17)
 
-            let program = band.programs?.first(where: { (program) -> Bool in
-                return (program as? RNAProgram)?.name == "Sonia Ferraris"
+            let program = band?.programs?.first(where: { (program) -> Bool in
+                (program as? RNAProgram)?.name == "Sonia Ferraris"
             }) as? RNAProgram
             XCTAssertEqual(program?.reporter, "Trasnoche Nacional")
 
@@ -117,7 +119,7 @@ class RNATests: BaseTests {
 
             XCTAssertNil(error)
             XCTAssertNotNil(band)
-            XCTAssertEqual(band?.programs?.count, 17)
+            XCTAssertEqual(band?.programs?.count, 18)
 
             expect.fulfill()
         }

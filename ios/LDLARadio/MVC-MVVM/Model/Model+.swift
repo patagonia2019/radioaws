@@ -64,9 +64,9 @@ extension Model {
     static func clean() {
         guard let name = entityName() else { return }
         guard let context = RestApi.instance.context else { fatalError() }
-        let req = NSFetchRequest<NSManagedObject>(entityName: name)
+        let req = NSFetchRequest<NSFetchRequestResult>(entityName: name)
         req.includesPropertyValues = false
-        if let array = try? context.fetch(req as! NSFetchRequest<NSFetchRequestResult>) as? [NSManagedObject] {
+        if let array = try? context.fetch(req) as? [NSManagedObject] {
             for obj in array {
                 context.delete(obj)
             }
@@ -78,9 +78,5 @@ extension Model {
         guard let context = RestApi.instance.context else { fatalError() }
         context.delete(self)
     }
-
-//    func modelName() -> String {
-//        return "Model.modelName()"
-//    }
 
 }

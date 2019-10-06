@@ -33,12 +33,12 @@ struct StationListManager {
 
     mutating func update(tryRequest: Bool = false) {
         // try memory
-        if stations.count == 0 {
+        if stations.isEmpty {
             // Try the database
             stations = Station.all() ?? [Station]()
         }
         // try request
-        if tryRequest && stations.count == 0 {
+        if tryRequest && stations.isEmpty {
             setup()
         }
     }

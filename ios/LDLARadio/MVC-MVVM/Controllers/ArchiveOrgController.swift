@@ -25,15 +25,15 @@ class ArchiveOrgController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count: Int = 0
+        var rows: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
                 return 0
             }
-            count = model.sections.count + model.audios.count
+            rows = model.sections.count + model.audios.count
         }
-        return count > 0 ? (count + 1) : 1
+        return rows > 0 ? (rows + 1) : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -76,8 +76,8 @@ class ArchiveOrgController: BaseController {
         if let collections = ArchiveCollection.all() {
             func isExpanded(ac: ArchiveCollection?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    return (catalog.isExpanded ?? false) && ac?.identifier == catalog.id
-                    }.count > 0
+                    (catalog.isExpanded ?? false) && ac?.identifier == catalog.id
+                }.isEmpty == false
             }
             models = collections.map({ CatalogViewModel(archiveCollection: $0, isAlreadyExpanded: isExpanded(ac: $0)) })
         }
@@ -89,7 +89,7 @@ class ArchiveOrgController: BaseController {
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if isClean == false {
             updateModels()
-            if models.count > 0 {
+            if !models.isEmpty {
                 finishClosure?(nil)
                 return
             }
@@ -143,12 +143,12 @@ class ArchiveOrgController: BaseController {
                 model?.isExpanded = !isExpanded
                 archiveCollection?.isExpanded = !isExpanded
             }
-            
+
             if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
                 finishClosure?(nil)
                 return
             }
-            
+
             if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
                 self.updateModels()
                 finishClosure?(nil)
@@ -189,7 +189,7 @@ class ArchiveOrgController: BaseController {
                        pageNumber: Int = 1,
                        finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if text.count == 0 {
+        if text.isEmpty {
             finishClosure?(nil)
             return
         }

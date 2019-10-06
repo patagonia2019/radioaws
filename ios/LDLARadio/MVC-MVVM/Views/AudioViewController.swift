@@ -18,7 +18,7 @@ class AudioViewController: UITableViewController {
 
     var isFullScreen: Bool = false
     fileprivate var timerPlayed: Timer?
-    
+
     @IBOutlet weak var refreshButton: UIBarButtonItem!
 
     var radioController = RadioController()
@@ -34,54 +34,62 @@ class AudioViewController: UITableViewController {
         get {
             let title = titleForController()
             switch title {
-                case AudioViewModel.ControllerName.suggestion.rawValue:
-                    return radioController
-                case AudioViewModel.ControllerName.radioTime.rawValue:
-                    return radioTimeController
-                case AudioViewModel.ControllerName.rna.rawValue:
-                    return rnaController
-                case AudioViewModel.ControllerName.bookmark.rawValue:
-                    return bookmarkController
-                case AudioViewModel.ControllerName.desconcierto.rawValue:
-                    return desconciertoController
-                case AudioViewModel.ControllerName.archiveOrg.rawValue:
-                    return archiveOrgController
-                case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
-                    return archiveOrgMainModelController
-                case AudioViewModel.ControllerName.search.rawValue:
-                    return searchController
-                default:
-                    fatalError()
-                }
+            case AudioViewModel.ControllerName.suggestion.rawValue:
+                return radioController
+            case AudioViewModel.ControllerName.radioTime.rawValue:
+                return radioTimeController
+            case AudioViewModel.ControllerName.rna.rawValue:
+                return rnaController
+            case AudioViewModel.ControllerName.bookmark.rawValue:
+                return bookmarkController
+            case AudioViewModel.ControllerName.desconcierto.rawValue:
+                return desconciertoController
+            case AudioViewModel.ControllerName.archiveOrg.rawValue:
+                return archiveOrgController
+            case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
+                return archiveOrgMainModelController
+            case AudioViewModel.ControllerName.search.rawValue:
+                return searchController
+            default:
+                fatalError()
+            }
         }
         set {
             let title = titleForController()
 
             switch title {
             case AudioViewModel.ControllerName.suggestion.rawValue:
-                radioController = newValue as! RadioController
-                break
+                if let newValue = newValue as? RadioController {
+                    radioController = newValue
+                }
             case AudioViewModel.ControllerName.radioTime.rawValue:
-                radioTimeController = newValue as! RadioTimeController
-                break
+                if let newValue = newValue as? RadioTimeController {
+                    radioTimeController = newValue
+                }
             case AudioViewModel.ControllerName.rna.rawValue:
-                rnaController = newValue as! RNAController
-                break
+                if let newValue = newValue as? RNAController {
+                    rnaController = newValue
+                }
             case AudioViewModel.ControllerName.bookmark.rawValue:
-                bookmarkController = newValue as! BookmarkController
-                break
+                if let newValue = newValue as? BookmarkController {
+                    bookmarkController = newValue
+                }
             case AudioViewModel.ControllerName.desconcierto.rawValue:
-                desconciertoController = newValue as! ElDesconciertoController
-                break
+                if let newValue = newValue as? ElDesconciertoController {
+                    desconciertoController = newValue
+                }
             case AudioViewModel.ControllerName.archiveOrg.rawValue:
-                archiveOrgController = newValue as! ArchiveOrgController
-                break
+                if let newValue = newValue as? ArchiveOrgController {
+                    archiveOrgController = newValue
+                }
             case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
-                archiveOrgMainModelController = newValue as! ArchiveOrgMainModelController
-                break
+                if let newValue = newValue as? ArchiveOrgMainModelController {
+                    archiveOrgMainModelController = newValue
+                }
             case AudioViewModel.ControllerName.search.rawValue:
-                searchController = newValue as! SearchController
-                break
+                if let newValue = newValue as? SearchController {
+                    searchController = newValue
+                }
             default:
                 fatalError()
             }
@@ -93,7 +101,7 @@ class AudioViewController: UITableViewController {
         let stream = StreamPlaybackManager.instance
         stream.delegate = nil
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -107,38 +115,40 @@ class AudioViewController: UITableViewController {
         tableView.remembersLastFocusedIndexPath = true
         HeaderTableView.setup(tableView: tableView)
 
-        if (controller is SearchController) {
+        if controller is SearchController {
             refresh(isClean: true)
         }
 
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
-        
+
         if let toolbar = navigationController?.toolbar {
             let stream = StreamPlaybackManager.instance
             stream.delegate = toolbar
         }
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if controller is BookmarkController {
             navigationItem.leftBarButtonItems = [trashButton]
-        }
-        else {
+        } else {
             navigationItem.leftBarButtonItems = nil
         }
+        updateNavBar()
+
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         if let timerPlayed = timerPlayed {
             timerPlayed.invalidate()
         }
-        
+
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !(controller is SearchController) {
@@ -146,10 +156,11 @@ class AudioViewController: UITableViewController {
         } else {
             reloadData()
         }
+        updateNavBar()
     }
 
     private func titleForController() -> String? {
-        let titleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ??  self.tabBarController?.selectedViewController?.tabBarItem.title
+        let titleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title
         return titleName
     }
 
@@ -166,20 +177,20 @@ class AudioViewController: UITableViewController {
         tableView.addSubview(refreshControl)
 
     }
-    
-    lazy var trashButton : UIBarButtonItem = {
+
+    lazy var trashButton: UIBarButtonItem = {
         let trash = UIButton(type: .custom)
         trash.addTarget(self, action: #selector(AudioViewController.trashAction(_:)), for: .touchUpInside)
-        trash.heightAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
-        trash.widthAnchor.constraint(equalToConstant: Commons.size.toolbarButtonFontSize).isActive = true
-        trash.frame.size = CGSize(width: Commons.size.toolbarButtonFontSize, height: Commons.size.toolbarButtonFontSize)
-        guard let font = UIFont(name: Commons.font.awesome, size: 30) else {
+        trash.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
+        trash.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
+        trash.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
+        guard let font = UIFont(name: Commons.Font.awesome, size: 30) else {
             fatalError()
         }
         trash.setTitleColor(.maraschino, for: .normal)
         trash.setTitleColor(.steel, for: .highlighted)
         trash.titleLabel?.font = font
-        trash.setTitle("\(Commons.symbols.showAwesome(icon: .trash))", for: .normal)
+        trash.setTitle("\(Commons.Symbol.showAwesome(icon: .trash))", for: .normal)
 
         let button = UIBarButtonItem(customView: trash)
         return button
@@ -190,7 +201,7 @@ class AudioViewController: UITableViewController {
         controller.refresh(isClean: isClean, prompt: "",
                            startClosure: {
                             SwiftSpinner.show(Quote.randomQuote())
-        }) { (error) in
+        }, finishClosure: { (error) in
             if let error = error {
                 DispatchQueue.main.async {
                     self.showAlert(error: error)
@@ -200,33 +211,45 @@ class AudioViewController: UITableViewController {
             refreshControl?.endRefreshing()
             SwiftSpinner.hide()
             self.reloadData()
+        })
+    }
+
+    func updateNavBar() {
+        navigationItem.prompt = " "
+        for view in navigationController?.navigationBar.subviews ?? [] where NSStringFromClass(view.classForCoder) == "_UINavigationBarModernPromptView" {
+            if let prompt = view.subviews.first as? UILabel {
+                prompt.text = controller.prompt()
+                prompt.textColor = .midnight
+                let font = UIFont(name: Commons.Font.bold, size: 20)
+                prompt.font = font
+            }
         }
+        navigationItem.title = controller.title()
     }
 
     private func reloadData() {
         if !Thread.isMainThread {
-            print("ojo")
+            Log.fault("fatal error is not Main Thread")
+            fatalError()
         }
         tableView.refreshControl?.attributedTitle = controller.title().bigRed()
-        navigationItem.prompt = controller.prompt()
-        navigationItem.title = controller.title()
+        updateNavBar()
         tableView.reloadData()
         
         reloadTimer()
     }
-    
+
     private func reloadTimer() {
-        
+
         let stream = StreamPlaybackManager.instance
-        
+
         if let timerPlayed = timerPlayed {
             timerPlayed.invalidate()
         }
-        
+
         if stream.isAboutToPlay() {
             timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
-        }
-        else {
+        } else {
             guard let toolbar = navigationController?.toolbar else { return }
             navigationController?.setToolbarHidden(true, animated: false)
             toolbar.isHidden = true
@@ -234,9 +257,9 @@ class AudioViewController: UITableViewController {
     }
 
     @objc private func reloadToolbar() {
-        
+
         guard let toolbar = navigationController?.toolbar else { return }
-        
+
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.toolbar.isHidden = false
         toolbar.setNeedsLayout()
@@ -274,14 +297,14 @@ class AudioViewController: UITableViewController {
             }
         } else if let section = object as? CatalogViewModel {
             if controller is RadioTimeController {
-                performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+                performSegue(withIdentifier: Commons.Segue.catalog, sender: section)
             } else if controller is ArchiveOrgController {
-                performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
+                performSegue(withIdentifier: Commons.Segue.archiveorg, sender: section)
             } else if controller is SearchController {
                 if section.section == AudioViewModel.ControllerName.radioTime.rawValue {
-                    performSegue(withIdentifier: Commons.segue.catalog, sender: section)
+                    performSegue(withIdentifier: Commons.Segue.catalog, sender: section)
                 } else if section.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
-                    performSegue(withIdentifier: Commons.segue.archiveorg, sender: section)
+                    performSegue(withIdentifier: Commons.Segue.archiveorg, sender: section)
                 }
             }
         } else {
@@ -318,11 +341,13 @@ class AudioViewController: UITableViewController {
 
     /// Handler of the pull to refresh, it clears the info container, reload the view and made another request using RestApi
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        Analytics.logFunction(function: "refresh",
-                              parameters: ["method": "control" as AnyObject,
-                                           "controller": titleForController() as AnyObject])
+        DispatchQueue.main.async {
+            Analytics.logFunction(function: "refresh",
+                                  parameters: ["method": "control" as AnyObject,
+                                               "controller": self.titleForController() as AnyObject])
 
-        refresh(isClean: true, refreshControl: refreshControl)
+            self.refresh(isClean: true, refreshControl: refreshControl)
+        }
     }
 
     @IBAction func trashAction(_ sender: Any) {
@@ -340,8 +365,7 @@ class AudioViewController: UITableViewController {
                     DispatchQueue.main.async {
                         SwiftSpinner.hide()
                     }
-                }
-                else {
+                } else {
                     self.refresh(isClean: true)
                 }
             })
@@ -349,7 +373,7 @@ class AudioViewController: UITableViewController {
         alert.addAction(clean)
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     @IBAction func shareAction(_ sender: Any) {
         share(indexPath: nil, controller: controller, tableView: tableView)
     }
@@ -371,14 +395,14 @@ class AudioViewController: UITableViewController {
         let search = UIAlertAction.init(title: "Search", style: .default) { _ in
             guard let textToSearch = alert.textFields?[0],
                 let text = textToSearch.text,
-                text.count > 0 else {
+                !text.isEmpty else {
                 return
             }
             if self.controller is SearchController {
                 (self.controller as? SearchController)?.textToSearch = text
                 self.refresh(isClean: true)
             } else {
-                self.performSegue(withIdentifier: Commons.segue.search, sender: text)
+                self.performSegue(withIdentifier: Commons.Segue.search, sender: text)
             }
         }
         alert.addAction(search)
@@ -399,7 +423,9 @@ class AudioViewController: UITableViewController {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
         headerView?.model = controller.modelInstance(inSection: section)
         headerView?.actionExpandBlock = { model, isHighlighted in
-            self.expand(model: model, section: section)
+            DispatchQueue.main.async {
+                self.expand(model: model, section: section)
+            }
         }
         headerView?.actionBookmarkBlock = { model, isHighlighted in
             Audio.changeCatalogBookmark(model: model)
@@ -445,7 +471,9 @@ class AudioViewController: UITableViewController {
         if let audio = object as? AudioViewModel {
             let isPlaying = stream.isPlaying(url: audio.urlString())
             let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
-                self.play(indexPath: indexPath)
+                DispatchQueue.main.async {
+                    self.play(indexPath: indexPath)
+                }
             }
             playAction.backgroundColor = .cayenne
             actions.append(playAction)
@@ -500,47 +528,45 @@ class AudioViewController: UITableViewController {
         } else if controller is SearchController {
             if (controller as? SearchController)?.numberOfRows(inSection: indexPath.section) == 0 {
                 cell.tryAgain()
-            }
-            else {
+            } else {
                 cell.clear()
             }
-        }
-        else {
+        } else {
             cell.clear()
         }
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        play(indexPath: indexPath)
+        DispatchQueue.main.async {
+            self.play(indexPath: indexPath)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Commons.segue.catalog {
+        if segue.identifier == Commons.Segue.catalog {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
-        } else if segue.identifier == Commons.segue.archiveorg {
+        } else if segue.identifier == Commons.Segue.archiveorg {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
             (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? CatalogViewModel))
-        } else if segue.identifier == Commons.segue.search {
+        } else if segue.identifier == Commons.Segue.search {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
         }
         SwiftSpinner.hide()
     }
-    
+
     private func removeBookmark(indexPath: IndexPath) {
         if controller is BookmarkController {
             _ = (controller as? BookmarkController)?.remove(indexPath: indexPath) { error in
                 if let error = error {
                     self.showAlert(title: error.title(), message: error.message(), error: error)
-                }
-                else {
+                } else {
                     self.refresh()
                 }
             }
-        }
-        else {
+        } else {
             controller.changeBookmark(indexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
@@ -556,7 +582,7 @@ extension AudioViewController: AudioTableViewCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         info(indexPath: indexPath)
     }
-    
+
     func audioTableViewCell(_ cell: AudioTableViewCell, bookmarkDidChange newState: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         removeBookmark(indexPath: indexPath)
@@ -568,4 +594,3 @@ extension AudioViewController: AudioTableViewCellDelegate {
     }
 
 }
-

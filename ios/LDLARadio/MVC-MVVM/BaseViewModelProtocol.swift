@@ -12,7 +12,7 @@ import UIKit
 protocol BaseViewModelProtocol {
 
     /// Some constants hardcoded here    
-    var icon: Commons.symbols.FontAwesome { get }
+    var icon: Commons.Symbol.FontAwesome { get }
     var iconColor: UIColor { get }
     var url: URL? { get set }
     var selectionStyle: UITableViewCell.SelectionStyle { get set }

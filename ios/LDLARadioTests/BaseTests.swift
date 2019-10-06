@@ -9,6 +9,7 @@
 import XCTest
 import CoreData
 import Groot
+@testable import LDLARadio
 
 class BaseTests: XCTestCase {
 
@@ -18,7 +19,11 @@ class BaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        store = try? GRTManagedStore(model: NSManagedObjectModel.testModel)
+        guard let testModel = NSManagedObjectModel.testModel else {
+            XCTFail()
+            return
+        }
+        store = try? GRTManagedStore(model: testModel)
         context = store?.context(with: .mainQueueConcurrencyType)
 
         RestApi.instance.context = context
@@ -38,32 +43,6 @@ class BaseTests: XCTestCase {
         }
         let location = URL(fileURLWithPath: path)
         return try? Data(contentsOf: location, options: .mappedIfSafe)
-    }
-
-    private func timeStringFor(seconds: Float) -> String? {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.second, .minute, .hour]
-        formatter.zeroFormattingBehavior = .pad
-
-        guard let output = formatter.string(from: TimeInterval(seconds)) else {
-            return nil
-        }
-        if seconds < 3600 {
-            guard let rng = output.range(of: ":") else { return nil }
-            let ub = rng.upperBound
-            let str = output[ub...]
-            return String(str)
-        }
-        return output
-    }
-
-    func testTimeStrings() {
-        let str = timeStringFor(seconds: 33)
-        XCTAssertEqual(str, "00:33")
-        let str1 = timeStringFor(seconds: 960)
-        XCTAssertEqual(str1, "16:00")
-        let str2 = timeStringFor(seconds: 9600)
-        XCTAssertEqual(str2, "2:40:00")
     }
 
     func archiveOrgMetaJSON() -> JSONDictionary {
@@ -609,8 +588,8 @@ class BaseTests: XCTestCase {
 
 extension NSManagedObjectModel {
 
-    static var testModel: NSManagedObjectModel {
+    static var testModel: NSManagedObjectModel? {
         let bundle = Bundle(for: BaseTests.self)
-        return NSManagedObjectModel.mergedModel(from: [bundle])!
+        return NSManagedObjectModel.mergedModel(from: [bundle])
     }
 }

@@ -26,7 +26,7 @@ class User {
         completion(.couldNotDetermine, nil)
     }
 
-    func userID(_ completion: @escaping (_ userRecordID: CKRecord.ID?, _ error: NSError?)->Void) {
+    func userID(_ completion: @escaping (_ userRecordID: CKRecord.ID?, _ error: NSError?) -> Void) {
 
         guard userRecordID != nil else {
             container.fetchUserRecordID { recordID, error in

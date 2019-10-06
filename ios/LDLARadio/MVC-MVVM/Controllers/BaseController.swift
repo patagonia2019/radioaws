@@ -77,12 +77,12 @@ class BaseController: Controllable {
                 }
             } else {
                 guard let context = RestApi.instance.context else { fatalError() }
-                
+
                 context.performAndWait {
                     audio.isPlaying = false
                     CoreDataManager.instance.save()
                 }
-                
+
                 StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
             }
         }
@@ -122,7 +122,8 @@ class BaseController: Controllable {
         }
     }
 
-    func expand(model: CatalogViewModel?, section: Int,
+    func expand(model: CatalogViewModel?,
+                section: Int,
                 incrementPage: Bool = false,
                 startClosure: (() -> Void)? = nil,
                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
@@ -136,23 +137,21 @@ class BaseController: Controllable {
     }
 
     internal func privateRefresh(isClean: Bool = false,
-                                prompt: String,
-                                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 prompt: String,
+                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         fatalError()
     }
-    
+
     func changeBookmark(indexPath: IndexPath, isReload: Bool = true) {
         let object = model(forSection: indexPath.section, row: indexPath.row)
         if let model = object as? AudioViewModel {
             Audio.changeAudioBookmark(model: model)
-        }
-        else if let model = object as? CatalogViewModel {
+        } else if let model = object as? CatalogViewModel {
             Audio.changeCatalogBookmark(model: model)
-        }
-        else {
+        } else {
             fatalError()
         }
     }
-    
+
 }

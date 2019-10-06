@@ -31,7 +31,7 @@ extension Quote {
                 let jsonResponse = try JSONSerialization.jsonObject(with: data, options: [])
                 return jsonResponse as? [[String: Any]]
             } catch {
-                print("error = \(error)")
+                Log.error("error: %@", error.localizedDescription)
             }
         }
         return nil
@@ -49,7 +49,7 @@ extension Quote {
             }
             try context.save()
         } catch {
-            print("error = \(error)")
+            Log.error("error: %@", error.localizedDescription)
         }
     }
 
@@ -60,7 +60,7 @@ extension Quote {
         if n == 0 {
             return nil
         }
-        let rnd = Int(arc4random()%UInt32(n))
+        let rnd = Int(arc4random() % UInt32(n))
         return array?[rnd]
     }
 

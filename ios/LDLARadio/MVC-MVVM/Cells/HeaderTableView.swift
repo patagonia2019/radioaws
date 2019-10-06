@@ -32,6 +32,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
     }
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         paintBgView()
         expandButton?.setTitleColor(UIColor.tangerine, for: .normal)
         expandButton?.setTitleColor(UIColor.plum, for: .highlighted)
@@ -126,7 +127,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
             bgView.layer.insertSublayer(gradientBg, at: 0)
         }
     }
-    
+
     private func portraitThumbnail() {
         thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
         thumbnailView?.layer.borderWidth = 1

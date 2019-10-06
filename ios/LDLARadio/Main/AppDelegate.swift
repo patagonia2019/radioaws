@@ -34,10 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.font.regular, size: Commons.font.size.XS))
+        SwiftSpinner.setTitleFont(UIFont.init(name: Commons.Font.regular, size: Commons.Font.Size.XS))
 
         changeAppearance()
-        
+
         return true
     }
 
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Analytics.stop()
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
         CloudKitManager.instance.sync(force: true)
     }
@@ -69,19 +69,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func changeAppearance() {
         let defaultColor: UIColor = .midnight
-        guard let font = UIFont(name: Commons.font.regular, size: Commons.font.size.XS) else {
+        guard let font = UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS) else {
             fatalError()
         }
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: defaultColor]
         UINavigationBar.appearance().titleTextAttributes = attributes
+        
+        if let promptClass = NSClassFromString("_UINavigationBarModernPromptView") as? UIAppearanceContainer.Type {
+            UILabel.appearance(whenContainedInInstancesOf: [promptClass]).textColor = UIColor.red
+        }
 
         let unselected = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.steel]
 
         UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
-        
+
         UIBarButtonItem.appearance().setTitleTextAttributes(attributes, for: .selected)
         UIBarButtonItem.appearance().setTitleTextAttributes(unselected, for: .normal)
 
@@ -95,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let cell = UITableViewCell.appearance()
         cell.backgroundColor = .mercury
-        
+
         let toolbar = UIToolbar.appearance()
         toolbar.isTranslucent = true
         toolbar.tintColor = UIColor.black
@@ -108,4 +112,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-

@@ -25,15 +25,15 @@ class ElDesconciertoController: BaseController {
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
-        var count: Int = 0
+        var rows: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isExpanded == false {
                 return 0
             }
-            count = model.audios.count
+            rows = model.audios.count
         }
-        return count > 0 ? count : 1
+        return rows > 0 ? rows : 1
     }
 
     override func modelInstance(inSection section: Int) -> CatalogViewModel? {
@@ -63,15 +63,15 @@ class ElDesconciertoController: BaseController {
 
     private func updateModels() {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
-            return stream.streamUrl1?.count ?? 0 > 0
+            stream.streamUrl1?.count ?? 0 > 0
         }) {
             func isExpanded(des: Desconcierto?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    return (catalog.isExpanded ?? false) && des?.date == catalog.title.text
-                }.count > 0
+                    (catalog.isExpanded ?? false) && des?.date == catalog.title.text
+                }.isEmpty == false
             }
             models = streams.map({ CatalogViewModel(desconcierto: $0, isAlreadyExpanded: isExpanded(des: $0)) }).filter({ (model) -> Bool in
-                return model.urlString()?.count ?? 0 > 0
+                model.urlString()?.count ?? 0 > 0
             })
         }
         lastUpdated = Desconcierto.lastUpdated()
@@ -83,7 +83,7 @@ class ElDesconciertoController: BaseController {
 
         if isClean == false {
             updateModels()
-            if models.count > 0 {
+            if !models.isEmpty {
                 finishClosure?(nil)
                 return
             }

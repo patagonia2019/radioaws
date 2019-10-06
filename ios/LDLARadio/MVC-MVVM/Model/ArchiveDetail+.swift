@@ -14,7 +14,7 @@ extension ArchiveDetail {
 
     func extractFiles() {
         guard let context = RestApi.instance.context else { fatalError() }
-        if archiveFiles?.count == 0 {
+        if archiveFiles?.isEmpty == false {
             if let files = files {
                 for (k, v) in files {
                     if let key = k as? String,

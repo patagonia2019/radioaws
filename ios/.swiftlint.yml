@@ -1,0 +1,56 @@
+disabled_rules:
+  - file_length
+  - function_body_length
+  - type_body_length
+  - cyclomatic_complexity
+  - nesting
+  - line_length
+  - trailing_whitespace
+  - large_tuple
+  - function_parameter_count
+  - identifier_name
+  - xctfail_message
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - closure_end_indentation
+  - closure_spacing
+  - first_where
+  - nimble_operator
+  - operator_usage_whitespace
+  - overridden_super_call
+  - redundant_nil_coalescing
+  - multiline_parameters
+  - extension_access_modifier
+  - implicit_return
+  - protocol_property_accessors_order
+  - unused_declaration
+
+  # TODO: Add in `missing_docs` after we backfill documentation
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Pods
+  - DerivedData
+  - LDLARadio/MVC-MVVM/Model/Extensions/NSOrderedSet+.swift
+
+
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+# empty_count: warning
+type_name:
+  min_length: 3
+  max_length: 40
+  excluded: iPhone
+
+identifier_name:
+  min_length: 3
+  max_length: 40
+  excluded:
+    - id
+    - URL
+    - url
+    - GlobalAPIKey
+
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit)

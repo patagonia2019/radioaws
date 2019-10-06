@@ -38,7 +38,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     private var observerContext = 0
 
-    let icon = Commons.symbols.FontAwesome.music
+    let icon = Commons.Symbol.FontAwesome.music
     let iconColor = UIColor.darkGray
 
     var url: URL?
@@ -46,7 +46,7 @@ class AudioViewModel: BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.none
 
-    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.font.regular, size: Commons.font.size.S), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.S), isHidden: true, lines: 1)
 
     var text: String?
 
@@ -60,7 +60,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var title = LabelViewModel()
 
-    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.font.bold, size: Commons.font.size.S), isHidden: false, lines: 1)
+    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: false, lines: 1)
 
     /// convenient id
     var id: String?
@@ -131,7 +131,7 @@ class AudioViewModel: BaseViewModelProtocol {
         isBookmark = checkIfBookmarked()
         isPlaying = StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
         reFillTitles()
-        if detail.text.count <= 0 {
+        if detail.text.isEmpty {
             detail.text = audio?.audioCatalog?.titleTree() ?? audio?.sectionCatalog?.titleTree() ?? ""
         }
         hasDuration = false
@@ -309,13 +309,13 @@ class AudioViewModel: BaseViewModelProtocol {
     }
 
     func height() -> Float {
-        return UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 120 : 75
+        return Commons.isPad() ? 120 : 75
     }
 }
 
 /// RNA Station method for update
 extension AudioViewModel {
-    public  func update(station: RNAStation?, isAm: Bool) {
+    func update(station: RNAStation?, isAm: Bool) {
         section = ControllerName.rna.rawValue
         id = station?.id
         title.text = station?.firstName ?? ""
@@ -323,7 +323,7 @@ extension AudioViewModel {
         detail.text = (isAm ? station?.dialAM : station?.dialFM) ?? ""
         let currentProgram = isAm ? station?.amCurrentProgram : station?.fmCurrentProgram
         if let programName = currentProgram?.programName {
-            if detail.count > 0 {
+            if !detail.text.isEmpty {
                 detail.text += " "
             }
             detail.text += programName
@@ -352,7 +352,7 @@ extension AudioViewModel {
 extension AudioViewModel {
 
     private func imageUrl(usingUri uri: String?) -> URL? {
-        if let uri = uri, uri.count > 0,
+        if let uri = uri, !uri.isEmpty,
             let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer)) {
             return urlChecked
         }
@@ -360,9 +360,9 @@ extension AudioViewModel {
     }
 
     private func streamUrl(usingBaseUrl baseUrl: String?, port: String?, bandUri: String?) -> URL? {
-        if let baseUrl = baseUrl, baseUrl.count > 0,
-            let bandUri = bandUri, bandUri.count > 0,
-            let port = port, port.count > 0,
+        if let baseUrl = baseUrl, !baseUrl.isEmpty,
+            let bandUri = bandUri, !bandUri.isEmpty,
+            let port = port, !port.isEmpty,
             let urlChecked = URL(string: "http://\(baseUrl):\(port)\(bandUri)") {
             return urlChecked
         }
@@ -370,18 +370,18 @@ extension AudioViewModel {
     }
 
     private func reFillTitles() {
-        if title.count > 0 && subTitle.count > 0 && detail.count > 0 {
+        if !title.text.isEmpty && !subTitle.text.isEmpty && !detail.text.isEmpty {
             info = [title.text, subTitle.text, detail.text].joined(separator: ". ")
             return
         }
         var titles = [String]()
-        if title.count > 0 {
+        if !title.text.isEmpty {
             titles.append(title.text)
         }
-        if subTitle.count > 0 {
+        if !subTitle.text.isEmpty {
             titles.append(subTitle.text)
         }
-        if detail.count > 0 {
+        if !detail.text.isEmpty {
             titles.append(detail.text)
         }
         detail.text = ""

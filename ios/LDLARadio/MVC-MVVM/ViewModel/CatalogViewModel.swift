@@ -13,11 +13,11 @@ import AVFoundation
 // This view model will be responsible of render out information in the views for Catalog info
 class CatalogViewModel: BaseViewModelProtocol {
 
-    let icon: Commons.symbols.FontAwesome = .indent
+    let icon: Commons.Symbol.FontAwesome = .indent
     let iconColor = UIColor.lavender
 
     var url: URL?
-    static let cellheight: Float = UIScreen.main.traitCollection.userInterfaceIdiom == .pad ? 100 : 70
+    static let cellheight: Float = Commons.isPad() ? 100 : 70
 
     var placeholderImageName: String?
     var placeholderImage: UIImage?
@@ -25,10 +25,10 @@ class CatalogViewModel: BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
 
-    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.font.regular, size: Commons.font.size.XS), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 1)
 
     var isBookmark: Bool?
-    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.font.bold, size: Commons.font.size.M), isHidden: true, lines: 1)
+    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.M), isHidden: true, lines: 1)
 
     var tree: String = ""
 
@@ -107,18 +107,18 @@ class CatalogViewModel: BaseViewModelProtocol {
                 sectionsTmp.append(viewModel)
             }
             sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
-                return c1.title.text < c2.title.text
+                c1.title.text < c2.title.text
             })
             audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
-                return c1.title.text < c2.title.text
+                c1.title.text < c2.title.text
             })
         }
 
         isBookmark = checkIfBookmarked()
-        if audios.count > 0 && sections.count == 0 {
+        if audios.isEmpty == false && sections.isEmpty == true {
             isExpanded = nil
         }
-        
+
         placeholderImageName = RTCatalog.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -157,7 +157,7 @@ class CatalogViewModel: BaseViewModelProtocol {
         isExpanded = isAlreadyExpanded
 
         text = detail.text
-        
+
         placeholderImageName = ArchiveDoc.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -196,7 +196,7 @@ class CatalogViewModel: BaseViewModelProtocol {
         isBookmark = checkIfBookmarked()
 
         var textStr = [String]()
-        if tree.count > 0 {
+        if !tree.isEmpty {
             textStr.append(tree)
         }
         if let adtitle = archiveDoc?.title {
@@ -216,18 +216,14 @@ class CatalogViewModel: BaseViewModelProtocol {
         }
 
         text = textStr.joined(separator: ".\n")
-        if sections.count == 0 {
-            isExpanded = nil
-        } else {
-            isExpanded = isAlreadyExpanded
-        }
-        
+        isExpanded = sections.isEmpty ? nil : isAlreadyExpanded
+
         let sortByTitle = [NSSortDescriptor(key: "updatedAt", ascending: true)]
         if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
-            archiveFiles.count > 0 {
+            !archiveFiles.isEmpty {
             audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
         }
-        
+
         placeholderImageName = ArchiveDoc.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
@@ -249,7 +245,7 @@ class CatalogViewModel: BaseViewModelProtocol {
         }
         var order: Int = 0
         for streamUrl in [desconcierto?.streamUrl1, desconcierto?.streamUrl2, desconcierto?.streamUrl3] {
-            order = order + 1
+            order += 1
             let audio = AudioViewModel(desconcierto: desconcierto, audioUrl: streamUrl, order: order)
             if audio.url?.absoluteString.count ?? 0 > 0 {
                 audios.append(audio)
@@ -269,9 +265,9 @@ class CatalogViewModel: BaseViewModelProtocol {
 
     /// to know if the model is in bookmark
     func checkIfBookmarked() -> Bool? {
-        if audios.count > 0 {
+        if !audios.isEmpty {
             return audios.filter({ (audio) -> Bool in
-                return audio.isBookmark ?? false
+                audio.isBookmark ?? false
             }).count == audios.count
         } else {
             return nil
@@ -279,7 +275,7 @@ class CatalogViewModel: BaseViewModelProtocol {
     }
 
     func iconText() -> String {
-        return "\(Commons.symbols.showAwesome(icon: icon))"
+        return "\(Commons.Symbol.showAwesome(icon: icon))"
     }
 
     func urlString() -> String? {

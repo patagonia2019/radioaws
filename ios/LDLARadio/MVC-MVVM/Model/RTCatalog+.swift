@@ -87,7 +87,8 @@ extension RTCatalog {
 
     /// Determine if the catalog is about text information
     func isOnlyText() -> Bool {
-        return type == "text" || (sections?.count == 0 && audios?.count == 0 && title != "Browse")
+        guard let sections = sections, let audios = audios else { return false }
+        return type == "text" || (sections.isEmpty && audios.isEmpty && title != "Browse")
     }
 
     /// Determine if the catalog is about audio information

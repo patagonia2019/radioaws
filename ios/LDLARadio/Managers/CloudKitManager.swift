@@ -59,16 +59,15 @@ class CloudKitManager {
         working = true
 
         privateDB.perform(queryAudioPlay, inZoneWith: nil) { results, error in
-            
+
             if let results = results {
                 self.audios.append(contentsOf: results)
                 RestApi.instance.context?.performAndWait {
                     for record in results {
-                        print(record)
+                        Log.debug("record = %@", record.recordID)
                         if self.isReset {
                             self.remove(withRecordID: record.recordID)
-                        }
-                        else {
+                        } else {
                             let audio = Audio.create(record: record)
                             audio?.cloudSynced = true
                         }
@@ -79,7 +78,7 @@ class CloudKitManager {
             }
 
             DispatchQueue.main.async {
-                var jferror : JFError? = nil
+                var jferror: JFError?
                 if let error = error {
                     jferror = JFError(code: Int(errno),
                                       desc: "Error",
@@ -102,7 +101,7 @@ class CloudKitManager {
         }
         queryAudioPlays(finishClosure: finishClosure)
     }
-    
+
     func remove(withRecordID recordID: CKRecord.ID, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         privateDB.delete(withRecordID: recordID) { (_, error) in
@@ -117,7 +116,7 @@ class CloudKitManager {
                 }
                 return
             }
-            
+
             DispatchQueue.main.async {
                 finishClosure?(nil)
             }
@@ -160,26 +159,26 @@ class CloudKitManager {
         if loggedIn == false {
             return
         }
-        
+
         guard let audio = audio else {
             return
         }
 
         var ckAudio = audios.first { (record) -> Bool in
-            return record["urlString"] == audio.urlString
+            record["urlString"] == audio.urlString
         }
-        
+
         if ckAudio == nil {
             ckAudio = CKRecord(recordType: "Audio")
             if let ckAudio = ckAudio {
                 audios.append(ckAudio)
             }
         }
-        
+
         ckAudio?.setObject(audio.currentTime as CKRecordValue?, forKey: "currentTime")
         ckAudio?.setObject(audio.descript as CKRecordValue?, forKey: "descript")
         ckAudio?.setObject(audio.detail as CKRecordValue?, forKey: "detail")
-        if let downloadFiles = audio.downloadFiles, downloadFiles.count > 0 {
+        if let downloadFiles = audio.downloadFiles, !downloadFiles.isEmpty {
             ckAudio?.setObject(downloadFiles as CKRecordValue?, forKey: "downloadFiles")
         }
         ckAudio?.setObject(audio.hasDuration as CKRecordValue?, forKey: "hasDuration")
@@ -222,30 +221,30 @@ class CloudKitManager {
             if modificationDate == nil {
                 return true
             }
-            
+
             if  let modificationDate = modificationDate,
                 modificationDate < lastMin {
                 return true
             }
-            
+
             return false
         }) else {
             working = false
             return
         }
-        
-        if records.count == 0 {
+
+        if records.isEmpty {
             working = false
             return
         }
-        
-        let modifyRecords = CKModifyRecordsOperation(recordsToSave:records, recordIDsToDelete: nil)
+
+        let modifyRecords = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
         modifyRecords.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.allKeys
         modifyRecords.qualityOfService = QualityOfService.userInitiated
         modifyRecords.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
             RestApi.instance.context?.performAndWait {
                 if let savedRecords = savedRecords {
-                    print("savedRecords: \(savedRecords)")
+                    Log.debug("savedRecords: %@", savedRecords.debugDescription)
                     for saveRecord in savedRecords {
                         if let audio = Audio.search(byUrl: saveRecord["urlString"]) {
                             audio.cloudSynced = true
@@ -254,7 +253,7 @@ class CloudKitManager {
                     }
                 }
                 if let error = error {
-                    print("CloudKit error: \(error)")
+                    Log.error("CloudKit error: %@", error.localizedDescription)
                 }
                 self.working = false
                 CoreDataManager.instance.save()
@@ -263,17 +262,17 @@ class CloudKitManager {
         privateDB.add(modifyRecords)
 
     }
-    
+
     func clean(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         isReset = true
         if loggedIn == false {
             return
         }
-        
+
         refresh { (error) in
             self.isReset = false
             finishClosure?(error)
         }
-        
+
     }
 }

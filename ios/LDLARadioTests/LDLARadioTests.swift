@@ -10,6 +10,8 @@ import XCTest
 import Groot
 import CoreData
 
+@testable import LDLARadio
+
 class LDLARadioTests: BaseTests {
 
     func testModelStreams() {
