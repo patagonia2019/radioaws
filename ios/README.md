@@ -4,13 +4,13 @@ Los Locos de la Radio
 
 ## iOS Client
 
-Available version 1.0 in Apple Store [https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1](https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1)
+Available version 3.1 in Apple Store [https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1](https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1)
 
 ## Requirements
 
 ### iOS
 
-* Xcode Build Version 10.2.1 (10E1001)
+* Xcode Build Version 11  (11A420a)
 
 * Deployment target: iOS 12.0
 

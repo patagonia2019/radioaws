@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "428139ED1CE44B7300972264"
-               BuildableName = "LDLARadio.app"
+               BuildableName = "Radio 3.1.app"
                BlueprintName = "LDLARadio"
                ReferencedContainer = "container:LDLARadio.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "LDLARadio.app"
+            BuildableName = "Radio 3.1.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "LDLARadio.app"
+            BuildableName = "Radio 3.1.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>
@@ -102,7 +102,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "LDLARadio.app"
+            BuildableName = "Radio 3.1.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>

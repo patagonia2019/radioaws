@@ -78,11 +78,11 @@
 		986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
 		986EBCC522EE0F4B001AAF0A /* ElDesconciertoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */; };
 		986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */; };
-		987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		987DA0B222D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */; };
 		987DA0B322D6464500F34BD3 /* CityListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703373A71E284C1800E6D458 /* CityListManager.swift */; };
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
-		987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */; };
+		987DA0C622D664E400F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */; };
 		989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
 		989E41EB2349FF0100975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
 		989E41EC234A06B700975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
@@ -114,9 +114,9 @@
 		98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
-		98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		98E935FC230ED074008621AE /* BaseProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E935FB230ED074008621AE /* BaseProtocolTests.swift */; };
 		98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FB52CE22F91D5400D75D79 /* ArchiveTests.swift */; };
+		98FF7955234AC5F000B5EA04 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 9808514B22EAD0CE0013B67C /* com.mobilepatagonia.LDLARadio.sqlite3 */; };
 		DA30B3785768509648E1BFF1 /* Pods_LDLARadio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8E2A20860A4CCF53C0AD68 /* Pods_LDLARadio.framework */; };
 /* End PBXBuildFile section */
 
@@ -259,7 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				980DA23B22EE77FA00B32154 /* Extensions */,
-				987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */,
+				987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */,
 				9825BDD822ECE5AB00E418F2 /* Model+.swift */,
 				98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */,
 				98B53CF5230117C9003F50EE /* ArchiveCollection+.swift */,
@@ -612,7 +612,7 @@
 				98B53CF1230056F5003F50EE /* ArchiveOrgMeta.json in Resources */,
 				98B53CF42300FC90003F50EE /* ArchiveOrgDetail.json in Resources */,
 				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
-				98DD0C8A23204802007EE2F6 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
+				98FF7955234AC5F000B5EA04 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
@@ -815,7 +815,7 @@
 				98B53CF6230117C9003F50EE /* ArchiveCollection+.swift in Sources */,
 				428139F21CE44B7300972264 /* AppDelegate.swift in Sources */,
 				9808512722E6E6640013B67C /* RNAStation+.swift in Sources */,
-				987DA0B222D639BD00F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
+				987DA0B222D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */,
 				9808513D22E903730013B67C /* BookmarkController.swift in Sources */,
 				9813DD74231A1C4C007EE1D4 /* UIToolbar+.swift in Sources */,
 				9808510922E61E650013B67C /* RadioController.swift in Sources */,
@@ -840,7 +840,7 @@
 				98FB52CF22F91D5400D75D79 /* ArchiveTests.swift in Sources */,
 				98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */,
 				98B53CFA23012733003F50EE /* ArchiveDoc+.swift in Sources */,
-				987DA0C622D664E400F34BD3 /* LDLARadio.xcdatamodeld in Sources */,
+				987DA0C622D664E400F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */,
 				98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				98195FBD22DBFBFE006E7961 /* BaseTests.swift in Sources */,
 				9808513A22E8FBE80013B67C /* Stream+.swift in Sources */,
@@ -1015,7 +1015,7 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1042,7 +1042,7 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1150,13 +1150,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		987DA0B022D639BD00F34BD3 /* LDLARadio.xcdatamodeld */ = {
+		987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */,
 			);
 			currentVersion = 987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */;
-			path = LDLARadio.xcdatamodeld;
+			path = com.mobilepatagonia.LDLARadio.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
