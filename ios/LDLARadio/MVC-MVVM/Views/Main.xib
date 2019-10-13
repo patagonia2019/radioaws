@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_0" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="LDLARadio" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="Radio_3_1" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -35,10 +34,9 @@
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="r1Y-oK-ri8" secondAttribute="height" multiplier="0.5:1" id="5bq-F2-MJz"/>
                                     </constraints>
-                                    <state key="normal" image="apple-alt-line">
+                                    <state key="normal" image="fa_carrot_solid">
                                         <color key="titleColor" red="0.84465640779999995" green="0.51457053419999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
-                                    <state key="highlighted" image="f5d1-apple-alt-solid"/>
                                     <connections>
                                         <action selector="bookmarkAction:" destination="OUZ-ye-H4L" eventType="touchUpInside" id="yn8-u2-Bq4"/>
                                     </connections>
@@ -132,7 +130,6 @@
         </view>
     </objects>
     <resources>
-        <image name="apple-alt-line" width="17" height="19"/>
-        <image name="f5d1-apple-alt-solid" width="17" height="20"/>
+        <image name="fa_carrot_solid" width="22" height="22"/>
     </resources>
 </document>

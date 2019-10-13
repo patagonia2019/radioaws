@@ -267,15 +267,17 @@ class AudioViewController: UITableViewController {
     @objc private func reloadToolbar() {
 
         guard let toolbar = navigationController?.toolbar else { return }
-        if var rect = tabBarController?.tabBar.frame {
-            rect.origin.y -= rect.size.height
-            toolbar.frame = rect
-        }
-
         navigationController?.setToolbarHidden(false, animated: false)
         toolbar.isHidden = false
-        toolbar.setNeedsLayout()
-        toolbar.setNeedsDisplay()
+        UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
+            if var rect = self.tabBarController?.tabBar.frame {
+                rect.origin.y -= rect.size.height
+                toolbar.frame = rect
+            }
+        }, completion: { _ in
+            toolbar.setNeedsLayout()
+            toolbar.setNeedsDisplay()
+        })
     }
 
     private func info(model: CatalogViewModel?) {

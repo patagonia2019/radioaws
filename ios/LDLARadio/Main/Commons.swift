@@ -15,6 +15,10 @@ class Commons {
     static func isPad() -> Bool {
         return UIScreen.main.traitCollection.userInterfaceIdiom == .pad
     }
+    
+    static func isPhoneX() -> Bool {
+        return !isPad() && UIScreen.main.nativeBounds.height >= 1792
+    }
 
     enum Toolbar: Int {
         typealias RawValue = Int
@@ -32,7 +36,7 @@ class Commons {
     }
 
     struct Size {
-        static let toolbarHeight: CGFloat = isPad() ? 120 : 70
+        static let toolbarHeight: CGFloat = isPad() || isPhoneX() ? 80 : 60
         static let toolbarSpinnerSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarImageSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarLabelWidth: CGFloat = isPad() ? 100 : 50
@@ -51,7 +55,8 @@ class Commons {
             static let M: CGFloat = isPad() ? 26 : 20
             static let S: CGFloat = isPad() ? 22 : 16
             static let XS: CGFloat = isPad() ? 18 : 12
-            static let XXS: CGFloat = isPad() ? 14 : 8
+            static let XXS: CGFloat = isPad() ? 12 : 10
+            static let XXXS: CGFloat = isPad() ? 10 : 8
         }
         static let awesome = "FontAwesome"
     }

@@ -66,8 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
     }
-
+    
     private func changeAppearance() {
+        changeNavigationBarAppearance()
+        changeTabBarAppearance()
+        changeTableViewAppearance()
+        changeToolbarAppearance()
+    }
+    
+    private func changeNavigationBarAppearance() {
         let defaultColor: UIColor = .midnight
         guard let font = UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS) else {
             fatalError()
@@ -75,47 +82,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: defaultColor]
         UINavigationBar.appearance().titleTextAttributes = attributes
-        
-        if let promptClass = NSClassFromString("_UINavigationBarModernPromptView") as? UIAppearanceContainer.Type {
-            UILabel.appearance(whenContainedInInstancesOf: [promptClass]).textColor = UIColor.red
-        }
+    }
 
-        let unselected = [NSAttributedString.Key.font: font,
-                          NSAttributedString.Key.foregroundColor: UIColor.steel]
-
-        let tabBar = UITabBar.appearance()
-        
-        if #available(iOS 13.0, *) {
-            let tabBarItemAppearance = UITabBarItemAppearance(style: .inline)
-            tabBarItemAppearance.normal.titleTextAttributes = unselected
-            tabBarItemAppearance.normal.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -(Commons.Size.toolbarHeight / 5))
-            tabBarItemAppearance.selected.titleTextAttributes = attributes
-            tabBarItemAppearance.selected.titlePositionAdjustment = tabBarItemAppearance.normal.titlePositionAdjustment
-            let tabBarAppearance = UITabBarAppearance(idiom: .pad)
-            tabBarAppearance.inlineLayoutAppearance = tabBarItemAppearance
-            tabBarAppearance.selectionIndicatorTintColor = defaultColor
-            tabBar.standardAppearance = tabBarAppearance
-        } else {
-            UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .selected)
-            UITabBarItem.appearance().setTitleTextAttributes(unselected, for: .normal)
-            UIBarButtonItem.appearance().setTitleTextAttributes(attributes, for: .selected)
-            UIBarButtonItem.appearance().setTitleTextAttributes(unselected, for: .normal)
-            tabBar.isTranslucent = true
-            tabBar.tintColor = defaultColor
-            tabBar.barTintColor = .turquoise
-        }
-
-        let tableView = UITableView.appearance()
-        tableView.backgroundColor = .mercury
-
-        let cell = UITableViewCell.appearance()
-        cell.backgroundColor = .mercury
-
+    private func changeToolbarAppearance() {
         let toolbar = UIToolbar.appearance()
         toolbar.isTranslucent = true
         toolbar.tintColor = UIColor.black
         toolbar.barTintColor = .turquoise
         toolbar.backgroundColor = .turquoise
+        
+        let defaultColor: UIColor = .midnight
+        guard let font = UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS) else {
+            fatalError()
+        }
+        let attributes = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: defaultColor]
+        
+        let unselected = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: UIColor.steel]
+        
+        let barButtonItem = UIBarButtonItem.appearance()
+        barButtonItem.setTitleTextAttributes(attributes, for: .selected)
+        barButtonItem.setTitleTextAttributes(unselected, for: .normal)
+    }
+    
+    private func changeTableViewAppearance() {
+        let tableView = UITableView.appearance()
+        tableView.backgroundColor = .mercury
+
+        let cell = UITableViewCell.appearance()
+        cell.backgroundColor = .mercury
+    }
+
+    private func changeTabBarAppearance() {
+        let defaultColor: UIColor = .midnight
+        guard let font = UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XXS) else {
+            fatalError()
+        }
+        let attributes = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: defaultColor]
+        
+        let unselected = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: UIColor.steel]
+
+        let tabBar = UITabBar.appearance()
+        tabBar.tintColor = defaultColor
+        tabBar.barTintColor = .turquoise
+        tabBar.isTranslucent = true
+
+        if #available(iOS 13.0, *) {
+            let tabBarItemApp = UITabBarItemAppearance(style: Commons.isPad() || Commons.isPhoneX() ? .stacked : .compactInline)
+            tabBarItemApp.normal.titleTextAttributes = unselected
+            tabBarItemApp.selected.titleTextAttributes = attributes
+            let tabBarAppearance = UITabBarAppearance(idiom: Commons.isPad() || Commons.isPhoneX() ? .pad : .phone)
+            tabBarAppearance.inlineLayoutAppearance = tabBarItemApp
+            tabBarAppearance.selectionIndicatorTintColor = defaultColor
+            tabBar.standardAppearance = tabBarAppearance
+        } else {
+            let tabBarItem = UITabBarItem.appearance()
+            tabBarItem.setTitleTextAttributes(attributes, for: .selected)
+            tabBarItem.setTitleTextAttributes(unselected, for: .normal)
+        }
     }
 
     @objc func defaultsChanged() {
