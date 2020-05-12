@@ -22,6 +22,7 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var infoButton: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
 
     weak var delegate: AudioTableViewCellDelegate?
     let gradientBg = CAGradientLayer()
@@ -53,6 +54,11 @@ class AudioTableViewCell: UITableViewCell {
                 }
             }
 
+            if model.isTryingToPlay && !model.isPlaying {
+                spinner.startAnimating()
+            } else {
+                spinner.stopAnimating()
+            }
             gradientPlayBg.isHidden = model.isPlaying ? false : true
             selectionStyle = .none
             // show thumbnail, and hide logo

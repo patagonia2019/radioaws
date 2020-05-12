@@ -12,11 +12,11 @@ import AlamofireCoreData
 
 class ArchiveOrgMainModelController: BaseController {
 
-    fileprivate var mainModel: CatalogViewModel?
+    fileprivate var mainModel: SectionViewModel?
 
     override init() { }
 
-    init(withCatalogViewModel catalogViewModel: CatalogViewModel?) {
+    init(withCatalogViewModel catalogViewModel: SectionViewModel?) {
         mainModel = catalogViewModel
     }
 
@@ -49,7 +49,7 @@ class ArchiveOrgMainModelController: BaseController {
         return rows > 0 ? rows : 2
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if let model = mainModel,
             section < model.sections.count {
             return model.sections[section]
@@ -81,7 +81,7 @@ class ArchiveOrgMainModelController: BaseController {
 
     private func updateModels() {
         if let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) {
-            mainModel = CatalogViewModel(archiveDoc: doc)
+            mainModel = SectionViewModel(archiveDoc: doc)
         }
         lastUpdated = ArchiveCollection.lastUpdated()
     }
@@ -95,7 +95,7 @@ class ArchiveOrgMainModelController: BaseController {
         if isClean == false {
             if doc?.detail?.archiveFiles?.count ?? 0 > 0 {
 
-                mainModel = CatalogViewModel(archiveDoc: doc)
+                mainModel = SectionViewModel(archiveDoc: doc)
 
                 lastUpdated = ArchiveCollection.lastUpdated()
                 finishClosure?(nil)
@@ -123,7 +123,7 @@ class ArchiveOrgMainModelController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             model?.isCollapsed = !isCollapsed

@@ -11,11 +11,11 @@ import JFCore
 
 class RadioTimeController: BaseController {
 
-    fileprivate var mainModel: CatalogViewModel?
+    fileprivate var mainModel: SectionViewModel?
 
     override init() { }
 
-    init(withCatalogViewModel catalogViewModel: CatalogViewModel?) {
+    init(withCatalogViewModel catalogViewModel: SectionViewModel?) {
         mainModel = catalogViewModel
     }
 
@@ -44,7 +44,7 @@ class RadioTimeController: BaseController {
         return rows > 0 ? rows : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if let model = mainModel,
             section < model.sections.count {
             return model.sections[section]
@@ -96,7 +96,7 @@ class RadioTimeController: BaseController {
         if resetInfo == false {
             if mainModel?.sections.count ?? 0 > 0 || mainModel?.audios.count ?? 0 > 0 {
 
-                mainModel = CatalogViewModel(catalog: mainCatalog)
+                mainModel = SectionViewModel(catalog: mainCatalog)
 
                 lastUpdated = RTCatalog.lastUpdated()
                 finishClosure?(nil)
@@ -105,7 +105,7 @@ class RadioTimeController: BaseController {
 
             if  mainCatalog != nil &&
                 (mainCatalog?.sections?.count ?? 0 > 0 || mainCatalog?.audios?.count ?? 0 > 0) {
-                mainModel = CatalogViewModel(catalog: mainCatalog)
+                mainModel = SectionViewModel(catalog: mainCatalog)
                 lastUpdated = RTCatalog.lastUpdated()
                 finishClosure?(nil)
                 return
@@ -164,7 +164,7 @@ class RadioTimeController: BaseController {
             }
 
             CoreDataManager.instance.save()
-            self.mainModel = CatalogViewModel(catalog: catalog)
+            self.mainModel = SectionViewModel(catalog: catalog)
             self.lastUpdated = RTCatalog.lastUpdated()
 
             DispatchQueue.main.async {
@@ -173,13 +173,13 @@ class RadioTimeController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         let dbCatalog = mainCatalogFromDb(mainCVM: model)
         dbCatalog?.isExpanded = !(dbCatalog?.isExpanded ?? false)
 
         let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
-        mainModel = CatalogViewModel(catalog: mainCatalog)
+        mainModel = SectionViewModel(catalog: mainCatalog)
         let sectionModel = modelInstance(inSection: section)
 
         if sectionModel?.audios.count ?? 0 > 0 || sectionModel?.sections.count ?? 0 > 0 {
@@ -247,7 +247,7 @@ class RadioTimeController: BaseController {
 
             CoreDataManager.instance.save()
 
-            self.mainModel = CatalogViewModel(catalog: mainCatalog)
+            self.mainModel = SectionViewModel(catalog: mainCatalog)
             let sectionModel = self.modelInstance(inSection: section)
             sectionModel?.isCollapsed = false
 
@@ -288,7 +288,7 @@ class RadioTimeController: BaseController {
         }
     }
 
-    private func mainCatalogFromDb(mainCVM: CatalogViewModel?) -> RTCatalog? {
+    private func mainCatalogFromDb(mainCVM: SectionViewModel?) -> RTCatalog? {
         if mainCVM == nil || mainCVM?.title.text == "Browse" {
             let catalog = RTCatalog.search(byName: "Browse")?.first
             if catalog?.url == nil {

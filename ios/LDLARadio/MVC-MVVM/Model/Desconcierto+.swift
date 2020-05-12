@@ -21,11 +21,11 @@ extension Desconcierto: Modellable {
 extension Desconcierto {
     
     var audioIdentifier: String {
-        return "\((Int(id) * 1000) + Int(arc4random()))"
+        return "\(id)"
     }
     
     var titleText: String? {
-        return "ED-\(date ?? "file")-\(audioIdentifier).mp3"
+        return date
     }
     
     var subTitleText: String? {
@@ -48,7 +48,6 @@ extension Desconcierto {
     var portraitUrl: URL? {
         return URL(string: "http://www.eldesconcierto.com.ar/wp-content/uploads/2018/03/logo-quique-pesoa-app-200.png")
     }
-    
 }
 
 class Desconcierto1: Desconcierto {}
@@ -84,7 +83,7 @@ extension Desconcierto3: Audible {
 
 extension Desconcierto: Sectionable {
     var sectionIdentifier: String {
-        return audioIdentifier
+        return "\((Int(id) * 1000) + Int(arc4random()))"
     }
     
     var isCollapsed: Bool {

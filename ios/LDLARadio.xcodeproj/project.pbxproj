@@ -47,8 +47,8 @@
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
 		98195FAB22D845C2006E7961 /* quotes2.json in Resources */ = {isa = PBXBuildFile; fileRef = 98195FAA22D845C2006E7961 /* quotes2.json */; };
-		98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */; };
-		98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */; };
+		98195FAF22D9F142006E7961 /* SectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FAE22D9F142006E7961 /* SectionTableViewCell.swift */; };
+		98195FB122D9F1FD006E7961 /* SectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB022D9F1FD006E7961 /* SectionViewModel.swift */; };
 		98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB222DA2F53006E7961 /* RTCatalog+.swift */; };
 		98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB422DA658D006E7961 /* RadioTimeController.swift */; };
 		98195FB722DB7C21006E7961 /* RTCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FB622DB7C21006E7961 /* RTCatalogTests.swift */; };
@@ -83,7 +83,6 @@
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */; };
-		989DC5F92461A8B200472CD6 /* Modellable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989DC5F82461A8B200472CD6 /* Modellable+.swift */; };
 		989DC5FB2461A8DB00472CD6 /* Audible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989DC5FA2461A8DB00472CD6 /* Audible.swift */; };
 		989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
 		989E41EB2349FF0100975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
@@ -94,6 +93,7 @@
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
 		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
 		98B25800246AC4160031A9AA /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B257FF246AC4160031A9AA /* Sectionable.swift */; };
+		98B25802246AF22D0031A9AA /* Creational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B25801246AF22D0031A9AA /* Creational.swift */; };
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
 		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
 		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
@@ -181,8 +181,8 @@
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
 		98195FAA22D845C2006E7961 /* quotes2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = quotes2.json; sourceTree = "<group>"; };
-		98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewCell.swift; sourceTree = "<group>"; };
-		98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
+		98195FAE22D9F142006E7961 /* SectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTableViewCell.swift; sourceTree = "<group>"; };
+		98195FB022D9F1FD006E7961 /* SectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewModel.swift; sourceTree = "<group>"; };
 		98195FB222DA2F53006E7961 /* RTCatalog+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RTCatalog+.swift"; sourceTree = "<group>"; };
 		98195FB422DA658D006E7961 /* RadioTimeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTimeController.swift; sourceTree = "<group>"; };
 		98195FB622DB7C21006E7961 /* RTCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCatalogTests.swift; sourceTree = "<group>"; };
@@ -208,7 +208,6 @@
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		989DC5F82461A8B200472CD6 /* Modellable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Modellable+.swift"; sourceTree = "<group>"; };
 		989DC5FA2461A8DB00472CD6 /* Audible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audible.swift; sourceTree = "<group>"; };
 		989E41E82348993400975B91 /* NSOrderedSet+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+.swift"; sourceTree = "<group>"; };
 		989E41EA2349FF0100975B91 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -217,6 +216,7 @@
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
 		98B257FF246AC4160031A9AA /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
+		98B25801246AF22D0031A9AA /* Creational.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Creational.swift; sourceTree = "<group>"; };
 		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
 		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
@@ -367,7 +367,7 @@
 				426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */,
 				98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */,
 				98D7148E22EF876C00983818 /* HeaderTableView.swift */,
-				98195FAE22D9F142006E7961 /* CatalogTableViewCell.swift */,
+				98195FAE22D9F142006E7961 /* SectionTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -403,7 +403,7 @@
 			children = (
 				983E01EF22F459D2008370BA /* LabelViewModel.swift */,
 				9824386922DCFD6400B418F9 /* AudioViewModel.swift */,
-				98195FB022D9F1FD006E7961 /* CatalogViewModel.swift */,
+				98195FB022D9F1FD006E7961 /* SectionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -459,9 +459,9 @@
 				983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */,
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
+				98B25801246AF22D0031A9AA /* Creational.swift */,
 				989DC5FA2461A8DB00472CD6 /* Audible.swift */,
 				98B257FF246AC4160031A9AA /* Sectionable.swift */,
-				989DC5F82461A8B200472CD6 /* Modellable+.swift */,
 				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
 				9825BDD622EB758D00E418F2 /* Downloadable.swift */,
 			);
@@ -789,21 +789,21 @@
 				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
 				98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
-				989DC5F92461A8B200472CD6 /* Modellable+.swift in Sources */,
 				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
 				980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */,
 				98195FB322DA2F53006E7961 /* RTCatalog+.swift in Sources */,
 				98195FA922D83664006E7961 /* Quote+.swift in Sources */,
+				98B25802246AF22D0031A9AA /* Creational.swift in Sources */,
 				98CF5C2623032BC000830F8D /* ArchiveDetail+.swift in Sources */,
 				98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */,
 				98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */,
 				989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */,
 				9808510B22E638D90013B67C /* Date+.swift in Sources */,
-				98195FAF22D9F142006E7961 /* CatalogTableViewCell.swift in Sources */,
+				98195FAF22D9F142006E7961 /* SectionTableViewCell.swift in Sources */,
 				42813A061CE44F9700972264 /* StreamPersistenceManager.swift in Sources */,
-				98195FB122D9F1FD006E7961 /* CatalogViewModel.swift in Sources */,
+				98195FB122D9F1FD006E7961 /* SectionViewModel.swift in Sources */,
 				983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,

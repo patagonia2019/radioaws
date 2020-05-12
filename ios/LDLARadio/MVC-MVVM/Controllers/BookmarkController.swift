@@ -16,7 +16,7 @@ class BookmarkController: BaseController {
 
     let cloudKit: CloudKitManager = CloudKitManager.instance
 
-    private var models = [CatalogViewModel]()
+    private var models = [SectionViewModel]()
 
     override var useRefresh: Bool {
         return cloudKit.loggedIn
@@ -46,7 +46,7 @@ class BookmarkController: BaseController {
         return rows > 0 ? rows : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if section < models.count {
             let model = models[section]
             return model
@@ -80,7 +80,7 @@ class BookmarkController: BaseController {
 
         let closure = {
 
-            self.models = [CatalogViewModel]()
+            self.models = [SectionViewModel]()
 
             RestApi.instance.context?.performAndWait {
                 let all = Audio.all()
@@ -90,7 +90,7 @@ class BookmarkController: BaseController {
                     let audios = suggestions.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
 
-                        let model = CatalogViewModel()
+                        let model = SectionViewModel()
                         model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
                         model.audios = audios
@@ -105,7 +105,7 @@ class BookmarkController: BaseController {
                     let audios = rnas.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
 
-                        let model = CatalogViewModel()
+                        let model = SectionViewModel()
                         model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.rna.rawValue
                         model.audios = audios
@@ -119,7 +119,7 @@ class BookmarkController: BaseController {
                 }), !rts.isEmpty {
                     let audios = rts.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
-                        let model = CatalogViewModel()
+                        let model = SectionViewModel()
                         model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
                         model.audios = audios
@@ -132,7 +132,7 @@ class BookmarkController: BaseController {
                 }), !eds.isEmpty {
                     let audios = eds.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
-                        let model = CatalogViewModel()
+                        let model = SectionViewModel()
                         model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.desconcierto.rawValue
                         model.audios = audios
@@ -145,7 +145,7 @@ class BookmarkController: BaseController {
                 }), !files.isEmpty {
                     let audios = files.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
-                        let model = CatalogViewModel()
+                        let model = SectionViewModel()
                         model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
                         model.audios = audios
@@ -192,7 +192,7 @@ class BookmarkController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         model?.isCollapsed = !(model?.isCollapsed ?? false)
 

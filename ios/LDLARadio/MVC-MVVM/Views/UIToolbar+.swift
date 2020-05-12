@@ -603,7 +603,7 @@ extension UIToolbar {
  Extend `UIToolbar` to conform to the `AssetPlaybackDelegate` protocol.
  */
 extension UIToolbar: AssetPlaybackDelegate {
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError) {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
         Analytics.logError(error: error)
 
         AppDelegate.instance.window?.rootViewController?.showAlert(error: error)

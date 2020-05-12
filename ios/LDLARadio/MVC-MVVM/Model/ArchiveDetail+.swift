@@ -13,20 +13,19 @@ import Groot
 extension ArchiveDetail {
 
     func extractFiles() {
-        guard let context = RestApi.instance.context else { fatalError() }
-        if archiveFiles?.isEmpty == false {
-            if let files = files {
-                for (k, v) in files {
-                    if let key = k as? String,
-                        key.uppercased().split(separator: ".").last == "MP3",
-                        let json = v as? JSONDictionary {
-                        let arcFile = try? object(withEntityName: "ArchiveFile", fromJSONDictionary: json, inContext: context) as? ArchiveFile
-                        arcFile?.original = key
-                        arcFile?.detail = self
-                    }
-                }
-             }
+        guard let archiveFiles = archiveFiles?.array,
+            archiveFiles.isEmpty == true,
+            let entityFile = ArchiveFile.entityName(),
+            let context = RestApi.instance.context,
+            let files = files else { return }
+        for (k, v) in files {
+            if let key = k as? String,
+                key.uppercased().split(separator: ".").last == "MP3",
+                let json = v as? JSONDictionary {
+                let archiveFile = try? object(withEntityName: entityFile, fromJSONDictionary: json, inContext: context) as? ArchiveFile
+                archiveFile?.original = key
+                archiveFile?.detail = self
+            }
         }
     }
-
 }

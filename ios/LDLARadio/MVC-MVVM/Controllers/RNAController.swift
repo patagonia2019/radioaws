@@ -11,8 +11,8 @@ import JFCore
 
 class RNAController: BaseController {
 
-    var amCatalogViewModel = CatalogViewModel()
-    var fmCatalogViewModel = CatalogViewModel()
+    var amCatalogViewModel = SectionViewModel()
+    var fmCatalogViewModel = SectionViewModel()
 
     private var amModels = [AudioViewModel]()
     private var fmModels = [AudioViewModel]()
@@ -47,7 +47,7 @@ class RNAController: BaseController {
         return rows > 0 ? rows : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if section == 0 {
             return amCatalogViewModel
         }
@@ -235,7 +235,7 @@ class RNAController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             if section == 0 {

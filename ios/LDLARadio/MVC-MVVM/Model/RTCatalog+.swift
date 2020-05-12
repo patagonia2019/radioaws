@@ -106,9 +106,8 @@ extension RTCatalog: Sectionable {
 //            let audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
 //                c1.title < c2.title
 //            })
-            return (sectionsFilter, audiosFilter)
         }
-        return ([], [])
+        return (sectionsFilter, audiosFilter)
     }
 }
 

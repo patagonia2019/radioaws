@@ -12,7 +12,6 @@ import UIKit
 class LoadTableViewCell: UITableViewCell {
     static let reuseIdentifier: String = "LoadTableViewCell"
 
-    @IBOutlet weak var iconView: UILabel!
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
 

@@ -21,11 +21,11 @@ class HeaderTableView: UITableViewHeaderFooterView {
     @IBOutlet weak var bgView: UIView?
     let gradientBg = CAGradientLayer()
 
-    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> Void)?
-    var actionExpandBlock: ((_ catalogViewModel: CatalogViewModel?, _ isExpanding: Bool) -> Void)?
-    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> Void)?
+    var infoBlock: ((_ catalogViewModel: SectionViewModel?) -> Void)?
+    var actionExpandBlock: ((_ catalogViewModel: SectionViewModel?, _ isExpanding: Bool) -> Void)?
+    var actionBookmarkBlock: ((_ catalogViewModel: SectionViewModel?, _ isBookmarking: Bool) -> Void)?
 
-    var model: CatalogViewModel? {
+    var model: SectionViewModel? {
         didSet {
             setNeedsLayout()
         }
@@ -33,7 +33,6 @@ class HeaderTableView: UITableViewHeaderFooterView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        paintBgView()
         expandButton?.setTitleColor(UIColor.tangerine, for: .normal)
         expandButton?.setTitleColor(UIColor.plum, for: .highlighted)
         portraitThumbnail()
@@ -55,8 +54,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
         titleButton?.setTitle(model?.title.text, for: .normal)
         titleButton?.setTitleColor(model?.title.color, for: .normal)
         titleButton?.titleLabel?.font = model?.title.font
-        titleButton?.titleLabel?.numberOfLines = 3
-        titleButton?.titleLabel?.lineBreakMode = .byTruncatingTail
+        titleButton?.titleLabel?.numberOfLines = 0
 
         if let bgView = bgView {
             gradientBg.frame = bgView.bounds

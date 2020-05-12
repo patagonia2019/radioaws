@@ -12,7 +12,7 @@ import AlamofireCoreData
 
 class ElDesconciertoController: BaseController {
 
-    fileprivate var models = [CatalogViewModel]()
+    fileprivate var models = [SectionViewModel]()
 
     override init() { }
 
@@ -36,7 +36,7 @@ class ElDesconciertoController: BaseController {
         return rows > 0 ? rows : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if section < models.count {
             let model = models[section]
             return model
@@ -58,12 +58,12 @@ class ElDesconciertoController: BaseController {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
             stream.streamUrl1?.count ?? 0 > 0
         }) {
-            func isExpanded(des: Desconcierto?) -> Bool {
+            func isCollapsed(des: Desconcierto?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    (catalog.isCollapsed ?? false) && des?.date == catalog.title.text
+                    (catalog.isCollapsed ?? true) && des?.date == catalog.title.text
                 }.isEmpty == false
             }
-            models = streams.map({ CatalogViewModel(desconcierto: $0, isAlreadyExpanded: isExpanded(des: $0)) }).filter({ (model) -> Bool in
+            models = streams.map({ SectionViewModel(desconcierto: $0, isAlreadyCollapsed: isCollapsed(des: $0)) }).filter({ (model) -> Bool in
                 model.urlString()?.count ?? 0 > 0
             })
         }
@@ -109,7 +109,7 @@ class ElDesconciertoController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             models[section].isCollapsed = !isCollapsed

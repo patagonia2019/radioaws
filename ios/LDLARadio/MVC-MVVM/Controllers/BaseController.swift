@@ -31,57 +31,43 @@ class BaseController: Controllable {
         fatalError()
     }
 
-    func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    func modelInstance(inSection section: Int) -> SectionViewModel? {
         return nil
     }
 
     func play(forSection section: Int, row: Int) {
+        
+        let stream = StreamPlaybackManager.instance
+        
+        guard let audio = model(forSection: section, row: row) as? AudioViewModel else { return }
+    
+        var shouldPlay = true
+        if stream.isPlaying() {
+            shouldPlay = stream.urlString() != audio.urlString()
 
-        if let audio = model(forSection: section, row: row) as? AudioViewModel {
-
-            if audio.isPlaying == false {
-
-                for j in 0..<numberOfSections() {
-                    for k in 0..<numberOfRows(inSection: j) {
-                        if let other = model(forSection: j, row: k) as? AudioViewModel {
-                            if other.isPlaying {
-                                if other.urlString() != audio.urlString() {
-                                    StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Analytics.logFunction(function: "embeddedplay",
-                                      parameters: ["audio": audio.title.text as AnyObject,
-                                                   "section": audio.section as AnyObject,
-                                                   "url": audio.urlString() as AnyObject])
-
-                guard let context = RestApi.instance.context else { fatalError() }
-
-                context.performAndWait {
-
-                    var tmpAudioPlay = Audio.search(byUrl: audio.url?.absoluteString)
-                    if tmpAudioPlay == nil {
-                        tmpAudioPlay = Audio.create()
-                    }
-                    tmpAudioPlay?.cloudSynced = false
-                    if var tmpAudioPlay = tmpAudioPlay {
-                        tmpAudioPlay += audio
-                        StreamPlaybackManager.instance.setAudioForPlayback(tmpAudioPlay, audio.image)
-                    }
-                    CoreDataManager.instance.save()
-                }
-            } else {
-                guard let context = RestApi.instance.context else { fatalError() }
-
-                context.performAndWait {
-                    CoreDataManager.instance.save()
-                }
-
-                StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
+            stream.setAudioForPlayback(nil, nil)
+        }
+        Analytics.logFunction(function: "embeddedplay",
+                              parameters: ["audio": audio.title.text as AnyObject,
+                                           "section": audio.section as AnyObject,
+                                           "url": audio.urlString() as AnyObject])
+        
+        guard let context = RestApi.instance.context else { fatalError() }
+        var tmpAudioPlay: Audio?
+        context.performAndWait {
+            // TODO: fix but sometimes add the same playing audio as bookmarked
+            tmpAudioPlay = Audio.search(byUrl: audio.url?.absoluteString)
+            if tmpAudioPlay == nil {
+                tmpAudioPlay = Audio.create()
             }
+            tmpAudioPlay?.cloudSynced = false
+            if var tmpAudioPlay = tmpAudioPlay {
+                tmpAudioPlay += audio
+            }
+            CoreDataManager.instance.save()
+        }
+        if shouldPlay {
+            stream.setAudioForPlayback(tmpAudioPlay, audio.image)
         }
     }
 
@@ -111,7 +97,7 @@ class BaseController: Controllable {
         }
     }
 
-    func expand(model: CatalogViewModel?,
+    func expand(model: SectionViewModel?,
                 section: Int,
                 incrementPage: Bool = false,
                 startClosure: (() -> Void)? = nil,
@@ -121,7 +107,7 @@ class BaseController: Controllable {
         }
     }
 
-    internal func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         fatalError()
     }
 
@@ -136,7 +122,7 @@ class BaseController: Controllable {
         let object = model(forSection: indexPath.section, row: indexPath.row)
         if let model = object as? AudioViewModel {
             Audio.changeAudioBookmark(model: model)
-        } else if let model = object as? CatalogViewModel {
+        } else if let model = object as? SectionViewModel {
             Audio.changeCatalogBookmark(model: model)
         } else {
             fatalError()

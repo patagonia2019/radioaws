@@ -48,8 +48,12 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var error: JFError?
     
+    var isTryingToPlay: Bool {
+        return StreamPlaybackManager.instance.isTryingToPlay(url: urlString())
+    }
+    
     var isPlaying: Bool {
-        return StreamPlaybackManager.instance.isAboutToPlay(url: urlString())
+        return StreamPlaybackManager.instance.isPlaying(url: urlString())
     }
     
     var isBookmark: Bool {
@@ -116,22 +120,16 @@ class AudioViewModel: BaseViewModelProtocol {
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
         section = ControllerName.desconcierto.rawValue
 
-        guard let desconcierto = desconcierto else { fatalError() }
-        id = desconcierto.audioIdentifier
+        guard let desconcierto = desconcierto,
+            let audioUrl = audioUrl else { fatalError() }
+        id = "\(order)"
         title.text = desconcierto.titleText
         subTitle.text = desconcierto.subTitleText
         detail.text = "El Desconcierto, de Quique Pesoa"
         info = desconcierto.infoText
         placeholderImage = desconcierto.placeholderImage
         thumbnailUrl = desconcierto.portraitUrl
-        
-        switch order {
-        case 1: url = (desconcierto as? Desconcierto1)?.audioUrl
-        case 2: url = (desconcierto as? Desconcierto2)?.audioUrl
-        case 3: url = (desconcierto as? Desconcierto3)?.audioUrl
-        default:
-            fatalError()
-        }
+        url = URL(string: audioUrl)
         hasDuration = true
     }
 

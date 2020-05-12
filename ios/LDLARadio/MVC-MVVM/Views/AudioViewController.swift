@@ -17,6 +17,7 @@ class AudioViewController: UITableViewController {
     // MARK: Properties
 
     var isFullScreen: Bool = false
+    var currentPlayIndexPath: IndexPath?
     var lastTitleName: String = AudioViewModel.ControllerName.suggestion.rawValue
     fileprivate var timerPlayed: Timer?
 
@@ -101,11 +102,14 @@ class AudioViewController: UITableViewController {
     deinit {
         let stream = StreamPlaybackManager.instance
         stream.delegate = nil
+        stream.delegate2 = nil
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let stream = StreamPlaybackManager.instance
+        stream.delegate2 = self
         SwiftSpinner.useContainerView(view)
 
         refreshButton.isEnabled = controller.useRefresh
@@ -241,34 +245,44 @@ class AudioViewController: UITableViewController {
         navigationItem.title = controller.title()
     }
 
-    private func reloadData() {
+    private func reloadData(_ section: Int? = nil, _ row: Int? = nil) {
         if !Thread.isMainThread {
             Log.fault("fatal error is not Main Thread")
             fatalError()
         }
         tableView.refreshControl?.attributedTitle = controller.title().bigRed()
         updateNavBar()
-        tableView.reloadData()
-        
-        reloadTimer()
-    }
-
-    private func reloadTimer() {
-
-        let stream = StreamPlaybackManager.instance
-
-        if let timerPlayed = timerPlayed {
-            timerPlayed.invalidate()
-        }
-
-        if stream.isAboutToPlay() {
-            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
+        if let section = section, let row = row {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [IndexPath(row: row, section: section)], with: .fade)
+            tableView.endUpdates()
+        } else if let section = section {
+            tableView.beginUpdates()
+            tableView.reloadSections(IndexSet(integer: section), with: .fade)
+            tableView.endUpdates()
         } else {
-            guard let toolbar = navigationController?.toolbar else { return }
-            navigationController?.setToolbarHidden(true, animated: false)
-            toolbar.isHidden = true
+            tableView.reloadData()
         }
+        
+//        reloadTimer()
     }
+
+//    private func reloadTimer() {
+//
+//        let stream = StreamPlaybackManager.instance
+//
+//        if let timerPlayed = timerPlayed {
+//            timerPlayed.invalidate()
+//        }
+//
+//        if stream.isAboutToPlay() {
+//            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
+//        } else {
+//            guard let toolbar = navigationController?.toolbar else { return }
+//            navigationController?.setToolbarHidden(true, animated: false)
+//            toolbar.isHidden = true
+//        }
+//    }
 
     @objc private func reloadToolbar() {
 
@@ -286,7 +300,7 @@ class AudioViewController: UITableViewController {
         })
     }
 
-    private func info(model: CatalogViewModel?) {
+    private func info(model: SectionViewModel?) {
         showAlert(title: model?.title.text, message: model?.text, error: nil)
     }
 
@@ -294,7 +308,7 @@ class AudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             showAlert(title: audio.title.text, message: audio.info, error: nil)
-        } else if let section = object as? CatalogViewModel {
+        } else if let section = object as? SectionViewModel {
             info(model: section)
         }
     }
@@ -304,16 +318,17 @@ class AudioViewController: UITableViewController {
         if object is AudioViewModel {
             DispatchQueue.main.async {
                 if (object as? AudioViewModel) != nil {
-                    self.reloadData()
-                }   						
+                    self.currentPlayIndexPath = indexPath
+                    self.reloadData(indexPath.section, indexPath.row)
+                }
                 DispatchQueue.global(qos: .background).async {
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
                     DispatchQueue.main.async {
-                        self.reloadData()
+                        self.reloadData(indexPath.section)
                     }
                 }
             }
-        } else if let section = object as? CatalogViewModel {
+        } else if let section = object as? SectionViewModel {
             if controller is RadioTimeController {
                 performSegue(withIdentifier: Commons.Segue.catalog, sender: section)
             } else if controller is ArchiveOrgController {
@@ -334,10 +349,9 @@ class AudioViewController: UITableViewController {
                 expand(model: model, incrementPage: true, section: indexPath.section)
             }
         }
-
     }
 
-    private func expand(model: CatalogViewModel?, incrementPage: Bool = false, section: Int) {
+    private func expand(model: SectionViewModel?, incrementPage: Bool = false, section: Int) {
         // Reusing the same model, but focus in this section
         controller.expand(model: model, section: section,
                           incrementPage: incrementPage,
@@ -353,7 +367,8 @@ class AudioViewController: UITableViewController {
                 Analytics.logError(error: error)
             }
             SwiftSpinner.hide()
-            self.reloadData()
+            
+            self.reloadData(section)
         })
     }
 
@@ -459,7 +474,7 @@ class AudioViewController: UITableViewController {
         if object is AudioViewModel {
             return indexPath
         }
-        if let section = object as? CatalogViewModel {
+        if let section = object as? SectionViewModel {
             if section.selectionStyle == .none {
                 return nil
             }
@@ -487,7 +502,7 @@ class AudioViewController: UITableViewController {
             isBookmark = audio.isBookmark
         }
 
-        if let section = object as? CatalogViewModel {
+        if let section = object as? SectionViewModel {
             isBookmark = section.isBookmark
         }
         if let isBookmark = isBookmark {
@@ -517,8 +532,8 @@ class AudioViewController: UITableViewController {
             cell.model = audio
             return cell
         }
-        if let section = object as? CatalogViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.reuseIdentifier, for: indexPath) as? CatalogTableViewCell else { fatalError() }
+        if let section = object as? SectionViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SectionTableViewCell.reuseIdentifier, for: indexPath) as? SectionTableViewCell else { fatalError() }
             cell.model = section
             cell.actionBookmarkBlock = { catalog, isBookmarking in
                 self.controller.changeBookmark(indexPath: indexPath)
@@ -543,9 +558,9 @@ class AudioViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Commons.Size.sectionHeight
-    }
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return Commons.Size.sectionHeight
+//    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {
@@ -556,10 +571,10 @@ class AudioViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.Segue.catalog {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
-            (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.archiveorg {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
-            (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? CatalogViewModel))
+            (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.search {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
@@ -603,4 +618,32 @@ extension AudioViewController: AudioTableViewCellDelegate {
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
+}
+
+extension AudioViewController: AssetPlaybackDelegate {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
+         if let currentPlayIndexPath = currentPlayIndexPath {
+            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        }
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
+        if let currentPlayIndexPath = currentPlayIndexPath {
+            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        }
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval) {
+        if let currentPlayIndexPath = currentPlayIndexPath {
+            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        }
+    }
+    
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
+        if let currentPlayIndexPath = currentPlayIndexPath {
+            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        }
+        showAlert(title: "Player Error", message: "When trying to play \(audio?.titleText ?? "")", error: error)
+    }
+    
 }

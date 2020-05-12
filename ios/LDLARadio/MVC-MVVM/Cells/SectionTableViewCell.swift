@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CatalogTableViewCell: UITableViewCell {
+class SectionTableViewCell: UITableViewCell {
     static let reuseIdentifier: String = "CatalogTableViewCell"
 
     @IBOutlet weak var iconView: UILabel!
@@ -18,10 +18,10 @@ class CatalogTableViewCell: UITableViewCell {
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var infoButton: UIButton!
 
-    var infoBlock: ((_ catalogViewModel: CatalogViewModel?) -> Void)?
-    var actionBookmarkBlock: ((_ catalogViewModel: CatalogViewModel?, _ isBookmarking: Bool) -> Void)?
+    var infoBlock: ((_ catalogViewModel: SectionViewModel?) -> Void)?
+    var actionBookmarkBlock: ((_ catalogViewModel: SectionViewModel?, _ isBookmarking: Bool) -> Void)?
 
-    var model: CatalogViewModel? = nil {
+    var model: SectionViewModel? = nil {
         didSet {
             guard let model = model else { return }
             bookmarkButton.isHidden = true

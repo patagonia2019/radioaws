@@ -11,13 +11,12 @@ import UIKit
 import AVFoundation
 
 // This view model will be responsible of render out information in the views for Catalog info
-class CatalogViewModel: BaseViewModelProtocol {
+class SectionViewModel: BaseViewModelProtocol {
 
     let icon: Commons.Symbol.FontAwesome = .indent
     let iconColor = UIColor.lavender
 
     var url: URL?
-    static let cellheight: Float = Commons.isPad() ? 100 : 70
 
     var placeholderImageName: String?
     var placeholderImage: UIImage?
@@ -31,7 +30,7 @@ class CatalogViewModel: BaseViewModelProtocol {
 
     var tree: String?
 
-    var sections = [CatalogViewModel]()
+    var sections = [SectionViewModel]()
     var audios = [AudioViewModel]()
 
     var isCollapsed: Bool?
@@ -73,12 +72,12 @@ class CatalogViewModel: BaseViewModelProtocol {
         url = catalog.queryUrl
         placeholderImage = catalog.placeholderImage
         let content = catalog.content
-        sections = content.0.map({ CatalogViewModel(catalog: $0) })
+        sections = content.0.map({ SectionViewModel(catalog: $0) })
         audios = content.1.map({ AudioViewModel(catalog: $0) })
         isCollapsed = audios.isEmpty == false && sections.isEmpty == true ? nil : catalog.isCollapsed
     }
 
-    init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
+    init(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {
         guard let archiveCollection = archiveCollection else { fatalError() }
         id = archiveCollection.sectionIdentifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
@@ -89,12 +88,13 @@ class CatalogViewModel: BaseViewModelProtocol {
         text = archiveCollection.infoText
         placeholderImage = archiveCollection.placeholderImage
         let content = archiveCollection.content
-        sections = content.0.map({ CatalogViewModel(archiveDoc: $0, isAlreadyExpanded: isAlreadyExpanded) })
+        sections = content.0.map({ SectionViewModel(archiveDoc: $0, isAlreadyCollapsed: isAlreadyCollapsed) })
         audios = []
-        isCollapsed = !isAlreadyExpanded
+        isCollapsed = isAlreadyCollapsed
+        page = archiveCollection.metas?.count ?? 1
     }
 
-    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false) {
+    init(archiveDoc: ArchiveDoc?, isAlreadyCollapsed: Bool = true) {
         guard let archiveDoc = archiveDoc else { fatalError() }
         id = archiveDoc.sectionIdentifier
         parentId = archiveDoc.parentId
@@ -107,10 +107,10 @@ class CatalogViewModel: BaseViewModelProtocol {
         placeholderImage = archiveDoc.placeholderImage
         sections = []
         audios = archiveDoc.content.1.map({ AudioViewModel(archiveFile: $0) })
-        isCollapsed = sections.isEmpty ? nil : !isAlreadyExpanded
+        isCollapsed = sections.isEmpty ? nil : isAlreadyCollapsed
     }
 
-    init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
+    init(desconcierto: Desconcierto?, isAlreadyCollapsed: Bool = true) {
         guard let desconcierto = desconcierto else { fatalError() }
         id = desconcierto.sectionIdentifier
         section = AudioViewModel.ControllerName.desconcierto.rawValue
@@ -120,7 +120,7 @@ class CatalogViewModel: BaseViewModelProtocol {
         url = desconcierto.queryUrl
         let contentAudios = desconcierto.content.1
         audios = contentAudios.map({ AudioViewModel(desconcierto: desconcierto, audioUrl: $0, order: ( contentAudios.firstIndex(of: $0) ?? 0) + 1 ) })
-        isCollapsed = !isAlreadyExpanded
+        isCollapsed = isAlreadyCollapsed
         text = desconcierto.infoText
         
         placeholderImageName = Desconcierto.placeholderImageName

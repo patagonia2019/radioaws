@@ -12,7 +12,7 @@ import AlamofireCoreData
 
 class ArchiveOrgController: BaseController {
 
-    fileprivate var models = [CatalogViewModel]()
+    fileprivate var models = [SectionViewModel]()
 
     override init() { }
 
@@ -36,12 +36,16 @@ class ArchiveOrgController: BaseController {
         return rows > 0 ? (rows + 1) : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if section < models.count {
             let model = models[section]
             return model
         }
         return models.first
+    }
+    
+    override func play(forSection section: Int, row: Int) {
+        super.play(forSection: section, row: row)
     }
 
     override func model(forSection section: Int, row: Int) -> Any? {
@@ -66,12 +70,12 @@ class ArchiveOrgController: BaseController {
 
     private func updateModels() {
         if let collections = ArchiveCollection.all() {
-            func isExpanded(ac: ArchiveCollection?) -> Bool {
+            func isCollapsed(ac: ArchiveCollection?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    (catalog.isCollapsed ?? false) && ac?.identifier == catalog.id
+                    (catalog.isCollapsed ?? true) && ac?.identifier == catalog.id
                 }.isEmpty == false
             }
-            models = collections.map({ CatalogViewModel(archiveCollection: $0, isAlreadyExpanded: isExpanded(ac: $0)) })
+            models = collections.map({ SectionViewModel(archiveCollection: $0, isAlreadyCollapsed: isCollapsed(ac: $0)) })
         }
         lastUpdated = ArchiveCollection.lastUpdated()
     }
@@ -120,7 +124,7 @@ class ArchiveOrgController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
 

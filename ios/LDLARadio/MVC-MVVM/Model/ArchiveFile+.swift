@@ -34,7 +34,7 @@ extension ArchiveFile: Audible {
     }
     
     var detailText: String? {
-        return original
+        return String.join(array: [artist, album, format, genre], separator: ". ")
     }
     
     var infoText: String? {

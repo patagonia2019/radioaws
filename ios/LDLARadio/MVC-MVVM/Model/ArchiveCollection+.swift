@@ -78,8 +78,8 @@ extension ArchiveCollection: Sectionable {
         if let metas = metas {
             for meta in metas {
                 if let response = (meta as? ArchiveMeta)?.response,
-                    let docs = response.docs {
-                    return (Array(_immutableCocoaArray: docs), [])
+                    let array = response.docs?.array as? [ArchiveDoc], array.isEmpty == false {
+                    return (array, [])
                 }
             }
         }

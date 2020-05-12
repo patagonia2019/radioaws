@@ -25,7 +25,7 @@ extension UIViewController {
                 let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell
                 image = cell?.thumbnailView.image ?? audio.placeholderImage
                 shareUrl = audio.urlAsset()?.url
-            } else if let section = object as? CatalogViewModel {
+            } else if let section = object as? SectionViewModel {
                 text.append("Play \"\(section.title.text ?? "section")\" Enjoy! ;)")
                 shareUrl = section.url
             }

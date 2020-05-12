@@ -77,9 +77,11 @@ extension ArchiveDoc: Sectionable {
     var isCollapsed: Bool {
         return false
     }
+    
     var parentId: String? {
         return response?.meta?.identifier ?? response?.meta?.collectionIdentifier
     }
+    
     var sectionDetailText: String? {
         return descript
     }
@@ -91,8 +93,8 @@ extension ArchiveDoc: Sectionable {
         return nil
     }
     var content: ([ArchiveFile], [ArchiveFile]) {
-        if let array = detail?.archiveFiles {
-            return ([], Array(_immutableCocoaArray: array))
+        if let array = detail?.archiveFiles?.array as? [ArchiveFile], array.isEmpty == false {
+            return ([], array)
         }
         return ([], [])
     }

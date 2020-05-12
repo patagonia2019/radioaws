@@ -23,6 +23,7 @@ class StreamPlaybackManager: NSObject {
     var isLoadingNow: Bool = false
 
     weak var delegate: AssetPlaybackDelegate?
+    weak var delegate2: AssetPlaybackDelegate?
 
     private lazy var session: URLSession = {
         guard let bundleID = Bundle.main.bundleIdentifier else { fatalError() }
@@ -72,6 +73,7 @@ class StreamPlaybackManager: NSObject {
             if let url = audioUrlAsset {
                 url.resourceLoader.setDelegate(nil, queue: .main)
             }
+            self.observers.removeAll()
         }
         didSet {
             if let url = audioUrlAsset {
@@ -123,6 +125,8 @@ class StreamPlaybackManager: NSObject {
             isLoadingNow = true
             playCurrentPosition()
         } else {
+            setUpdateImage(nil)
+            audio = nil
             pause()
             audio = sender
         }
@@ -150,7 +154,8 @@ class StreamPlaybackManager: NSObject {
                                 underError: error)
 
             DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerError: error)
+                self.delegate?.streamPlaybackManager(self, playerError: error, audio: audio)
+                self.delegate2?.streamPlaybackManager(self, playerError: error, audio: audio)
             }
             #endif
             return
@@ -189,8 +194,6 @@ class StreamPlaybackManager: NSObject {
                            selector: #selector(audioSessionNoteHandler(note:)),
                            name: note, object: nil)
         }
-//        player.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
-
     }
 
     public func info() -> (String, String, String?, String?)? {
@@ -215,6 +218,7 @@ class StreamPlaybackManager: NSObject {
                 if audio?.hasDuration == false {
                     audio?.hasDuration = true
                     self.delegate?.streamPlaybackManager(self, playerCurrentItemDidDetectDuration: self.player, duration: currentTime)
+                    self.delegate2?.streamPlaybackManager(self, playerCurrentItemDidDetectDuration: self.player, duration: currentTime)
                 }
             } else if player.rate == 0 {
                 audio?.isPlaying = false
@@ -322,6 +326,7 @@ class StreamPlaybackManager: NSObject {
                     if self.hasDuration() == false {
                         self.audio?.isPlaying = true
                         self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                        self.delegate2?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                     }
                     self.updateRemoteCommandCenter()
                 }
@@ -340,6 +345,7 @@ class StreamPlaybackManager: NSObject {
         player.pause()
         DispatchQueue.main.async {
             self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
+            self.delegate2?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: false)
             self.updateRemoteCommandCenter()
         }
     }
@@ -391,6 +397,7 @@ class StreamPlaybackManager: NSObject {
                 if self.hasDuration() == false {
                     self.isLoadingNow = false
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                    self.delegate2?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
                 self.updateRemoteCommandCenter()
             }
@@ -416,6 +423,7 @@ class StreamPlaybackManager: NSObject {
                 if self.hasDuration() == false {
                     self.audio?.isPlaying = true
                     self.delegate?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
+                    self.delegate2?.streamPlaybackManager(self, playerReadyToPlay: self.player, isPlaying: true)
                 }
                 self.updateRemoteCommandCenter()
             })
@@ -456,7 +464,8 @@ class StreamPlaybackManager: NSObject {
             audio?.cloudSynced = false
 
             DispatchQueue.main.async {
-                self.delegate?.streamPlaybackManager(self, playerError: error)
+                self.delegate?.streamPlaybackManager(self, playerError: error, audio: self.audio)
+                self.delegate2?.streamPlaybackManager(self, playerError: error, audio: self.audio)
             }
         }
 
@@ -682,6 +691,7 @@ class StreamPlaybackManager: NSObject {
             Log.debug("AVPlayerItemNewAccessLogEntry: %@", "\(playerItem?.accessLog().debugDescription ?? "")")
             DispatchQueue.main.async {
                 self.delegate?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
+                self.delegate2?.streamPlaybackManager(self, playerCurrentItemDidChange: self.player)
             }
 
         case .AVPlayerItemNewErrorLogEntry: // a new error log entry has been added
@@ -707,7 +717,7 @@ protocol AssetPlaybackDelegate: class {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval)
 
     /// This is called when the internal AVPlayer in StreamPlaybackManager finds an error.
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError)
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?)
 
 }
 
@@ -828,7 +838,7 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                     audio?.errorTitle = errorjf.title()
                     audio?.errorMessage = errorjf.message()
                     DispatchQueue.main.async {
-                        self.delegate?.streamPlaybackManager(self, playerError: errorjf)
+                        self.delegate?.streamPlaybackManager(self, playerError: errorjf, audio: self.audio)
                     }
                     return
                 }
@@ -840,7 +850,7 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                                     underError: error as NSError)
 
                 DispatchQueue.main.async {
-                    self.delegate?.streamPlaybackManager(self, playerError: errorjf)
+                    self.delegate?.streamPlaybackManager(self, playerError: errorjf, audio: self.audio)
                 }
             }
 

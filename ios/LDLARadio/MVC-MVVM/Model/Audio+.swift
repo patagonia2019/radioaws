@@ -170,7 +170,7 @@ extension Audio {
     }
 
     /// Using += as a overloading assignment operator for CatalogViewModel's in Bookmark entities
-    static func += (audio: inout Audio, catalogViewModel: CatalogViewModel) {
+    static func += (audio: inout Audio, catalogViewModel: SectionViewModel) {
         audio.detail = catalogViewModel.detail.text
         audio.subTitle = catalogViewModel.title.text
         audio.title = catalogViewModel.tree
@@ -205,7 +205,7 @@ extension Audio {
         return array
     }
 
-    static func changeCatalogBookmark(model: CatalogViewModel?) {
+    static func changeCatalogBookmark(model: SectionViewModel?) {
         guard let model = model else {
             fatalError()
         }

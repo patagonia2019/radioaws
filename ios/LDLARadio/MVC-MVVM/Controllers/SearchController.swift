@@ -14,7 +14,7 @@ class SearchController: BaseController {
     /// Notification for when bookmark has changed.
     static let didRefreshNotification = NSNotification.Name(rawValue: "SearchController.didRefreshNotification")
 
-    private var models = [CatalogViewModel]()
+    private var models = [SectionViewModel]()
     private var page: Int = 1
 
     private var textList = [String]()
@@ -57,7 +57,7 @@ class SearchController: BaseController {
         return rows > 0 ? rows : 1
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         if section < models.count {
             let model = models[section]
             return model
@@ -100,7 +100,7 @@ class SearchController: BaseController {
             return
         }
 
-        models = [CatalogViewModel]()
+        models = [SectionViewModel]()
 
         RestApi.instance.context?.performAndWait {
             if let rnaStations = RNAStation.search(byName: textToSearch), !rnaStations.isEmpty {
@@ -108,7 +108,7 @@ class SearchController: BaseController {
                     station.amUri?.count ?? 0 > 0
                 }).map({ AudioViewModel(station: $0, isAm: true) })
                 if !amModels.isEmpty {
-                    let model = CatalogViewModel()
+                    let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = amModels
                     model.section = AudioViewModel.ControllerName.rna.rawValue
@@ -122,7 +122,7 @@ class SearchController: BaseController {
                 }).map({ AudioViewModel(station: $0, isAm: false) })
 
                 if !fmModels.isEmpty {
-                    let model = CatalogViewModel()
+                    let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = fmModels
                     model.section = AudioViewModel.ControllerName.rna.rawValue
@@ -134,7 +134,7 @@ class SearchController: BaseController {
             if let streams = Stream.search(byName: textToSearch), !streams.isEmpty {
                 let streamModels = streams.map({ AudioViewModel(stream: $0) })
                 if !streamModels.isEmpty {
-                    let model = CatalogViewModel()
+                    let model = SectionViewModel()
                     model.isCollapsed = true
                     model.section = AudioViewModel.ControllerName.suggestion.rawValue
                     model.audios = streamModels
@@ -146,7 +146,7 @@ class SearchController: BaseController {
             if let audios = Audio.search(byName: self.textToSearch), !audios.isEmpty {
                 let audioModels = audios.map({ AudioViewModel(audio: $0) })
                 if !audioModels.isEmpty {
-                    let model = CatalogViewModel()
+                    let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = audioModels
                     model.section = AudioViewModel.ControllerName.bookmark.rawValue
@@ -161,7 +161,7 @@ class SearchController: BaseController {
             if let catalogs = RTCatalog.search(byName: self.textToSearch), !catalogs.isEmpty {
                 var audiosTmp = [AudioViewModel]()
 
-                let model = CatalogViewModel()
+                let model = SectionViewModel()
                 model.isCollapsed = true
 
                 for element in catalogs {
@@ -173,7 +173,7 @@ class SearchController: BaseController {
                             audiosTmp.append(viewModel)
                         }
                     } else {
-                        model.sections.append(CatalogViewModel(catalog: element))
+                        model.sections.append(SectionViewModel(catalog: element))
                     }
                 }
                 if !audiosTmp.isEmpty {
@@ -187,9 +187,9 @@ class SearchController: BaseController {
             }
 
             if let archiveOrgs = ArchiveDoc.search(byName: self.textToSearch), !archiveOrgs.isEmpty {
-                let model = CatalogViewModel()
+                let model = SectionViewModel()
                 model.isCollapsed = false
-                model.sections = archiveOrgs.map({ CatalogViewModel(archiveDoc: $0) })
+                model.sections = archiveOrgs.map({ SectionViewModel(archiveDoc: $0) })
                 model.section = AudioViewModel.ControllerName.archiveOrg.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
 
@@ -230,7 +230,7 @@ class SearchController: BaseController {
         }
     }
 
-    internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         if incrementPage {
             page += 1
             refresh(isClean: true, prompt: "", startClosure: startClosure, finishClosure: finishClosure)

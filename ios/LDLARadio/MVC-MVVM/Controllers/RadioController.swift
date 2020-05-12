@@ -11,7 +11,7 @@ import JFCore
 
 class RadioController: BaseController {
 
-    var catalogViewModel = CatalogViewModel()
+    var catalogViewModel = SectionViewModel()
     private var models = [AudioViewModel]()
 
     override init() {
@@ -38,7 +38,7 @@ class RadioController: BaseController {
         return nil
     }
 
-    override func modelInstance(inSection section: Int) -> CatalogViewModel? {
+    override func modelInstance(inSection section: Int) -> SectionViewModel? {
         return catalogViewModel
     }
 
@@ -91,7 +91,7 @@ class RadioController: BaseController {
         }
     }
 
-    private func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    private func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             catalogViewModel.isCollapsed = !isCollapsed
