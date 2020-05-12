@@ -93,6 +93,7 @@
 		989E41F3234A095000975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
 		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
+		98B25800246AC4160031A9AA /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B257FF246AC4160031A9AA /* Sectionable.swift */; };
 		98B53CE322FFA106003F50EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B53CE222FFA106003F50EE /* CloudKit.framework */; };
 		98B53CE522FFA5B2003F50EE /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */; };
 		98B53CE722FFAB8D003F50EE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CE622FFAB8D003F50EE /* User.swift */; };
@@ -215,6 +216,7 @@
 		989E41F1234A094500975B91 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
+		98B257FF246AC4160031A9AA /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
 		98B53CDD22FF9F06003F50EE /* LDLARadio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDLARadio.entitlements; sourceTree = "<group>"; };
 		98B53CE222FFA106003F50EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98B53CE422FFA5B2003F50EE /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
 				989DC5FA2461A8DB00472CD6 /* Audible.swift */,
+				98B257FF246AC4160031A9AA /* Sectionable.swift */,
 				989DC5F82461A8B200472CD6 /* Modellable+.swift */,
 				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
 				9825BDD622EB758D00E418F2 /* Downloadable.swift */,
@@ -815,6 +818,7 @@
 				98B53CE722FFAB8D003F50EE /* User.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,
+				98B25800246AC4160031A9AA /* Sectionable.swift in Sources */,
 				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98B16871230B8C9800A61DBC /* Audio+.swift in Sources */,

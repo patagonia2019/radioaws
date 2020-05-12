@@ -38,7 +38,7 @@ class BookmarkController: BaseController {
         var rows: Int = 0
         if section < models.count {
             let model = models[section]
-            if model.isExpanded == false {
+            if model.isCollapsed == true {
                 return 0
             }
             rows = model.sections.count + model.audios.count
@@ -91,7 +91,7 @@ class BookmarkController: BaseController {
                     if !audios.isEmpty {
 
                         let model = CatalogViewModel()
-                        model.isExpanded = false
+                        model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
                         model.audios = audios
                         self.models.append(model)
@@ -106,7 +106,7 @@ class BookmarkController: BaseController {
                     if !audios.isEmpty {
 
                         let model = CatalogViewModel()
-                        model.isExpanded = false
+                        model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.rna.rawValue
                         model.audios = audios
                         self.models.append(model)
@@ -120,7 +120,7 @@ class BookmarkController: BaseController {
                     let audios = rts.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = CatalogViewModel()
-                        model.isExpanded = false
+                        model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
                         model.audios = audios
                         self.models.append(model)
@@ -133,7 +133,7 @@ class BookmarkController: BaseController {
                     let audios = eds.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = CatalogViewModel()
-                        model.isExpanded = false
+                        model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.desconcierto.rawValue
                         model.audios = audios
                         self.models.append(model)
@@ -146,7 +146,7 @@ class BookmarkController: BaseController {
                     let audios = files.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = CatalogViewModel()
-                        model.isExpanded = false
+                        model.isCollapsed = true
                         model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
                         model.audios = audios
                         self.models.append(model)
@@ -194,7 +194,7 @@ class BookmarkController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        model?.isExpanded = !(model?.isExpanded ?? false)
+        model?.isCollapsed = !(model?.isCollapsed ?? false)
 
         finishClosure?(nil)
     }

@@ -28,7 +28,7 @@ class ArchiveOrgController: BaseController {
         var rows: Int = 0
         if section < models.count {
             let model = models[section]
-            if model.isExpanded == false {
+            if model.isCollapsed == true {
                 return 0
             }
             rows = model.sections.count + model.audios.count
@@ -68,7 +68,7 @@ class ArchiveOrgController: BaseController {
         if let collections = ArchiveCollection.all() {
             func isExpanded(ac: ArchiveCollection?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    (catalog.isExpanded ?? false) && ac?.identifier == catalog.id
+                    (catalog.isCollapsed ?? false) && ac?.identifier == catalog.id
                 }.isEmpty == false
             }
             models = collections.map({ CatalogViewModel(archiveCollection: $0, isAlreadyExpanded: isExpanded(ac: $0)) })
@@ -126,14 +126,13 @@ class ArchiveOrgController: BaseController {
 
         if incrementPage, let page = model?.page {
             model?.page = page + 1
-            model?.isExpanded = true
+            model?.isCollapsed = true
             archiveCollection?.isExpanded = true
         }
 
         if incrementPage == false {
-            if let isExpanded = model?.isExpanded {
-                model?.isExpanded = !isExpanded
-                archiveCollection?.isExpanded = !isExpanded
+            if let isCollapsed = model?.isCollapsed {
+                model?.isCollapsed = !isCollapsed
             }
 
             if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {

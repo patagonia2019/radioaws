@@ -38,8 +38,7 @@ class ArchiveOrgMainModelController: BaseController {
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
-                Log.debug("%@ %@", subModel.title.text ?? "", (subModel.isExpanded ?? false) ? "-" : "+")
-                if subModel.isExpanded == false {
+                if subModel.isCollapsed == true {
                     return 0
                 }
                 rows = subModel.sections.count + subModel.audios.count
@@ -82,7 +81,7 @@ class ArchiveOrgMainModelController: BaseController {
 
     private func updateModels() {
         if let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) {
-            mainModel = CatalogViewModel(archiveDoc: doc, superTree: "")
+            mainModel = CatalogViewModel(archiveDoc: doc)
         }
         lastUpdated = ArchiveCollection.lastUpdated()
     }
@@ -96,7 +95,7 @@ class ArchiveOrgMainModelController: BaseController {
         if isClean == false {
             if doc?.detail?.archiveFiles?.count ?? 0 > 0 {
 
-                mainModel = CatalogViewModel(archiveDoc: doc, superTree: "")
+                mainModel = CatalogViewModel(archiveDoc: doc)
 
                 lastUpdated = ArchiveCollection.lastUpdated()
                 finishClosure?(nil)
@@ -126,11 +125,8 @@ class ArchiveOrgMainModelController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
-
-        if let isExpanded = model?.isExpanded {
-            model?.isExpanded = !isExpanded
-            archiveCollection?.isExpanded = !isExpanded
+        if let isCollapsed = model?.isCollapsed {
+            model?.isCollapsed = !isCollapsed
         }
 
         finishClosure?(nil)

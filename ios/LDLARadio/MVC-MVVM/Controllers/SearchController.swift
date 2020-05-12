@@ -46,7 +46,7 @@ class SearchController: BaseController {
         var rows: Int = 0
         if section < models.count {
             let model = models[section]
-            if model.isExpanded == false {
+            if model.isCollapsed == true {
                 return 0
             }
             if model.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
@@ -109,7 +109,7 @@ class SearchController: BaseController {
                 }).map({ AudioViewModel(station: $0, isAm: true) })
                 if !amModels.isEmpty {
                     let model = CatalogViewModel()
-                    model.isExpanded = false
+                    model.isCollapsed = true
                     model.audios = amModels
                     model.section = AudioViewModel.ControllerName.rna.rawValue
                     model.title.text = "\(model.section) - AM:  \(model.audios.count)"
@@ -123,7 +123,7 @@ class SearchController: BaseController {
 
                 if !fmModels.isEmpty {
                     let model = CatalogViewModel()
-                    model.isExpanded = false
+                    model.isCollapsed = true
                     model.audios = fmModels
                     model.section = AudioViewModel.ControllerName.rna.rawValue
                     model.title.text = "\(model.section) - FM:  \(model.audios.count)"
@@ -135,7 +135,7 @@ class SearchController: BaseController {
                 let streamModels = streams.map({ AudioViewModel(stream: $0) })
                 if !streamModels.isEmpty {
                     let model = CatalogViewModel()
-                    model.isExpanded = false
+                    model.isCollapsed = true
                     model.section = AudioViewModel.ControllerName.suggestion.rawValue
                     model.audios = streamModels
                     model.title.text = "\(model.section): \(model.audios.count)"
@@ -147,7 +147,7 @@ class SearchController: BaseController {
                 let audioModels = audios.map({ AudioViewModel(audio: $0) })
                 if !audioModels.isEmpty {
                     let model = CatalogViewModel()
-                    model.isExpanded = false
+                    model.isCollapsed = true
                     model.audios = audioModels
                     model.section = AudioViewModel.ControllerName.bookmark.rawValue
                     model.title.text = "\(model.section):  \(model.audios.count)"
@@ -162,7 +162,7 @@ class SearchController: BaseController {
                 var audiosTmp = [AudioViewModel]()
 
                 let model = CatalogViewModel()
-                model.isExpanded = false
+                model.isCollapsed = true
 
                 for element in catalogs {
                     if element.isAudio(), element.url?.count ?? 0 > 0 {
@@ -188,8 +188,8 @@ class SearchController: BaseController {
 
             if let archiveOrgs = ArchiveDoc.search(byName: self.textToSearch), !archiveOrgs.isEmpty {
                 let model = CatalogViewModel()
-                model.isExpanded = true
-                model.sections = archiveOrgs.map({ CatalogViewModel(archiveDoc: $0, superTree: "") })
+                model.isCollapsed = false
+                model.sections = archiveOrgs.map({ CatalogViewModel(archiveDoc: $0) })
                 model.section = AudioViewModel.ControllerName.archiveOrg.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
 
@@ -235,8 +235,8 @@ class SearchController: BaseController {
             page += 1
             refresh(isClean: true, prompt: "", startClosure: startClosure, finishClosure: finishClosure)
         } else {
-            if let isExpanded = model?.isExpanded {
-                model?.isExpanded = !isExpanded
+            if let isCollapsed = model?.isCollapsed {
+                model?.isCollapsed = !isCollapsed
             }
 
             finishClosure?(nil)

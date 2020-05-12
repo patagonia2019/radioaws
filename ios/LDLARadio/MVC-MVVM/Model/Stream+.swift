@@ -24,7 +24,7 @@ extension Stream: Modellable {
 
 extension Stream: Audible {
     
-    var identifier: String {
+    var audioIdentifier: String {
         return "\(id)"
     }
     

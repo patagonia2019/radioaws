@@ -34,7 +34,7 @@ class CatalogViewModel: BaseViewModelProtocol {
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
 
-    var isExpanded: Bool?
+    var isCollapsed: Bool?
     var thumbnailUrl: URL?
 
     var section: String = ""
@@ -63,171 +63,66 @@ class CatalogViewModel: BaseViewModelProtocol {
     }
 
     init(catalog: RTCatalog?) {
+        guard let catalog = catalog else { fatalError() }
+        id = catalog.sectionIdentifier
         section = AudioViewModel.ControllerName.radioTime.rawValue
-        title.text = catalog?.titleAndText
-        tree = catalog?.titleTree
-        isExpanded = catalog?.isExpanded
-        id = catalog?.guideId ?? catalog?.genreId ?? catalog?.presetId
-        if let parent = catalog?.sectionCatalog ?? catalog?.audioCatalog {
-            parentId = parent.guideId ?? parent.genreId ?? parent.presetId
-        }
-
-        if let catalog = catalog,
-            let text = catalog.text ?? catalog.subtext {
-            detail.text = catalog.isOnlyText() ? text : ""
-        }
-        if let queryUrl = catalog?.url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let urlChecked = URL(string: queryUrl) {
-            url = urlChecked
-        }
-        var all = [RTCatalog]()
-        if let sectionsOfCatalog = catalog?.sections?.array as? [RTCatalog] {
-            all.append(contentsOf: sectionsOfCatalog)
-        }
-        if let audiosOfCatalog = catalog?.audios?.array as? [RTCatalog] {
-            all.append(contentsOf: audiosOfCatalog)
-        }
-        var sectionsTmp = [CatalogViewModel]()
-        var audiosTmp = [AudioViewModel]()
-
-        for element in all {
-            if element.isAudio(), element.url?.count ?? 0 > 0 {
-                if element.audioCatalog == nil {
-                    if element.sectionCatalog == nil {
-                        element.audioCatalog = catalog
-                    } else {
-                        element.audioCatalog = element.sectionCatalog
-                        element.sectionCatalog = nil
-                    }
-                }
-                let viewModel = AudioViewModel(catalog: element)
-                audiosTmp.append(viewModel)
-            } else {
-                if element.sectionCatalog == nil {
-                    if element.audioCatalog == nil {
-                        element.sectionCatalog = catalog
-                    } else {
-                        element.sectionCatalog = element.audioCatalog
-                        element.audioCatalog = nil
-                    }
-                }
-                let viewModel = CatalogViewModel(catalog: element)
-                sectionsTmp.append(viewModel)
-            }
-            sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
-                c1.title < c2.title
-            })
-            audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
-                c1.title < c2.title
-            })
-        }
-
-        if audios.isEmpty == false && sections.isEmpty == true {
-            isExpanded = nil
-        }
-
-        placeholderImageName = RTCatalog.placeholderImageName
-        if let imageName = placeholderImageName {
-            placeholderImage = UIImage.init(named: imageName)
-        }
-
+        title.text = catalog.titleText
+        tree = catalog.titleTree
+        parentId = catalog.parentId
+        detail.text = catalog.sectionDetailText
+        url = catalog.queryUrl
+        placeholderImage = catalog.placeholderImage
+        let content = catalog.content
+        sections = content.0.map({ CatalogViewModel(catalog: $0) })
+        audios = content.1.map({ AudioViewModel(catalog: $0) })
+        isCollapsed = audios.isEmpty == false && sections.isEmpty == true ? nil : catalog.isCollapsed
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyExpanded: Bool = false) {
-        id = archiveCollection?.identifier
+        guard let archiveCollection = archiveCollection else { fatalError() }
+        id = archiveCollection.sectionIdentifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
-        title.text = archiveCollection?.title ?? ""
-        detail.text = archiveCollection?.detail ?? ""
-
-        if let imageUrl = archiveCollection?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let urlChecked = URL(string: imageUrl) {
-            thumbnailUrl = urlChecked
-        }
-
-        if let queryUrl = archiveCollection?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let urlChecked = URL(string: queryUrl) {
-            url = urlChecked
-        }
-
-        if let metas = archiveCollection?.metas {
-            page = metas.count
-            for meta in metas {
-                if let response = (meta as? ArchiveMeta)?.response,
-                    let docs = response.docs {
-                    sections.append(contentsOf: docs.map({ CatalogViewModel(archiveDoc: $0 as? ArchiveDoc, isAlreadyExpanded: isAlreadyExpanded, superTree: title.text) }))
-                }
-            }
-        }
-
-        isExpanded = isAlreadyExpanded
-
-        text = detail.text
-
-        placeholderImageName = ArchiveDoc.placeholderImageName
-        if let imageName = placeholderImageName {
-            placeholderImage = UIImage.init(named: imageName)
-        }
-
+        title.text = archiveCollection.titleText
+        detail.text = archiveCollection.detailText
+        thumbnailUrl = archiveCollection.portraitUrl
+        url = archiveCollection.queryUrl
+        text = archiveCollection.infoText
+        placeholderImage = archiveCollection.placeholderImage
+        let content = archiveCollection.content
+        sections = content.0.map({ CatalogViewModel(archiveDoc: $0, isAlreadyExpanded: isAlreadyExpanded) })
+        audios = []
+        isCollapsed = !isAlreadyExpanded
     }
 
-    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false, superTree: String?) {
-        id = archiveDoc?.identifier
-        parentId = archiveDoc?.response?.meta?.identifier ?? archiveDoc?.response?.meta?.collectionIdentifier
+    init(archiveDoc: ArchiveDoc?, isAlreadyExpanded: Bool = false) {
+        guard let archiveDoc = archiveDoc else { fatalError() }
+        id = archiveDoc.sectionIdentifier
+        parentId = archiveDoc.parentId
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
-        title.text = String.join(array: [archiveDoc?.title, archiveDoc?.subject, archiveDoc?.creator], separator: ". ")
-        tree = superTree
-        detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
-
-        if let imageUrl = archiveDoc?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let urlChecked = URL(string: imageUrl) {
-            thumbnailUrl = urlChecked
-        }
-
-        if let queryUrl = archiveDoc?.urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
-            let urlChecked = URL(string: queryUrl) {
-            url = urlChecked
-        }
-
-        text = String.join(array: [tree, archiveDoc?.title, archiveDoc?.subject, archiveDoc?.creator, archiveDoc?.descript, archiveDoc?.publicDate], separator: "\n")
-        isExpanded = sections.isEmpty ? nil : isAlreadyExpanded
-
-        let sortByTitle = [NSSortDescriptor(key: "updatedAt", ascending: true)]
-        if let archiveFiles = archiveDoc?.detail?.archiveFiles?.sortedArray(using: sortByTitle),
-            !archiveFiles.isEmpty {
-            audios = archiveFiles.map({ AudioViewModel(archiveFile: $0 as? ArchiveFile) })
-        }
-
-        placeholderImageName = ArchiveDoc.placeholderImageName
-        if let imageName = placeholderImageName {
-            placeholderImage = UIImage.init(named: imageName)
-        }
-
+        title.text = archiveDoc.titleText
+        detail.text = archiveDoc.detailText
+        thumbnailUrl = archiveDoc.portraitUrl
+        url = archiveDoc.queryUrl
+        text = archiveDoc.infoText
+        placeholderImage = archiveDoc.placeholderImage
+        sections = []
+        audios = archiveDoc.content.1.map({ AudioViewModel(archiveFile: $0) })
+        isCollapsed = sections.isEmpty ? nil : !isAlreadyExpanded
     }
 
     init(desconcierto: Desconcierto?, isAlreadyExpanded: Bool = false) {
-        if let desconciertoId = desconcierto?.id {
-            id = "\(desconciertoId)"
-        }
+        guard let desconcierto = desconcierto else { fatalError() }
+        id = desconcierto.sectionIdentifier
         section = AudioViewModel.ControllerName.desconcierto.rawValue
-        title.text = desconcierto?.date ?? ""
+        title.text = desconcierto.titleText
         tree = ""
-        detail.text = ""
-        let queryUrl = "\(RestApi.Constants.Service.ldlaServer)/desconciertos/\(desconcierto?.id ?? 0).json"
-        if let urlChecked = URL(string: queryUrl) {
-            url = urlChecked
-        }
-        var order: Int = 0
-        for streamUrl in [desconcierto?.streamUrl1, desconcierto?.streamUrl2, desconcierto?.streamUrl3] {
-            order += 1
-            let audio = AudioViewModel(desconcierto: desconcierto, audioUrl: streamUrl, order: order)
-            if audio.url?.absoluteString.count ?? 0 > 0 {
-                audios.append(audio)
-            }
-        }
-        isExpanded = isAlreadyExpanded
-
-        text = desconcierto?.obs ?? ""
-
+        detail.text = desconcierto.sectionDetailText
+        url = desconcierto.queryUrl
+        let contentAudios = desconcierto.content.1
+        audios = contentAudios.map({ AudioViewModel(desconcierto: desconcierto, audioUrl: $0, order: ( contentAudios.firstIndex(of: $0) ?? 0) + 1 ) })
+        isCollapsed = !isAlreadyExpanded
+        text = desconcierto.infoText
+        
         placeholderImageName = Desconcierto.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)

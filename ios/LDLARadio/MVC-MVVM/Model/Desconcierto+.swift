@@ -20,12 +20,12 @@ extension Desconcierto: Modellable {
 
 extension Desconcierto {
     
-    var identifier: String {
+    var audioIdentifier: String {
         return "\((Int(id) * 1000) + Int(arc4random()))"
     }
     
     var titleText: String? {
-        return "ED-\(date ?? "file")-\(identifier).mp3"
+        return "ED-\(date ?? "file")-\(audioIdentifier).mp3"
     }
     
     var subTitleText: String? {
@@ -80,4 +80,37 @@ extension Desconcierto3: Audible {
         }
         return nil
     }
+}
+
+extension Desconcierto: Sectionable {
+    var sectionIdentifier: String {
+        return audioIdentifier
+    }
+    
+    var isCollapsed: Bool {
+        false
+    }
+    
+    var parentId: String? {
+        return nil
+    }
+    
+    var sectionDetailText: String? {
+        return detailText
+    }
+    
+    var queryUrl: URL? {
+        let queryUrl = "\(RestApi.Constants.Service.ldlaServer)/desconciertos/\(id).json"
+        if let urlChecked = URL(string: queryUrl) {
+            return urlChecked
+        }
+        return nil
+    }
+    
+    var content: ([String?], [String?]) {
+        return ([], [streamUrl1, streamUrl2, streamUrl3])
+    }
+    
+    typealias SectionModelType = String?
+
 }

@@ -33,7 +33,7 @@ class RadioTimeController: BaseController {
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
-                if subModel.isExpanded == false {
+                if subModel.isCollapsed == true {
                     return 0
                 }
                 rows = subModel.sections.count + subModel.audios.count
@@ -249,7 +249,7 @@ class RadioTimeController: BaseController {
 
             self.mainModel = CatalogViewModel(catalog: mainCatalog)
             let sectionModel = self.modelInstance(inSection: section)
-            sectionModel?.isExpanded = true
+            sectionModel?.isCollapsed = false
 
             self.lastUpdated = RTCatalog.lastUpdated()
 

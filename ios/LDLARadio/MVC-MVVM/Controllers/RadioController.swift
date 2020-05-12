@@ -93,8 +93,8 @@ class RadioController: BaseController {
 
     private func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if let isExpanded = model?.isExpanded {
-            catalogViewModel.isExpanded = !isExpanded
+        if let isCollapsed = model?.isCollapsed {
+            catalogViewModel.isCollapsed = !isCollapsed
         }
 
         finishClosure?(nil)

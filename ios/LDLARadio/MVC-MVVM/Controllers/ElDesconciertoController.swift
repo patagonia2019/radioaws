@@ -28,7 +28,7 @@ class ElDesconciertoController: BaseController {
         var rows: Int = 0
         if section < models.count {
             let model = models[section]
-            if model.isExpanded == false {
+            if model.isCollapsed == true {
                 return 0
             }
             rows = model.audios.count
@@ -60,7 +60,7 @@ class ElDesconciertoController: BaseController {
         }) {
             func isExpanded(des: Desconcierto?) -> Bool {
                 return models.filter { (catalog) -> Bool in
-                    (catalog.isExpanded ?? false) && des?.date == catalog.title.text
+                    (catalog.isCollapsed ?? false) && des?.date == catalog.title.text
                 }.isEmpty == false
             }
             models = streams.map({ CatalogViewModel(desconcierto: $0, isAlreadyExpanded: isExpanded(des: $0)) }).filter({ (model) -> Bool in
@@ -111,8 +111,8 @@ class ElDesconciertoController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if let isExpanded = model?.isExpanded {
-            models[section].isExpanded = !isExpanded
+        if let isCollapsed = model?.isCollapsed {
+            models[section].isCollapsed = !isCollapsed
         }
 
         finishClosure?(nil)

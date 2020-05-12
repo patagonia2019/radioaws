@@ -45,6 +45,60 @@ extension ArchiveDoc {
 
 }
 
+extension ArchiveDoc: Sectionable {
+    var sectionIdentifier: String {
+        return identifier ?? "#\(arc4random())"
+    }
+    var titleText: String? {
+        return String.join(array: [title, subject, creator], separator: ". ")
+    }
+    
+    var subTitleText: String? {
+        return subject
+    }
+    
+    var detailText: String? {
+        return descript
+    }
+    
+    var infoText: String? {
+        return String.join(array: [response?.meta?.collection?.titleText, title, subject, creator, descript, publicDate], separator: "\n")
+    }
+    var placeholderImage: UIImage? {
+        return UIImage.init(named: ArchiveDoc.placeholderImageName)
+    }
+    var portraitUrl: URL? {
+        if let imageUrl = thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+
+    var isCollapsed: Bool {
+        return false
+    }
+    var parentId: String? {
+        return response?.meta?.identifier ?? response?.meta?.collectionIdentifier
+    }
+    var sectionDetailText: String? {
+        return descript
+    }
+    
+    var queryUrl: URL? {
+        if let queryUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: queryUrl)
+        }
+        return nil
+    }
+    var content: ([ArchiveFile], [ArchiveFile]) {
+        if let array = detail?.archiveFiles {
+            return ([], Array(_immutableCocoaArray: array))
+        }
+        return ([], [])
+    }
+
+}
+
 extension ArchiveDoc: Modellable {
 
     static func all() -> [ArchiveDoc]? {

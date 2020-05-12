@@ -10,13 +10,16 @@ import Foundation
 import AVFoundation
 import CoreData
 
-extension Model {
+public extension Model {
 
     /// Update the `updatedAt` field in the entity when the model is created
-    override public func awakeFromInsert() {
+    override func awakeFromInsert() {
         setPrimitiveValue(Date(), forKey: "updatedAt")
     }
+}
 
+extension Model {
+    
     static func entityName() -> String? {
         return NSStringFromClass(self).components(separatedBy: ".").last
     }

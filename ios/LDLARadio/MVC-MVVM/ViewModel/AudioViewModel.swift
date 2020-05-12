@@ -71,7 +71,7 @@ class AudioViewModel: BaseViewModelProtocol {
     init(catalog: RTCatalog?) {
         section = ControllerName.radioTime.rawValue
         guard let audio = catalog else { fatalError() }
-        id = audio.identifier
+        id = audio.audioIdentifier
         title.text = audio.titleText
         subTitle.text = audio.subTitleText
         detail.text = audio.detailText
@@ -87,7 +87,7 @@ class AudioViewModel: BaseViewModelProtocol {
         section = ControllerName.suggestion.rawValue
 
         guard let stream = stream else { fatalError() }
-        id = stream.identifier
+        id = stream.audioIdentifier
         title.text = stream.titleText
         subTitle.text = stream.subTitleText
         detail.text = stream.detailText
@@ -101,7 +101,7 @@ class AudioViewModel: BaseViewModelProtocol {
         section = ControllerName.archiveOrg.rawValue
         guard let archiveFile = archiveFile else { fatalError() }
         
-        id = archiveFile.identifier
+        id = archiveFile.audioIdentifier
         title.text = archiveFile.titleText
         subTitle.text = archiveFile.subTitleText
         detail.text = archiveFile.detailText
@@ -117,7 +117,7 @@ class AudioViewModel: BaseViewModelProtocol {
         section = ControllerName.desconcierto.rawValue
 
         guard let desconcierto = desconcierto else { fatalError() }
-        id = desconcierto.identifier
+        id = desconcierto.audioIdentifier
         title.text = desconcierto.titleText
         subTitle.text = desconcierto.subTitleText
         detail.text = "El Desconcierto, de Quique Pesoa"
@@ -140,7 +140,7 @@ class AudioViewModel: BaseViewModelProtocol {
         section = ControllerName.rna.rawValue
 
         guard let station = station else { fatalError() }
-        id = station.identifier
+        id = station.audioIdentifier
         title.text = station.titleText
         subTitle.text = station.subTitleText
         info = station.infoText
@@ -163,7 +163,7 @@ class AudioViewModel: BaseViewModelProtocol {
     init(audio: Audio?) {
         guard let audio = audio else { fatalError() }
         section = audio.section ?? ControllerName.bookmark.rawValue
-        id = audio.identifier
+        id = audio.audioIdentifier
         title.text = audio.titleText
         subTitle.text = audio.subTitleText
         detail.text = audio.detailText

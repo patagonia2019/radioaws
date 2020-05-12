@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol Audible {
-    var identifier: String { get }
+    var audioIdentifier: String { get }
     var titleText: String? { get }
     var subTitleText: String? { get }
     var detailText: String? { get }

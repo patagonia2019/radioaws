@@ -63,9 +63,9 @@ class HeaderTableView: UITableViewHeaderFooterView {
         }
 
         if let model = model {
-            if let isExpanded = model.isExpanded {
+            if let isCollapsed = model.isCollapsed {
                 expandButton?.isHidden = false
-                expandButton?.isHighlighted = !isExpanded
+                expandButton?.isHighlighted = isCollapsed
             } else {
                 expandButton?.isHidden = true
             }

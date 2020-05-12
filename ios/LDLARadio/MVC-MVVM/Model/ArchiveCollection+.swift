@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 extension ArchiveCollection: Modellable {
 
@@ -17,6 +18,74 @@ extension ArchiveCollection: Modellable {
             as? [ArchiveCollection]
     }
 
+}
+
+extension ArchiveCollection: Sectionable {
+    
+    typealias SectionModelType = ArchiveDoc
+    
+    var sectionIdentifier: String {
+        return identifier ?? "#\(arc4random())"
+    }
+
+    var titleText: String? {
+        return title
+    }
+    
+    var subTitleText: String? {
+        return subtitle
+    }
+    
+    var detailText: String? {
+        return detail
+    }
+    
+    var infoText: String? {
+        return detailText
+    }
+    
+    var placeholderImage: UIImage? {
+        return UIImage.init(named: ArchiveDoc.placeholderImageName)
+    }
+    
+    var portraitUrl: URL? {
+        if let imageUrl = thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+    
+    var isCollapsed: Bool {
+        return false
+    }
+    
+    var parentId: String? {
+        return nil
+    }
+    
+    var sectionDetailText: String? {
+        return detailText
+    }
+    
+    var queryUrl: URL? {
+        if let queryUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: queryUrl)
+        }
+        return nil
+    }
+    
+    var content: ([ArchiveDoc], [ArchiveDoc]) {
+        if let metas = metas {
+            for meta in metas {
+                if let response = (meta as? ArchiveMeta)?.response,
+                    let docs = response.docs {
+                    return (Array(_immutableCocoaArray: docs), [])
+                }
+            }
+        }
+        return ([], [])
+    }
+    
 }
 
 extension ArchiveCollection: Creational {

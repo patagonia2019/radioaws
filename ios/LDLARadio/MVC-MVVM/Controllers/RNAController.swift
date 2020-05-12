@@ -35,11 +35,11 @@ class RNAController: BaseController {
 
     override func numberOfRows(inSection section: Int) -> Int {
         if section == 0 {
-            if amCatalogViewModel.isExpanded == false {
+            if amCatalogViewModel.isCollapsed == true {
                 return 0
             }
         } else {
-            if fmCatalogViewModel.isExpanded == false {
+            if fmCatalogViewModel.isCollapsed == true {
                 return 0
             }
         }
@@ -237,11 +237,11 @@ class RNAController: BaseController {
 
     internal override func expanding(model: CatalogViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if let isExpanded = model?.isExpanded {
+        if let isCollapsed = model?.isCollapsed {
             if section == 0 {
-                amCatalogViewModel.isExpanded = !isExpanded
+                amCatalogViewModel.isCollapsed = !isCollapsed
             } else {
-                fmCatalogViewModel.isExpanded = !isExpanded
+                fmCatalogViewModel.isCollapsed = !isCollapsed
             }
         }
 

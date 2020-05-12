@@ -19,7 +19,7 @@ extension RNAStation: Modellable {
 }
 
 extension RNAStation {
-    var identifier: String {
+    var audioIdentifier: String {
         return id ?? "#\(arc4random())"
     }
     

@@ -21,7 +21,7 @@ extension ArchiveFile {
 }
 
 extension ArchiveFile: Audible {
-    var identifier: String {
+    var audioIdentifier: String {
         return original ?? "#\(arc4random())"
     }
     

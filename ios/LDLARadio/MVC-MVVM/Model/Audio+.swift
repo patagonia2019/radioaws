@@ -23,7 +23,7 @@ extension Audio: Modellable {
 }
 
 extension Audio: Audible {
-    var identifier: String {
+    var audioIdentifier: String {
         return id ?? "#\(arc4random())"
     }
     

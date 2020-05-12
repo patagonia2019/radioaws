@@ -35,8 +35,86 @@ extension RTCatalog: Searchable {
 
 }
 
+extension RTCatalog: Sectionable {
+    
+    var sectionIdentifier: String {
+        // reuse same id
+        return audioIdentifier
+    }
+    
+    var isCollapsed: Bool {
+        return !isExpanded
+    }
+    
+    var parentId: String? {
+        if let parent = sectionCatalog ?? audioCatalog {
+            return parent.guideId ?? parent.genreId ?? parent.presetId
+        }
+        return nil
+    }
+    
+    var sectionDetailText: String? {
+        if let text = text ?? subtext {
+            return isOnlyText() ? text : ""
+        }
+        return nil
+    }
+    
+    var queryUrl: URL? {
+        if let queryUrl = url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: queryUrl)
+        }
+        return nil
+    }
+    
+    var content: ([RTCatalog], [RTCatalog]) {
+        var all = [RTCatalog]()
+        var sectionsFilter = [RTCatalog]()
+        var audiosFilter = [RTCatalog]()
+        if let sectionsOfCatalog = sections?.array as? [RTCatalog] {
+            all.append(contentsOf: sectionsOfCatalog)
+        }
+        if let audiosOfCatalog = audios?.array as? [RTCatalog] {
+            all.append(contentsOf: audiosOfCatalog)
+        }
+
+        for element in all {
+            if element.isAudio(), element.url?.count ?? 0 > 0 {
+                if element.audioCatalog == nil {
+                    if element.sectionCatalog == nil {
+                        element.audioCatalog = self
+                    } else {
+                        element.audioCatalog = element.sectionCatalog
+                        element.sectionCatalog = nil
+                    }
+                }
+                audiosFilter.append(element)
+            } else {
+                if element.sectionCatalog == nil {
+                    if element.audioCatalog == nil {
+                        element.sectionCatalog = self
+                    } else {
+                        element.sectionCatalog = element.audioCatalog
+                        element.audioCatalog = nil
+                    }
+                }
+                sectionsFilter.append(element)
+            }
+//            let sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
+//                c1.title < c2.title
+//            })
+//            let audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
+//                c1.title < c2.title
+//            })
+            return (sectionsFilter, audiosFilter)
+        }
+        return ([], [])
+    }
+}
+
 extension RTCatalog: Audible {
-    var identifier: String {
+    
+    var audioIdentifier: String {
         return guideId ?? presetId ?? genreId ?? "#\(arc4random())"
     }
     
@@ -97,7 +175,7 @@ extension RTCatalog {
 
     /// returns the title or text of the catalog
     var titleAndText: String? {
-        return String.join(array: [text, title], separator: ". ")
+        return String.join(array: [text, title, subtext], separator: ". ")
     }
 
     /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse \n Europe \n Radios"
