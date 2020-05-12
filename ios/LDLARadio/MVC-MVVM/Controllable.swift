@@ -20,10 +20,6 @@ protocol Controllable {
 
     func model(forSection section: Int, row: Int) -> ModelType?
 
-    func heightForRow(at section: Int, row: Int) -> CGFloat
-
-    func heightForHeader(at section: Int) -> CGFloat
-
     func title() -> String
 
     func prompt() -> String

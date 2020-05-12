@@ -20,7 +20,49 @@ extension Audio: Modellable {
         ]
         return all(predicate: nil, sortDescriptors: sortedBy) as? [Audio]
     }
+}
 
+extension Audio: Audible {
+    var identifier: String {
+        return id ?? "#\(arc4random())"
+    }
+    
+    var titleText: String? {
+        return title
+    }
+    
+    var subTitleText: String? {
+        return subTitle
+    }
+    
+    var detailText: String? {
+        return detail
+    }
+
+    var infoText: String? {
+        return nil
+    }
+    
+    var placeholderImage: UIImage? {
+        if let placeholder = placeholder {
+            return UIImage.init(named: placeholder)
+        }
+        return nil
+    }
+    
+    var portraitUrl: URL? {
+        if let imageUrl = thumbnailUrl {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+    
+    var audioUrl: URL? {
+        if let urlString = urlString {
+            return URL(string: urlString)
+        }
+        return nil
+    }
 }
 
 extension Audio: Searchable {
@@ -109,8 +151,8 @@ extension Audio {
         audio.title = audioViewModel.title.text
         audio.urlString = audioViewModel.url?.absoluteString
         audio.section = audioViewModel.section
-        audio.descript = audioViewModel.text
-        audio.isBookmark = audioViewModel.isBookmark ?? false
+        audio.descript = audioViewModel.info
+        audio.isBookmark = audioViewModel.isBookmark
   }
 
     /// Using += as a overloading assignment operator
@@ -189,7 +231,6 @@ extension Audio {
                 fatalError()
             }
             audio?.changeBookmark(useRefresh: useRefresh)
-            model.isBookmark = audio?.isBookmark
 
             if useRefresh {
                 CoreDataManager.instance.save()

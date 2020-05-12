@@ -85,14 +85,6 @@ class SearchController: BaseController {
         return nil
     }
 
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        let subModel = model(forSection: section, row: row)
-        if let audioModel = subModel as? AudioViewModel {
-            return CGFloat(audioModel.height())
-        }
-        return CGFloat(CatalogViewModel.cellheight)
-    }
-
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
@@ -114,7 +106,7 @@ class SearchController: BaseController {
             if let rnaStations = RNAStation.search(byName: textToSearch), !rnaStations.isEmpty {
                 let amModels = rnaStations.filter({ (station) -> Bool in
                     station.amUri?.count ?? 0 > 0
-                }).map({ AudioViewModel(stationAm: $0) })
+                }).map({ AudioViewModel(station: $0, isAm: true) })
                 if !amModels.isEmpty {
                     let model = CatalogViewModel()
                     model.isExpanded = false
@@ -127,7 +119,7 @@ class SearchController: BaseController {
                 let fmModels = rnaStations.filter({ (station) -> Bool in
                     guard let fmUri = station.fmUri else { return false }
                     return !fmUri.isEmpty
-                }).map({ AudioViewModel(stationFm: $0) })
+                }).map({ AudioViewModel(station: $0, isAm: false) })
 
                 if !fmModels.isEmpty {
                     let model = CatalogViewModel()
@@ -174,7 +166,7 @@ class SearchController: BaseController {
 
                 for element in catalogs {
                     if element.isAudio(), element.url?.count ?? 0 > 0 {
-                        let viewModel = AudioViewModel(audio: element)
+                        let viewModel = AudioViewModel(catalog: element)
                         if audiosTmp.first(where: { (avm) -> Bool in
                             avm.url == viewModel.url
                         }) == nil {

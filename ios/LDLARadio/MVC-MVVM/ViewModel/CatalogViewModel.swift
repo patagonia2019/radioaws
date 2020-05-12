@@ -27,10 +27,9 @@ class CatalogViewModel: BaseViewModelProtocol {
 
     var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 1)
 
-    var isBookmark: Bool?
     var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.M), isHidden: true, lines: 1)
 
-    var tree: String = ""
+    var tree: String?
 
     var sections = [CatalogViewModel]()
     var audios = [AudioViewModel]()
@@ -45,10 +44,19 @@ class CatalogViewModel: BaseViewModelProtocol {
     var parentId: String?
     var id: String?
     var page: Int = 1
+    
+    var isBookmark: Bool {
+        if !audios.isEmpty {
+            return audios.filter({ (audio) -> Bool in
+                audio.isBookmark
+            }).count == audios.count
+        } else {
+            return false
+        }
+    }
 
     init() {
         title.text = "No more info"
-        tree = "?"
         detail.text = "No more detail"
         selectionStyle = .none
         accessoryType = .none
@@ -56,8 +64,8 @@ class CatalogViewModel: BaseViewModelProtocol {
 
     init(catalog: RTCatalog?) {
         section = AudioViewModel.ControllerName.radioTime.rawValue
-        title.text = catalog?.titleAndText() ?? "No more info"
-        tree = catalog?.titleTree() ?? "?"
+        title.text = catalog?.titleAndText
+        tree = catalog?.titleTree
         isExpanded = catalog?.isExpanded
         id = catalog?.guideId ?? catalog?.genreId ?? catalog?.presetId
         if let parent = catalog?.sectionCatalog ?? catalog?.audioCatalog {
@@ -92,7 +100,7 @@ class CatalogViewModel: BaseViewModelProtocol {
                         element.sectionCatalog = nil
                     }
                 }
-                let viewModel = AudioViewModel(audio: element)
+                let viewModel = AudioViewModel(catalog: element)
                 audiosTmp.append(viewModel)
             } else {
                 if element.sectionCatalog == nil {
@@ -107,14 +115,13 @@ class CatalogViewModel: BaseViewModelProtocol {
                 sectionsTmp.append(viewModel)
             }
             sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
-                c1.title.text < c2.title.text
+                c1.title < c2.title
             })
             audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
-                c1.title.text < c2.title.text
+                c1.title < c2.title
             })
         }
 
-        isBookmark = checkIfBookmarked()
         if audios.isEmpty == false && sections.isEmpty == true {
             isExpanded = nil
         }
@@ -130,7 +137,6 @@ class CatalogViewModel: BaseViewModelProtocol {
         id = archiveCollection?.identifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
         title.text = archiveCollection?.title ?? ""
-        tree = ""
         detail.text = archiveCollection?.detail ?? ""
 
         if let imageUrl = archiveCollection?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -153,7 +159,6 @@ class CatalogViewModel: BaseViewModelProtocol {
             }
         }
 
-        isBookmark = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
 
         text = detail.text
@@ -169,18 +174,8 @@ class CatalogViewModel: BaseViewModelProtocol {
         id = archiveDoc?.identifier
         parentId = archiveDoc?.response?.meta?.identifier ?? archiveDoc?.response?.meta?.collectionIdentifier
         section = AudioViewModel.ControllerName.archiveOrg.rawValue
-        var str = [String]()
-        if let adtitle = archiveDoc?.title {
-            str.append(String(adtitle.prefix(256)))
-        }
-        if let adsubject = archiveDoc?.subject {
-            str.append(String(adsubject.prefix(256)))
-        }
-        if let adcreator = archiveDoc?.creator {
-            str.append(String(adcreator.prefix(256)))
-        }
-        title.text = str.joined(separator: ", ")
-        tree = superTree ?? ""
+        title.text = String.join(array: [archiveDoc?.title, archiveDoc?.subject, archiveDoc?.creator], separator: ". ")
+        tree = superTree
         detail.text = String(archiveDoc?.descript?.prefix(1024) ?? "")
 
         if let imageUrl = archiveDoc?.thumbnailUrlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -193,29 +188,7 @@ class CatalogViewModel: BaseViewModelProtocol {
             url = urlChecked
         }
 
-        isBookmark = checkIfBookmarked()
-
-        var textStr = [String]()
-        if !tree.isEmpty {
-            textStr.append(tree)
-        }
-        if let adtitle = archiveDoc?.title {
-            textStr.append("Title: \(adtitle)")
-        }
-        if let adsubject = archiveDoc?.subject {
-            textStr.append("Subject: \(adsubject)")
-        }
-        if let adcreator = archiveDoc?.creator {
-            textStr.append("Creator: \(adcreator)")
-        }
-        if let descript = archiveDoc?.descript {
-            textStr.append(descript)
-        }
-        if let publicDate = archiveDoc?.publicDate {
-            textStr.append("Date of Publish: \(publicDate)")
-        }
-
-        text = textStr.joined(separator: ".\n")
+        text = String.join(array: [tree, archiveDoc?.title, archiveDoc?.subject, archiveDoc?.creator, archiveDoc?.descript, archiveDoc?.publicDate], separator: "\n")
         isExpanded = sections.isEmpty ? nil : isAlreadyExpanded
 
         let sortByTitle = [NSSortDescriptor(key: "updatedAt", ascending: true)]
@@ -251,7 +224,6 @@ class CatalogViewModel: BaseViewModelProtocol {
                 audios.append(audio)
             }
         }
-        isBookmark = checkIfBookmarked()
         isExpanded = isAlreadyExpanded
 
         text = desconcierto?.obs ?? ""
@@ -261,17 +233,6 @@ class CatalogViewModel: BaseViewModelProtocol {
             placeholderImage = UIImage.init(named: imageName)
         }
 
-    }
-
-    /// to know if the model is in bookmark
-    func checkIfBookmarked() -> Bool? {
-        if !audios.isEmpty {
-            return audios.filter({ (audio) -> Bool in
-                audio.isBookmark ?? false
-            }).count == audios.count
-        } else {
-            return nil
-        }
     }
 
     func iconText() -> String {

@@ -33,7 +33,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        paintBgView()
+//        paintBgView()
         expandButton?.setTitleColor(UIColor.tangerine, for: .normal)
         expandButton?.setTitleColor(UIColor.plum, for: .highlighted)
         portraitThumbnail()

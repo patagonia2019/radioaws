@@ -66,13 +66,6 @@ class RNAController: BaseController {
         return nil
     }
 
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        if let model = model(forSection: section, row: row) as? AudioViewModel {
-            return CGFloat(model.height())
-        }
-        return 0
-    }
-
     override func prompt() -> String {
         return "Radio Nacional Argentina"
     }
@@ -83,8 +76,8 @@ class RNAController: BaseController {
         }
         lastUpdated = dial.updatedAt
 
-        amModels = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).map({ AudioViewModel(stationAm: $0 as? RNAStation) }) ?? [AudioViewModel]()
-        fmModels = dial.stations?.filtered(using: NSPredicate(format: "fmUri.length > 0")).map({ AudioViewModel(stationFm: $0 as? RNAStation) }) ?? [AudioViewModel]()
+        amModels = dial.stations?.filtered(using: NSPredicate(format: "amUri.length > 0")).map({ AudioViewModel(station: $0 as? RNAStation, isAm: true) }) ?? [AudioViewModel]()
+        fmModels = dial.stations?.filtered(using: NSPredicate(format: "fmUri.length > 0")).map({ AudioViewModel(station: $0 as? RNAStation, isAm: false) }) ?? [AudioViewModel]()
     }
 
     private func updateModels() {

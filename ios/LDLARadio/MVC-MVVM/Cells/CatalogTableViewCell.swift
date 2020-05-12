@@ -23,35 +23,34 @@ class CatalogTableViewCell: UITableViewCell {
 
     var model: CatalogViewModel? = nil {
         didSet {
-            if let model = model {
-                iconView.text = model.iconText()
-                iconView.textColor = model.iconColor
-                detailView.text = model.title.text
-                detailView.textColor = model.title.color
-                detailView.font = model.title.font
-                selectionStyle = model.selectionStyle
-                accessoryType = model.accessoryType
-
-                thumbnailView.image = model.placeholderImage
-                if let thumbnailUrl = model.thumbnailUrl {
-                    thumbnailView.isHidden = false
-                    iconView.isHidden = true
-                    thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (response) in
-                        if response.error != nil {
-                            self.iconView.isHidden = false
-                            self.thumbnailView.isHidden = true
-                        } else {
-                            self.portraitThumbnail()
-                        }
-                    }
-                } else {
-                    thumbnailView.isHidden = true
-                    iconView.isHidden = false
-                }
-            }
+            guard let model = model else { return }
             bookmarkButton.isHidden = true
-            infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
+            infoButton.isHidden = !(model.text?.isEmpty ?? false)
 
+            iconView.text = model.iconText()
+            iconView.textColor = model.iconColor
+            detailView.text = model.title.text
+            detailView.textColor = model.title.color
+            detailView.font = model.title.font
+            selectionStyle = model.selectionStyle
+            accessoryType = model.accessoryType
+            
+            thumbnailView.image = model.placeholderImage
+            if let thumbnailUrl = model.thumbnailUrl {
+                thumbnailView.isHidden = false
+                iconView.isHidden = true
+                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (response) in
+                    if response.error != nil {
+                        self.iconView.isHidden = false
+                        self.thumbnailView.isHidden = true
+                    } else {
+                        self.portraitThumbnail()
+                    }
+                }
+            } else {
+                thumbnailView.isHidden = true
+                iconView.isHidden = false
+            }
         }
     }
 
@@ -67,7 +66,7 @@ class CatalogTableViewCell: UITableViewCell {
         iconView.textColor = .red
         thumbnailView.isHidden = true
         iconView.isHidden = true
-        detailView.text = "No Info"
+        detailView.text = nil
         detailView.textColor = .red
         selectionStyle = .none
         accessoryType = .none

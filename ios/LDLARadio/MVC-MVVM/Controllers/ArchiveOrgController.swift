@@ -64,14 +64,6 @@ class ArchiveOrgController: BaseController {
         return nil
     }
 
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        let subModel = model(forSection: section, row: row)
-        if let audioModel = subModel as? AudioViewModel {
-            return CGFloat(audioModel.height())
-        }
-        return CGFloat(CatalogViewModel.cellheight) * 1.2
-    }
-
     private func updateModels() {
         if let collections = ArchiveCollection.all() {
             func isExpanded(ac: ArchiveCollection?) -> Bool {

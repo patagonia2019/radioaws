@@ -46,14 +46,12 @@ class BaseController: Controllable {
                         if let other = model(forSection: j, row: k) as? AudioViewModel {
                             if other.isPlaying {
                                 if other.urlString() != audio.urlString() {
-                                    other.isPlaying = false
                                     StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
                                 }
                             }
                         }
                     }
                 }
-                audio.isPlaying = true
 
                 Analytics.logFunction(function: "embeddedplay",
                                       parameters: ["audio": audio.title.text as AnyObject,
@@ -79,21 +77,12 @@ class BaseController: Controllable {
                 guard let context = RestApi.instance.context else { fatalError() }
 
                 context.performAndWait {
-                    audio.isPlaying = false
                     CoreDataManager.instance.save()
                 }
 
                 StreamPlaybackManager.instance.setAudioForPlayback(nil, nil)
             }
         }
-    }
-
-    func heightForRow(at section: Int, row: Int) -> CGFloat {
-        return 45
-    }
-
-    func heightForHeader(at section: Int) -> CGFloat {
-        return CGFloat(CatalogViewModel.cellheight)
     }
 
     func title() -> String {

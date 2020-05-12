@@ -54,13 +54,6 @@ class ElDesconciertoController: BaseController {
         return nil
     }
 
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        if let model = model(forSection: section, row: row) as? AudioViewModel {
-            return CGFloat(model.height())
-        }
-        return 0
-    }
-
     private func updateModels() {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
             stream.streamUrl1?.count ?? 0 > 0

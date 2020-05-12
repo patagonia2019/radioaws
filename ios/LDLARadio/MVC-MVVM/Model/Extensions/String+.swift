@@ -20,8 +20,24 @@ extension String {
     var html2AttributedString: NSAttributedString? {
         return Data(utf8).html2AttributedString
     }
+    
     func html2String() -> String {
         return html2AttributedString?.string ?? self
     }
-
+    
+    static func join(array: [String?], unique: Bool = true, separator: String = "\n") -> String? {
+        var str = [String]()
+        for text in array {
+            if let text = text {
+                if unique {
+                    if str.joined().contains(text) {
+                        continue
+                    }
+                }
+                str.append(text)
+            }
+        }
+        return str.isEmpty ? nil : str.joined(separator: separator)
+    }
+    
 }

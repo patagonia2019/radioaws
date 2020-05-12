@@ -10,9 +10,9 @@ import Foundation
 import CoreData
 import Groot
 
-extension ArchiveDoc {
+public extension ArchiveDoc {
 
-    override public func didChangeValue(forKey key: String) {
+    override func didChangeValue(forKey key: String) {
         if key == "creatorTrf" {
             setPrimitiveValue(parseField(field: creatorTrf), forKey: "creator")
         } else if key == "subjectTrf" {
@@ -22,7 +22,9 @@ extension ArchiveDoc {
         }
         super.didChangeValue(forKey: key)
     }
+}
 
+extension ArchiveDoc {
     func thumbnailUrlString() -> String? {
         if let identifier = identifier {
             return "\(RestApi.Constants.Service.archServer)/services/img/\(identifier)"

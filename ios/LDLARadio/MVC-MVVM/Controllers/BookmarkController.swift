@@ -74,14 +74,6 @@ class BookmarkController: BaseController {
         return nil
     }
 
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        let subModel = model(forSection: section, row: row)
-        if let audioModel = subModel as? AudioViewModel {
-            return CGFloat(audioModel.height())
-        }
-        return CGFloat(CatalogViewModel.cellheight)
-    }
-
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {

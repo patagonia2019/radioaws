@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension ArchiveFile {
     func urlString() -> String? {
@@ -17,4 +18,46 @@ extension ArchiveFile {
         }
         return "https://\(server)\(dir)\(original)"
     }
+}
+
+extension ArchiveFile: Audible {
+    var identifier: String {
+        return original ?? "#\(arc4random())"
+    }
+    
+    var titleText: String? {
+        return String.join(array: [title, album, detail?.doc?.title], separator: ". ")
+    }
+    
+    var subTitleText: String? {
+        return String.join(array: [detail?.doc?.creator, artist, format], separator: ". ")
+    }
+    
+    var detailText: String? {
+        return original
+    }
+    
+    var infoText: String? {
+        return String.join(array: [titleText, subTitleText, detailText, detail?.doc?.descript])
+    }
+    
+    var placeholderImage: UIImage? {
+        let imageName = ArchiveDoc.placeholderImageName
+        return UIImage.init(named: imageName)
+    }
+    
+    var portraitUrl: URL? {
+        if let imageUrl = detail?.image?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+    
+    var audioUrl: URL? {
+        if let audioUrl = urlString()?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: audioUrl)
+        }
+        return nil
+    }
+
 }

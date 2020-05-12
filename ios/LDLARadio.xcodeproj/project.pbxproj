@@ -83,6 +83,8 @@
 		987DA0B422D6464800F34BD3 /* StationListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708AAD9F1E27B586004D88C3 /* StationListManager.swift */; };
 		987DA0BF22D663E700F34BD3 /* LDLARadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */; };
 		987DA0C622D664E400F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */; };
+		989DC5F92461A8B200472CD6 /* Modellable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989DC5F82461A8B200472CD6 /* Modellable+.swift */; };
+		989DC5FB2461A8DB00472CD6 /* Audible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989DC5FA2461A8DB00472CD6 /* Audible.swift */; };
 		989E41E92348993400975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
 		989E41EB2349FF0100975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
 		989E41EC234A06B700975B91 /* NSOrderedSet+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41E82348993400975B91 /* NSOrderedSet+.swift */; };
@@ -137,7 +139,7 @@
 		42554D4B1D09EEDC0040BD4F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		425DD0A41D0D146900F96325 /* Stream+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stream+.swift"; sourceTree = "<group>"; };
 		426CB19F1D054A3F0044B8A7 /* AudioTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AudioTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		428139EE1CE44B7300972264 /* Radio 3.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radio 3.1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		428139EE1CE44B7300972264 /* Locos Azotea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Locos Azotea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		428139F11CE44B7300972264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		428139F61CE44B7300972264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		428139F81CE44B7300972264 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 		983E01EF22F459D2008370BA /* LabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
 		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		983E020022F6775E008370BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		9849D7A9241349A9005D8678 /* 4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 4.0.xcdatamodel; sourceTree = "<group>"; };
 		9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMetaCrash.json; sourceTree = "<group>"; };
 		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
 		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 		987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LDLARadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		987DA0BE22D663E700F34BD3 /* LDLARadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioTests.swift; sourceTree = "<group>"; };
 		987DA0C022D663E700F34BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		989DC5F82461A8B200472CD6 /* Modellable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Modellable+.swift"; sourceTree = "<group>"; };
+		989DC5FA2461A8DB00472CD6 /* Audible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audible.swift; sourceTree = "<group>"; };
 		989E41E82348993400975B91 /* NSOrderedSet+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+.swift"; sourceTree = "<group>"; };
 		989E41EA2349FF0100975B91 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeOtherTimeTests.swift; sourceTree = "<group>"; };
@@ -298,7 +303,7 @@
 		428139EF1CE44B7300972264 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				428139EE1CE44B7300972264 /* Radio 3.1.app */,
+				428139EE1CE44B7300972264 /* Locos Azotea.app */,
 				987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */,
 			);
 			name = Products;
@@ -452,6 +457,8 @@
 				983E01ED22F45936008370BA /* BaseViewModelProtocol.swift */,
 				9825BDD122EB6EA800E418F2 /* Controllable.swift */,
 				9825BDD322EB710B00E418F2 /* Modellable.swift */,
+				989DC5FA2461A8DB00472CD6 /* Audible.swift */,
+				989DC5F82461A8B200472CD6 /* Modellable+.swift */,
 				9825BDDB22ECEF4900E418F2 /* Searchable.swift */,
 				9825BDD622EB758D00E418F2 /* Downloadable.swift */,
 			);
@@ -516,7 +523,7 @@
 			);
 			name = LDLARadio;
 			productName = LDLARadio;
-			productReference = 428139EE1CE44B7300972264 /* Radio 3.1.app */;
+			productReference = 428139EE1CE44B7300972264 /* Locos Azotea.app */;
 			productType = "com.apple.product-type.application";
 		};
 		987DA0BB22D663E700F34BD3 /* LDLARadioTests */ = {
@@ -671,6 +678,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -682,6 +690,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -739,6 +748,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/JFCore/JFCore.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -749,6 +759,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JFCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -775,6 +786,7 @@
 				9808511322E6A1C10013B67C /* AudioViewController.swift in Sources */,
 				98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */,
 				424BF6CD1CEFB5ED0098BB15 /* StreamPlaybackManager.swift in Sources */,
+				989DC5F92461A8B200472CD6 /* Modellable+.swift in Sources */,
 				983E020122F6775E008370BA /* SearchController.swift in Sources */,
 				425DD0A51D0D146900F96325 /* Stream+.swift in Sources */,
 				9825BDD922ECE5AB00E418F2 /* Model+.swift in Sources */,
@@ -792,6 +804,7 @@
 				983E01EE22F45936008370BA /* BaseViewModelProtocol.swift in Sources */,
 				9808512122E6DD370013B67C /* RNADial+.swift in Sources */,
 				9825BDD222EB6EA800E418F2 /* Controllable.swift in Sources */,
+				989DC5FB2461A8DB00472CD6 /* Audible.swift in Sources */,
 				9808512B22E782C40013B67C /* RNABand+.swift in Sources */,
 				98B53CF923012730003F50EE /* ArchiveDoc+.swift in Sources */,
 				98B53CEB22FFE872003F50EE /* ArchiveMeta+.swift in Sources */,
@@ -1015,14 +1028,14 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
-				PRODUCT_NAME = "Radio 3.1";
+				PRODUCT_NAME = "Locos Azotea";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1042,14 +1055,14 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
-				PRODUCT_NAME = "Radio 3.1";
+				PRODUCT_NAME = "Locos Azotea";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = none;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1153,6 +1166,7 @@
 		987DA0B022D639BD00F34BD3 /* com.mobilepatagonia.LDLARadio.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9849D7A9241349A9005D8678 /* 4.0.xcdatamodel */,
 				987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */,
 			);
 			currentVersion = 987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */;

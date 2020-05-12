@@ -20,9 +20,7 @@ class AudioTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var thumbnailView: UIImageView!
-    @IBOutlet weak var downloadStateLabel: UILabel!
-    @IBOutlet weak var downloadProgressView: UIProgressView!
-    @IBOutlet weak var bookmarkButton: UIButton!
+    @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var infoButton: UIButton!
 
     weak var delegate: AudioTableViewCellDelegate?
@@ -31,40 +29,34 @@ class AudioTableViewCell: UITableViewCell {
 
     var model: AudioViewModel? = nil {
         didSet {
-            let labels = [downloadStateLabel, subtitleLabel, titleLabel]
-            let texts = [model?.detail, model?.subTitle, model?.title]
-            for i in 0..<3 {
-                if let text = texts[i]?.text, !text.isEmpty {
-                    labels[i]?.isHidden = false
-                    labels[i]?.text = text
-                    labels[i]?.textColor = texts[i]?.color
-                    labels[i]?.font = texts[i]?.font
+            guard let model = model else { return }
+            let labels = [detailLabel, subtitleLabel, titleLabel]
+            let texts = [model.detail, model.subTitle, model.title]
+            for i in 0..<texts.count {
+                let text = texts[i].text
+                let label = labels[i]
+                if !texts[i].isEmpty {
+                    label?.isHidden = false
+                    label?.text = text
+                    label?.textColor = texts[i].color
+                    label?.font = texts[i].font
                 } else {
-                    labels[i]?.isHidden = true
-                    if i == 0 {
-                        titleLabel.numberOfLines = 3
-                    } else if i == 1 {
-                        titleLabel.numberOfLines += 2
-                    }
+                    label?.text = nil
                 }
             }
 
-            thumbnailView.image = model?.placeholderImage
-            if let thumbnailUrl = model?.thumbnailUrl {
-                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model?.placeholderImage) { (_) in
+            thumbnailView.image = model.placeholderImage
+            if let thumbnailUrl = model.thumbnailUrl {
+                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (_) in
                     self.model?.image = self.thumbnailView.image
                     self.portraitThumbnail()
                 }
             }
 
-            if model?.isPlaying ?? false {
-                gradientPlayBg.isHidden = false
-            } else {
-                gradientPlayBg.isHidden = true
-            }
+            gradientPlayBg.isHidden = model.isPlaying ? false : true
             selectionStyle = .none
             // show thumbnail, and hide logo
-            infoButton.isHidden = !(model?.text?.count ?? 0 > 0)
+            infoButton.isHidden = false
 
             setNeedsLayout()
         }
@@ -95,14 +87,10 @@ class AudioTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        for label in [ downloadStateLabel, subtitleLabel, titleLabel] {
-            label?.text = ""
-            label?.isHidden = false
-            label?.numberOfLines = 1
+        for label in [detailLabel, subtitleLabel, titleLabel] {
+            label?.text = nil
         }
 
-        downloadProgressView.isHidden = true
-        bookmarkButton.isHighlighted = false
         infoButton.isHidden = true
         thumbnailView.image = nil
     }
@@ -111,11 +99,6 @@ class AudioTableViewCell: UITableViewCell {
         super.layoutSubviews()
         gradientPlayBg.frame = contentView.bounds
         gradientBg.frame = contentView.bounds
-    }
-
-    @IBAction func bookmarkAction(_ sender: UIButton?) {
-        bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
-        delegate?.audioTableViewCell(self, bookmarkDidChange: bookmarkButton.isHighlighted)
     }
 
     @IBAction func infoAction(_ sender: UIButton?) {

@@ -33,6 +33,14 @@ extension ArchiveCollection: Creational {
 
 }
 
+public extension ArchiveCollection {
+
+    /// Update the `updatedAt` field in the entity when the model is created
+    override func awakeFromInsert() {
+        setPrimitiveValue(Date(), forKey: "updatedAt")
+    }
+}
+
 extension ArchiveCollection {
 
     /// Fetch an object by url
@@ -54,15 +62,6 @@ extension ArchiveCollection {
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "identifier", ascending: true)]
         let array = try? context.fetch(req)
         return array
-    }
-
-}
-
-extension ArchiveCollection {
-
-    /// Update the `updatedAt` field in the entity when the model is created
-    override public func awakeFromInsert() {
-        setPrimitiveValue(Date(), forKey: "updatedAt")
     }
 
     /// Fetch an object by id

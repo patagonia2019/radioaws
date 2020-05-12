@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 extension RTCatalog: Modellable {
     /// Function to obtain all the catalogs
@@ -34,44 +35,74 @@ extension RTCatalog: Searchable {
 
 }
 
-extension RTCatalog {
+extension RTCatalog: Audible {
+    var identifier: String {
+        return guideId ?? presetId ?? genreId ?? "#\(arc4random())"
+    }
+    
+    var titleText: String? {
+        return titleAndText
+    }
+    
+    var subTitleText: String? {
+        return subtext
+    }
+    
+    var detailText: String? {
+        if let currentTrack = currentTrack,
+            subTitleText != currentTrack,
+            let playing = playing {
+            return [playing, currentTrack].joined(separator: "\n")
+        }
+        return playing ?? currentTrack ?? audioCatalog?.titleAndText ?? sectionCatalog?.titleAndText
+    }
+    
+    var infoText: String? {
+        return String.join(array: [subTitleText, currentTrack != subTitleText ? currentTrack : nil, bitrate, formats], separator: ". ")
+    }
+    
+    var placeholderImage: UIImage? {
+        let imageName = RTCatalog.placeholderImageName
+        return UIImage.init(named: imageName)
+    }
+    
+    var portraitUrl: URL? {
+        if let imageUrl = image?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+    
+    var audioUrl: URL? {
+        if let audioUrl = url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: audioUrl)
+        }
+        return nil
+    }
+}
 
-    override public func didChangeValue(forKey key: String) {
+public extension RTCatalog {
+
+    override func didChangeValue(forKey key: String) {
         if key == "reliabilityTrf" {
             setPrimitiveValue(parseField(field: reliabilityTrf), forKey: "reliability")
         } else if key == "bitrateTrf" {
             setPrimitiveValue(parseField(field: bitrateTrf), forKey: "bitrate")
         }
         super.didChangeValue(forKey: key)
-
     }
+}
+
+extension RTCatalog {
 
     /// returns the title or text of the catalog
-    func titleAndText() -> String? {
-        var str = [String]()
-        if let text = text {
-            str.append(text)
-        }
-        if let title = title, !str.contains(title) {
-            str.append(title)
-        }
-        return str.joined(separator: ". ")
+    var titleAndText: String? {
+        return String.join(array: [text, title], separator: ". ")
     }
 
-    /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse > Europe > Radios"
-    func titleTree() -> String {
-        var str = ArraySlice<String>()
-        if let t0 = sectionCatalog?.titleTree() {
-            str.append(t0 + "> ")
-        }
-        if let t1 = titleAndText() {
-            str.append(t1)
-        }
-//        /// Does not allow more than 30 characters in prompt
-//        while str.joined().count > 30 && str.count > 1 {
-//            _ = str.popFirst()
-//        }
-        return str.joined()
+    /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse \n Europe \n Radios"
+    var titleTree: String? {
+        return String.join(array: [sectionCatalog?.titleTree, titleAndText], separator: " > ")
     }
 
     /// convenient for debug or print info about catalog

@@ -8,12 +8,74 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 extension RNAStation: Modellable {
 
     /// Function to obtain all the albums sorted by title
     static func all() -> [RNAStation]? {
         return all(predicate: nil, sortDescriptors: [NSSortDescriptor.init(key: "lastName", ascending: true)]) as? [RNAStation]
+    }
+}
+
+extension RNAStation {
+    var identifier: String {
+        return id ?? "#\(arc4random())"
+    }
+    
+    var titleText: String? {
+        return firstName
+    }
+    
+    var subTitleText: String? {
+        return lastName
+    }
+    
+    var infoText: String? {
+        return nil
+    }
+    
+    var placeholderImage: UIImage? {
+        return UIImage.init(named: RNAStation.placeholderImageName)
+    }
+}
+
+class RNAStationAM: RNAStation { }
+class RNAStationFM: RNAStation { }
+
+extension RNAStationAM: Audible {
+    
+    var detailText: String? {
+        return String.join(array: [dialAM, amCurrentProgram?.programName], separator: " ")
+    }
+
+    var portraitUrl: URL? {
+        return imageUrl(usingUri: image)
+            ?? imageUrl(usingUri: amCurrentProgram?.image)
+            ?? imageUrl(usingUri: amCurrentProgram?.imageStation)
+    }
+
+    var audioUrl: URL? {
+        return streamUrl(usingBaseUrl: url1, bandUri: amUri)
+            ?? streamUrl(usingBaseUrl: url2, bandUri: amUri)
+    }
+}
+
+extension RNAStationFM: Audible {
+    
+    var detailText: String? {
+        return String.join(array: [dialFM, fmCurrentProgram?.programName], separator: " ")
+    }
+    
+    var portraitUrl: URL? {
+        return imageUrl(usingUri: image)
+            ?? imageUrl(usingUri: fmCurrentProgram?.image)
+            ?? imageUrl(usingUri: fmCurrentProgram?.imageStation)
+    }
+
+    var audioUrl: URL? {
+        return streamUrl(usingBaseUrl: url1, bandUri: fmUri)
+            ?? streamUrl(usingBaseUrl: url2, bandUri: fmUri)
     }
 
 }
@@ -38,6 +100,25 @@ extension RNAStation: Searchable {
         req.predicate = NSPredicate(format: "lastName = %@ OR lastName CONTAINS[cd] %@ OR firstName = %@ OR firstName CONTAINS[cd] %@", name, name, name, name)
         let array = try? context.fetch(req)
         return array
+    }
+}
+
+fileprivate extension RNAStation {
+    func imageUrl(usingUri uri: String?) -> URL? {
+        if let uri = uri, !uri.isEmpty,
+            let urlChecked = URL(string: RestApi.Constants.Service.url(with: "/files/\(uri)", baseUrl: RestApi.Constants.Service.rnaServer)) {
+            return urlChecked
+        }
+        return nil
+    }
+    
+    func streamUrl(usingBaseUrl baseUrl: String?, bandUri: String?) -> URL? {
+        if let baseUrl = baseUrl, !baseUrl.isEmpty,
+            let bandUri = bandUri, !bandUri.isEmpty,
+            let port = port, !port.isEmpty {
+            return URL(string: "http://\(baseUrl):\(port)\(bandUri)")
+        }
+        return nil
     }
 
 }

@@ -114,6 +114,12 @@ class AudioViewController: UITableViewController {
             addRefreshControl()
         }
         tableView.remembersLastFocusedIndexPath = true
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Commons.Size.cellHeight
+
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = Commons.Size.cellHeight
+
         HeaderTableView.setup(tableView: tableView)
 
         if controller is SearchController {
@@ -297,11 +303,9 @@ class AudioViewController: UITableViewController {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
             DispatchQueue.main.async {
-                if let model = object as? AudioViewModel {
-                    model.isPlaying = !model.isPlaying
+                if (object as? AudioViewModel) != nil {
                     self.reloadData()
-                    model.isPlaying = !model.isPlaying
-                }
+                }   						
                 DispatchQueue.global(qos: .background).async {
                     self.controller.play(forSection: indexPath.section, row: indexPath.row)
                     DispatchQueue.main.async {
@@ -450,18 +454,6 @@ class AudioViewController: UITableViewController {
         return headerView
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return controller.heightForRow(at: indexPath.section, row: indexPath.row)
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if isFullScreen {
-            return 0
-        }
-        let h = controller.heightForHeader(at: section)
-        return h
-    }
-
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
@@ -549,6 +541,10 @@ class AudioViewController: UITableViewController {
             cell.clear()
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Commons.Size.sectionHeight
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

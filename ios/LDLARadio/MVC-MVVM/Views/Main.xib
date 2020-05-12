@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="Radio_3_1" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="OUZ-ye-H4L" customClass="HeaderTableView" customModule="Locos_Azotea" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="540" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -97,16 +97,26 @@
                                 <constraint firstItem="38Z-dc-wfH" firstAttribute="height" secondItem="m8n-iJ-bl2" secondAttribute="height" constant="-10" id="xfI-qu-uiD"/>
                             </constraints>
                         </stackView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ci2-y7-z21">
+                            <rect key="frame" x="0.0" y="69" width="540" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="ur7-RW-L1r"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" multiplier="1.2" id="2v1-dI-X7p"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerY" secondItem="bMn-wc-ut7" secondAttribute="centerY" id="3ej-bv-GYU"/>
+                        <constraint firstItem="ci2-y7-z21" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="Fv1-jN-2Fs"/>
+                        <constraint firstItem="ci2-y7-z21" firstAttribute="top" secondItem="m8n-iJ-bl2" secondAttribute="bottom" constant="9" id="HO3-sT-Vnk"/>
                         <constraint firstItem="J0S-Qz-QFX" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="RZU-Jn-fFm"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" id="dTb-Xx-mMe"/>
                         <constraint firstItem="J0S-Qz-QFX" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="dpB-zq-nPj"/>
                         <constraint firstItem="J0S-Qz-QFX" firstAttribute="height" secondItem="bMn-wc-ut7" secondAttribute="height" multiplier="0.8" id="gfk-rJ-IH7"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="centerX" secondItem="bMn-wc-ut7" secondAttribute="centerX" id="irT-1B-nFL"/>
                         <constraint firstItem="m8n-iJ-bl2" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="l5q-GT-u36"/>
+                        <constraint firstItem="ci2-y7-z21" firstAttribute="width" secondItem="bMn-wc-ut7" secondAttribute="width" id="lq3-U4-S6y"/>
                     </constraints>
                 </view>
             </subviews>

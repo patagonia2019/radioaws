@@ -29,7 +29,7 @@ class RestApi {
             static let timeout: TimeInterval = 10
 
             /// The current server where all the requests were made.
-            static let ldlaServer: String = UserDefaults.standard.string(forKey: "server_url") ?? "http://adminradio.serveftp.com:35111"
+            static let ldlaServer: String = UserDefaults.standard.string(forKey: "server_url") ?? "https://loslocosdelaazotea.sa.ngrok.io"
 
             /// RT Server
             static let rtServer: String = "https://api.radiotime.com"

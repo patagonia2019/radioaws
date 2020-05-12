@@ -33,7 +33,6 @@ class RadioTimeController: BaseController {
         if let model = mainModel {
             if section < model.sections.count {
                 let subModel = model.sections[section]
-                Log.debug("%@ %@", subModel.title.text, (subModel.isExpanded ?? false) ? "-" : "+")
                 if subModel.isExpanded == false {
                     return 0
                 }
@@ -73,14 +72,6 @@ class RadioTimeController: BaseController {
             }
         }
         return nil
-    }
-
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        let subModel = model(forSection: section, row: row)
-        if let audioModel = subModel as? AudioViewModel {
-            return CGFloat(audioModel.height())
-        }
-        return CGFloat(CatalogViewModel.cellheight)
     }
 
     override func prompt() -> String {

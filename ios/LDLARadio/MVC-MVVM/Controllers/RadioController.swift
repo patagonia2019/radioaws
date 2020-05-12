@@ -42,17 +42,6 @@ class RadioController: BaseController {
         return catalogViewModel
     }
 
-    override func heightForHeader(at section: Int) -> CGFloat {
-        return 0
-    }
-
-    override func heightForRow(at section: Int, row: Int) -> CGFloat {
-        if let model = model(forSection: section, row: row) as? AudioViewModel {
-            return CGFloat(model.height())
-        }
-        return 0
-    }
-
     private func updateModels() {
         if let streams = Stream.all()?.filter({ (stream) -> Bool in
             stream.url?.count ?? 0 > 0

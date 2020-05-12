@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1100"
+   LastUpgradeVersion = "1140"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "428139ED1CE44B7300972264"
-               BuildableName = "Radio 3.1.app"
+               BuildableName = "Locos Azotea.app"
                BlueprintName = "LDLARadio"
                ReferencedContainer = "container:LDLARadio.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "Radio 3.1.app"
+            BuildableName = "Locos Azotea.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "Radio 3.1.app"
+            BuildableName = "Locos Azotea.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>
@@ -102,7 +102,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "428139ED1CE44B7300972264"
-            BuildableName = "Radio 3.1.app"
+            BuildableName = "Locos Azotea.app"
             BlueprintName = "LDLARadio"
             ReferencedContainer = "container:LDLARadio.xcodeproj">
          </BuildableReference>

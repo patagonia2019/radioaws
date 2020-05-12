@@ -21,12 +21,12 @@ extension UIViewController {
             let controller = controller,
             let object = controller.model(forSection: indexPath.section, row: indexPath.row) {
             if let audio = object as? AudioViewModel {
-                text.append("Play \"\(audio.title.text)\" Enjoy! ;)")
+                text.append("Play \"\(audio.title.text ?? "audio")\" Enjoy! ;)")
                 let cell = tableView.cellForRow(at: indexPath) as? AudioTableViewCell
                 image = cell?.thumbnailView.image ?? audio.placeholderImage
                 shareUrl = audio.urlAsset()?.url
             } else if let section = object as? CatalogViewModel {
-                text.append("Play \"\(section.title.text)\" Enjoy! ;)")
+                text.append("Play \"\(section.title.text ?? "section")\" Enjoy! ;)")
                 shareUrl = section.url
             }
             text.append("\n")

@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import CoreData
+import UIKit
 
 extension Stream: Modellable {
 
@@ -18,6 +19,55 @@ extension Stream: Modellable {
                    sortDescriptors: [NSSortDescriptor(key: "station.name",
                                                       ascending: true)])
             as? [Stream]
+    }
+}
+
+extension Stream: Audible {
+    
+    var identifier: String {
+        return "\(id)"
+    }
+    
+    var titleText: String? {
+        return station?.name
+    }
+    
+    var subTitleText: String? {
+        var str = [String]()
+        if let cityName = station?.city?.name, !cityName.isEmpty {
+            str.append(cityName)
+        }
+        if let districtName = station?.city?.district?.name, !districtName.isEmpty {
+            str.append(districtName)
+        }
+        return str.isEmpty ? nil : str.joined(separator: ". ")
+    }
+    
+    var detailText: String? {
+        return station?.tuningDial
+    }
+    
+    var infoText: String? {
+        return String.join(array: [subTitleText, detailText], separator: ". ")
+    }
+    
+    var placeholderImage: UIImage? {
+        let imageName = Stream.placeholderImageName
+        return UIImage.init(named: imageName)
+    }
+    
+    var portraitUrl: URL? {
+        if let imageUrl = station?.imageUrl?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: imageUrl)
+        }
+        return nil
+    }
+    
+    var audioUrl: URL? {
+        if let audioUrl = url?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
+            return URL(string: audioUrl)
+        }
+        return nil
     }
 }
 
