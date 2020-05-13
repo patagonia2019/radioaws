@@ -73,6 +73,7 @@
 		983E01FC22F65E70008370BA /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDDB22ECEF4900E418F2 /* Searchable.swift */; };
 		983E01FD22F65E73008370BA /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825BDD622EB758D00E418F2 /* Downloadable.swift */; };
 		983E020122F6775E008370BA /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983E020022F6775E008370BA /* SearchController.swift */; };
+		98661AFF246C0B6900CAE6A7 /* Audio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98661AFE246C0B6900CAE6A7 /* Audio.storyboard */; };
 		9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
 		9866974F2302C42300CD9258 /* ArchiveMeta+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B53CEA22FFE872003F50EE /* ArchiveMeta+.swift */; };
 		986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */ = {isa = PBXBuildFile; fileRef = 9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */; };
@@ -199,6 +200,7 @@
 		983E01F822F5EBCC008370BA /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		983E020022F6775E008370BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		9849D7A9241349A9005D8678 /* 4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 4.0.xcdatamodel; sourceTree = "<group>"; };
+		98661AFE246C0B6900CAE6A7 /* Audio.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Audio.storyboard; sourceTree = "<group>"; };
 		9866974D2302C3B200CD9258 /* ArchiveOrgMetaCrash.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ArchiveOrgMetaCrash.json; sourceTree = "<group>"; };
 		986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElDesconciertoController.swift; sourceTree = "<group>"; };
 		986EBCC622EE11C8001AAF0A /* Desconcierto+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Desconcierto+.swift"; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				428139F51CE44B7300972264 /* Main.storyboard */,
+				98661AFE246C0B6900CAE6A7 /* Audio.storyboard */,
 				98D7149022EF937F00983818 /* Main.xib */,
 				9825BDCD22EAE49500E418F2 /* Launch Screen.storyboard */,
 				9808511222E6A1C10013B67C /* AudioViewController.swift */,
@@ -624,6 +627,7 @@
 				980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */,
 				98FF7955234AC5F000B5EA04 /* com.mobilepatagonia.LDLARadio.sqlite3 in Resources */,
 				9825BDCE22EAE49500E418F2 /* Launch Screen.storyboard in Resources */,
+				98661AFF246C0B6900CAE6A7 /* Audio.storyboard in Resources */,
 				70D4EC051E3064EA008DE753 /* LDLARadio.html in Resources */,
 				98D7149122EF938000983818 /* Main.xib in Resources */,
 				986697502302D93000CD9258 /* ArchiveOrgMetaCrash.json in Resources */,

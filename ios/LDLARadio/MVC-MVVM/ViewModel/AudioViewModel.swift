@@ -70,6 +70,7 @@ class AudioViewModel: BaseViewModelProtocol {
     var thumbnailUrl: URL?
     var placeholderImageName: String?
     var placeholderImage: UIImage?
+    var showSeparator: Bool = true
 
     /// initialization of the view model for RT catalog audios
     init(catalog: RTCatalog?) {
@@ -145,15 +146,13 @@ class AudioViewModel: BaseViewModelProtocol {
         placeholderImage = station.placeholderImage
 
         if isAm {
-            guard let stationAm = station as? RNAStationAM else { fatalError() }
-            detail.text = stationAm.detailText
-            thumbnailUrl = stationAm.portraitUrl
-            url = stationAm.audioUrl
+            detail.text = station.detailTextAm
+            thumbnailUrl = station.portraitUrlAm
+            url = station.audioUrlAm
         } else {
-            guard let stationFm = station as? RNAStationFM else { fatalError() }
-            detail.text = stationFm.detailText
-            thumbnailUrl = stationFm.portraitUrl
-            url = stationFm.audioUrl
+            detail.text = station.detailTextFm
+            thumbnailUrl = station.portraitUrlFm
+            url = station.audioUrlFm
         }
     }
     

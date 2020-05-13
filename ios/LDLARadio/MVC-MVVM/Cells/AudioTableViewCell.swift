@@ -17,6 +17,7 @@ class AudioTableViewCell: UITableViewCell {
 
     static let reuseIdentifier: String = "AudioTableViewCell"
 
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var thumbnailView: UIImageView!
@@ -63,6 +64,8 @@ class AudioTableViewCell: UITableViewCell {
             selectionStyle = .none
             // show thumbnail, and hide logo
             infoButton.isHidden = false
+            
+            separatorView.isHidden = !model.showSeparator
 
             setNeedsLayout()
         }

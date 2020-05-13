@@ -1,5 +1,5 @@
 //
-//  CatalogTableViewCell.swift
+//  SectionTableViewCell.swift
 //  LDLARadio
 //
 //  Created by fox on 13/07/2019.
@@ -10,11 +10,10 @@ import Foundation
 import UIKit
 
 class SectionTableViewCell: UITableViewCell {
-    static let reuseIdentifier: String = "CatalogTableViewCell"
+    static let reuseIdentifier: String = "SectionTableViewCell"
 
-    @IBOutlet weak var iconView: UILabel!
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var detailView: UILabel!
-    @IBOutlet weak var bookmarkButton: UIButton!
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var infoButton: UIButton!
 
@@ -24,24 +23,20 @@ class SectionTableViewCell: UITableViewCell {
     var model: SectionViewModel? = nil {
         didSet {
             guard let model = model else { return }
-            bookmarkButton.isHidden = true
-            infoButton.isHidden = !(model.text?.isEmpty ?? false)
+            infoButton.isHidden = model.text?.isEmpty ?? false
 
-            iconView.text = model.iconText()
-            iconView.textColor = model.iconColor
             detailView.text = model.title.text
             detailView.textColor = model.title.color
             detailView.font = model.title.font
             selectionStyle = model.selectionStyle
             accessoryType = model.accessoryType
-            
+            separatorView.isHidden = !model.showSeparator
+
             thumbnailView.image = model.placeholderImage
             if let thumbnailUrl = model.thumbnailUrl {
                 thumbnailView.isHidden = false
-                iconView.isHidden = true
                 thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (response) in
                     if response.error != nil {
-                        self.iconView.isHidden = false
                         self.thumbnailView.isHidden = true
                     } else {
                         self.portraitThumbnail()
@@ -49,7 +44,6 @@ class SectionTableViewCell: UITableViewCell {
                 }
             } else {
                 thumbnailView.isHidden = true
-                iconView.isHidden = false
             }
         }
     }
@@ -62,28 +56,14 @@ class SectionTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.text = "\(Commons.Symbol.showAwesome(icon: .battery_empty))"
-        iconView.textColor = .red
         thumbnailView.isHidden = true
-        iconView.isHidden = true
         detailView.text = nil
         detailView.textColor = .red
         selectionStyle = .none
         accessoryType = .none
-        bookmarkButton.isHidden = true
-        bookmarkButton.isHighlighted = false
         infoButton.isHidden = true
     }
 
-    @IBAction func bookmarkAction(_ sender: UIButton?) {
-
-        if sender == bookmarkButton {
-            bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
-            actionBookmarkBlock?(model, bookmarkButton.isHighlighted)
-        } else {
-            fatalError()
-        }
-    }
     @IBAction func infoAction(_ sender: UIButton?) {
 
         if sender == infoButton {

@@ -118,11 +118,11 @@ class AudioViewController: UITableViewController {
             addRefreshControl()
         }
         tableView.remembersLastFocusedIndexPath = true
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = Commons.Size.cellHeight
+//        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = Commons.Size.cellHeight
 
-        tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = Commons.Size.cellHeight
+//        tableView.sectionHeaderHeight = UITableView.automaticDimension
+//        tableView.estimatedSectionHeaderHeight = Commons.Size.cellHeight
 
         HeaderTableView.setup(tableView: tableView)
 
@@ -557,10 +557,6 @@ class AudioViewController: UITableViewController {
         }
         return cell
     }
-    
-//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return Commons.Size.sectionHeight
-//    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {

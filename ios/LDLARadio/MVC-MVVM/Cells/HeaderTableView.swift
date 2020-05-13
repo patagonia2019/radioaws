@@ -77,7 +77,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
                     }
                 }
             }
-            infoButton?.isHidden = !(model.text?.count ?? 0 > 0)
+            infoButton?.isHidden = model.text?.isEmpty ?? false
         }
     }
 

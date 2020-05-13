@@ -18,7 +18,7 @@ extension RNAStation: Modellable {
     }
 }
 
-extension RNAStation {
+extension RNAStation : Audible {
     var audioIdentifier: String {
         return id ?? "#\(arc4random())"
     }
@@ -38,42 +38,45 @@ extension RNAStation {
     var placeholderImage: UIImage? {
         return UIImage.init(named: RNAStation.placeholderImageName)
     }
-}
-
-class RNAStationAM: RNAStation { }
-class RNAStationFM: RNAStation { }
-
-extension RNAStationAM: Audible {
     
     var detailText: String? {
+        fatalError()
+    }
+    
+    var portraitUrl: URL? {
+        fatalError()
+    }
+    
+    var audioUrl: URL? {
+        fatalError()
+    }
+    
+    var detailTextAm: String? {
         return String.join(array: [dialAM, amCurrentProgram?.programName], separator: " ")
     }
 
-    var portraitUrl: URL? {
+    var portraitUrlAm: URL? {
         return imageUrl(usingUri: image)
             ?? imageUrl(usingUri: amCurrentProgram?.image)
             ?? imageUrl(usingUri: amCurrentProgram?.imageStation)
     }
 
-    var audioUrl: URL? {
+    var audioUrlAm: URL? {
         return streamUrl(usingBaseUrl: url1, bandUri: amUri)
             ?? streamUrl(usingBaseUrl: url2, bandUri: amUri)
     }
-}
 
-extension RNAStationFM: Audible {
-    
-    var detailText: String? {
+    var detailTextFm: String? {
         return String.join(array: [dialFM, fmCurrentProgram?.programName], separator: " ")
     }
     
-    var portraitUrl: URL? {
+    var portraitUrlFm: URL? {
         return imageUrl(usingUri: image)
             ?? imageUrl(usingUri: fmCurrentProgram?.image)
             ?? imageUrl(usingUri: fmCurrentProgram?.imageStation)
     }
 
-    var audioUrl: URL? {
+    var audioUrlFm: URL? {
         return streamUrl(usingBaseUrl: url1, bandUri: fmUri)
             ?? streamUrl(usingBaseUrl: url2, bandUri: fmUri)
     }

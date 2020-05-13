@@ -43,7 +43,8 @@ class SectionViewModel: BaseViewModelProtocol {
     var parentId: String?
     var id: String?
     var page: Int = 1
-    
+    var showSeparator: Bool = true
+
     var isBookmark: Bool {
         if !audios.isEmpty {
             return audios.filter({ (audio) -> Bool in
