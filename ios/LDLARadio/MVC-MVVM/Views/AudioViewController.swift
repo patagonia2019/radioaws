@@ -118,11 +118,6 @@ class AudioViewController: UITableViewController {
             addRefreshControl()
         }
         tableView.remembersLastFocusedIndexPath = true
-//        tableView.rowHeight = UITableView.automaticDimension
-//        tableView.estimatedRowHeight = Commons.Size.cellHeight
-
-//        tableView.sectionHeaderHeight = UITableView.automaticDimension
-//        tableView.estimatedSectionHeaderHeight = Commons.Size.cellHeight
 
         HeaderTableView.setup(tableView: tableView)
 
@@ -459,9 +454,6 @@ class AudioViewController: UITableViewController {
             DispatchQueue.main.async {
                 self.expand(model: model, section: section)
             }
-        }
-        headerView?.actionBookmarkBlock = { model, isHighlighted in
-            Audio.changeCatalogBookmark(model: model)
         }
         headerView?.infoBlock = { model in
             self.info(model: model)

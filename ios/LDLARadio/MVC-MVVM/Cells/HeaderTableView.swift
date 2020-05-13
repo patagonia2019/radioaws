@@ -13,17 +13,15 @@ import UIKit
 class HeaderTableView: UITableViewHeaderFooterView {
     static let reuseIdentifier: String = "HeaderTableView"
 
+    @IBOutlet weak var separatorView: UIView?
     @IBOutlet weak var expandButton: UIButton?
-    @IBOutlet weak var titleButton: UIButton?
-    @IBOutlet weak var bookmarkButton: UIButton?
+    @IBOutlet weak var titleLabel: UILabel?
     @IBOutlet weak var infoButton: UIButton?
     @IBOutlet weak var thumbnailView: UIImageView?
-    @IBOutlet weak var bgView: UIView?
     let gradientBg = CAGradientLayer()
 
     var infoBlock: ((_ catalogViewModel: SectionViewModel?) -> Void)?
     var actionExpandBlock: ((_ catalogViewModel: SectionViewModel?, _ isExpanding: Bool) -> Void)?
-    var actionBookmarkBlock: ((_ catalogViewModel: SectionViewModel?, _ isBookmarking: Bool) -> Void)?
 
     var model: SectionViewModel? {
         didSet {
@@ -40,25 +38,18 @@ class HeaderTableView: UITableViewHeaderFooterView {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        titleButton?.setTitle("", for: .normal)
+        titleLabel?.text = nil
         expandButton?.isHidden = true
         expandButton?.isHighlighted = false
-        bookmarkButton?.isHidden = true
-        bookmarkButton?.isHighlighted = false
         thumbnailView?.isHidden = true
         infoButton?.isHidden = true
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        titleButton?.setTitle(model?.title.text, for: .normal)
-        titleButton?.setTitleColor(model?.title.color, for: .normal)
-        titleButton?.titleLabel?.font = model?.title.font
-        titleButton?.titleLabel?.numberOfLines = 0
-
-        if let bgView = bgView {
-            gradientBg.frame = bgView.bounds
-        }
+        titleLabel?.text = model?.title.text
+        titleLabel?.textColor = model?.title.color
+        titleLabel?.font = model?.title.font
 
         if let model = model {
             if let isCollapsed = model.isCollapsed {
@@ -103,26 +94,6 @@ class HeaderTableView: UITableViewHeaderFooterView {
         if let expandButton = expandButton {
             expandButton.isHighlighted = !expandButton.isHighlighted
             actionExpandBlock?(model, expandButton.isHighlighted)
-        }
-    }
-
-    @IBAction func bookmarkAction(_ sender: UIButton?) {
-
-        if let bookmarkButton = bookmarkButton {
-            bookmarkButton.isHighlighted = !bookmarkButton.isHighlighted
-            actionBookmarkBlock?(model, bookmarkButton.isHighlighted)
-        } else {
-            fatalError()
-        }
-    }
-
-    private func paintBgView() {
-        gradientBg.startPoint = CGPoint.init(x: 0, y: 1)
-        gradientBg.endPoint = CGPoint.init(x: 1, y: 1)
-        gradientBg.colors = [UIColor.magnesium.cgColor, UIColor.mercury.cgColor]
-        if let bgView = bgView {
-            gradientBg.frame = bgView.bounds
-            bgView.layer.insertSublayer(gradientBg, at: 0)
         }
     }
 
