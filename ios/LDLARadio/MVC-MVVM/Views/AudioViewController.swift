@@ -259,31 +259,36 @@ class AudioViewController: UITableViewController {
             tableView.reloadData()
         }
         
-//        reloadTimer()
+        reloadTimer()
     }
 
-//    private func reloadTimer() {
-//
-//        let stream = StreamPlaybackManager.instance
-//
-//        if let timerPlayed = timerPlayed {
-//            timerPlayed.invalidate()
-//        }
-//
-//        if stream.isAboutToPlay() {
-//            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
-//        } else {
-//            guard let toolbar = navigationController?.toolbar else { return }
-//            navigationController?.setToolbarHidden(true, animated: false)
-//            toolbar.isHidden = true
-//        }
-//    }
+    private func reloadTimer() {
+
+        let stream = StreamPlaybackManager.instance
+
+        if let timerPlayed = timerPlayed {
+            timerPlayed.invalidate()
+        }
+
+        if stream.isAboutToPlay() {
+            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
+        } else {
+            guard let toolbar = navigationController?.toolbar else { return }
+            navigationController?.setToolbarHidden(true, animated: false)
+            toolbar.isHidden = true
+        }
+    }
 
     @objc private func reloadToolbar() {
 
         guard let toolbar = navigationController?.toolbar else { return }
-        navigationController?.setToolbarHidden(false, animated: false)
-        toolbar.isHidden = false
+        let stream = StreamPlaybackManager.instance
+        let show = !stream.isPlaying()
+        navigationController?.setToolbarHidden(show, animated: false)
+        toolbar.isHidden = show
+        if !show {
+            return
+        }
         UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
             if var rect = self.tabBarController?.tabBar.frame {
                 rect.origin.y -= rect.size.height
