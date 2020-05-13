@@ -86,7 +86,7 @@ extension Desconcierto: Sectionable {
         return "\((Int(id) * 1000) + Int(arc4random()))"
     }
     
-    var isCollapsed: Bool {
+    var collapsed: Bool {
         false
     }
     

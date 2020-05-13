@@ -19,7 +19,7 @@ protocol Sectionable {
     var placeholderImage: UIImage? { get }
     var portraitUrl: URL? { get }
 
-    var isCollapsed: Bool { get }
+    var collapsed: Bool { get }
     var parentId: String? { get }
     var sectionDetailText: String? { get }
     var queryUrl: URL? { get }

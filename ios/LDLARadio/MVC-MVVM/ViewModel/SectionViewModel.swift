@@ -22,7 +22,7 @@ class SectionViewModel: BaseViewModelProtocol {
     var placeholderImage: UIImage?
 
     var selectionStyle = UITableViewCell.SelectionStyle.blue
-    var accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
+    var accessoryType = UITableViewCell.AccessoryType.none
 
     var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 1)
 
@@ -75,7 +75,7 @@ class SectionViewModel: BaseViewModelProtocol {
         let content = catalog.content
         sections = content.0.map({ SectionViewModel(catalog: $0) })
         audios = content.1.map({ AudioViewModel(catalog: $0) })
-        isCollapsed = audios.isEmpty == false && sections.isEmpty == true ? nil : catalog.isCollapsed
+        isCollapsed = audios.isEmpty == true && sections.isEmpty == true ? true : catalog.isCollapsed
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {

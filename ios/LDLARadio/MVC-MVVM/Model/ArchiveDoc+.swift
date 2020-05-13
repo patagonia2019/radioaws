@@ -50,11 +50,11 @@ extension ArchiveDoc: Sectionable {
         return identifier ?? "#\(arc4random())"
     }
     var titleText: String? {
-        return String.join(array: [title, subject, creator], separator: ". ")
+        return title
     }
     
     var subTitleText: String? {
-        return subject
+        return String.join(array: [subject, creator], separator: ". ")
     }
     
     var detailText: String? {
@@ -74,7 +74,7 @@ extension ArchiveDoc: Sectionable {
         return nil
     }
 
-    var isCollapsed: Bool {
+    var collapsed: Bool {
         return false
     }
     

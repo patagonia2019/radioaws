@@ -26,15 +26,15 @@ extension ArchiveFile: Audible {
     }
     
     var titleText: String? {
-        return String.join(array: [title, album, detail?.doc?.title], separator: ". ")
+        return String.join(array: [title, detail?.doc?.title], separator: ". ")
     }
     
     var subTitleText: String? {
-        return String.join(array: [detail?.doc?.creator, artist, format], separator: ". ")
+        return String.join(array: [detail?.doc?.creator, detail?.doc?.subject, album, artist, genre], separator: ". ")
     }
     
     var detailText: String? {
-        return String.join(array: [artist, album, format, genre], separator: ". ")
+        return String.join(array: [detail?.doc?.mediaType, track, format], separator: ". ")
     }
     
     var infoText: String? {

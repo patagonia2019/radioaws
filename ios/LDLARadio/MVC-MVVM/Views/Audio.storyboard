@@ -27,29 +27,40 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lEa-Hg-IUQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="AudioViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="66l-15-Uab" customClass="AudioViewController" customModule="Locos_Azotea" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="100" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="100" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="V4T-bx-oUn">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="V4T-bx-oUn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SectionTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="8Td-hG-IJ2" userLabel="SectionTableViewCell" customClass="SectionTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="414" height="69"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="SectionTableViewCell" rowHeight="70" translatesAutoresizingMaskIntoConstraints="NO" id="8Td-hG-IJ2" userLabel="SectionTableViewCell" customClass="SectionTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8Td-hG-IJ2" id="TeG-AX-PP6">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ttttts fusdpf oijasdf pojsadfpo asdfij aspdofj asdf asfdojsap oifjsadf aspfdij aspdifoj sdf asfoij aspdfiojsadf" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fy8-bv-udz">
-                                            <rect key="frame" x="8.5" y="4" width="299" height="61"/>
+                                            <rect key="frame" x="8.5" y="4" width="299" height="62"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZNc-r9-yve">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZNc-r9-yve">
                                             <rect key="frame" x="320.5" y="4" width="60" height="60"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="60" id="4vS-r8-02H"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqT-cZ-uSr">
                                             <rect key="frame" x="377.5" y="4" width="38" height="38"/>
@@ -71,7 +82,7 @@
                                             </connections>
                                         </button>
                                         <view alpha="0.30000001192092896" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rOX-hV-Vqn" userLabel="separator">
-                                            <rect key="frame" x="8.5" y="68" width="397" height="1"/>
+                                            <rect key="frame" x="8.5" y="69" width="397" height="1"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="niw-Ft-rp3"/>
@@ -87,11 +98,11 @@
                                         <constraint firstItem="MqT-cZ-uSr" firstAttribute="width" secondItem="MqT-cZ-uSr" secondAttribute="height" multiplier="1:1" id="auX-Fc-4Wo"/>
                                         <constraint firstAttribute="bottom" secondItem="rOX-hV-Vqn" secondAttribute="bottom" priority="750" id="bK8-ID-foz"/>
                                         <constraint firstItem="fy8-bv-udz" firstAttribute="leading" secondItem="rOX-hV-Vqn" secondAttribute="leading" id="bXw-wS-awM"/>
+                                        <constraint firstItem="rOX-hV-Vqn" firstAttribute="top" secondItem="ZNc-r9-yve" secondAttribute="bottom" constant="5" id="caK-ZX-cEl"/>
                                         <constraint firstItem="MqT-cZ-uSr" firstAttribute="leading" secondItem="ZNc-r9-yve" secondAttribute="trailing" constant="-3" id="eCs-Sm-pC4"/>
                                         <constraint firstItem="rOX-hV-Vqn" firstAttribute="width" secondItem="TeG-AX-PP6" secondAttribute="width" multiplier="0.96" id="fmP-Ji-eKU"/>
                                         <constraint firstItem="ZNc-r9-yve" firstAttribute="top" secondItem="TeG-AX-PP6" secondAttribute="top" constant="4" id="gIP-fn-tsl"/>
                                         <constraint firstItem="fy8-bv-udz" firstAttribute="top" secondItem="TeG-AX-PP6" secondAttribute="top" constant="4" id="qyu-M6-hjZ"/>
-                                        <constraint firstItem="fy8-bv-udz" firstAttribute="bottom" secondItem="rOX-hV-Vqn" secondAttribute="bottom" constant="-4" id="rgv-W9-Zkb"/>
                                         <constraint firstAttribute="bottom" secondItem="fy8-bv-udz" secondAttribute="bottom" constant="4" id="t8R-VZ-BLT"/>
                                         <constraint firstItem="rOX-hV-Vqn" firstAttribute="top" secondItem="ZNc-r9-yve" secondAttribute="bottom" placeholder="YES" id="yO8-RI-X83"/>
                                     </constraints>
@@ -108,8 +119,8 @@
                                     <outlet property="thumbnailView" destination="ZNc-r9-yve" id="FEY-ZT-wTr"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AudioTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="BpK-zQ-qTT" customClass="AudioTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="124.5" width="414" height="130"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="AudioTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="BpK-zQ-qTT" customClass="AudioTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="125.5" width="414" height="130"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BpK-zQ-qTT" id="6JO-5u-XWN">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
@@ -150,6 +161,17 @@
                                                 <constraint firstAttribute="width" constant="60" id="ODG-gU-wo6"/>
                                                 <constraint firstAttribute="width" secondItem="dIC-MJ-Lzn" secondAttribute="height" multiplier="1:1" id="Qxc-ng-1cf"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="j8T-6e-Syr">
                                             <rect key="frame" x="320" y="4" width="60" height="60"/>
@@ -219,7 +241,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadTableViewCell" rowHeight="40" id="pvU-1R-UhS" userLabel="LoadTableViewCell" customClass="LoadTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="254.5" width="414" height="40"/>
+                                <rect key="frame" x="0.0" y="255.5" width="414" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pvU-1R-UhS" id="DZr-mM-ZiN">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>

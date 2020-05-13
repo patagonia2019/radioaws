@@ -249,11 +249,11 @@ class AudioViewController: UITableViewController {
         updateNavBar()
         if let section = section, let row = row {
             tableView.beginUpdates()
-            tableView.reloadRows(at: [IndexPath(row: row, section: section)], with: .fade)
+            tableView.reloadRows(at: [IndexPath(row: row, section: section)], with: .none)
             tableView.endUpdates()
         } else if let section = section {
             tableView.beginUpdates()
-            tableView.reloadSections(IndexSet(integer: section), with: .fade)
+            tableView.reloadSections(IndexSet(integer: section), with: .none)
             tableView.endUpdates()
         } else {
             tableView.reloadData()
@@ -610,28 +610,36 @@ extension AudioViewController: AudioTableViewCellDelegate {
 
 extension AudioViewController: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerReadyToPlay player: AVPlayer, isPlaying: Bool) {
-         if let currentPlayIndexPath = currentPlayIndexPath {
-            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        DispatchQueue.main.async {
+            if let currentPlayIndexPath = self.currentPlayIndexPath {
+                self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+            }
         }
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidChange player: AVPlayer) {
-        if let currentPlayIndexPath = currentPlayIndexPath {
-            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        DispatchQueue.main.async {
+            if let currentPlayIndexPath = self.currentPlayIndexPath {
+                self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+            }
         }
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval) {
-        if let currentPlayIndexPath = currentPlayIndexPath {
-            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        DispatchQueue.main.async {
+            if let currentPlayIndexPath = self.currentPlayIndexPath {
+                self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+            }
         }
     }
     
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
-        if let currentPlayIndexPath = currentPlayIndexPath {
-            reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+        DispatchQueue.main.async {
+            if let currentPlayIndexPath = self.currentPlayIndexPath {
+                self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
+            }
+            self.showAlert(title: "Player Error", message: "When trying to play \(audio?.titleText ?? "")", error: error)
         }
-        showAlert(title: "Player Error", message: "When trying to play \(audio?.titleText ?? "")", error: error)
     }
     
 }

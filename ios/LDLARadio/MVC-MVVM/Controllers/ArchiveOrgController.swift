@@ -130,8 +130,8 @@ class ArchiveOrgController: BaseController {
 
         if incrementPage, let page = model?.page {
             model?.page = page + 1
-            model?.isCollapsed = true
-            archiveCollection?.isExpanded = true
+            model?.isCollapsed = false
+            archiveCollection?.isCollapsed = false
         }
 
         if incrementPage == false {

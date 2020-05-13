@@ -1177,7 +1177,7 @@
 				9849D7A9241349A9005D8678 /* 4.0.xcdatamodel */,
 				987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */,
 			);
-			currentVersion = 987DA0B122D639BD00F34BD3 /* Model.xcdatamodel */;
+			currentVersion = 9849D7A9241349A9005D8678 /* 4.0.xcdatamodel */;
 			path = com.mobilepatagonia.LDLARadio.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -42,8 +42,8 @@ extension RTCatalog: Sectionable {
         return audioIdentifier
     }
     
-    var isCollapsed: Bool {
-        return !isExpanded
+    var collapsed: Bool {
+        return isCollapsed
     }
     
     var parentId: String? {
@@ -69,8 +69,8 @@ extension RTCatalog: Sectionable {
     
     var content: ([RTCatalog], [RTCatalog]) {
         var all = [RTCatalog]()
-        var sectionsFilter = [RTCatalog]()
-        var audiosFilter = [RTCatalog]()
+        var fixedSections = [RTCatalog]()
+        var fixedAudios = [RTCatalog]()
         if let sectionsOfCatalog = sections?.array as? [RTCatalog] {
             all.append(contentsOf: sectionsOfCatalog)
         }
@@ -88,7 +88,7 @@ extension RTCatalog: Sectionable {
                         element.sectionCatalog = nil
                     }
                 }
-                audiosFilter.append(element)
+                fixedAudios.append(element)
             } else {
                 if element.sectionCatalog == nil {
                     if element.audioCatalog == nil {
@@ -98,16 +98,16 @@ extension RTCatalog: Sectionable {
                         element.audioCatalog = nil
                     }
                 }
-                sectionsFilter.append(element)
+                fixedSections.append(element)
             }
-//            let sections = sectionsTmp.sorted(by: { (c1, c2) -> Bool in
-//                c1.title < c2.title
-//            })
-//            let audios = audiosTmp.sorted(by: { (c1, c2) -> Bool in
-//                c1.title < c2.title
-//            })
+            fixedSections = fixedSections.sorted(by: { (c1, c2) -> Bool in
+                c1 < c2
+            })
+            fixedAudios = fixedAudios.sorted(by: { (c1, c2) -> Bool in
+                c1 < c2
+            })
         }
-        return (sectionsFilter, audiosFilter)
+        return (fixedSections, fixedAudios)
     }
 }
 
@@ -218,6 +218,13 @@ extension RTCatalog {
         req.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false), NSSortDescriptor(key: "text", ascending: true)]
         let array = try? context.fetch(req)
         return array?.first
+    }
+    
+    static func < (left: RTCatalog, right: RTCatalog) -> Bool {
+        guard let leftText = left.title, let rightText = right.title else {
+            return false
+        }
+        return leftText < rightText
     }
 
 }

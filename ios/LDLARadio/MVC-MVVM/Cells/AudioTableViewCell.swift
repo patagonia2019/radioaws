@@ -49,10 +49,7 @@ class AudioTableViewCell: UITableViewCell {
 
             thumbnailView.image = model.placeholderImage
             if let thumbnailUrl = model.thumbnailUrl {
-                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage) { (_) in
-                    self.model?.image = self.thumbnailView.image
-                    self.portraitThumbnail()
-                }
+                thumbnailView.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage)
             }
 
             if model.isTryingToPlay && !model.isPlaying {
@@ -90,7 +87,6 @@ class AudioTableViewCell: UITableViewCell {
 
         infoButton.setTitleColor(.cerulean, for: .normal)
         infoButton.setTitleColor(.nobel, for: .highlighted)
-        portraitThumbnail()
     }
 
     override func prepareForReuse() {
@@ -118,18 +114,6 @@ class AudioTableViewCell: UITableViewCell {
             fatalError()
         }
     }
-
-    private func portraitThumbnail() {
-        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
-        thumbnailView?.layer.borderWidth = 1
-        if let width = thumbnailView?.layer.bounds.size.width {
-            thumbnailView?.layer.cornerRadius = width / 2
-        }
-        if model?.isPlaying ?? false {
-            StreamPlaybackManager.instance.setUpdateImage(thumbnailView.image)
-        }
-    }
-
 }
 
 protocol AudioTableViewCellDelegate: class {

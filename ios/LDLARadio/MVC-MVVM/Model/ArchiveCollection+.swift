@@ -55,8 +55,8 @@ extension ArchiveCollection: Sectionable {
         return nil
     }
     
-    var isCollapsed: Bool {
-        return false
+    var collapsed: Bool {
+        return isCollapsed
     }
     
     var parentId: String? {

@@ -176,7 +176,7 @@ class RadioTimeController: BaseController {
     internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
         let dbCatalog = mainCatalogFromDb(mainCVM: model)
-        dbCatalog?.isExpanded = !(dbCatalog?.isExpanded ?? false)
+        dbCatalog?.isCollapsed = !(dbCatalog?.isCollapsed ?? false)
 
         let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
         mainModel = SectionViewModel(catalog: mainCatalog)
@@ -243,7 +243,7 @@ class RadioTimeController: BaseController {
             }
 
             let mainCatalog = self.mainCatalogFromDb(mainCVM: self.mainModel)
-            catalog?.isExpanded = true
+            catalog?.isCollapsed = true
 
             CoreDataManager.instance.save()
 

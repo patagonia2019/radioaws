@@ -1,192 +1,192 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ArchiveCollection" representedClassName=".ArchiveCollection" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="detail" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="detail" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="detail"/>
             </userInfo>
         </attribute>
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="identifier"/>
             </userInfo>
         </attribute>
-        <attribute name="isExpanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="isCollapsed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="subtitle" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="subtitle"/>
             </userInfo>
         </attribute>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="title"/>
             </userInfo>
         </attribute>
-        <relationship name="metas" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveMeta" inverseName="collection" inverseEntity="ArchiveMeta" syncable="YES"/>
+        <relationship name="metas" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveMeta" inverseName="collection" inverseEntity="ArchiveMeta"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
     <entity name="ArchiveDetail" representedClassName=".ArchiveDetail" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="dir" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="dir" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="dir"/>
             </userInfo>
         </attribute>
-        <attribute name="files" optional="YES" attributeType="Transformable" customClassName="NSDictionary" syncable="YES">
+        <attribute name="files" optional="YES" attributeType="Transformable" customClassName="NSDictionary">
             <userInfo>
                 <entry key="JSONKeyPath" value="files"/>
             </userInfo>
         </attribute>
-        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="misc.image"/>
             </userInfo>
         </attribute>
-        <attribute name="server" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="server" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="server"/>
             </userInfo>
         </attribute>
-        <relationship name="archiveFiles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveFile" inverseName="detail" inverseEntity="ArchiveFile" syncable="YES"/>
-        <relationship name="doc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDoc" inverseName="detail" inverseEntity="ArchiveDoc" syncable="YES"/>
+        <relationship name="archiveFiles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveFile" inverseName="detail" inverseEntity="ArchiveFile"/>
+        <relationship name="doc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDoc" inverseName="detail" inverseEntity="ArchiveDoc"/>
     </entity>
     <entity name="ArchiveDoc" representedClassName=".ArchiveDoc" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="avgRating" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="avgRating" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="avg_rating"/>
             </userInfo>
         </attribute>
-        <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="creatorTrf" optional="YES" attributeType="Transformable" customClassName="Any" spotlightIndexingEnabled="YES" syncable="YES">
+        <attribute name="creator" optional="YES" attributeType="String"/>
+        <attribute name="creatorTrf" optional="YES" attributeType="Transformable" customClassName="Any" spotlightIndexingEnabled="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="creator"/>
             </userInfo>
         </attribute>
-        <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="descriptTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+        <attribute name="descript" optional="YES" attributeType="String"/>
+        <attribute name="descriptTrf" optional="YES" attributeType="Transformable" customClassName="Any">
             <userInfo>
                 <entry key="JSONKeyPath" value="description"/>
             </userInfo>
         </attribute>
-        <attribute name="downloads" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="downloads" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="downloads"/>
             </userInfo>
         </attribute>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="identifier"/>
             </userInfo>
         </attribute>
-        <attribute name="itemSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="itemSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="item_size"/>
             </userInfo>
         </attribute>
-        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="mediaType" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="mediatype"/>
             </userInfo>
         </attribute>
-        <attribute name="publicDate" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="publicDate" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="publicdate"/>
             </userInfo>
         </attribute>
-        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subjectTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+        <attribute name="subject" optional="YES" attributeType="String"/>
+        <attribute name="subjectTrf" optional="YES" attributeType="Transformable" customClassName="Any">
             <userInfo>
                 <entry key="JSONKeyPath" value="subject"/>
             </userInfo>
         </attribute>
-        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" spotlightIndexingEnabled="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="title"/>
             </userInfo>
         </attribute>
-        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="doc" inverseEntity="ArchiveDetail" syncable="YES"/>
-        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="docs" inverseEntity="ArchiveResponse" syncable="YES"/>
+        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="doc" inverseEntity="ArchiveDetail"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="docs" inverseEntity="ArchiveResponse"/>
         <userInfo>
             <entry key="identityAttribute" value="identifier"/>
         </userInfo>
     </entity>
     <entity name="ArchiveFile" representedClassName=".ArchiveFile" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="album" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="album" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="album"/>
             </userInfo>
         </attribute>
-        <attribute name="artist" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="artist" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="artist"/>
             </userInfo>
         </attribute>
-        <attribute name="format" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="format" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="format"/>
             </userInfo>
         </attribute>
-        <attribute name="genre" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="genre" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="genre"/>
             </userInfo>
         </attribute>
-        <attribute name="length" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="length" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="length"/>
             </userInfo>
         </attribute>
-        <attribute name="mtime" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="mtime" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="mtime"/>
             </userInfo>
         </attribute>
-        <attribute name="original" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+        <attribute name="original" optional="YES" attributeType="String" spotlightIndexingEnabled="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="original"/>
             </userInfo>
         </attribute>
-        <attribute name="size" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="size" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="size"/>
             </userInfo>
         </attribute>
-        <attribute name="source" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="source" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="source"/>
             </userInfo>
         </attribute>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="title"/>
             </userInfo>
         </attribute>
-        <attribute name="track" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="track" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="track"/>
             </userInfo>
         </attribute>
-        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="archiveFiles" inverseEntity="ArchiveDetail" syncable="YES"/>
+        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveDetail" inverseName="archiveFiles" inverseEntity="ArchiveDetail"/>
         <userInfo>
             <entry key="identityAttribute" value="original"/>
         </userInfo>
     </entity>
     <entity name="ArchiveMeta" representedClassName=".ArchiveMeta" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="collectionIdentifier" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveCollection" inverseName="metas" inverseEntity="ArchiveCollection" syncable="YES"/>
-        <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader" syncable="YES">
+        <attribute name="collectionIdentifier" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveCollection" inverseName="metas" inverseEntity="ArchiveCollection"/>
+        <relationship name="header" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponseHeader" inverseName="meta" inverseEntity="ArchiveResponseHeader">
             <userInfo>
                 <entry key="JSONKeyPath" value="responseHeader"/>
             </userInfo>
         </relationship>
-        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="meta" inverseEntity="ArchiveResponse" syncable="YES">
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveResponse" inverseName="meta" inverseEntity="ArchiveResponse">
             <userInfo>
                 <entry key="JSONKeyPath" value="response"/>
             </userInfo>
@@ -196,107 +196,107 @@
         </userInfo>
     </entity>
     <entity name="ArchiveResponse" representedClassName=".ArchiveResponse" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="numFound" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="numFound" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="numFound"/>
             </userInfo>
         </attribute>
-        <attribute name="start" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="start" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="start"/>
             </userInfo>
         </attribute>
-        <relationship name="docs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveDoc" inverseName="response" inverseEntity="ArchiveDoc" syncable="YES">
+        <relationship name="docs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ArchiveDoc" inverseName="response" inverseEntity="ArchiveDoc">
             <userInfo>
                 <entry key="JSONKeyPath" value="docs"/>
             </userInfo>
         </relationship>
-        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="response" inverseEntity="ArchiveMeta" syncable="YES"/>
+        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="response" inverseEntity="ArchiveMeta"/>
     </entity>
     <entity name="ArchiveResponseHeader" representedClassName=".ArchiveResponseHeader" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="qTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="qTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="QTime"/>
             </userInfo>
         </attribute>
-        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="status"/>
             </userInfo>
         </attribute>
-        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta" syncable="YES"/>
+        <relationship name="meta" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArchiveMeta" inverseName="header" inverseEntity="ArchiveMeta"/>
     </entity>
     <entity name="Audio" representedClassName=".Audio" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="cloudSynced" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="currentTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="descript" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="downloadFiles" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
-        <attribute name="hasDuration" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isBookmark" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isDownloading" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isPlaying" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="placeholder" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="section" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subTitle" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cloudSynced" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="currentTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="descript" optional="YES" attributeType="String"/>
+        <attribute name="detail" optional="YES" attributeType="String"/>
+        <attribute name="downloadFiles" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="hasDuration" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isBookmark" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isDownloading" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isPlaying" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="placeholder" optional="YES" attributeType="String"/>
+        <attribute name="recordID" optional="YES" attributeType="String"/>
+        <attribute name="section" optional="YES" attributeType="String"/>
+        <attribute name="subTitle" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="urlString" optional="YES" attributeType="String"/>
         <userInfo>
             <entry key="identityAttribute" value="recordID"/>
         </userInfo>
     </entity>
     <entity name="City" representedClassName=".City" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <relationship name="district" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="District" inverseName="cities" inverseEntity="District" syncable="YES">
+        <relationship name="district" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="District" inverseName="cities" inverseEntity="District">
             <userInfo>
                 <entry key="JSONKeyPath" value="district_id"/>
             </userInfo>
         </relationship>
-        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="city" inverseEntity="Station" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="city" inverseEntity="Station"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
     <entity name="Desconcierto" representedClassName=".Desconcierto" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="at_date"/>
             </userInfo>
         </attribute>
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="obs" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="obs" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="obs"/>
             </userInfo>
         </attribute>
-        <attribute name="streamUrl1" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="streamUrl1" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="url1"/>
             </userInfo>
         </attribute>
-        <attribute name="streamUrl2" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="streamUrl2" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="url2"/>
             </userInfo>
         </attribute>
-        <attribute name="streamUrl3" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="streamUrl3" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="url3"/>
             </userInfo>
@@ -306,33 +306,33 @@
         </userInfo>
     </entity>
     <entity name="District" representedClassName=".District" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <relationship name="cities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="City" inverseName="district" inverseEntity="City" syncable="YES"/>
+        <relationship name="cities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="City" inverseName="district" inverseEntity="City"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
     <entity name="Model" representedClassName=".Model" isAbstract="YES" syncable="YES" codeGenerationType="class">
-        <attribute name="errorMessage" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="errorTitle" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="errorMessage" optional="YES" attributeType="String"/>
+        <attribute name="errorTitle" optional="YES" attributeType="String"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="Quote" representedClassName=".Quote" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="author" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="quoteAuthor"/>
             </userInfo>
         </attribute>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="text" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="quoteText"/>
             </userInfo>
@@ -342,293 +342,293 @@
         </userInfo>
     </entity>
     <entity name="RNABand" representedClassName=".RNABand" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amBand" inverseEntity="RNAStation" syncable="YES"/>
-        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmBand" inverseEntity="RNAStation" syncable="YES"/>
-        <relationship name="programs" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram" syncable="YES">
+        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amBand" inverseEntity="RNAStation"/>
+        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmBand" inverseEntity="RNAStation"/>
+        <relationship name="programs" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAProgram" inverseName="band" inverseEntity="RNAProgram">
             <userInfo>
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
         </relationship>
     </entity>
     <entity name="RNACurrentProgram" representedClassName=".RNACurrentProgram" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="data.imagen"/>
             </userInfo>
         </attribute>
-        <attribute name="imageStation" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="imageStation" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="data.imagenEmisora"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="data.nombre"/>
             </userInfo>
         </attribute>
-        <attribute name="programName" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="programName" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="data.descripcion"/>
             </userInfo>
         </attribute>
-        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amCurrentProgram" inverseEntity="RNAStation" syncable="YES"/>
-        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmCurrentProgram" inverseEntity="RNAStation" syncable="YES"/>
+        <relationship name="amStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="amCurrentProgram" inverseEntity="RNAStation"/>
+        <relationship name="fmStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNAStation" inverseName="fmCurrentProgram" inverseEntity="RNAStation"/>
         <userInfo>
             <entry key="identityAttribute" value="programName"/>
         </userInfo>
     </entity>
     <entity name="RNADial" representedClassName=".RNADial" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation" syncable="YES">
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RNAStation" inverseName="dial" inverseEntity="RNAStation">
             <userInfo>
                 <entry key="JSONKeyPath" value="data"/>
             </userInfo>
         </relationship>
     </entity>
     <entity name="RNAProgram" representedClassName=".RNAProgram" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="end" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="end" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="0.end"/>
             </userInfo>
         </attribute>
-        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="0.image"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="p.description"/>
             </userInfo>
         </attribute>
-        <attribute name="reporter" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="reporter" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="p.conductor"/>
             </userInfo>
         </attribute>
-        <attribute name="start" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="start" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="0.start"/>
             </userInfo>
         </attribute>
-        <relationship name="band" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="programs" inverseEntity="RNABand" syncable="YES"/>
+        <relationship name="band" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RNABand" inverseName="programs" inverseEntity="RNABand"/>
     </entity>
     <entity name="RNAStation" representedClassName=".RNAStation" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="amUri" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="amUri" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="am"/>
             </userInfo>
         </attribute>
-        <attribute name="dialAM" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="dialAM" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="dialAM"/>
             </userInfo>
         </attribute>
-        <attribute name="dialFM" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="dialFM" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="dialFM"/>
             </userInfo>
         </attribute>
-        <attribute name="facebook" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="facebook" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="urlfb"/>
             </userInfo>
         </attribute>
-        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="firstName" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="first_name"/>
             </userInfo>
         </attribute>
-        <attribute name="fmUri" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="fmUri" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="fm"/>
             </userInfo>
         </attribute>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="image"/>
             </userInfo>
         </attribute>
-        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="lastName" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="last_name"/>
             </userInfo>
         </attribute>
-        <attribute name="port" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="port" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="puerto"/>
             </userInfo>
         </attribute>
-        <attribute name="twitter" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="twitter" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="urltw"/>
             </userInfo>
         </attribute>
-        <attribute name="url1" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="url1" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="urlstreaming1"/>
             </userInfo>
         </attribute>
-        <attribute name="url2" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="url2" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="urlstreaming2"/>
             </userInfo>
         </attribute>
-        <attribute name="web" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="web" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="web"/>
             </userInfo>
         </attribute>
-        <relationship name="amBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="amStation" inverseEntity="RNABand" syncable="YES"/>
-        <relationship name="amCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="amStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
-        <relationship name="dial" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial" syncable="YES"/>
-        <relationship name="fmBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="fmStation" inverseEntity="RNABand" syncable="YES"/>
-        <relationship name="fmCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="fmStation" inverseEntity="RNACurrentProgram" syncable="YES"/>
+        <relationship name="amBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="amStation" inverseEntity="RNABand"/>
+        <relationship name="amCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="amStation" inverseEntity="RNACurrentProgram"/>
+        <relationship name="dial" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNADial" inverseName="stations" inverseEntity="RNADial"/>
+        <relationship name="fmBand" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNABand" inverseName="fmStation" inverseEntity="RNABand"/>
+        <relationship name="fmCurrentProgram" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RNACurrentProgram" inverseName="fmStation" inverseEntity="RNACurrentProgram"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
     <entity name="RTCatalog" representedClassName=".RTCatalog" parentEntity="RTNode" syncable="YES" codeGenerationType="class">
-        <attribute name="bitrate" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="bitrateTrf" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="Any" syncable="YES">
+        <attribute name="bitrate" optional="YES" attributeType="String"/>
+        <attribute name="bitrateTrf" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="Any">
             <userInfo>
                 <entry key="JSONKeyPath" value="bitrate"/>
             </userInfo>
         </attribute>
-        <attribute name="currentTrack" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="currentTrack" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="current_track"/>
             </userInfo>
         </attribute>
-        <attribute name="formats" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="formats" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="formats"/>
             </userInfo>
         </attribute>
-        <attribute name="genreId" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="genreId" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="genre_id"/>
             </userInfo>
         </attribute>
-        <attribute name="guideId" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="guideId" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="guide_id"/>
             </userInfo>
         </attribute>
-        <attribute name="image" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="image"/>
             </userInfo>
         </attribute>
-        <attribute name="isDirect" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+        <attribute name="isCollapsed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isDirect" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="is_direct"/>
             </userInfo>
         </attribute>
-        <attribute name="isExpanded" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isHlsAdvanced" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="isHlsAdvanced" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="is_hls_advanced"/>
             </userInfo>
         </attribute>
-        <attribute name="item" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="item" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="item"/>
             </userInfo>
         </attribute>
-        <attribute name="itemToken" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="itemToken" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="item_token"/>
             </userInfo>
         </attribute>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="key" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="key"/>
             </userInfo>
         </attribute>
-        <attribute name="liveSeekStream" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="liveSeekStream" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="live_seek_stream"/>
             </userInfo>
         </attribute>
-        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="mediaType" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="media_type"/>
             </userInfo>
         </attribute>
-        <attribute name="nextAction" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="nextAction" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="next_action"/>
             </userInfo>
         </attribute>
-        <attribute name="nextGuideId" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="nextGuideId" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="next_guide_id"/>
             </userInfo>
         </attribute>
-        <attribute name="nowPlayingId" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="nowPlayingId" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="now_playing_id"/>
             </userInfo>
         </attribute>
-        <attribute name="playerHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="playerHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="player_height"/>
             </userInfo>
         </attribute>
-        <attribute name="playerWidth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="playerWidth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="player_width"/>
             </userInfo>
         </attribute>
-        <attribute name="playing" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="playing" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="playing"/>
             </userInfo>
         </attribute>
-        <attribute name="playingImage" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="playingImage" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="playing_image"/>
             </userInfo>
         </attribute>
-        <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="position"/>
             </userInfo>
         </attribute>
-        <attribute name="presetId" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="presetId" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="preset_id"/>
             </userInfo>
         </attribute>
-        <attribute name="reliability" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="reliabilityTrf" optional="YES" attributeType="Transformable" customClassName="Any" syncable="YES">
+        <attribute name="reliability" optional="YES" attributeType="String"/>
+        <attribute name="reliabilityTrf" optional="YES" attributeType="Transformable" customClassName="Any">
             <userInfo>
                 <entry key="JSONKeyPath" value="reliability"/>
             </userInfo>
         </attribute>
-        <attribute name="subtext" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="subtext" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="subtext"/>
             </userInfo>
         </attribute>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="head.title"/>
             </userInfo>
         </attribute>
-        <relationship name="audioCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="audios" inverseEntity="RTCatalog" syncable="YES"/>
-        <relationship name="audios" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog" syncable="YES">
+        <relationship name="audioCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="audios" inverseEntity="RTCatalog"/>
+        <relationship name="audios" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="audioCatalog" inverseEntity="RTCatalog">
             <userInfo>
                 <entry key="JSONKeyPath" value="children"/>
             </userInfo>
         </relationship>
-        <relationship name="sectionCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="sections" inverseEntity="RTCatalog" syncable="YES"/>
-        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="sectionCatalog" inverseEntity="RTCatalog" syncable="YES">
+        <relationship name="sectionCatalog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RTCatalog" inverseName="sections" inverseEntity="RTCatalog"/>
+        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RTCatalog" inverseName="sectionCatalog" inverseEntity="RTCatalog">
             <userInfo>
                 <entry key="JSONKeyPath" value="body"/>
             </userInfo>
@@ -638,22 +638,22 @@
         </userInfo>
     </entity>
     <entity name="RTNode" representedClassName=".RTNode" isAbstract="YES" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="element" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="element" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="element"/>
             </userInfo>
         </attribute>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="text" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="text"/>
             </userInfo>
         </attribute>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="type" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="type"/>
             </userInfo>
         </attribute>
-        <attribute name="url" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES">
+        <attribute name="url" optional="YES" attributeType="String" spotlightIndexingEnabled="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="URL"/>
             </userInfo>
@@ -663,88 +663,88 @@
         </userInfo>
     </entity>
     <entity name="Station" representedClassName=".Station" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="imageUrl" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="imageUrl"/>
             </userInfo>
         </attribute>
-        <attribute name="internalHash" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="internalHash" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="internal_hash"/>
             </userInfo>
         </attribute>
-        <attribute name="isAm" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+        <attribute name="isAm" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="is_am"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <attribute name="tuningDial" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="tuningDial" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="tuning_dial"/>
             </userInfo>
         </attribute>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="url" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="url"/>
             </userInfo>
         </attribute>
-        <relationship name="city" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="City" inverseName="stations" inverseEntity="City" syncable="YES">
+        <relationship name="city" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="City" inverseName="stations" inverseEntity="City">
             <userInfo>
                 <entry key="JSONKeyPath" value="city_id"/>
             </userInfo>
         </relationship>
-        <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="station" inverseEntity="Stream" syncable="YES"/>
+        <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="station" inverseEntity="Stream"/>
         <userInfo>
             <entry key="identityAttribute" value="id"/>
         </userInfo>
     </entity>
     <entity name="Stream" representedClassName=".Stream" parentEntity="Model" syncable="YES" codeGenerationType="class">
-        <attribute name="headIsWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+        <attribute name="headIsWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="head_is_working"/>
             </userInfo>
         </attribute>
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="listenIsWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+        <attribute name="listenIsWorking" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="listen_is_working"/>
             </userInfo>
         </attribute>
-        <attribute name="sourceType" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="sourceType" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="source_type"/>
             </userInfo>
         </attribute>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="url" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="name"/>
             </userInfo>
         </attribute>
-        <attribute name="urlType" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="urlType" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="url_type"/>
             </userInfo>
         </attribute>
-        <attribute name="useWeb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES">
+        <attribute name="useWeb" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="use_web"/>
             </userInfo>
         </attribute>
-        <relationship name="station" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="streams" inverseEntity="Station" syncable="YES">
+        <relationship name="station" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="streams" inverseEntity="Station">
             <userInfo>
                 <entry key="JSONKeyPath" value="station_id"/>
             </userInfo>
@@ -754,7 +754,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="ArchiveCollection" positionX="-666" positionY="-99" width="128" height="150"/>
+        <element name="ArchiveCollection" positionX="-666" positionY="-99" width="128" height="148"/>
         <element name="ArchiveDetail" positionX="-684" positionY="-117" width="128" height="135"/>
         <element name="ArchiveDoc" positionX="-639" positionY="-72" width="128" height="270"/>
         <element name="ArchiveFile" positionX="-675" positionY="-108" width="128" height="225"/>
@@ -772,7 +772,7 @@
         <element name="RNADial" positionX="-699.24609375" positionY="-153.71484375" width="128" height="30"/>
         <element name="RNAProgram" positionX="-214.1015625" positionY="248.921875" width="128" height="135"/>
         <element name="RNAStation" positionX="-859.12109375" positionY="96.828125" width="128" height="330"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="525"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="523"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>

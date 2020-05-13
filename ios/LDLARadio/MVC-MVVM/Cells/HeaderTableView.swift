@@ -13,12 +13,12 @@ import UIKit
 class HeaderTableView: UITableViewHeaderFooterView {
     static let reuseIdentifier: String = "HeaderTableView"
 
-    @IBOutlet weak var separatorView: UIView?
-    @IBOutlet weak var expandButton: UIButton?
-    @IBOutlet weak var titleLabel: UILabel?
-    @IBOutlet weak var infoButton: UIButton?
-    @IBOutlet weak var thumbnailView: UIImageView?
-    let gradientBg = CAGradientLayer()
+    @IBOutlet private weak var leadingConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var separatorView: UIView?
+    @IBOutlet private weak var expandButton: UIButton?
+    @IBOutlet private weak var titleLabel: UILabel?
+    @IBOutlet private weak var infoButton: UIButton?
+    @IBOutlet private weak var thumbnailView: UIImageView?
 
     var infoBlock: ((_ catalogViewModel: SectionViewModel?) -> Void)?
     var actionExpandBlock: ((_ catalogViewModel: SectionViewModel?, _ isExpanding: Bool) -> Void)?
@@ -33,7 +33,6 @@ class HeaderTableView: UITableViewHeaderFooterView {
         super.awakeFromNib()
         expandButton?.setTitleColor(UIColor.tangerine, for: .normal)
         expandButton?.setTitleColor(UIColor.plum, for: .highlighted)
-        portraitThumbnail()
     }
 
     override func prepareForReuse() {
@@ -41,34 +40,34 @@ class HeaderTableView: UITableViewHeaderFooterView {
         titleLabel?.text = nil
         expandButton?.isHidden = true
         expandButton?.isHighlighted = false
-        thumbnailView?.isHidden = true
+        thumbnailView?.image = nil
         infoButton?.isHidden = true
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        titleLabel?.text = model?.title.text
-        titleLabel?.textColor = model?.title.color
-        titleLabel?.font = model?.title.font
+        guard let model = model else { fatalError() }
+        
+        titleLabel?.text = model.title.text
+        titleLabel?.textColor = model.title.color
+        titleLabel?.font = model.title.font
 
-        if let model = model {
-            if let isCollapsed = model.isCollapsed {
-                expandButton?.isHidden = false
-                expandButton?.isHighlighted = isCollapsed
-            } else {
-                expandButton?.isHidden = true
-            }
-
-            thumbnailView?.isHidden = true
-            if let thumbnailUrl = model.thumbnailUrl {
-                thumbnailView?.af_setImage(withURL: thumbnailUrl) { (response) in
-                    if response.error == nil {
-                        self.thumbnailView?.isHidden = false
-                        self.portraitThumbnail()
-                    }
-                }
-            }
-            infoButton?.isHidden = model.text?.isEmpty ?? false
+        if let isCollapsed = model.isCollapsed {
+            expandButton?.isHidden = false
+            expandButton?.isHighlighted = isCollapsed
+        } else {
+            expandButton?.isHidden = true
+            leadingConstraint?.constant = 6
+        }
+        
+        thumbnailView?.image = model.placeholderImage
+        if let thumbnailUrl = model.thumbnailUrl {
+            thumbnailView?.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage)
+        }
+        if model.text?.isEmpty ?? true {
+            infoButton?.isHidden = true
+        } else {
+            infoButton?.isHidden = false
         }
     }
 
@@ -96,13 +95,4 @@ class HeaderTableView: UITableViewHeaderFooterView {
             actionExpandBlock?(model, expandButton.isHighlighted)
         }
     }
-
-    private func portraitThumbnail() {
-        thumbnailView?.layer.borderColor = UIColor.lightGray.cgColor
-        thumbnailView?.layer.borderWidth = 1
-        if let width = thumbnailView?.layer.bounds.size.width {
-            thumbnailView?.layer.cornerRadius = width / 2
-        }
-    }
-
 }
