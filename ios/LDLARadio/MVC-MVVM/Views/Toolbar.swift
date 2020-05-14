@@ -1,5 +1,5 @@
 //
-//  UIToolbar+.swift
+//  Toolbar.swift
 //  LDLARadio
 //
 //  Created by fox on 31/08/2019.
@@ -10,8 +10,8 @@ import UIKit
 import JFCore
 import AVKit
 
-extension UIToolbar {
-
+class Toolbar: UIToolbar {
+    
     open override func layoutSubviews() {
         super.layoutSubviews()
         if UIApplication.shared.applicationState != .active {
@@ -105,7 +105,7 @@ extension UIToolbar {
             imageButton = UIButton(type: .custom)
             imageButton?.setImage(image, for: .normal)
             imageButton?.imageView?.contentMode = .scaleAspectFit
-            imageButton?.addTarget(self, action: #selector(UIToolbar.handleImage(_:)), for: .touchUpInside)
+            imageButton?.addTarget(self, action: #selector(Toolbar.handleImage(_:)), for: .touchUpInside)
             let size = Commons.Size.toolbarImageSize
             imageButton?.frame = CGRect(origin: .zero, size: size)
             imageButton?.layer.cornerRadius = size.width / 2
@@ -133,7 +133,7 @@ extension UIToolbar {
         if playPause == nil {
             playPause = UIButton(type: .custom)
             playPause?.titleLabel?.font = awesomeFont()
-            playPause?.addTarget(self, action: #selector(UIToolbar.handlePlay(_:)), for: .touchUpInside)
+            playPause?.addTarget(self, action: #selector(Toolbar.handlePlay(_:)), for: .touchUpInside)
             playPause?.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             playPause?.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             playPause?.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
@@ -178,7 +178,7 @@ extension UIToolbar {
             infoButton?.setTitleColor(.cerulean, for: .normal)
             infoButton?.setTitleColor(.nobel, for: .highlighted)
             infoButton?.titleLabel?.font = awesomeFont()
-            infoButton?.addTarget(self, action: #selector(UIToolbar.handleInfo(_:)), for: .touchUpInside)
+            infoButton?.addTarget(self, action: #selector(Toolbar.handleInfo(_:)), for: .touchUpInside)
             infoButton?.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             infoButton?.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             infoButton?.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
@@ -230,7 +230,7 @@ extension UIToolbar {
             bookmarkButton = UIButton(type: .custom)
             bookmarkButton?.titleLabel?.font = awesomeFont()
             bookmarkButton?.setTitle("\(Commons.Symbol.showAwesome(icon: .heart))", for: .normal)
-            bookmarkButton?.addTarget(self, action: #selector(UIToolbar.handleBookmark(_:)), for: .touchUpInside)
+            bookmarkButton?.addTarget(self, action: #selector(Toolbar.handleBookmark(_:)), for: .touchUpInside)
             bookmarkButton?.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             bookmarkButton?.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
             bookmarkButton?.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
@@ -480,7 +480,7 @@ extension UIToolbar {
         if imageButton == nil {
             imageButton = UIButton(type: .custom)
             imageButton?.imageView?.contentMode = .scaleAspectFill
-            imageButton?.addTarget(self, action: #selector(UIToolbar.handleImage(_:)), for: .touchUpInside)
+            imageButton?.addTarget(self, action: #selector(Toolbar.handleImage(_:)), for: .touchUpInside)
             let length = CGFloat.minimum(rect.size.width, rect.size.height) * 0.8
             let size = CGSize(width: length, height: length)
             imageButton?.frame = CGRect(origin: .zero, size: size)
@@ -600,9 +600,9 @@ extension UIToolbar {
 }
 
 /**
- Extend `UIToolbar` to conform to the `AssetPlaybackDelegate` protocol.
+ Extend `Toolbar` to conform to the `AssetPlaybackDelegate` protocol.
  */
-extension UIToolbar: AssetPlaybackDelegate {
+extension Toolbar: AssetPlaybackDelegate {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
         Analytics.logError(error: error)
 

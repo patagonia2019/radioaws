@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina3_5" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,11 @@
                                 <variation key="heightClass=compact-widthClass=compact" image="bg-cc"/>
                                 <variation key="heightClass=regular-widthClass=regular" image="bg-rr"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2019 Mobile Patagonia. All rights reserved. v.3.1" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd" userLabel="Copyright © 2019 Mobile Patagonia. All rights reserved. - V.3.0">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="7Ed-L0-bPD">
+                                <rect key="frame" x="230" y="150" width="20" height="20"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2019 Mobile Patagonia. All rights reserved. v.4.0" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd" userLabel="Copyright © 2019 Mobile Patagonia. All rights reserved. - V.3.0">
                                 <rect key="frame" x="0.0" y="289" width="480" height="19"/>
                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,6 +41,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="7Ed-L0-bPD" firstAttribute="height" secondItem="Bcu-3y-fUS" secondAttribute="height" multiplier="0.0625" id="0F5-tR-OLc"/>
+                            <constraint firstItem="7Ed-L0-bPD" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="3FT-SI-AuE"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
                             <constraint firstItem="u9G-Dk-arY" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="Doz-3A-aix"/>
                             <constraint firstItem="u9G-Dk-arY" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="MmV-R6-Cxd">
@@ -45,12 +51,14 @@
                             </constraint>
                             <constraint firstItem="u9G-Dk-arY" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="ONc-hA-TEg"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
+                            <constraint firstItem="7Ed-L0-bPD" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="Wuz-To-hOn"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" id="Y44-ml-fuU">
                                 <variation key="heightClass=compact-widthClass=compact" constant="12"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="12"/>
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="50"/>
                             </constraint>
+                            <constraint firstItem="7Ed-L0-bPD" firstAttribute="width" secondItem="Bcu-3y-fUS" secondAttribute="width" multiplier="0.0416667" id="YE5-kB-YbS"/>
                             <constraint firstItem="u9G-Dk-arY" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" constant="21" id="yRM-7h-4Sp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>

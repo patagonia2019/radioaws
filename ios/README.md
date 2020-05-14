@@ -19,9 +19,9 @@ Available version 3.1 in Apple Store [https://apps.apple.com/us/app/los-locos-de
 
 ### iOS
 
-* Xcode Build Version 11.3.1 (11C504)
+* Xcode Build Version 11.4.1 (11E503a)
 
-* Deployment target: iOS 13.3
+* Deployment target: iOS 12.0
 
 * Devices: Universal (iPhone / iPad)
 

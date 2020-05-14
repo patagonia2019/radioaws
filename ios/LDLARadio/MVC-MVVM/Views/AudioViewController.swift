@@ -13,16 +13,16 @@ import MediaPlayer
 import SwiftSpinner
 import JFCore
 
-class AudioViewController: UITableViewController {
+class AudioViewController: UIViewController {
     // MARK: Properties
+
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var toolbar: Toolbar!
 
     var isFullScreen: Bool = false
     var currentPlayIndexPath: IndexPath?
     var lastTitleName: String = AudioViewModel.ControllerName.suggestion.rawValue
     fileprivate var timerPlayed: Timer?
-
-    @IBOutlet weak var refreshButton: UIBarButtonItem!
-
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
     var rnaController = RNAController()
@@ -110,9 +110,8 @@ class AudioViewController: UITableViewController {
 
         let stream = StreamPlaybackManager.instance
         stream.delegate2 = self
+        stream.delegate = toolbar
         SwiftSpinner.useContainerView(view)
-
-        refreshButton.isEnabled = controller.useRefresh
 
         if controller.useRefresh {
             addRefreshControl()
@@ -129,11 +128,7 @@ class AudioViewController: UITableViewController {
 
         navigationController?.setToolbarHidden(true, animated: false)
 
-        if let toolbar = navigationController?.toolbar {
-            toolbar.isHidden = true
-            let stream = StreamPlaybackManager.instance
-            stream.delegate = toolbar
-        }
+        toolbar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -273,18 +268,14 @@ class AudioViewController: UITableViewController {
         if stream.isAboutToPlay() {
             timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
         } else {
-            guard let toolbar = navigationController?.toolbar else { return }
-            navigationController?.setToolbarHidden(true, animated: false)
             toolbar.isHidden = true
         }
     }
 
     @objc private func reloadToolbar() {
 
-        guard let toolbar = navigationController?.toolbar else { return }
         let stream = StreamPlaybackManager.instance
         let show = !stream.isPlaying()
-        navigationController?.setToolbarHidden(show, animated: false)
         toolbar.isHidden = show
         if !show {
             return
@@ -292,11 +283,11 @@ class AudioViewController: UITableViewController {
         UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
             if var rect = self.tabBarController?.tabBar.frame {
                 rect.origin.y -= rect.size.height
-                toolbar.frame = rect
+                self.toolbar.frame = rect
             }
         }, completion: { _ in
-            toolbar.setNeedsLayout()
-            toolbar.setNeedsDisplay()
+            self.toolbar.setNeedsLayout()
+            self.toolbar.setNeedsDisplay()
         })
     }
 
@@ -444,123 +435,6 @@ class AudioViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return controller.numberOfSections()
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return controller.numberOfRows(inSection: section)
-    }
-
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
-        headerView?.model = controller.modelInstance(inSection: section)
-        headerView?.actionExpandBlock = { model, isHighlighted in
-            DispatchQueue.main.async {
-                self.expand(model: model, section: section)
-            }
-        }
-        headerView?.infoBlock = { model in
-            self.info(model: model)
-        }
-        return headerView
-    }
-
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if object is AudioViewModel {
-            return indexPath
-        }
-        if let section = object as? SectionViewModel {
-            if section.selectionStyle == .none {
-                return nil
-            }
-        }
-        return indexPath
-    }
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
-        var actions = [UITableViewRowAction]()
-
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        var isBookmark: Bool? = false
-        let stream = StreamPlaybackManager.instance
-        if let audio = object as? AudioViewModel {
-            let isPlaying = stream.isPlaying(url: audio.urlString())
-            let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
-                DispatchQueue.main.async {
-                    self.play(indexPath: indexPath)
-                }
-            }
-            playAction.backgroundColor = .cayenne
-            actions.append(playAction)
-
-            isBookmark = audio.isBookmark
-        }
-
-        if let section = object as? SectionViewModel {
-            isBookmark = section.isBookmark
-        }
-        if let isBookmark = isBookmark {
-            let actionTitle = controller is BookmarkController || isBookmark ? "Delete" : "Add"
-            let bookmarkAction = UITableViewRowAction(style: .destructive, title: actionTitle) { (_, indexPath) in
-                self.removeBookmark(indexPath: indexPath)
-            }
-            bookmarkAction.backgroundColor = controller is BookmarkController || isBookmark ? .lavender : .blueberry
-            actions.append(bookmarkAction)
-        }
-
-        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (_, indexPath) in
-            self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
-        }
-        shareAction.backgroundColor = .orchid
-        actions.append(shareAction)
-
-        return actions
-
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
-        if let audio = object as? AudioViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
-            cell.delegate = self
-            cell.model = audio
-            return cell
-        }
-        if let section = object as? SectionViewModel {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SectionTableViewCell.reuseIdentifier, for: indexPath) as? SectionTableViewCell else { fatalError() }
-            cell.model = section
-            cell.actionBookmarkBlock = { catalog, isBookmarking in
-                self.controller.changeBookmark(indexPath: indexPath)
-            }
-            cell.infoBlock = { catalog in
-                self.info(model: catalog)
-            }
-            return cell
-        }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadTableViewCell.reuseIdentifier, for: indexPath) as? LoadTableViewCell else { fatalError() }
-        if controller is BookmarkController {
-            cell.titleView?.text = "You should tap on the Apple button to get some."
-        } else if controller is SearchController {
-            if (controller as? SearchController)?.numberOfRows(inSection: indexPath.section) == 0 {
-                cell.tryAgain()
-            } else {
-                cell.clear()
-            }
-        } else {
-            cell.clear()
-        }
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        DispatchQueue.main.async {
-            self.play(indexPath: indexPath)
-        }
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.Segue.catalog {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
@@ -647,4 +521,123 @@ extension AudioViewController: AssetPlaybackDelegate {
         }
     }
     
+}
+
+extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return controller.numberOfSections()
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return controller.numberOfRows(inSection: section)
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
+        headerView?.model = controller.modelInstance(inSection: section)
+        headerView?.actionExpandBlock = { model, isHighlighted in
+            DispatchQueue.main.async {
+                self.expand(model: model, section: section)
+            }
+        }
+        headerView?.infoBlock = { model in
+            self.info(model: model)
+        }
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if object is AudioViewModel {
+            return indexPath
+        }
+        if let section = object as? SectionViewModel {
+            if section.selectionStyle == .none {
+                return nil
+            }
+        }
+        return indexPath
+    }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        var actions = [UITableViewRowAction]()
+
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        var isBookmark: Bool? = false
+        let stream = StreamPlaybackManager.instance
+        if let audio = object as? AudioViewModel {
+            let isPlaying = stream.isPlaying(url: audio.urlString())
+            let playAction = UITableViewRowAction(style: .normal, title: isPlaying ? "Pause" : "Play") { (_, indexPath) in
+                DispatchQueue.main.async {
+                    self.play(indexPath: indexPath)
+                }
+            }
+            playAction.backgroundColor = .cayenne
+            actions.append(playAction)
+
+            isBookmark = audio.isBookmark
+        }
+
+        if let section = object as? SectionViewModel {
+            isBookmark = section.isBookmark
+        }
+        if let isBookmark = isBookmark {
+            let actionTitle = controller is BookmarkController || isBookmark ? "Delete" : "Add"
+            let bookmarkAction = UITableViewRowAction(style: .destructive, title: actionTitle) { (_, indexPath) in
+                self.removeBookmark(indexPath: indexPath)
+            }
+            bookmarkAction.backgroundColor = controller is BookmarkController || isBookmark ? .lavender : .blueberry
+            actions.append(bookmarkAction)
+        }
+
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (_, indexPath) in
+            self.share(indexPath: indexPath, controller: self.controller, tableView: self.tableView)
+        }
+        shareAction.backgroundColor = .orchid
+        actions.append(shareAction)
+
+        return actions
+
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        if let audio = object as? AudioViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
+            cell.delegate = self
+            cell.model = audio
+            return cell
+        }
+        if let section = object as? SectionViewModel {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SectionTableViewCell.reuseIdentifier, for: indexPath) as? SectionTableViewCell else { fatalError() }
+            cell.model = section
+            cell.actionBookmarkBlock = { catalog, isBookmarking in
+                self.controller.changeBookmark(indexPath: indexPath)
+            }
+            cell.infoBlock = { catalog in
+                self.info(model: catalog)
+            }
+            return cell
+        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadTableViewCell.reuseIdentifier, for: indexPath) as? LoadTableViewCell else { fatalError() }
+        if controller is BookmarkController {
+            cell.titleView?.text = "You should tap on the Apple button to get some."
+        } else if controller is SearchController {
+            if (controller as? SearchController)?.numberOfRows(inSection: indexPath.section) == 0 {
+                cell.tryAgain()
+            } else {
+                cell.clear()
+            }
+        } else {
+            cell.clear()
+        }
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.play(indexPath: indexPath)
+        }
+    }
 }
