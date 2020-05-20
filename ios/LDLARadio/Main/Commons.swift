@@ -36,8 +36,6 @@ class Commons {
     }
 
     struct Size {
-        static let cellHeight: CGFloat = isPad() ? 240 : 150
-        static let sectionHeight: CGFloat = isPad() ? 80 : 60
         static let toolbarHeight: CGFloat = isPad() || isPhoneX() ? 80 : 60
         static let toolbarSpinnerSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)
         static let toolbarImageSize: CGSize = CGSize(width: toolbarHeight - 2, height: toolbarHeight - 2)

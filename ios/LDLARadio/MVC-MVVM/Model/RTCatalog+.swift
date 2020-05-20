@@ -10,6 +10,14 @@ import Foundation
 import CoreData
 import UIKit
 
+public extension RTCatalog {
+
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        setPrimitiveValue(title, forKey: "uniqueGeneratedIdentifier")
+    }
+}
+
 extension RTCatalog: Modellable {
     /// Function to obtain all the catalogs
     static func all() -> [RTCatalog]? {
@@ -174,7 +182,7 @@ extension RTCatalog {
 
     /// returns the title or text of the catalog
     var titleAndText: String? {
-        return String.join(array: [text, title, subtext], separator: ". ")
+        return String.join(array: [text, title], separator: ". ")
     }
 
     /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse \n Europe \n Radios"
@@ -227,4 +235,54 @@ extension RTCatalog {
         return leftText < rightText
     }
 
+    var containsSections: Bool {
+        return !(sections?.isEmpty ?? true)
+    }
+    
+    var containsAudios: Bool {
+        return !(audios?.isEmpty ?? true)
+    }
+    
+    /// Using += as a overloading assignment operator
+    static func += (left: inout RTCatalog, right: RTCatalog) {
+        left.bitrate        = right.bitrate ?? left.bitrate
+        left.bitrateTrf     = right.bitrateTrf ?? left.bitrateTrf
+        left.currentTrack   = right.currentTrack ?? left.currentTrack
+        left.formats        = right.formats ?? left.formats
+        left.genreId        = right.genreId ?? left.genreId
+        left.guideId        = right.guideId ?? left.guideId
+        left.image          = right.image ?? left.image
+        left.isCollapsed    = right.isCollapsed
+        left.isDirect       = right.isDirect
+        left.isHlsAdvanced  = right.isHlsAdvanced ?? left.isHlsAdvanced
+        left.item           = right.item ?? left.item
+        left.itemToken      = right.itemToken ?? left.itemToken
+        left.key            = right.key ?? left.key
+        left.liveSeekStream = right.liveSeekStream ?? left.liveSeekStream
+        left.mediaType      = right.mediaType ?? left.mediaType
+        left.nextAction     = right.nextAction ?? left.nextAction
+        left.nextGuideId    = right.nextGuideId ?? left.nextGuideId
+        left.nowPlayingId   = right.nowPlayingId ?? left.nowPlayingId
+        left.playerHeight   = right.playerHeight
+        left.playerWidth    = right.playerWidth
+        left.playing        = right.playing ?? left.playing
+        left.playingImage   = right.playingImage ?? left.playingImage
+        left.position       = right.position
+        left.presetId       = right.presetId ?? left.presetId
+        left.reliability    = right.reliability ?? left.reliability
+        left.reliabilityTrf = right.reliabilityTrf ?? left.reliabilityTrf
+        left.subtext        = right.subtext ?? left.subtext
+        left.title          = right.title ?? left.title
+        left.audios         = right.audios ?? left.audios
+        left.sections       = right.sections ?? left.sections
+        if right.audioCatalog != nil {
+            left.audioCatalog = right.audioCatalog
+        }
+        if right.sectionCatalog != nil {
+            left.sectionCatalog = right.sectionCatalog
+        }
+        if left.title == "Browse" || right.title == "Browse" {
+            left.url = RestApi.Constants.Service.rtServer
+        }
+    }
 }

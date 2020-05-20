@@ -1,5 +1,5 @@
 //
-//  CatalogViewModel.swift
+//  SectionViewModel.swift
 //  LDLARadio
 //
 //  Created by fox on 13/07/2019.
@@ -26,7 +26,7 @@ class SectionViewModel: BaseViewModelProtocol {
 
     var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 1)
 
-    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.M), isHidden: true, lines: 1)
+    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: true, lines: 1)
 
     var tree: String?
 
@@ -63,7 +63,11 @@ class SectionViewModel: BaseViewModelProtocol {
     }
 
     init(catalog: RTCatalog?) {
-        guard let catalog = catalog else { fatalError() }
+        reload(catalog: catalog)
+    }
+    
+    func reload(catalog: RTCatalog?) {
+        guard let catalog = catalog else { return }
         id = catalog.sectionIdentifier
         section = AudioViewModel.ControllerName.radioTime.rawValue
         title.text = catalog.titleText
@@ -75,7 +79,7 @@ class SectionViewModel: BaseViewModelProtocol {
         let content = catalog.content
         sections = content.0.map({ SectionViewModel(catalog: $0) })
         audios = content.1.map({ AudioViewModel(catalog: $0) })
-        isCollapsed = audios.isEmpty == true && sections.isEmpty == true ? true : catalog.isCollapsed
+        isCollapsed = catalog.isCollapsed
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {

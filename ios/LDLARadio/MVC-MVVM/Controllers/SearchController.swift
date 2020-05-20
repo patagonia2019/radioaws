@@ -34,7 +34,7 @@ class SearchController: BaseController {
         }
     }
 
-    override func prompt() -> String {
+    override func title() -> String {
         return "Search: \(textToSearch)"
     }
 

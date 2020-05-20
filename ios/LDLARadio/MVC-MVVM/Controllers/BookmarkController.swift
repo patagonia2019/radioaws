@@ -26,7 +26,7 @@ class BookmarkController: BaseController {
         super.init()
     }
 
-    override func prompt() -> String {
+    override func title() -> String {
         return "Bookmarks"
     }
 

@@ -29,8 +29,9 @@ class ArchiveOrgMainModelController: BaseController {
         return n
     }
 
-    override func prompt() -> String {
-        return AudioViewModel.ControllerName.archiveOrg.rawValue
+    override func title() -> String {
+        return mainModel?.title.text ??
+            AudioViewModel.ControllerName.archiveOrg.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {

@@ -13,7 +13,7 @@ struct LabelViewModel {
     /// title specification
     var text: String?
     var color: UIColor = UIColor.midnight
-    var font: UIFont? = UIFont(name: Commons.Font.bold, size: Commons.Font.Size.M)
+    var font: UIFont? = UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S)
     var isHidden: Bool = false
     var lines: Int = 1
 

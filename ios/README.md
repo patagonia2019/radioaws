@@ -15,6 +15,13 @@ It included Archive.org audios and Radio Time audios.
 
 Available version 3.1 in Apple Store [https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1](https://apps.apple.com/us/app/los-locos-de-la-azotea/id1474338334?ls=1)
 
+## Pendings
+- Replace UIWebView with WKWebView
+- Fix player of audio
+- Audio with duration: backward/forward/pause/play, use a big slider control
+- Fix remote control events
+- fix duplication in recent played/bookmark
+
 ## Requirements
 
 ### iOS

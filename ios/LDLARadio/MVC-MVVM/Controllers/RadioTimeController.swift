@@ -13,7 +13,10 @@ class RadioTimeController: BaseController {
 
     fileprivate var mainModel: SectionViewModel?
 
-    override init() { }
+    override init() {
+        super.init()
+        mainModel = SectionViewModel(catalog: mainCatalogFromDb(sectionViewModel: nil))
+    }
 
     init(withCatalogViewModel catalogViewModel: SectionViewModel?) {
         mainModel = catalogViewModel
@@ -74,7 +77,7 @@ class RadioTimeController: BaseController {
         return nil
     }
 
-    override func prompt() -> String {
+    override func title() -> String {
         return mainModel?.tree ?? mainModel?.title.text ?? "Browse"
     }
 
@@ -82,257 +85,143 @@ class RadioTimeController: BaseController {
                                  prompt: String = AudioViewModel.ControllerName.radioTime.rawValue,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
-        let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
-
-        var resetInfo = false
-        if isClean {
-            if (mainModel == nil || mainModel?.title.text == "Browse") && mainCatalog?.title == "Browse" {
-                resetInfo = true
-            } else if (mainCatalog?.url ?? mainModel?.urlString()) != nil {
-                resetInfo = true
-            }
-        }
-
-        if resetInfo == false {
-            if mainModel?.sections.count ?? 0 > 0 || mainModel?.audios.count ?? 0 > 0 {
-
-                mainModel = SectionViewModel(catalog: mainCatalog)
-
-                lastUpdated = RTCatalog.lastUpdated()
-                finishClosure?(nil)
-                return
-            }
-
-            if  mainCatalog != nil &&
-                (mainCatalog?.sections?.count ?? 0 > 0 || mainCatalog?.audios?.count ?? 0 > 0) {
-                mainModel = SectionViewModel(catalog: mainCatalog)
-                lastUpdated = RTCatalog.lastUpdated()
-                finishClosure?(nil)
-                return
-            }
-        }
-        let url = mainCatalog?.url ?? mainModel?.urlString()
-        if url == nil && (mainModel != nil && mainModel?.title.text != "Browse") {
-            lastUpdated = RTCatalog.lastUpdated()
+        guard let mainModel = mainModel,
+            var mainCatalog = mainCatalogFromDb(sectionViewModel: mainModel) else {
             finishClosure?(nil)
             return
         }
 
-        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { error, catalog in
+        guard let url = mainCatalog.url ?? mainModel.urlString(),
+            isClean || mainModel.sections.isEmpty && mainModel.audios.isEmpty else {
+            mainModel.reload(catalog: mainCatalog)
+            finishClosure?(nil)
+            return
+        }
 
-            if error != nil {
-                self.lastUpdated = RTCatalog.lastUpdated()
+        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { [weak self] error, catalog in
+
+            guard let self = self else { return }
+            guard error == nil, let catalog = catalog else {
                 DispatchQueue.main.async {
                     finishClosure?(error)
                 }
                 return
             }
-
-            if (self.mainModel == nil || self.mainModel?.title.text == "Browse") && catalog?.title == "Browse" {
-                catalog?.url = RestApi.Constants.Service.rtServer
-            } else {
-                catalog?.url = mainCatalog?.url ?? self.mainModel?.urlString()
-            }
-            let audios = mainCatalog?.audios
-            let sections = mainCatalog?.sections
-            let title = mainCatalog?.title
-            let text = mainCatalog?.text
-            let sectionCatalog = mainCatalog?.sectionCatalog
-            mainCatalog?.remove()
-            catalog?.sectionCatalog = sectionCatalog
-
-            if title != nil && catalog?.title == nil {
-                catalog?.title = title
-            }
-            if text != nil && catalog?.text == nil {
-                catalog?.text = text
-            }
-
-            if catalog?.sections?.count ?? 0 > 0 {
-                if let sections = sections?.array as? [RTCatalog] {
-                    for section in sections {
-                        section.sectionCatalog = catalog
-                    }
-                }
-            }
-            if catalog?.audios?.count ?? 0 > 0 {
-                if let audios = audios?.array as? [RTCatalog] {
-                    for audio in audios {
-                        audio.audioCatalog = catalog
-                    }
-                }
-            }
-
-            CoreDataManager.instance.save()
-            self.mainModel = SectionViewModel(catalog: catalog)
+            mainCatalog += catalog
+            self.mainModel?.reload(catalog: mainCatalog)
+            self.mainModel?.isCollapsed = false
             self.lastUpdated = RTCatalog.lastUpdated()
-
+            catalog.remove()
+            
+            CoreDataManager.instance.save()
+        
             DispatchQueue.main.async {
-                finishClosure?(error)
+                finishClosure?(nil)
             }
         }
     }
 
     internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        let dbCatalog = mainCatalogFromDb(mainCVM: model)
-        dbCatalog?.isCollapsed = !(dbCatalog?.isCollapsed ?? false)
+        guard var dbSection = mainCatalogFromDb(sectionViewModel: model),
+            let sectionModel = model else {
+            finishClosure?(nil)
+            return
+        }
+        dbSection.isCollapsed = !dbSection.isCollapsed
+        sectionModel.reload(catalog: dbSection)
 
-        let mainCatalog = mainCatalogFromDb(mainCVM: mainModel)
-        mainModel = SectionViewModel(catalog: mainCatalog)
-        let sectionModel = modelInstance(inSection: section)
-
-        if sectionModel?.audios.count ?? 0 > 0 || sectionModel?.sections.count ?? 0 > 0 {
-            lastUpdated = RTCatalog.lastUpdated()
+        guard let url = dbSection.url ?? sectionModel.urlString(),
+            sectionModel.audios.isEmpty,
+            sectionModel.sections.isEmpty else {
             finishClosure?(nil)
             return
         }
 
-        if  dbCatalog != nil &&
-            (dbCatalog?.sections?.count ?? 0 > 0 || dbCatalog?.audios?.count ?? 0 > 0) {
-            lastUpdated = RTCatalog.lastUpdated()
-            finishClosure?(nil)
-            return
-        }
-        let url = dbCatalog?.url ?? sectionModel?.urlString()
-        if url == nil && (sectionModel?.title.text != "Browse") {
-            lastUpdated = RTCatalog.lastUpdated()
-            finishClosure?(nil)
-            return
-        }
-
-        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { error, catalog in
-
-            if error != nil {
-                self.lastUpdated = RTCatalog.lastUpdated()
+        RestApi.instance.requestRT(usingUrl: url, type: RTCatalog.self) { [weak self] error, catalog in
+           
+            guard let self = self else { return }
+            guard error == nil,
+                let catalog = catalog,
+                let mainModel = self.mainModel
+            else {
                 DispatchQueue.main.async {
                     finishClosure?(error)
                 }
                 return
             }
-
-            catalog?.url = dbCatalog?.url ?? sectionModel?.urlString()
-            let audios = dbCatalog?.audios
-            let sections = dbCatalog?.sections
-            let title = dbCatalog?.title
-            let text = dbCatalog?.text
-            let sectionCatalog = dbCatalog?.sectionCatalog
-            dbCatalog?.remove()
-            catalog?.sectionCatalog = sectionCatalog
-
-            if title != nil && catalog?.title == nil {
-                catalog?.title = title
+            
+            dbSection += catalog
+            
+            if let url = dbSection.url, url.isEmpty {
+                dbSection.url = mainModel.urlString()
             }
-            if text != nil && catalog?.text == nil {
-                catalog?.text = text
+            if dbSection.title == nil && catalog.title != nil {
+                dbSection.title = catalog.title
             }
-
-            if catalog?.sections?.count ?? 0 > 0 {
-                if let sections = sections?.array as? [RTCatalog] {
-                    for section in sections {
-                        section.sectionCatalog = catalog
-                    }
-                }
+            if dbSection.text == nil && catalog.text != nil {
+                dbSection.text = catalog.text
             }
-            if catalog?.audios?.count ?? 0 > 0 {
-                if let audios = audios?.array as? [RTCatalog] {
-                    for audio in audios {
-                        audio.audioCatalog = catalog
-                    }
-                }
-            }
-
-            let mainCatalog = self.mainCatalogFromDb(mainCVM: self.mainModel)
-            catalog?.isCollapsed = true
-
+            
+            dbSection.isCollapsed = false
+            sectionModel.reload(catalog: dbSection)
+            
+            catalog.remove()
+                    
             CoreDataManager.instance.save()
-
-            self.mainModel = SectionViewModel(catalog: mainCatalog)
-            let sectionModel = self.modelInstance(inSection: section)
-            sectionModel?.isCollapsed = false
-
+            
             self.lastUpdated = RTCatalog.lastUpdated()
-
-            DispatchQueue.main.async {
-                finishClosure?(error)
-            }
+        }
+        
+        DispatchQueue.main.async {
+            finishClosure?(nil)
         }
     }
 
     static func search(text: String = "",
                        finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        if text.isEmpty {
-            finishClosure?(nil)
-            return
-        }
-
-        guard let text2Search = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
+        guard !text.isEmpty,
+            let text2Search = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
             finishClosure?(nil)
             return
         }
         let query = "/Search.ashx?query=\(text2Search)&formats=ogg,aac,mp3"
         RestApi.instance.requestRT(usingQuery: query, type: RTCatalog.self) { error, _ in
-
-            if error != nil {
-                DispatchQueue.main.async {
-                    finishClosure?(error)
-                }
-                return
+            
+            if error == nil {
+                CoreDataManager.instance.save()
             }
-            CoreDataManager.instance.save()
-
             DispatchQueue.main.async {
                 finishClosure?(error)
             }
         }
     }
 
-    private func mainCatalogFromDb(mainCVM: SectionViewModel?) -> RTCatalog? {
-        if mainCVM == nil || mainCVM?.title.text == "Browse" {
+    private func mainCatalogFromDb(sectionViewModel: SectionViewModel?) -> RTCatalog? {
+        if sectionViewModel == nil || sectionViewModel?.title.text == "Browse" {
             let catalog = RTCatalog.search(byName: "Browse")?.first
             if catalog?.url == nil {
                 catalog?.url = RestApi.Constants.Service.rtServer
             }
             return catalog
         }
-        if let urlString = mainCVM?.urlString() {
+        if let urlString = sectionViewModel?.urlString() {
             return RTCatalog.search(byUrl: urlString)
         }
-        if let section = mainCVM?.sections.first(where: { (section) -> Bool in
+        if let section = sectionViewModel?.sections.first(where: { (section) -> Bool in
             section.urlString()?.count ?? 0 > 0}),
             let urlString = section.urlString(),
             let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
 
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
-        } else if let section = mainCVM?.audios.first(where: { (section) -> Bool in
+        } else if let section = sectionViewModel?.audios.first(where: { (section) -> Bool in
             section.urlString()?.count ?? 0 > 0}),
             let urlString = section.urlString(),
             let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
 
-            return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
-        }
-        return nil
-    }
-
-    private func mainCatalogFromDb(mainCatalog: RTCatalog?) -> RTCatalog? {
-        if let urlString = mainCatalog?.url {
-            return RTCatalog.search(byUrl: urlString)
-        }
-        if let section = mainCatalog?.sections?.first(where: { (section) -> Bool in
-            (section as? RTCatalog)?.url?.count ?? 0 > 0}),
-            let urlString = (section as? RTCatalog)?.url,
-            let superCatalog = RTCatalog.search(byUrl: urlString),
-            (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
-
-            return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
-        } else if let section = mainCatalog?.audios?.first(where: { (section) -> Bool in
-            (section as? RTCatalog)?.url?.count ?? 0 > 0}),
-            let urlString = (section as? RTCatalog)?.url,
-            let superCatalog = RTCatalog.search(byUrl: urlString),
-            (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
         }
         return nil

@@ -66,7 +66,7 @@ class RNAController: BaseController {
         return nil
     }
 
-    override func prompt() -> String {
+    override func title() -> String {
         return "Radio Nacional Argentina"
     }
 

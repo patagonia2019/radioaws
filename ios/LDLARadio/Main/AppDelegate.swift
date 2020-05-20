@@ -28,7 +28,6 @@ import SwiftSpinner
 
         FirebaseManager.start()
 
-        RestApi.instance.context = CoreDataManager.instance.taskContext
         #if DEBUG
         registerSettingsBundle()
         #endif

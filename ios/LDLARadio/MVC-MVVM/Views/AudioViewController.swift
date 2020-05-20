@@ -120,15 +120,13 @@ class AudioViewController: UIViewController {
 
         HeaderTableView.setup(tableView: tableView)
 
-        if controller is SearchController {
-            refresh(isClean: true)
-        }
-
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
         navigationController?.setToolbarHidden(true, animated: false)
 
         toolbar.isHidden = true
+        
+        refresh(isClean: controller is SearchController)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,12 +152,7 @@ class AudioViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !(controller is SearchController) {
-            refresh()
-        } else {
-            reloadData()
-        }
-        updateNavBar()
+        reloadData()
     }
 
     private func titleForController() -> String? {
@@ -228,13 +221,22 @@ class AudioViewController: UIViewController {
             if let prompt = view.subviews.first as? UILabel {
                 prompt.text = controller.prompt()
                 prompt.textColor = .midnight
-                let font = UIFont(name: Commons.Font.bold, size: 20)
+                let font = UIFont(name: Commons.Font.bold, size: 12)
                 prompt.font = font
             }
         }
-        navigationItem.title = controller.title()
+        navigationItem.titleView = titleView
     }
 
+    var titleView: UIView {
+        let label = UILabel()
+        label.text = controller.title()
+        label.textColor = .midnight
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.numberOfLines = 3
+        return label
+    }
+    
     private func reloadData(_ section: Int? = nil, _ row: Int? = nil) {
         if !Thread.isMainThread {
             Log.fault("fatal error is not Main Thread")
@@ -534,14 +536,20 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
-        headerView?.model = controller.modelInstance(inSection: section)
-        headerView?.actionExpandBlock = { model, isHighlighted in
-            DispatchQueue.main.async {
-                self.expand(model: model, section: section)
+        
+        if let model = controller.modelInstance(inSection: section) {
+            headerView?.actionExpandBlock = { model, isHighlighted in
+                DispatchQueue.main.async {
+                    self.expand(model: model, section: section)
+                }
             }
-        }
-        headerView?.infoBlock = { model in
-            self.info(model: model)
+            headerView?.infoBlock = { model in
+                self.info(model: model)
+            }
+            headerView?.model = model
+            if controller.numberOfSections() == 1 {
+                headerView?.model?.isCollapsed = nil
+            }
         }
         return headerView
     }
@@ -606,6 +614,7 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
         if let audio = object as? AudioViewModel {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
             cell.delegate = self
+            audio.showSeparator = !(indexPath.row + 1 == controller.numberOfRows(inSection: indexPath.section))
             cell.model = audio
             return cell
         }

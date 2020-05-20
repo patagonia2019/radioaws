@@ -71,7 +71,7 @@ class BaseController: Controllable {
         }
     }
 
-    func title() -> String {
+    func prompt() -> String {
         var str = [String]()
         if let updateInfo = lastUpdated?.toInfo() {
             str.append("Updated: ")
@@ -80,7 +80,7 @@ class BaseController: Controllable {
         return str.joined()
     }
 
-    func prompt() -> String {
+    func title() -> String {
         return "Los Locos de la Azotea"
     }
 

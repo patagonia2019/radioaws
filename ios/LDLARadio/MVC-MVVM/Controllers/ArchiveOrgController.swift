@@ -20,7 +20,7 @@ class ArchiveOrgController: BaseController {
         return models.count
     }
 
-    override func prompt() -> String {
+    override func title() -> String {
         return AudioViewModel.ControllerName.archiveOrg.rawValue
     }
 

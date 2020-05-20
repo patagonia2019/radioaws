@@ -42,6 +42,7 @@
 		980AA85F22F6B7B800A30AAC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 980AA85E22F6B7B800A30AAC /* GoogleService-Info.plist */; };
 		980AA86122F6BA4100A30AAC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980AA86022F6BA4100A30AAC /* FirebaseManager.swift */; };
 		980C6ACF22F7DFDA00BCE554 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */; };
+		9818B4652474CD90003C5A96 /* RTNode+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9818B4642474CD90003C5A96 /* RTNode+.swift */; };
 		98195FA122D81B2D006E7961 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */; };
 		98195FA322D81B55006E7961 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA222D81B55006E7961 /* Commons.swift */; };
 		98195FA922D83664006E7961 /* Quote+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98195FA822D83664006E7961 /* Quote+.swift */; };
@@ -178,6 +179,7 @@
 		980AA86022F6BA4100A30AAC /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		980C6ACE22F7DFDA00BCE554 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		9813DD73231A1C4C007EE1D4 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
+		9818B4642474CD90003C5A96 /* RTNode+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RTNode+.swift"; sourceTree = "<group>"; };
 		98195FA022D81B2D006E7961 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		98195FA222D81B55006E7961 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		98195FA822D83664006E7961 /* Quote+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Quote+.swift"; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				9808512C22E7A2DD0013B67C /* RNAProgram+.swift */,
 				9808512622E6E6640013B67C /* RNAStation+.swift */,
 				98195FB222DA2F53006E7961 /* RTCatalog+.swift */,
+				9818B4642474CD90003C5A96 /* RTNode+.swift */,
 				9808511C22E6D7410013B67C /* Station+.swift */,
 				425DD0A41D0D146900F96325 /* Stream+.swift */,
 				98B53CE622FFAB8D003F50EE /* User.swift */,
@@ -820,6 +823,7 @@
 				9825BDD722EB758D00E418F2 /* Downloadable.swift in Sources */,
 				989E41EB2349FF0100975B91 /* Log.swift in Sources */,
 				9808511F22E6DA950013B67C /* StreamListManager.swift in Sources */,
+				9818B4652474CD90003C5A96 /* RTNode+.swift in Sources */,
 				98B53CE722FFAB8D003F50EE /* User.swift in Sources */,
 				9808512922E7513F0013B67C /* RNACurrentProgram+.swift in Sources */,
 				9825BDD422EB710B00E418F2 /* Modellable.swift in Sources */,

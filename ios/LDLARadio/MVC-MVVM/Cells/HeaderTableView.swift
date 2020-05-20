@@ -46,7 +46,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        guard let model = model else { fatalError() }
+        guard let model = model else { return }
         
         titleLabel?.text = model.title.text
         titleLabel?.textColor = model.title.color
@@ -55,20 +55,19 @@ class HeaderTableView: UITableViewHeaderFooterView {
         if let isCollapsed = model.isCollapsed {
             expandButton?.isHidden = false
             expandButton?.isHighlighted = isCollapsed
+            separatorView?.isHidden = !isCollapsed
         } else {
             expandButton?.isHidden = true
             leadingConstraint?.constant = 6
+            separatorView?.isHidden = true
         }
         
         thumbnailView?.image = model.placeholderImage
         if let thumbnailUrl = model.thumbnailUrl {
             thumbnailView?.af_setImage(withURL: thumbnailUrl, placeholderImage: model.placeholderImage)
         }
-        if model.text?.isEmpty ?? true {
-            infoButton?.isHidden = true
-        } else {
-            infoButton?.isHidden = false
-        }
+        
+        infoButton?.isHidden = model.text?.isEmpty ?? true
     }
 
     static func setup(tableView: UITableView?) {

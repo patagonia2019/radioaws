@@ -19,7 +19,9 @@ class RestApi {
     /// Singleton
     static let instance = RestApi()
 
-    var context: NSManagedObjectContext?
+    var context: NSManagedObjectContext? {
+        return CoreDataManager.instance.taskContext
+    }
 
     /// Some hardcoded constants
     struct Constants {
