@@ -77,19 +77,15 @@ class StreamPersistenceManager: NSObject {
         NotificationCenter.default.post(name: StationPersistenceManagerDidRestoreStateNotification, object: nil)
 
         // Grab all the tasks associated with the assetDownloadURLSession
-        if #available(iOS 10.0, *) {
-            assetDownloadURLSession.getAllTasks { tasksArray in
-                // For each task, restore the state in the app by recreating Stream structs and reusing existing AVURLAsset objects.
-                for task in tasksArray {
-                    guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetUrl = task.taskDescription else { break }
-
-                    guard let asset = Stream.search(byUrl: assetUrl) else { break }
-                    self.activeDownloadsMap[assetDownloadTask] = asset
-                }
-
-                NotificationCenter.default.post(name: StreamPersistenceManagerDidRestoreStateNotification, object: nil)
+        assetDownloadURLSession.getAllTasks { tasksArray in
+            // For each task, restore the state in the app by recreating Stream structs and reusing existing AVURLAsset objects.
+            for task in tasksArray {
+                guard let assetDownloadTask = task as? AVAssetDownloadTask, let assetUrl = task.taskDescription else { break }
+                
+                guard let asset = Stream.search(byUrl: assetUrl) else { break }
+                self.activeDownloadsMap[assetDownloadTask] = asset
             }
-        } else {
+            
             NotificationCenter.default.post(name: StreamPersistenceManagerDidRestoreStateNotification, object: nil)
         }
     }

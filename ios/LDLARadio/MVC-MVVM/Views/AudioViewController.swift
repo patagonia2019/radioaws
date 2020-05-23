@@ -32,7 +32,7 @@ class AudioViewController: UIViewController {
     var archiveOrgMainModelController = ArchiveOrgMainModelController()
         
     // TODO: replace with generic func getControl<T:Controllable>() -> T {
-    var controller: BaseController {
+    var controller: BaseController? {
         get {
             let name = controllerName()
             switch name {
@@ -101,10 +101,7 @@ class AudioViewController: UIViewController {
         stream.delegate2 = self
         stream.delegate = toolbar
         SwiftSpinner.useContainerView(view)
-
-        if controller.useRefresh {
-            addRefreshControl()
-        }
+        
         HeaderTableView.setup(tableView: tableView)
         tableView.remembersLastFocusedIndexPath = true
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -112,7 +109,10 @@ class AudioViewController: UIViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         toolbar.isHidden = true
         
-        refresh(isClean: controller is SearchController)
+        if let controller = controller, controller.useRefresh {
+            addRefreshControl()
+            refresh(isClean: controller is SearchController)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -191,6 +191,9 @@ class AudioViewController: UIViewController {
 
     func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
 
+        guard let controller = controller else {
+            return
+        }
         controller.refresh(isClean: isClean, prompt: "", startClosure:
             {
                 SwiftSpinner.show(Quote.randomQuote())
@@ -208,6 +211,10 @@ class AudioViewController: UIViewController {
     }
 
     func updateNavBar() {
+        guard let controller = controller else {
+            return
+        }
+
         navigationItem.prompt = " "
         for view in navigationController?.navigationBar.subviews ?? [] where NSStringFromClass(view.classForCoder) == "_UINavigationBarModernPromptView" {
             if let prompt = view.subviews.first as? UILabel {
@@ -222,7 +229,7 @@ class AudioViewController: UIViewController {
 
     var titleView: UIView {
         let label = UILabel()
-        label.text = controller.title()
+        label.text = controller?.title()
         label.textColor = .midnight
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.numberOfLines = 3
@@ -230,6 +237,10 @@ class AudioViewController: UIViewController {
     }
     
     private func reloadData(_ section: Int? = nil, _ row: Int? = nil) {
+        guard let controller = controller else {
+            return
+        }
+
         if !Thread.isMainThread {
             Log.fault("fatal error is not Main Thread")
             fatalError()
@@ -289,7 +300,7 @@ class AudioViewController: UIViewController {
     }
 
     private func info(indexPath: IndexPath) {
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+        let object = controller?.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             showAlert(title: audio.title.text, message: audio.info, error: nil)
         } else if let section = object as? SectionViewModel {
@@ -298,6 +309,7 @@ class AudioViewController: UIViewController {
     }
 
     private func play(indexPath: IndexPath, isReload: Bool = true) {
+        guard let controller = controller else { return }
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
             DispatchQueue.main.async {
@@ -306,7 +318,7 @@ class AudioViewController: UIViewController {
                     self.reloadData(indexPath.section, indexPath.row)
                 }
                 DispatchQueue.global(qos: .background).async {
-                    self.controller.play(forSection: indexPath.section, row: indexPath.row)
+                    controller.play(forSection: indexPath.section, row: indexPath.row)
                     DispatchQueue.main.async {
                         self.reloadData(indexPath.section)
                     }
@@ -336,6 +348,7 @@ class AudioViewController: UIViewController {
     }
 
     private func expand(model: SectionViewModel?, incrementPage: Bool = false, section: Int) {
+        guard let controller = controller else { return }
         // Reusing the same model, but focus in this section
         controller.expand(model: model, section: section,
                           incrementPage: incrementPage,
@@ -452,7 +465,7 @@ class AudioViewController: UIViewController {
                 }
             }
         } else {
-            controller.changeBookmark(indexPath: indexPath)
+            controller?.changeBookmark(indexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
@@ -518,14 +531,18 @@ extension AudioViewController: AssetPlaybackDelegate {
 
 extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
+        guard let controller = controller else { return 0 }
         return controller.numberOfSections()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let controller = controller else { return 0 }
         return controller.numberOfRows(inSection: section)
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let controller = controller else { return nil }
+        
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.reuseIdentifier) as? HeaderTableView
         
         if let model = controller.modelInstance(inSection: section) {
@@ -546,6 +563,8 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let controller = controller else { return nil }
+
         let object = controller.model(forSection: indexPath.section, row: indexPath.row)
         if object is AudioViewModel {
             return indexPath
@@ -559,6 +578,7 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let controller = controller else { return nil }
 
         var actions = [UITableViewRowAction]()
 
@@ -601,11 +621,12 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let object = controller.model(forSection: indexPath.section, row: indexPath.row)
+
+        let object = controller?.model(forSection: indexPath.section, row: indexPath.row)
         if let audio = object as? AudioViewModel {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AudioTableViewCell.reuseIdentifier, for: indexPath) as? AudioTableViewCell else { fatalError() }
             cell.delegate = self
-            audio.showSeparator = !(indexPath.row + 1 == controller.numberOfRows(inSection: indexPath.section))
+            audio.showSeparator = !(indexPath.row + 1 == controller?.numberOfRows(inSection: indexPath.section))
             cell.model = audio
             return cell
         }
@@ -613,7 +634,7 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SectionTableViewCell.reuseIdentifier, for: indexPath) as? SectionTableViewCell else { fatalError() }
             cell.model = section
             cell.actionBookmarkBlock = { catalog, isBookmarking in
-                self.controller.changeBookmark(indexPath: indexPath)
+                self.controller?.changeBookmark(indexPath: indexPath)
             }
             cell.infoBlock = { catalog in
                 self.info(model: catalog)

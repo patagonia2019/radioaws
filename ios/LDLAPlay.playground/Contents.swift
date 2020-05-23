@@ -3,7 +3,7 @@
 import UIKit
 import PlaygroundSupport
 
-class MyViewController : UIViewController {
+class MyViewController: UIViewController {
     override func loadView() {
         let view = UIView()
         view.backgroundColor = .white
@@ -19,7 +19,6 @@ class MyViewController : UIViewController {
         label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        
         self.view = view
     }
     
@@ -28,7 +27,7 @@ class MyViewController : UIViewController {
         let font = UIFont.systemFont(ofSize: 72)
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
-            .foregroundColor: UIColor.red,
+            .foregroundColor: UIColor.red
         ]
         let attributedQuote = NSAttributedString(string: quote, attributes: attributes)
         return attributedQuote
@@ -78,7 +77,6 @@ class MyViewController : UIViewController {
         
         return attributedQuote
     }
-    
     
     var attributedQuoteAppend: NSAttributedString {
 
