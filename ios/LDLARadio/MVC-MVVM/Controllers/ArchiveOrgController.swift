@@ -21,19 +21,25 @@ class ArchiveOrgController: BaseController {
     }
 
     override func title() -> String {
-        return AudioViewModel.ControllerName.archiveOrg.rawValue
+        return AudioViewModel.ControllerName.ArchiveOrg.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {
         var rows: Int = 0
+        var additionalRowToReload: Int = 0
         if section < models.count {
             let model = models[section]
             if model.isCollapsed == true {
                 return 0
             }
+
+            if let archiveCollection = ArchiveCollection.search(byIdentifier: model.id) {
+                additionalRowToReload = archiveCollection.nextPage == nil ? 0 : 1
+            }
+
             rows = model.sections.count + model.audios.count
         }
-        return rows > 0 ? (rows + 1) : 1
+        return rows > 0 ? (rows + additionalRowToReload) : additionalRowToReload
     }
 
     override func modelInstance(inSection section: Int) -> SectionViewModel? {
@@ -126,34 +132,33 @@ class ArchiveOrgController: BaseController {
 
     internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id)
-
-        if incrementPage, let page = model?.page {
-            model?.page = page + 1
-            model?.isCollapsed = false
-            archiveCollection?.isCollapsed = false
+        guard let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id),
+            let model = model else {
+            finishClosure?(nil)
+            return
         }
-
+        var page = archiveCollection.currentPage
+        
         if incrementPage == false {
-            if let isCollapsed = model?.isCollapsed {
-                model?.isCollapsed = !isCollapsed
-            }
-
-            if model?.audios.count ?? 0 > 0 || model?.sections.count ?? 0 > 0 {
+            if !(model.audios.isEmpty || model.sections.isEmpty) {
                 finishClosure?(nil)
                 return
             }
 
-            if ArchiveMeta.search(byIdentifier: archiveCollection?.identifier) != nil {
-                self.updateModels()
-                finishClosure?(nil)
-                return
+            archiveCollection.isCollapsed = !archiveCollection.isCollapsed
+            
+            model.reload(archiveCollection: archiveCollection, isAlreadyCollapsed: archiveCollection.isCollapsed)
+            finishClosure?(nil)
+            return
+        } else {
+            if let nextPage = archiveCollection.nextPage {
+                page = nextPage
             }
+            archiveCollection.isCollapsed = false
         }
-
-        let url = archiveCollection?.searchCollectionUrlString(page: model?.page ?? 1) ?? model?.urlString()
-        if url == nil {
-            self.updateModels()
+        
+        guard let url = archiveCollection.searchCollectionUrlString(page: page) ?? model.urlString() else {
+            model.reload(archiveCollection: archiveCollection, isAlreadyCollapsed: archiveCollection.isCollapsed)
             finishClosure?(nil)
             return
         }
@@ -163,15 +168,15 @@ class ArchiveOrgController: BaseController {
             RestApi.instance.requestARCH(usingUrl: url, type: ArchiveMeta.self) { error, meta in
 
                 if error == nil {
-                    meta?.collection = ArchiveCollection.search(byIdentifier: archiveCollection?.identifier ?? model?.parentId)
+                    meta?.collection = archiveCollection
 
-                    meta?.collectionIdentifier = archiveCollection?.identifier ?? model?.parentId
-                    meta?.identifier = model?.id
+                    meta?.collectionIdentifier = archiveCollection.identifier ?? model.parentId
+                    meta?.identifier = model.id
 
                     CoreDataManager.instance.save()
                 }
 
-                self.updateModels()
+                model.reload(archiveCollection: archiveCollection, isAlreadyCollapsed: archiveCollection.isCollapsed)
 
                 DispatchQueue.main.async {
                     finishClosure?(error)

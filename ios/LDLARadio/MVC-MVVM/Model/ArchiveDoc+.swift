@@ -49,6 +49,7 @@ extension ArchiveDoc: Sectionable {
     var sectionIdentifier: String {
         return identifier ?? "#\(arc4random())"
     }
+    
     var titleText: String? {
         return title
     }
@@ -83,7 +84,7 @@ extension ArchiveDoc: Sectionable {
     }
     
     var sectionDetailText: String? {
-        return descript
+        return numFiles > 0 ? "\n\(numFiles) Record\(numFiles == 1 ? "" : "s")" : nil
     }
     
     var queryUrl: URL? {
@@ -93,7 +94,7 @@ extension ArchiveDoc: Sectionable {
         return nil
     }
     var content: ([ArchiveFile], [ArchiveFile]) {
-        if let array = detail?.archiveFiles?.array as? [ArchiveFile], array.isEmpty == false {
+        if let array = detail?.archiveFiles?.sortedArray(using: [NSSortDescriptor(key: "title", ascending: true)]) as? [ArchiveFile], array.isEmpty == false {
             return ([], array)
         }
         return ([], [])
@@ -142,5 +143,9 @@ extension ArchiveDoc: Searchable {
         let array = try? context.fetch(req)
         return array?.first
     }
-
+    
+    var numFiles: Int {
+        return detail?.files?.count ?? 0
+    }
+    
 }

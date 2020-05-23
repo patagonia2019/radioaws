@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:LDLAPlay.playground">
+   </FileRef>
+   <FileRef
       location = "group:LDLARadio.xcodeproj">
    </FileRef>
    <FileRef

@@ -21,7 +21,7 @@ class ElDesconciertoController: BaseController {
     }
 
     override func title() -> String {
-        return AudioViewModel.ControllerName.desconcierto.rawValue
+        return AudioViewModel.ControllerName.Desconcierto.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {

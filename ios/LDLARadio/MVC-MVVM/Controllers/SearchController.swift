@@ -49,7 +49,7 @@ class SearchController: BaseController {
             if model.isCollapsed == true {
                 return 0
             }
-            if model.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
+            if model.section == AudioViewModel.ControllerName.ArchiveOrg.rawValue {
                 return model.sections.count + 1
             }
             rows = model.sections.count + model.audios.count
@@ -111,7 +111,7 @@ class SearchController: BaseController {
                     let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = amModels
-                    model.section = AudioViewModel.ControllerName.rna.rawValue
+                    model.section = AudioViewModel.ControllerName.RNA.rawValue
                     model.title.text = "\(model.section) - AM:  \(model.audios.count)"
                     models.append(model)
                 }
@@ -125,7 +125,7 @@ class SearchController: BaseController {
                     let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = fmModels
-                    model.section = AudioViewModel.ControllerName.rna.rawValue
+                    model.section = AudioViewModel.ControllerName.RNA.rawValue
                     model.title.text = "\(model.section) - FM:  \(model.audios.count)"
                     models.append(model)
                 }
@@ -136,7 +136,7 @@ class SearchController: BaseController {
                 if !streamModels.isEmpty {
                     let model = SectionViewModel()
                     model.isCollapsed = true
-                    model.section = AudioViewModel.ControllerName.suggestion.rawValue
+                    model.section = AudioViewModel.ControllerName.LosLocos.rawValue
                     model.audios = streamModels
                     model.title.text = "\(model.section): \(model.audios.count)"
                     models.append(model)
@@ -149,7 +149,7 @@ class SearchController: BaseController {
                     let model = SectionViewModel()
                     model.isCollapsed = true
                     model.audios = audioModels
-                    model.section = AudioViewModel.ControllerName.bookmark.rawValue
+                    model.section = AudioViewModel.ControllerName.MyPick.rawValue
                     model.title.text = "\(model.section):  \(model.audios.count)"
                     self.models.append(model)
                 }
@@ -165,7 +165,7 @@ class SearchController: BaseController {
                 model.isCollapsed = true
 
                 for element in catalogs {
-                    if element.isAudio(), element.url?.count ?? 0 > 0 {
+                    if element.isAudio() {
                         let viewModel = AudioViewModel(catalog: element)
                         if audiosTmp.first(where: { (avm) -> Bool in
                             avm.url == viewModel.url
@@ -182,7 +182,7 @@ class SearchController: BaseController {
                 if !model.sections.isEmpty && !model.audios.isEmpty {
                     self.models.append(model)
                 }
-                model.section = AudioViewModel.ControllerName.radioTime.rawValue
+                model.section = AudioViewModel.ControllerName.RT.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
             }
 
@@ -190,7 +190,7 @@ class SearchController: BaseController {
                 let model = SectionViewModel()
                 model.isCollapsed = false
                 model.sections = archiveOrgs.map({ SectionViewModel(archiveDoc: $0) })
-                model.section = AudioViewModel.ControllerName.archiveOrg.rawValue
+                model.section = AudioViewModel.ControllerName.ArchiveOrg.rawValue
                 model.title.text = "\(model.section):  \(model.sections.count)"
 
                 if !model.sections.isEmpty {

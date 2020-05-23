@@ -243,33 +243,33 @@
                                             <outlet property="titleLabel" destination="Q1m-ZK-Ey7" id="avv-k1-lkD"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadTableViewCell" rowHeight="40" id="gh6-fx-taO" userLabel="LoadTableViewCell" customClass="LoadTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="255.5" width="414" height="40"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="gh6-fx-taO" userLabel="LoadTableViewCell" customClass="LoadTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="255.5" width="414" height="35.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gh6-fx-taO" id="e3P-kF-nvu">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="35.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6S-YN-vRZ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="35.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uqz-FV-E15">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uqz-FV-E15">
+                                                            <rect key="frame" x="41.5" y="10" width="331" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="xse-7q-66d">
-                                                            <rect key="frame" x="414" y="1.5" width="37" height="37"/>
+                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="xse-7q-66d">
+                                                            <rect key="frame" x="372.5" y="2" width="37" height="37"/>
                                                         </activityIndicatorView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="Uqz-FV-E15" secondAttribute="bottom" id="OUN-bO-klB"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Uqz-FV-E15" secondAttribute="bottom" constant="5" id="OUN-bO-klB"/>
                                                         <constraint firstItem="Uqz-FV-E15" firstAttribute="trailing" secondItem="xse-7q-66d" secondAttribute="leading" id="UGG-MW-t8A"/>
-                                                        <constraint firstItem="Uqz-FV-E15" firstAttribute="width" secondItem="f6S-YN-vRZ" secondAttribute="width" id="WkY-jh-JJe"/>
+                                                        <constraint firstItem="Uqz-FV-E15" firstAttribute="width" secondItem="f6S-YN-vRZ" secondAttribute="width" multiplier="0.8" id="WkY-jh-JJe"/>
                                                         <constraint firstItem="xse-7q-66d" firstAttribute="centerY" secondItem="Uqz-FV-E15" secondAttribute="centerY" id="eg1-0Y-v2Z"/>
                                                         <constraint firstItem="Uqz-FV-E15" firstAttribute="centerX" secondItem="f6S-YN-vRZ" secondAttribute="centerX" id="ow9-Wq-EgN"/>
-                                                        <constraint firstItem="Uqz-FV-E15" firstAttribute="top" secondItem="f6S-YN-vRZ" secondAttribute="top" id="wF1-84-0ES"/>
+                                                        <constraint firstItem="Uqz-FV-E15" firstAttribute="top" secondItem="f6S-YN-vRZ" secondAttribute="top" constant="10" id="wF1-84-0ES"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

@@ -64,7 +64,7 @@ extension ArchiveCollection: Sectionable {
     }
     
     var sectionDetailText: String? {
-        return detailText
+        return "\n(\(currentPage * 10) / \(numFound) Records)"
     }
     
     var queryUrl: URL? {
@@ -75,13 +75,9 @@ extension ArchiveCollection: Sectionable {
     }
     
     var content: ([ArchiveDoc], [ArchiveDoc]) {
-        if let metas = metas {
-            for meta in metas {
-                if let response = (meta as? ArchiveMeta)?.response,
-                    let array = response.docs?.array as? [ArchiveDoc], array.isEmpty == false {
-                    return (array, [])
-                }
-            }
+        let predicate = NSPredicate(format: "response.meta.collection.identifier = %@", sectionIdentifier)
+        if let docs = ArchiveDoc.all(predicate: predicate, sortDescriptors: nil) as? [ArchiveDoc] {
+            return (docs, [])
         }
         return ([], [])
     }
@@ -169,4 +165,35 @@ extension ArchiveCollection {
         return "\(RestApi.Constants.Service.archServer)/advancedsearch.php?q=\(string)+AND+mediatype:(audio)&fl[]=creator&fl[]=description&fl[]=downloads&fl[]=identifier&fl[]=item_size&fl[]=mediatype&fl[]=publicdate&fl[]=subject&fl[]=title&fl[]=type&sort[]=downloads+desc&sort[]=&sort[]=&rows=10&page=\(page)"
     }
 
+    var currentPage: Int {
+        guard let page = metas?.count else {
+            return 1
+        }
+        return page == 0 ? 1 : page
+    }
+
+    var numFound: Int {
+        guard let metas = metas?.array as? [ArchiveMeta] else {
+            return 0
+        }
+            
+        var numFound = 0
+        var updatedAtMax = Date.init(timeIntervalSince1970: 0)
+        for meta in metas where meta.numFound > 0 {
+            if let updateAtMeta = meta.updatedAt, updatedAtMax < updateAtMeta || numFound == 0 {
+                numFound = meta.numFound
+                updatedAtMax = updateAtMeta
+            }
+        }
+        return numFound
+    }
+
+    var nextPage: Int? {
+        let page = currentPage + 1
+
+        if page > numFound / 10 {
+            return nil
+        }
+        return page
+    }
 }

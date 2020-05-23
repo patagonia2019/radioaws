@@ -24,10 +24,7 @@ class SectionTableViewCell: UITableViewCell {
         didSet {
             guard let model = model else { return }
             infoButton.isHidden = model.text?.isEmpty ?? false
-
-            detailView.text = model.title.text
-            detailView.textColor = model.title.color
-            detailView.font = model.title.font
+            detailView.attributedText = model.attributedText
             selectionStyle = model.selectionStyle
             accessoryType = model.accessoryType
             separatorView.isHidden = !model.showSeparator

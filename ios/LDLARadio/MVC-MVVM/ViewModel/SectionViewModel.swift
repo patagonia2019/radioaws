@@ -24,9 +24,19 @@ class SectionViewModel: BaseViewModelProtocol {
     var selectionStyle = UITableViewCell.SelectionStyle.blue
     var accessoryType = UITableViewCell.AccessoryType.none
 
-    var detail: LabelViewModel = LabelViewModel(text: "No more detail", color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 1)
+    var detail: LabelViewModel = LabelViewModel(color: UIColor.clover, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.XS), isHidden: true, lines: 0)
 
-    var title: LabelViewModel = LabelViewModel(text: "No more info", color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: true, lines: 1)
+    var title: LabelViewModel = LabelViewModel(color: UIColor.orchid, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: true, lines: 0)
+    
+    var attributedText: NSAttributedString {
+        let attributedText = NSMutableAttributedString()
+        for labelModel in [title, detail] {
+            if let attributed = labelModel.attributedText {
+                attributedText.append(attributed)
+            }
+        }
+        return attributedText
+    }
 
     var tree: String?
 
@@ -42,7 +52,6 @@ class SectionViewModel: BaseViewModelProtocol {
     /// convenient id
     var parentId: String?
     var id: String?
-    var page: Int = 1
     var showSeparator: Bool = true
 
     var isBookmark: Bool {
@@ -56,8 +65,8 @@ class SectionViewModel: BaseViewModelProtocol {
     }
 
     init() {
-        title.text = "No more info"
-        detail.text = "No more detail"
+        title.text = nil
+        detail.text = nil
         selectionStyle = .none
         accessoryType = .none
     }
@@ -69,7 +78,7 @@ class SectionViewModel: BaseViewModelProtocol {
     func reload(catalog: RTCatalog?) {
         guard let catalog = catalog else { return }
         id = catalog.sectionIdentifier
-        section = AudioViewModel.ControllerName.radioTime.rawValue
+        section = AudioViewModel.ControllerName.RT.rawValue
         title.text = catalog.titleText
         tree = catalog.titleTree
         parentId = catalog.parentId
@@ -83,11 +92,15 @@ class SectionViewModel: BaseViewModelProtocol {
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {
+        reload(archiveCollection: archiveCollection, isAlreadyCollapsed: isAlreadyCollapsed)
+    }
+    
+    func reload(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {
         guard let archiveCollection = archiveCollection else { fatalError() }
         id = archiveCollection.sectionIdentifier
-        section = AudioViewModel.ControllerName.archiveOrg.rawValue
+        section = AudioViewModel.ControllerName.ArchiveOrg.rawValue
         title.text = archiveCollection.titleText
-        detail.text = archiveCollection.detailText
+        detail.text = archiveCollection.sectionDetailText
         thumbnailUrl = archiveCollection.portraitUrl
         url = archiveCollection.queryUrl
         text = archiveCollection.infoText
@@ -96,16 +109,15 @@ class SectionViewModel: BaseViewModelProtocol {
         sections = content.0.map({ SectionViewModel(archiveDoc: $0, isAlreadyCollapsed: isAlreadyCollapsed) })
         audios = []
         isCollapsed = isAlreadyCollapsed
-        page = archiveCollection.metas?.count ?? 1
     }
 
     init(archiveDoc: ArchiveDoc?, isAlreadyCollapsed: Bool = true) {
         guard let archiveDoc = archiveDoc else { fatalError() }
         id = archiveDoc.sectionIdentifier
         parentId = archiveDoc.parentId
-        section = AudioViewModel.ControllerName.archiveOrg.rawValue
+        section = AudioViewModel.ControllerName.ArchiveOrg.rawValue
         title.text = archiveDoc.titleText
-        detail.text = archiveDoc.detailText
+        detail.text = archiveDoc.sectionDetailText
         thumbnailUrl = archiveDoc.portraitUrl
         url = archiveDoc.queryUrl
         text = archiveDoc.infoText
@@ -118,7 +130,7 @@ class SectionViewModel: BaseViewModelProtocol {
     init(desconcierto: Desconcierto?, isAlreadyCollapsed: Bool = true) {
         guard let desconcierto = desconcierto else { fatalError() }
         id = desconcierto.sectionIdentifier
-        section = AudioViewModel.ControllerName.desconcierto.rawValue
+        section = AudioViewModel.ControllerName.Desconcierto.rawValue
         title.text = desconcierto.titleText
         tree = ""
         detail.text = desconcierto.sectionDetailText

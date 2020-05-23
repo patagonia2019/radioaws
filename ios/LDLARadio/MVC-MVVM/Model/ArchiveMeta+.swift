@@ -34,4 +34,8 @@ extension ArchiveMeta: Modellable {
         let array = try? context.fetch(req)
         return array?.first
     }
+    
+    var numFound: Int {
+        return Int(response?.numFound ?? 0)
+    }
 }

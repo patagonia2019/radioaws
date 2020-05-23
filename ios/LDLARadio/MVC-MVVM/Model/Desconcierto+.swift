@@ -95,7 +95,10 @@ extension Desconcierto: Sectionable {
     }
     
     var sectionDetailText: String? {
-        return detailText
+        if let detailText = detailText {
+            return "\n" + detailText
+        }
+        return nil
     }
     
     var queryUrl: URL? {

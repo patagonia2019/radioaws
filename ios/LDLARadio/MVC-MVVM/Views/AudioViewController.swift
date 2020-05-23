@@ -19,9 +19,8 @@ class AudioViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var toolbar: Toolbar!
 
-    var isFullScreen: Bool = false
     var currentPlayIndexPath: IndexPath?
-    var lastTitleName: String = AudioViewModel.ControllerName.suggestion.rawValue
+    var lastTitleName: String = AudioViewModel.ControllerName.LosLocos.rawValue
     fileprivate var timerPlayed: Timer?
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
@@ -31,69 +30,59 @@ class AudioViewController: UIViewController {
     var searchController = SearchController()
     var archiveOrgController = ArchiveOrgController()
     var archiveOrgMainModelController = ArchiveOrgMainModelController()
-
+        
+    // TODO: replace with generic func getControl<T:Controllable>() -> T {
     var controller: BaseController {
         get {
-            let title = titleForController()
-            switch title {
-            case AudioViewModel.ControllerName.suggestion.rawValue:
-                return radioController
-            case AudioViewModel.ControllerName.radioTime.rawValue:
-                return radioTimeController
-            case AudioViewModel.ControllerName.rna.rawValue:
-                return rnaController
-            case AudioViewModel.ControllerName.bookmark.rawValue:
-                return bookmarkController
-            case AudioViewModel.ControllerName.desconcierto.rawValue:
-                return desconciertoController
-            case AudioViewModel.ControllerName.archiveOrg.rawValue:
-                return archiveOrgController
-            case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
-                return archiveOrgMainModelController
-            case AudioViewModel.ControllerName.search.rawValue:
-                return searchController
-            default:
-                fatalError()
+            let name = controllerName()
+            switch name {
+            case .LosLocos: return radioController
+            case .RT: return radioTimeController
+            case .RNA: return rnaController
+            case .MyPick: return bookmarkController
+            case .Desconcierto: return desconciertoController
+            case .ArchiveOrg: return archiveOrgController
+            case .ArchiveOrgMain: return archiveOrgMainModelController
+            case .Search: return searchController
+            default: fatalError()
             }
         }
         set {
-            let title = titleForController()
-
-            switch title {
-            case AudioViewModel.ControllerName.suggestion.rawValue:
+            let name = controllerName()
+            switch name {
+            case .LosLocos:
                 if let newValue = newValue as? RadioController {
                     radioController = newValue
                 }
-            case AudioViewModel.ControllerName.radioTime.rawValue:
+            case .RT:
                 if let newValue = newValue as? RadioTimeController {
                     radioTimeController = newValue
                 }
-            case AudioViewModel.ControllerName.rna.rawValue:
+            case .RNA:
                 if let newValue = newValue as? RNAController {
                     rnaController = newValue
                 }
-            case AudioViewModel.ControllerName.bookmark.rawValue:
+            case .MyPick:
                 if let newValue = newValue as? BookmarkController {
                     bookmarkController = newValue
                 }
-            case AudioViewModel.ControllerName.desconcierto.rawValue:
+            case .Desconcierto:
                 if let newValue = newValue as? ElDesconciertoController {
                     desconciertoController = newValue
                 }
-            case AudioViewModel.ControllerName.archiveOrg.rawValue:
+            case .ArchiveOrg:
                 if let newValue = newValue as? ArchiveOrgController {
                     archiveOrgController = newValue
                 }
-            case AudioViewModel.ControllerName.archiveMainModelOrg.rawValue:
+            case .ArchiveOrgMain:
                 if let newValue = newValue as? ArchiveOrgMainModelController {
                     archiveOrgMainModelController = newValue
                 }
-            case AudioViewModel.ControllerName.search.rawValue:
+            case .Search:
                 if let newValue = newValue as? SearchController {
                     searchController = newValue
                 }
-            default:
-                fatalError()
+            default: fatalError()
             }
         }
     }
@@ -116,14 +105,11 @@ class AudioViewController: UIViewController {
         if controller.useRefresh {
             addRefreshControl()
         }
-        tableView.remembersLastFocusedIndexPath = true
-
         HeaderTableView.setup(tableView: tableView)
-
+        tableView.remembersLastFocusedIndexPath = true
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
         navigationController?.setToolbarHidden(true, animated: false)
-
         toolbar.isHidden = true
         
         refresh(isClean: controller is SearchController)
@@ -132,13 +118,13 @@ class AudioViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        var buttons = [UIBarButtonItem]()
+        buttons.append(searchButton)
         if controller is BookmarkController {
-            navigationItem.leftBarButtonItems = [trashButton]
-        } else {
-            navigationItem.leftBarButtonItems = nil
+            buttons.append(trashButton)
         }
+        navigationItem.rightBarButtonItems = buttons
         updateNavBar()
-
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -155,14 +141,14 @@ class AudioViewController: UIViewController {
         reloadData()
     }
 
-    private func titleForController() -> String? {
+    private func controllerName() -> AudioViewModel.ControllerName? {
         if !Thread.isMainThread {
-            Log.error("NOT Main Thread")
-            return lastTitleName
+            Log.error("NOT Main Thread %@", lastTitleName)
+            fatalError()
         }
 
         lastTitleName = self.tabBarItem.title ?? self.navigationController?.tabBarItem.title ?? self.tabBarController?.selectedViewController?.tabBarItem.title ?? lastTitleName
-        return lastTitleName
+        return AudioViewModel.ControllerName(rawValue: lastTitleName)
     }
 
     /// Refresh control to allow pull to refresh
@@ -170,14 +156,25 @@ class AudioViewController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.accessibilityHint = "refresh"
         refreshControl.accessibilityLabel = "refresh"
-        refreshControl.addTarget(self, action:
-            #selector(AudioViewController.handleRefresh(_:)),
-                                 for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(AudioViewController.handleRefresh(_:)), for: .valueChanged)
         refreshControl.tintColor = UIColor.red
 
         tableView.addSubview(refreshControl)
 
     }
+
+    lazy var searchButton: UIBarButtonItem = {
+        let search = UIButton(type: .custom)
+        search.addTarget(self, action: #selector(AudioViewController.searchAction(_:)), for: .touchUpInside)
+        search.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
+        search.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
+        search.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
+        search.setTitleColor(.blue, for: .normal)
+        search.setTitleColor(.steel, for: .highlighted)
+        search.titleLabel?.font = UIFont(name: Commons.Font.awesome, size: 30)
+        search.setTitle("\(Commons.Symbol.showAwesome(icon: .search))", for: .normal)
+        return UIBarButtonItem(customView: search)
+    }()
 
     lazy var trashButton: UIBarButtonItem = {
         let trash = UIButton(type: .custom)
@@ -185,23 +182,18 @@ class AudioViewController: UIViewController {
         trash.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
         trash.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
         trash.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
-        guard let font = UIFont(name: Commons.Font.awesome, size: 30) else {
-            fatalError()
-        }
         trash.setTitleColor(.maraschino, for: .normal)
         trash.setTitleColor(.steel, for: .highlighted)
-        trash.titleLabel?.font = font
+        trash.titleLabel?.font = UIFont(name: Commons.Font.awesome, size: 30)
         trash.setTitle("\(Commons.Symbol.showAwesome(icon: .trash))", for: .normal)
-
-        let button = UIBarButtonItem(customView: trash)
-        return button
+        return UIBarButtonItem(customView: trash)
     }()
 
     func refresh(isClean: Bool = false, refreshControl: UIRefreshControl? = nil) {
 
-        controller.refresh(isClean: isClean, prompt: "",
-                           startClosure: {
-                            SwiftSpinner.show(Quote.randomQuote())
+        controller.refresh(isClean: isClean, prompt: "", startClosure:
+            {
+                SwiftSpinner.show(Quote.randomQuote())
         }, finishClosure: { (error) in
             if let error = error {
                 DispatchQueue.main.async {
@@ -266,7 +258,6 @@ class AudioViewController: UIViewController {
         if let timerPlayed = timerPlayed {
             timerPlayed.invalidate()
         }
-
         if stream.isAboutToPlay() {
             timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
         } else {
@@ -327,9 +318,9 @@ class AudioViewController: UIViewController {
             } else if controller is ArchiveOrgController {
                 performSegue(withIdentifier: Commons.Segue.archiveorg, sender: section)
             } else if controller is SearchController {
-                if section.section == AudioViewModel.ControllerName.radioTime.rawValue {
+                if section.section == AudioViewModel.ControllerName.RT.rawValue {
                     performSegue(withIdentifier: Commons.Segue.catalog, sender: section)
-                } else if section.section == AudioViewModel.ControllerName.archiveOrg.rawValue {
+                } else if section.section == AudioViewModel.ControllerName.ArchiveOrg.rawValue {
                     performSegue(withIdentifier: Commons.Segue.archiveorg, sender: section)
                 }
             }
@@ -370,7 +361,7 @@ class AudioViewController: UIViewController {
         DispatchQueue.main.async {
             Analytics.logFunction(function: "refresh",
                                   parameters: ["method": "control" as AnyObject,
-                                               "controller": self.titleForController() as AnyObject])
+                                               "controller": self.controllerName()?.rawValue as AnyObject])
 
             self.refresh(isClean: true, refreshControl: refreshControl)
         }
@@ -439,13 +430,13 @@ class AudioViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Commons.Segue.catalog {
-            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.radioTime.rawValue
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.RT.rawValue
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.archiveorg {
-            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.ArchiveOrgMain.rawValue
             (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.search {
-            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.search.rawValue
+            segue.destination.tabBarItem.title = AudioViewModel.ControllerName.Search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))
         }
         SwiftSpinner.hide()
@@ -631,7 +622,7 @@ extension AudioViewController: UITableViewDelegate, UITableViewDataSource {
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadTableViewCell.reuseIdentifier, for: indexPath) as? LoadTableViewCell else { fatalError() }
         if controller is BookmarkController {
-            cell.titleView?.text = "You should tap on the Apple button to get some."
+            cell.titleView?.text = "Missing something here."
         } else if controller is SearchController {
             if (controller as? SearchController)?.numberOfRows(inSection: indexPath.section) == 0 {
                 cell.tryAgain()

@@ -19,22 +19,25 @@ class LoadTableViewCell: UITableViewCell {
         super.prepareForReuse()
         clear()
     }
+    
+    private func attributedText(quote: String, color: UIColor) -> NSAttributedString {
+        let attributedQuote = NSMutableAttributedString(string: quote)
+        attributedQuote.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: quote.count))
+        return attributedQuote
+    }
 
     func tryAgain() {
-        titleView.text = "Please try again with another search term."
-        titleView.textColor = UIColor.nickel
+        titleView.attributedText = attributedText(quote: "Please try again with another search term.", color: .nickel)
         spinner.stopAnimating()
     }
 
     func clear() {
-        titleView.text = "Tap to load more..."
-        titleView.textColor = UIColor.lavender
+        titleView.attributedText = attributedText(quote: "Tap to load more Records...", color: .lavender)
         spinner.stopAnimating()
     }
 
     func start() {
-        titleView.text = "Loading..."
-        titleView.textColor = UIColor.spring
+        titleView.attributedText = attributedText(quote: "Loading...", color: .blueberry)
         spinner.startAnimating()
     }
 

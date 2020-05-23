@@ -84,6 +84,7 @@ class Commons {
             case music = 0xf001
             case pause_circle = 0xf28b
             case play_circle = 0xf144
+            case search = 0xf002
             case trash = 0xf1f8
         }
         public static func showAwesome(icon: FontAwesome) -> Character {

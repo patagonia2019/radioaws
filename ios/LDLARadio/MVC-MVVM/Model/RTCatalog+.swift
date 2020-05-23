@@ -10,14 +10,6 @@ import Foundation
 import CoreData
 import UIKit
 
-public extension RTCatalog {
-
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-        setPrimitiveValue(title, forKey: "uniqueGeneratedIdentifier")
-    }
-}
-
 extension RTCatalog: Modellable {
     /// Function to obtain all the catalogs
     static func all() -> [RTCatalog]? {
@@ -62,10 +54,15 @@ extension RTCatalog: Sectionable {
     }
     
     var sectionDetailText: String? {
-        if let text = text ?? subtext {
-            return isOnlyText() ? text : ""
+        var str = [String]()
+        str.append("\n")
+        if let n = sections?.count, n > 0 {
+            str.append("(\(n) catalog\(n == 1 ? "" : "s"))")
         }
-        return nil
+        if let n = audios?.count, n > 0 {
+            str.append("(\(n) stream\(n == 1 ? "" : "s"))")
+        }
+        return str.joined()
     }
     
     var queryUrl: URL? {
@@ -85,37 +82,33 @@ extension RTCatalog: Sectionable {
         if let audiosOfCatalog = audios?.array as? [RTCatalog] {
             all.append(contentsOf: audiosOfCatalog)
         }
-
         for element in all {
-            if element.isAudio(), element.url?.count ?? 0 > 0 {
-                if element.audioCatalog == nil {
-                    if element.sectionCatalog == nil {
-                        element.audioCatalog = self
-                    } else {
-                        element.audioCatalog = element.sectionCatalog
-                        element.sectionCatalog = nil
-                    }
+            if element.moderated {
+                if element.isAudio() {
+                    fixedAudios.append(element)
+                } else {
+                    fixedSections.append(element)
                 }
+                continue
+            }
+            element.moderated = true
+            let audioCatalog = element.audioCatalog ?? element.sectionCatalog ?? self
+            let sectionCatalog = element.sectionCatalog ?? element.audioCatalog ?? self
+            if element.isAudio() {
+                element.audioCatalog = audioCatalog
+                element.sectionCatalog = nil
                 fixedAudios.append(element)
             } else {
-                if element.sectionCatalog == nil {
-                    if element.audioCatalog == nil {
-                        element.sectionCatalog = self
-                    } else {
-                        element.sectionCatalog = element.audioCatalog
-                        element.audioCatalog = nil
-                    }
-                }
+                element.audioCatalog = nil
+                element.sectionCatalog = sectionCatalog
                 fixedSections.append(element)
             }
-            fixedSections = fixedSections.sorted(by: { (c1, c2) -> Bool in
-                c1 < c2
-            })
-            fixedAudios = fixedAudios.sorted(by: { (c1, c2) -> Bool in
-                c1 < c2
-            })
         }
-        return (fixedSections, fixedAudios)
+        return (fixedSections.sorted(by: { (c1, c2) -> Bool in
+            c1 < c2
+        }), fixedAudios.sorted(by: { (c1, c2) -> Bool in
+            c1 < c2
+        }))
     }
 }
 
@@ -185,7 +178,7 @@ extension RTCatalog {
         return String.join(array: [text, title], separator: ". ")
     }
 
-    /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse \n Europe \n Radios"
+    /// Builds a tree of hierarchy in the catalog to show in prompt view controller, smth like: "Browse > Europe > Radios"
     var titleTree: String? {
         return String.join(array: [sectionCatalog?.titleTree, titleAndText], separator: " > ")
     }
@@ -209,7 +202,7 @@ extension RTCatalog {
 
     /// Determine if the catalog is about audio information
     func isAudio() -> Bool {
-        return type == "audio" || element == "audio" || formats == "mp3"
+        return (type == "audio" || element == "audio" || formats == "mp3") && !(url?.isEmpty ?? true)
     }
 
     /// Determine if the catalog is about link information
@@ -229,10 +222,11 @@ extension RTCatalog {
     }
     
     static func < (left: RTCatalog, right: RTCatalog) -> Bool {
-        guard let leftText = left.title, let rightText = right.title else {
+        guard let lt = left.title ?? left.text,
+            let rt = right.title ?? right.text else {
             return false
         }
-        return leftText < rightText
+        return lt < rt
     }
 
     var containsSections: Bool {
@@ -245,36 +239,43 @@ extension RTCatalog {
     
     /// Using += as a overloading assignment operator
     static func += (left: inout RTCatalog, right: RTCatalog) {
-        left.bitrate        = right.bitrate ?? left.bitrate
-        left.bitrateTrf     = right.bitrateTrf ?? left.bitrateTrf
-        left.currentTrack   = right.currentTrack ?? left.currentTrack
-        left.formats        = right.formats ?? left.formats
-        left.genreId        = right.genreId ?? left.genreId
-        left.guideId        = right.guideId ?? left.guideId
-        left.image          = right.image ?? left.image
-        left.isCollapsed    = right.isCollapsed
-        left.isDirect       = right.isDirect
-        left.isHlsAdvanced  = right.isHlsAdvanced ?? left.isHlsAdvanced
-        left.item           = right.item ?? left.item
-        left.itemToken      = right.itemToken ?? left.itemToken
-        left.key            = right.key ?? left.key
+        // RTNode
+        left.element = right.element ?? left.element
+        left.text = right.text ?? left.text
+        left.type = right.type ?? left.type
+        left.url = right.url ?? left.url
+
+        // RTCatalog
+        left.bitrate = right.bitrate ?? left.bitrate
+        left.bitrateTrf = right.bitrateTrf ?? left.bitrateTrf
+        left.currentTrack = right.currentTrack ?? left.currentTrack
+        left.formats = right.formats ?? left.formats
+        left.genreId = right.genreId ?? left.genreId
+        left.guideId = right.guideId ?? left.guideId
+        left.image = right.image ?? left.image
+        left.isCollapsed = right.isCollapsed
+        left.isDirect = right.isDirect
+        left.isHlsAdvanced = right.isHlsAdvanced ?? left.isHlsAdvanced
+        left.item = right.item ?? left.item
+        left.itemToken = right.itemToken ?? left.itemToken
+        left.key = right.key ?? left.key
         left.liveSeekStream = right.liveSeekStream ?? left.liveSeekStream
-        left.mediaType      = right.mediaType ?? left.mediaType
-        left.nextAction     = right.nextAction ?? left.nextAction
-        left.nextGuideId    = right.nextGuideId ?? left.nextGuideId
-        left.nowPlayingId   = right.nowPlayingId ?? left.nowPlayingId
-        left.playerHeight   = right.playerHeight
-        left.playerWidth    = right.playerWidth
-        left.playing        = right.playing ?? left.playing
-        left.playingImage   = right.playingImage ?? left.playingImage
-        left.position       = right.position
-        left.presetId       = right.presetId ?? left.presetId
-        left.reliability    = right.reliability ?? left.reliability
+        left.mediaType = right.mediaType ?? left.mediaType
+        left.nextAction = right.nextAction ?? left.nextAction
+        left.nextGuideId = right.nextGuideId ?? left.nextGuideId
+        left.nowPlayingId = right.nowPlayingId ?? left.nowPlayingId
+        left.playerHeight = right.playerHeight
+        left.playerWidth = right.playerWidth
+        left.playing = right.playing ?? left.playing
+        left.playingImage = right.playingImage ?? left.playingImage
+        left.position = right.position
+        left.presetId = right.presetId ?? left.presetId
+        left.reliability = right.reliability ?? left.reliability
         left.reliabilityTrf = right.reliabilityTrf ?? left.reliabilityTrf
-        left.subtext        = right.subtext ?? left.subtext
-        left.title          = right.title ?? left.title
-        left.audios         = right.audios ?? left.audios
-        left.sections       = right.sections ?? left.sections
+        left.subtext = right.subtext ?? left.subtext
+        left.title = right.title ?? left.title
+        left.audios = right.audios ?? left.audios
+        left.sections = right.sections ?? left.sections
         if right.audioCatalog != nil {
             left.audioCatalog = right.audioCatalog
         }

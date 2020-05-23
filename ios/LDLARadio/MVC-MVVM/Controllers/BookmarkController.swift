@@ -86,13 +86,13 @@ class BookmarkController: BaseController {
                 let all = Audio.all()
 
                 if let suggestions = all?.filter({ (bookmark) -> Bool in
-                    bookmark.section == AudioViewModel.ControllerName.suggestion.rawValue}), !suggestions.isEmpty {
+                    bookmark.section == AudioViewModel.ControllerName.LosLocos.rawValue}), !suggestions.isEmpty {
                     let audios = suggestions.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
 
                         let model = SectionViewModel()
                         model.isCollapsed = true
-                        model.title.text = AudioViewModel.ControllerName.suggestion.rawValue
+                        model.title.text = AudioViewModel.ControllerName.LosLocos.rawValue
                         model.audios = audios
                         self.models.append(model)
 
@@ -100,14 +100,14 @@ class BookmarkController: BaseController {
                 }
 
                 if let rnas = all?.filter({ (bookmark) -> Bool in
-                    bookmark.section == AudioViewModel.ControllerName.rna.rawValue
+                    bookmark.section == AudioViewModel.ControllerName.RNA.rawValue
                 }), !rnas.isEmpty {
                     let audios = rnas.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
 
                         let model = SectionViewModel()
                         model.isCollapsed = true
-                        model.title.text = AudioViewModel.ControllerName.rna.rawValue
+                        model.title.text = AudioViewModel.ControllerName.RNA.rawValue
                         model.audios = audios
                         self.models.append(model)
 
@@ -115,39 +115,39 @@ class BookmarkController: BaseController {
                 }
 
                 if let rts = all?.filter({ (bookmark) -> Bool in
-                    bookmark.section == AudioViewModel.ControllerName.radioTime.rawValue
+                    bookmark.section == AudioViewModel.ControllerName.RT.rawValue
                 }), !rts.isEmpty {
                     let audios = rts.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = SectionViewModel()
                         model.isCollapsed = true
-                        model.title.text = AudioViewModel.ControllerName.radioTime.rawValue
+                        model.title.text = AudioViewModel.ControllerName.RT.rawValue
                         model.audios = audios
                         self.models.append(model)
                     }
                 }
 
                 if let eds = all?.filter({ (bookmark) -> Bool in
-                    bookmark.section == AudioViewModel.ControllerName.desconcierto.rawValue
+                    bookmark.section == AudioViewModel.ControllerName.Desconcierto.rawValue
                 }), !eds.isEmpty {
                     let audios = eds.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = SectionViewModel()
                         model.isCollapsed = true
-                        model.title.text = AudioViewModel.ControllerName.desconcierto.rawValue
+                        model.title.text = AudioViewModel.ControllerName.Desconcierto.rawValue
                         model.audios = audios
                         self.models.append(model)
                     }
                 }
 
                 if let files = all?.filter({ (bookmark) -> Bool in
-                    bookmark.section == AudioViewModel.ControllerName.archiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.archiveMainModelOrg.rawValue
+                    bookmark.section == AudioViewModel.ControllerName.ArchiveOrg.rawValue || bookmark.section == AudioViewModel.ControllerName.ArchiveOrgMain.rawValue
                 }), !files.isEmpty {
                     let audios = files.map({ AudioViewModel(audio: $0) })
                     if !audios.isEmpty {
                         let model = SectionViewModel()
                         model.isCollapsed = true
-                        model.title.text = AudioViewModel.ControllerName.archiveOrg.rawValue
+                        model.title.text = AudioViewModel.ControllerName.ArchiveOrg.rawValue
                         model.audios = audios
                         self.models.append(model)
                     }

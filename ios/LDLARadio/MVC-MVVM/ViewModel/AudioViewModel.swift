@@ -15,15 +15,21 @@ import JFCore
 class AudioViewModel: BaseViewModelProtocol {
 
     enum ControllerName: String {
-        case playing = "Playing"
-        case suggestion = "Los Locos"
-        case radioTime = "Radio Time"
-        case rna = "RNA"
-        case bookmark = "My Pick"
-        case desconcierto = "El Desconcierto"
-        case archiveOrg = "Archive.org"
-        case archiveMainModelOrg = "Archive.org "
-        case search = "Search"
+        
+        typealias RawValue = String
+        
+        case LosLocos = "Los Locos"
+        case RT = "Radio Time"
+        case RNA = "RNA"
+        case MyPick = "My Pick"
+        case Desconcierto = "El Desconcierto"
+        case ArchiveOrg = "Archive.org"
+        case ArchiveOrgMain = "Archive.org "
+        case Search = "Search"
+        
+        func value() -> String {
+            return rawValue
+        }
     }
 
     private var observerContext = 0
@@ -64,8 +70,19 @@ class AudioViewModel: BaseViewModelProtocol {
     var section: String = ""
     var id: String
     var title = LabelViewModel()
-    var subTitle = LabelViewModel(text: "", color: UIColor.cayenne, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: false, lines: 1)
-    var detail: LabelViewModel = LabelViewModel(text: "", color: .darkGray, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.S), isHidden: true, lines: 1)
+    var subTitle = LabelViewModel(color: UIColor.cayenne, font: UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S), isHidden: false, lines: 0)
+    var detail: LabelViewModel = LabelViewModel(color: .darkGray, font: UIFont(name: Commons.Font.regular, size: Commons.Font.Size.S), isHidden: true, lines: 0)
+    
+    var attributedText: NSAttributedString {
+        let attributedText = NSMutableAttributedString()
+        for labelModel in [title, subTitle, detail] {
+            if let attributed = labelModel.attributedText {
+                attributedText.append(attributed)
+            }
+        }
+        return attributedText
+    }
+
     var info: String?
     var thumbnailUrl: URL?
     var placeholderImageName: String?
@@ -74,14 +91,14 @@ class AudioViewModel: BaseViewModelProtocol {
 
     /// initialization of the view model for RT catalog audios
     init(catalog: RTCatalog?) {
-        section = ControllerName.radioTime.rawValue
+        section = ControllerName.RT.rawValue
         guard let audio = catalog else { fatalError() }
         id = audio.audioIdentifier
         title.text = audio.titleText
         subTitle.text = audio.subTitleText
         detail.text = audio.detailText
         info = audio.infoText
-        section = ControllerName.radioTime.rawValue
+        section = ControllerName.RT.rawValue
         placeholderImage = audio.placeholderImage
         thumbnailUrl = audio.portraitUrl
         url = audio.audioUrl
@@ -89,7 +106,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     /// initialization of the view model for LDLA stream audios
     init(stream: Stream?) {
-        section = ControllerName.suggestion.rawValue
+        section = ControllerName.LosLocos.rawValue
 
         guard let stream = stream else { fatalError() }
         id = stream.audioIdentifier
@@ -103,7 +120,7 @@ class AudioViewModel: BaseViewModelProtocol {
     }
 
     init(archiveFile: ArchiveFile?) {
-        section = ControllerName.archiveOrg.rawValue
+        section = ControllerName.ArchiveOrg.rawValue
         guard let archiveFile = archiveFile else { fatalError() }
         
         id = archiveFile.audioIdentifier
@@ -119,7 +136,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     /// initialization of the view model for LDLA stream audios
     init(desconcierto: Desconcierto?, audioUrl: String?, order: Int) {
-        section = ControllerName.desconcierto.rawValue
+        section = ControllerName.Desconcierto.rawValue
 
         guard let desconcierto = desconcierto,
             let audioUrl = audioUrl else { fatalError() }
@@ -136,7 +153,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     /// initialization of the view model for RNA audios
     init(station: RNAStation?, isAm: Bool = false) {
-        section = ControllerName.rna.rawValue
+        section = ControllerName.RNA.rawValue
 
         guard let station = station else { fatalError() }
         id = station.audioIdentifier
@@ -159,7 +176,7 @@ class AudioViewModel: BaseViewModelProtocol {
     /// initialization of the view model for bookmarked audios
     init(audio: Audio?) {
         guard let audio = audio else { fatalError() }
-        section = audio.section ?? ControllerName.bookmark.rawValue
+        section = audio.section ?? ControllerName.MyPick.rawValue
         id = audio.audioIdentifier
         title.text = audio.titleText
         subTitle.text = audio.subTitleText

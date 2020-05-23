@@ -324,7 +324,6 @@
     <entity name="Model" representedClassName=".Model" isAbstract="YES" syncable="YES" codeGenerationType="class">
         <attribute name="errorMessage" optional="YES" attributeType="String"/>
         <attribute name="errorTitle" optional="YES" attributeType="String"/>
-        <attribute name="uniqueGeneratedIdentifier" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="Quote" representedClassName=".Quote" parentEntity="Model" syncable="YES" codeGenerationType="class">
@@ -561,6 +560,7 @@
                 <entry key="JSONKeyPath" value="media_type"/>
             </userInfo>
         </attribute>
+        <attribute name="moderated" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="nextAction" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="next_action"/>
@@ -766,14 +766,14 @@
         <element name="City" positionX="-248.58984375" positionY="-265.47265625" width="128" height="105"/>
         <element name="Desconcierto" positionX="-333" positionY="63" width="128" height="135"/>
         <element name="District" positionX="-447.87890625" positionY="-262.84375" width="128" height="90"/>
-        <element name="Model" positionX="-1.640625" positionY="-51.85546875" width="128" height="103"/>
+        <element name="Model" positionX="-1.640625" positionY="-51.85546875" width="128" height="88"/>
         <element name="Quote" positionX="-439.7421875" positionY="-91.01171875" width="128" height="75"/>
         <element name="RNABand" positionX="-888.65625" positionY="-92.51171875" width="128" height="90"/>
         <element name="RNACurrentProgram" positionX="-685.109375" positionY="-48.92578125" width="128" height="135"/>
         <element name="RNADial" positionX="-699.24609375" positionY="-153.71484375" width="128" height="30"/>
         <element name="RNAProgram" positionX="-214.1015625" positionY="248.921875" width="128" height="135"/>
         <element name="RNAStation" positionX="-859.12109375" positionY="96.828125" width="128" height="330"/>
-        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="523"/>
+        <element name="RTCatalog" positionX="-17.9296875" positionY="28.55859375" width="128" height="538"/>
         <element name="RTNode" positionX="212.00390625" positionY="-2.93359375" width="128" height="105"/>
         <element name="Station" positionX="-16.9140625" positionY="-264.66796875" width="128" height="180"/>
         <element name="Stream" positionX="213.58984375" positionY="-261.328125" width="128" height="165"/>

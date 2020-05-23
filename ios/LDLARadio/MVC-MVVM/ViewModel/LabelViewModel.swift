@@ -15,7 +15,7 @@ struct LabelViewModel {
     var color: UIColor = UIColor.midnight
     var font: UIFont? = UIFont(name: Commons.Font.bold, size: Commons.Font.Size.S)
     var isHidden: Bool = false
-    var lines: Int = 1
+    var lines: Int = 0
 
     var count: Int {
         return text?.count ?? 0
@@ -23,6 +23,13 @@ struct LabelViewModel {
     
     var isEmpty: Bool {
         return text?.isEmpty ?? false
+    }
+    
+    var attributedText: NSAttributedString? {
+        guard let text = text else { return nil }
+        let titleAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: color,
+                                                              .font: font as Any]
+        return NSAttributedString(string: text, attributes: titleAttributes)
     }
 }
 

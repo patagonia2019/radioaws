@@ -31,7 +31,7 @@ class ArchiveOrgMainModelController: BaseController {
 
     override func title() -> String {
         return mainModel?.title.text ??
-            AudioViewModel.ControllerName.archiveOrg.rawValue
+            AudioViewModel.ControllerName.ArchiveOrg.rawValue
     }
 
     override func numberOfRows(inSection section: Int) -> Int {

@@ -48,9 +48,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
         super.layoutSubviews()
         guard let model = model else { return }
         
-        titleLabel?.text = model.title.text
-        titleLabel?.textColor = model.title.color
-        titleLabel?.font = model.title.font
+        titleLabel?.attributedText = model.attributedText
 
         if let isCollapsed = model.isCollapsed {
             expandButton?.isHidden = false

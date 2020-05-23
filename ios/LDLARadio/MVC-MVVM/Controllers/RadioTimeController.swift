@@ -82,7 +82,7 @@ class RadioTimeController: BaseController {
     }
 
     override func privateRefresh(isClean: Bool = false,
-                                 prompt: String = AudioViewModel.ControllerName.radioTime.rawValue,
+                                 prompt: String = AudioViewModel.ControllerName.RT.rawValue,
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
         
         guard let mainModel = mainModel,

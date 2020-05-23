@@ -20,6 +20,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -32,11 +34,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It&apos;s not mandatory anyway.</string>
+	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It's not mandatory anyway.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It&apos;s not mandatory anyway.</string>
+	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It's not mandatory anyway.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It&apos;s not mandatory anyway.</string>
+	<string>We use your location only to detect radios, podcasts and streams for your immediate area. It's not mandatory anyway.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>fontawesome-webfont.ttf</string>
@@ -72,7 +74,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>
