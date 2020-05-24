@@ -29,7 +29,7 @@ class AudioViewController: UIViewController {
     var desconciertoController = ElDesconciertoController()
     var searchController = SearchController()
     var archiveOrgController = ArchiveOrgController()
-    var archiveOrgMainModelController = ArchiveOrgMainModelController()
+    var archiveOrgMainModelController = ArchiveDocController()
         
     // TODO: replace with generic func getControl<T:Controllable>() -> T {
     var controller: BaseController? {
@@ -75,7 +75,7 @@ class AudioViewController: UIViewController {
                     archiveOrgController = newValue
                 }
             case .ArchiveOrgMain:
-                if let newValue = newValue as? ArchiveOrgMainModelController {
+                if let newValue = newValue as? ArchiveDocController {
                     archiveOrgMainModelController = newValue
                 }
             case .Search:
@@ -109,9 +109,10 @@ class AudioViewController: UIViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         toolbar.isHidden = true
         
-        if let controller = controller, controller.useRefresh {
-            addRefreshControl()
-            refresh(isClean: controller is SearchController)
+        if let controller = controller {
+            if controller.useRefresh {
+                addRefreshControl()
+            }
         }
     }
     
@@ -125,6 +126,7 @@ class AudioViewController: UIViewController {
         }
         navigationItem.rightBarButtonItems = buttons
         updateNavBar()
+        refresh(isClean: controller is SearchController)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -166,9 +168,10 @@ class AudioViewController: UIViewController {
     lazy var searchButton: UIBarButtonItem = {
         let search = UIButton(type: .custom)
         search.addTarget(self, action: #selector(AudioViewController.searchAction(_:)), for: .touchUpInside)
-        search.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
-        search.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
-        search.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
+        let size = Commons.Size.toolbarButtonFontSize
+        search.heightAnchor.constraint(equalToConstant: size).isActive = true
+        search.widthAnchor.constraint(equalToConstant: size).isActive = true
+        search.frame.size = CGSize(width: size, height: size)
         search.setTitleColor(.blue, for: .normal)
         search.setTitleColor(.steel, for: .highlighted)
         search.titleLabel?.font = UIFont(name: Commons.Font.awesome, size: 30)
@@ -179,9 +182,10 @@ class AudioViewController: UIViewController {
     lazy var trashButton: UIBarButtonItem = {
         let trash = UIButton(type: .custom)
         trash.addTarget(self, action: #selector(AudioViewController.trashAction(_:)), for: .touchUpInside)
-        trash.heightAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
-        trash.widthAnchor.constraint(equalToConstant: Commons.Size.toolbarButtonFontSize).isActive = true
-        trash.frame.size = CGSize(width: Commons.Size.toolbarButtonFontSize, height: Commons.Size.toolbarButtonFontSize)
+        let size = Commons.Size.toolbarButtonFontSize
+        trash.heightAnchor.constraint(equalToConstant: size).isActive = true
+        trash.widthAnchor.constraint(equalToConstant: size).isActive = true
+        trash.frame.size = CGSize(width: size, height: size)
         trash.setTitleColor(.maraschino, for: .normal)
         trash.setTitleColor(.steel, for: .highlighted)
         trash.titleLabel?.font = UIFont(name: Commons.Font.awesome, size: 30)
@@ -194,15 +198,21 @@ class AudioViewController: UIViewController {
         guard let controller = controller else {
             return
         }
-        controller.refresh(isClean: isClean, prompt: "", startClosure:
-            {
+        controller.refresh(isClean: isClean, prompt: "", startClosure: {
+            DispatchQueue.main.async {
                 SwiftSpinner.show(Quote.randomQuote())
+            }
         }, finishClosure: { (error) in
             if let error = error {
+                Analytics.logError(error: error)
                 DispatchQueue.main.async {
                     self.showAlert(error: error)
+                    // TODO: show something in the table that there are no results
+//                    if controller.numberOfSections() == 0 {
+//                        self.navigationController?.dismiss(animated: true, completion: nil)
+//                        return
+//                    }
                 }
-                Analytics.logError(error: error)
             }
             refreshControl?.endRefreshing()
             SwiftSpinner.hide()
@@ -240,6 +250,8 @@ class AudioViewController: UIViewController {
         guard let controller = controller else {
             return
         }
+        
+        _ = tableView.numberOfSections
 
         if !Thread.isMainThread {
             Log.fault("fatal error is not Main Thread")
@@ -248,10 +260,12 @@ class AudioViewController: UIViewController {
         tableView.refreshControl?.attributedTitle = controller.title().bigRed()
         updateNavBar()
         if let section = section, let row = row {
+            _ = tableView.numberOfRows(inSection: section)
             tableView.beginUpdates()
             tableView.reloadRows(at: [IndexPath(row: row, section: section)], with: .none)
             tableView.endUpdates()
         } else if let section = section {
+            _ = tableView.numberOfRows(inSection: section)
             tableView.beginUpdates()
             tableView.reloadSections(IndexSet(integer: section), with: .none)
             tableView.endUpdates()
@@ -447,7 +461,7 @@ class AudioViewController: UIViewController {
             (segue.destination as? AudioViewController)?.controller = RadioTimeController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.archiveorg {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.ArchiveOrgMain.rawValue
-            (segue.destination as? AudioViewController)?.controller = ArchiveOrgMainModelController(withCatalogViewModel: (sender as? SectionViewModel))
+            (segue.destination as? AudioViewController)?.controller = ArchiveDocController(withCatalogViewModel: (sender as? SectionViewModel))
         } else if segue.identifier == Commons.Segue.search {
             segue.destination.tabBarItem.title = AudioViewModel.ControllerName.Search.rawValue
             (segue.destination as? AudioViewController)?.controller = SearchController(withText: (sender as? String))

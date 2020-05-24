@@ -105,7 +105,7 @@ class SearchController: BaseController {
         RestApi.instance.context?.performAndWait {
             if let rnaStations = RNAStation.search(byName: textToSearch), !rnaStations.isEmpty {
                 let amModels = rnaStations.filter({ (station) -> Bool in
-                    station.amUri?.count ?? 0 > 0
+                    station.amUri?.isEmpty == false
                 }).map({ AudioViewModel(station: $0, isAm: true) })
                 if !amModels.isEmpty {
                     let model = SectionViewModel()

@@ -22,7 +22,7 @@ class RadioController: BaseController {
     init(withStreams streams: [Stream]?) {
         super.init()
         models = streams?.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
-            model.url?.absoluteString.count ?? 0 > 0
+            model.url?.absoluteString.isEmpty == false
         }) ?? [AudioViewModel]()
     }
 
@@ -44,10 +44,10 @@ class RadioController: BaseController {
 
     private func updateModels() {
         if let streams = Stream.all()?.filter({ (stream) -> Bool in
-            stream.url?.count ?? 0 > 0
+            stream.url?.isEmpty == false
         }) {
             models = streams.map({ AudioViewModel(stream: $0) }).filter({ (model) -> Bool in
-                model.url?.absoluteString.count ?? 0 > 0
+                model.url?.absoluteString.isEmpty == false
             })
         }
         lastUpdated = Stream.lastUpdated()

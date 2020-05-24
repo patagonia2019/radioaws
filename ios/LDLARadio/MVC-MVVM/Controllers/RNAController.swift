@@ -199,7 +199,9 @@ class RNAController: BaseController {
                 station?.fmCurrentProgram = program
             }
             self.updateBand(forStation: station, isAm: isAm) { error in
-                finishClosure?(error)
+                DispatchQueue.main.sync {
+                    finishClosure?(error)
+                }
             }
         }
     }

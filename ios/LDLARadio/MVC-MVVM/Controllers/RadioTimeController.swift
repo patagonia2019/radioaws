@@ -125,16 +125,20 @@ class RadioTimeController: BaseController {
 
         guard var dbSection = mainCatalogFromDb(sectionViewModel: model),
             let sectionModel = model else {
-            finishClosure?(nil)
+            finishClosure?(JFError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
         dbSection.isCollapsed = !dbSection.isCollapsed
-        sectionModel.reload(catalog: dbSection)
 
-        guard let url = dbSection.url ?? sectionModel.urlString(),
-            sectionModel.audios.isEmpty,
+        guard sectionModel.audios.isEmpty,
             sectionModel.sections.isEmpty else {
+            sectionModel.reload(catalog: dbSection)
             finishClosure?(nil)
+            return
+        }
+
+        guard let url = dbSection.url ?? sectionModel.urlString() else {
+            finishClosure?(JFError(code: -1, desc: "Where is the catalog URL?", reason: "The collection is empty and the URL is missing", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
 
@@ -210,14 +214,14 @@ class RadioTimeController: BaseController {
             return RTCatalog.search(byUrl: urlString)
         }
         if let section = sectionViewModel?.sections.first(where: { (section) -> Bool in
-            section.urlString()?.count ?? 0 > 0}),
+            section.urlString()?.isEmpty == false}),
             let urlString = section.urlString(),
             let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {
 
             return superCatalog.audioCatalog ?? superCatalog.sectionCatalog
         } else if let section = sectionViewModel?.audios.first(where: { (section) -> Bool in
-            section.urlString()?.count ?? 0 > 0}),
+            section.urlString()?.isEmpty == false}),
             let urlString = section.urlString(),
             let superCatalog = RTCatalog.search(byUrl: urlString),
             (superCatalog.audioCatalog != nil || superCatalog.sectionCatalog != nil) {

@@ -225,7 +225,7 @@ class RTCatalogTests: BaseTests {
                 return
             }
             XCTAssertNotNil(sectionChannel.audios)
-            XCTAssertTrue(sectionChannel.audios?.count ?? 0 > 0)
+            XCTAssertTrue(sectionChannel.audios?.isEmpty == false)
             XCTAssertNotNil(sectionChannel.audios?.array.first)
             guard let channel = sectionChannel.audios?.array.first as? RTCatalog else {
                 XCTFail()

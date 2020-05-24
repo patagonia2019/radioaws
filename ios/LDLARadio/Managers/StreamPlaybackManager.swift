@@ -119,7 +119,7 @@ class StreamPlaybackManager: NSObject {
      */
     func setAudioForPlayback(_ sender: Audio?, _ image: UIImage?) {
         if  sender?.urlString != nil &&
-            sender?.urlString?.count ?? 0 > 0 &&
+            sender?.urlString?.isEmpty == false &&
             audio?.urlString != nil &&
             audio?.urlString == sender?.urlString {
             isLoadingNow = true
@@ -450,7 +450,7 @@ class StreamPlaybackManager: NSObject {
             let downloadTask = session.downloadTask(with: url)
             downloadTask.taskDescription = audio?.urlString
             downloadTask.resume()
-        } else if audio?.downloadFiles?.count ?? 0 > 0 {
+        } else if audio?.downloadFiles?.isEmpty == false {
             reload()
             return
         } else {

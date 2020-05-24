@@ -101,7 +101,7 @@ class ArchiveOrgController: BaseController {
 
             ArchiveCollection.clean()
             ArchiveMeta.clean()
-            ArchiveDoc.clean()
+            ArchiveDoc.clean() // ArchiveDetail.clean()
             ArchiveFile.clean()
             ArchiveResponse.clean()
             ArchiveResponseHeader.clean()
@@ -134,28 +134,24 @@ class ArchiveOrgController: BaseController {
 
         guard let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id),
             let model = model else {
-            finishClosure?(nil)
+            finishClosure?(JFError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
         var page = archiveCollection.currentPage
         
-        if incrementPage == false {
-            if !(model.audios.isEmpty || model.sections.isEmpty) {
-                finishClosure?(nil)
-                return
-            }
-
+        if (!model.audios.isEmpty || !model.sections.isEmpty) && incrementPage == false {
             archiveCollection.isCollapsed = !archiveCollection.isCollapsed
             
             model.reload(archiveCollection: archiveCollection, isAlreadyCollapsed: archiveCollection.isCollapsed)
+            
             finishClosure?(nil)
             return
-        } else {
-            if let nextPage = archiveCollection.nextPage {
-                page = nextPage
-            }
-            archiveCollection.isCollapsed = false
         }
+
+        if incrementPage == true, let nextPage = archiveCollection.nextPage {
+            page = nextPage
+        }
+        archiveCollection.isCollapsed = false
         
         guard let url = archiveCollection.searchCollectionUrlString(page: page) ?? model.urlString() else {
             model.reload(archiveCollection: archiveCollection, isAlreadyCollapsed: archiveCollection.isCollapsed)

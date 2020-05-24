@@ -56,7 +56,7 @@ class ElDesconciertoController: BaseController {
 
     private func updateModels() {
         if let streams = Desconcierto.all()?.filter({ (stream) -> Bool in
-            stream.streamUrl1?.count ?? 0 > 0
+            stream.streamUrl1?.isEmpty == false
         }) {
             func isCollapsed(des: Desconcierto?) -> Bool {
                 return models.filter { (catalog) -> Bool in
@@ -64,7 +64,7 @@ class ElDesconciertoController: BaseController {
                 }.isEmpty == false
             }
             models = streams.map({ SectionViewModel(desconcierto: $0, isAlreadyCollapsed: isCollapsed(des: $0)) }).filter({ (model) -> Bool in
-                model.urlString()?.count ?? 0 > 0
+                model.urlString()?.isEmpty == false
             })
         }
         lastUpdated = Desconcierto.lastUpdated()

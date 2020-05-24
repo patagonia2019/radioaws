@@ -114,7 +114,7 @@
 		98CF5C2723032BC000830F8D /* ArchiveDetail+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */; };
 		98CF5C292303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
 		98CF5C2A2303354F00830F8D /* ArchiveFile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C282303354F00830F8D /* ArchiveFile+.swift */; };
-		98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */; };
+		98CF5C2C23035D5400830F8D /* ArchiveDocController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5C2B23035D5300830F8D /* ArchiveDocController.swift */; };
 		98CF5D102304EECB00830F8D /* LoadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */; };
 		98D7148F22EF876C00983818 /* HeaderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D7148E22EF876C00983818 /* HeaderTableView.swift */; };
 		98D7149122EF938000983818 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D7149022EF937F00983818 /* Main.xib */; };
@@ -232,7 +232,7 @@
 		98C7DD7C22DDEC030025B437 /* RNATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNATests.swift; sourceTree = "<group>"; };
 		98CF5C2523032BC000830F8D /* ArchiveDetail+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveDetail+.swift"; sourceTree = "<group>"; };
 		98CF5C282303354F00830F8D /* ArchiveFile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArchiveFile+.swift"; sourceTree = "<group>"; };
-		98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchiveOrgMainModelController.swift; sourceTree = "<group>"; };
+		98CF5C2B23035D5300830F8D /* ArchiveDocController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchiveDocController.swift; sourceTree = "<group>"; };
 		98CF5D0F2304EECB00830F8D /* LoadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTableViewCell.swift; sourceTree = "<group>"; };
 		98D7148E22EF876C00983818 /* HeaderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableView.swift; sourceTree = "<group>"; };
 		98D7149022EF937F00983818 /* Main.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
@@ -431,7 +431,7 @@
 				9808511022E69D990013B67C /* BaseController.swift */,
 				9808510822E61E650013B67C /* RadioController.swift */,
 				98195FB422DA658D006E7961 /* RadioTimeController.swift */,
-				98CF5C2B23035D5300830F8D /* ArchiveOrgMainModelController.swift */,
+				98CF5C2B23035D5300830F8D /* ArchiveDocController.swift */,
 				98B53CE822FFE0EB003F50EE /* ArchiveOrgController.swift */,
 				986EBCC422EE0F4B001AAF0A /* ElDesconciertoController.swift */,
 				9808512422E6DE520013B67C /* RNAController.swift */,
@@ -827,7 +827,7 @@
 				983E01F922F5EBCC008370BA /* LaunchViewController.swift in Sources */,
 				9824386A22DCFD6400B418F9 /* AudioViewModel.swift in Sources */,
 				98B16871230B8C9800A61DBC /* Audio+.swift in Sources */,
-				98CF5C2C23035D5400830F8D /* ArchiveOrgMainModelController.swift in Sources */,
+				98CF5C2C23035D5400830F8D /* ArchiveDocController.swift in Sources */,
 				98195FB522DA658D006E7961 /* RadioTimeController.swift in Sources */,
 				9808512522E6DE520013B67C /* RNAController.swift in Sources */,
 				986EBCC722EE11C8001AAF0A /* Desconcierto+.swift in Sources */,
@@ -1036,7 +1036,7 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1063,7 +1063,7 @@
 				CODE_SIGN_ENTITLEMENTS = LDLARadio/LDLARadio.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				INFOPLIST_FILE = LDLARadio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

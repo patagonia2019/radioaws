@@ -88,7 +88,7 @@ class SectionViewModel: BaseViewModelProtocol {
         let content = catalog.content
         sections = content.0.map({ SectionViewModel(catalog: $0) })
         audios = content.1.map({ AudioViewModel(catalog: $0) })
-        isCollapsed = catalog.isCollapsed
+        isCollapsed = catalog.isCollapsed || (sections.isEmpty && audios.isEmpty)
     }
 
     init(archiveCollection: ArchiveCollection?, isAlreadyCollapsed: Bool = true) {
@@ -108,7 +108,7 @@ class SectionViewModel: BaseViewModelProtocol {
         let content = archiveCollection.content
         sections = content.0.map({ SectionViewModel(archiveDoc: $0, isAlreadyCollapsed: isAlreadyCollapsed) })
         audios = []
-        isCollapsed = isAlreadyCollapsed
+        isCollapsed = isAlreadyCollapsed || sections.isEmpty
     }
 
     init(archiveDoc: ArchiveDoc?, isAlreadyCollapsed: Bool = true) {
@@ -124,7 +124,7 @@ class SectionViewModel: BaseViewModelProtocol {
         placeholderImage = archiveDoc.placeholderImage
         sections = []
         audios = archiveDoc.content.1.map({ AudioViewModel(archiveFile: $0) })
-        isCollapsed = sections.isEmpty ? nil : isAlreadyCollapsed
+        isCollapsed = isAlreadyCollapsed || audios.isEmpty
     }
 
     init(desconcierto: Desconcierto?, isAlreadyCollapsed: Bool = true) {
@@ -137,14 +137,13 @@ class SectionViewModel: BaseViewModelProtocol {
         url = desconcierto.queryUrl
         let contentAudios = desconcierto.content.1
         audios = contentAudios.map({ AudioViewModel(desconcierto: desconcierto, audioUrl: $0, order: ( contentAudios.firstIndex(of: $0) ?? 0) + 1 ) })
-        isCollapsed = isAlreadyCollapsed
+        isCollapsed = isAlreadyCollapsed || audios.isEmpty
         text = desconcierto.infoText
         
         placeholderImageName = Desconcierto.placeholderImageName
         if let imageName = placeholderImageName {
             placeholderImage = UIImage.init(named: imageName)
         }
-
     }
 
     func iconText() -> String {

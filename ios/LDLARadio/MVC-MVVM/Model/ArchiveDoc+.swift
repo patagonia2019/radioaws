@@ -39,8 +39,8 @@ extension ArchiveDoc {
         return nil
     }
 
-    func extractFiles() {
-        detail?.extractFiles()
+    func extractFiles() -> Bool {
+        return detail?.extractFiles() ?? false
     }
 
 }
@@ -145,7 +145,7 @@ extension ArchiveDoc: Searchable {
     }
     
     var numFiles: Int {
-        return detail?.files?.count ?? 0
+        return detail?.archiveFiles?.count ?? 0
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  ArchiveOrgMainModelController.swift
+//  ArchiveDocController.swift
 //  LDLARadio
 //
 //  Created by fox on 11/08/2019.
@@ -10,7 +10,7 @@ import Foundation
 import JFCore
 import AlamofireCoreData
 
-class ArchiveOrgMainModelController: BaseController {
+class ArchiveDocController: BaseController {
 
     fileprivate var mainModel: SectionViewModel?
 
@@ -84,41 +84,54 @@ class ArchiveOrgMainModelController: BaseController {
         if let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) {
             mainModel = SectionViewModel(archiveDoc: doc)
         }
-        lastUpdated = ArchiveCollection.lastUpdated()
+        lastUpdated = ArchiveDoc.lastUpdated()
     }
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Archive.org",
                                  finishClosure: ((_ error: JFError?) -> Void)? = nil) {
 
-        let doc = ArchiveDoc.search(byIdentifier: mainModel?.id)
-
-        if isClean == false {
-            if doc?.detail?.archiveFiles?.count ?? 0 > 0 {
-
-                mainModel = SectionViewModel(archiveDoc: doc)
-
-                lastUpdated = ArchiveCollection.lastUpdated()
-                finishClosure?(nil)
-                return
+        guard let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) else {
+            DispatchQueue.main.async {
+                finishClosure?(JFError(code: -1, desc: "No Catalog", reason: "There are no audio files", suggestion: "Try another catalog", underError: nil))
             }
+            return
+        }
+
+        if isClean == false, doc.detail?.archiveFiles?.count ?? 0 > 0 {
+            mainModel = SectionViewModel(archiveDoc: doc)
+            
+            lastUpdated = ArchiveCollection.lastUpdated()
+            finishClosure?(nil)
+            return
         }
 
         RestApi.instance.context?.performAndWait {
 
-            RestApi.instance.requestARCH(usingUrl: doc?.urlString(), type: ArchiveDetail.self) { error, detail in
-
-                let archiveDoc = ArchiveDoc.search(byIdentifier: doc?.identifier)
-                detail?.extractFiles()
-                archiveDoc?.detail = detail
-
-                let meta = ArchiveMeta.search(byCollectionIdentifier: self.mainModel?.parentId)
-                archiveDoc?.response?.meta = meta
+            RestApi.instance.requestARCH(usingUrl: doc.urlString(), type: ArchiveDetail.self) { error, detail in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        finishClosure?(error)
+                    }
+                    return
+                }
+                var cError: JFError?
+                let archiveDoc = ArchiveDoc.search(byIdentifier: doc.identifier)
+                if let detail = detail,
+                    detail.extractFiles() == true,
+                    let meta = ArchiveMeta.search(byCollectionIdentifier: self.mainModel?.parentId) {
+                    archiveDoc?.detail = detail
+                    archiveDoc?.response?.meta = meta
+                    self.updateModels()
+                } else {
+                    detail?.remove()
+                    archiveDoc?.remove()
+                    cError = JFError(code: -1, desc: "No files", reason: "There are no audio files", suggestion: "Try another catalog", url: doc.urlString(), underError: nil)
+                }
                 CoreDataManager.instance.save()
-                self.updateModels()
-
                 DispatchQueue.main.async {
-                    finishClosure?(error)
+                    finishClosure?(cError)
                 }
             }
         }

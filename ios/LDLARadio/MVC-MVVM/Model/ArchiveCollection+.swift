@@ -169,7 +169,7 @@ extension ArchiveCollection {
         guard let page = metas?.count else {
             return 1
         }
-        return page == 0 ? 1 : page
+        return page
     }
 
     var numFound: Int {
