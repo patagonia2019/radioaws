@@ -266,7 +266,8 @@ GEM
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     optimist (3.0.0)
-    puma (3.12.1)
+    puma (5.2.2)
+      nio4r (~> 2.0)
     rack (2.0.7)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -366,7 +367,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mini_magick (= 4.9.4)
   nokogiri (>= 1.10.4)
-  puma (~> 3.0)
+  puma (~> 5.2)
   rack (>= 2.0.6)
   rails!
   rails-i18n
