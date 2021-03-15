@@ -27,7 +27,7 @@
         <scene sceneID="cqu-M4-BIe">
             <objects>
                 <viewController storyboardIdentifier="AudioViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ymh-U1-tq7" customClass="AudioViewController" customModule="Locos_Azotea" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="GgD-gw-JsE">
+                    <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GgD-gw-JsE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -35,7 +35,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="SectionTableViewCell" rowHeight="70" id="JV0-Tw-qf7" userLabel="SectionTableViewCell" customClass="SectionTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="SectionTableViewCell" id="JV0-Tw-qf7" userLabel="SectionTableViewCell" customClass="SectionTableViewCell" customModule="Locos_Azotea" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JV0-Tw-qf7" id="gmX-5i-QPQ">
@@ -293,8 +293,12 @@
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QLr-VE-oOc" customClass="Toolbar" customModule="Locos_Azotea" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="dqq-ks-fmu"/>
+                                </constraints>
                                 <items>
-                                    <barButtonItem title="Item" id="nuP-Pi-eyu"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="tEb-jQ-WLd"/>
                                 </items>
                                 <connections>
                                     <outlet property="delegate" destination="Ymh-U1-tq7" id="fs2-Im-Nnr"/>
@@ -303,8 +307,8 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="9Xi-In-i2Q" firstAttribute="top" secondItem="UlI-2D-sF7" secondAttribute="top" constant="44" id="5kV-Qf-oEb"/>
-                            <constraint firstItem="QLr-VE-oOc" firstAttribute="top" secondItem="UlI-2D-sF7" secondAttribute="bottom" id="DhY-1n-OyY"/>
+                            <constraint firstItem="9Xi-In-i2Q" firstAttribute="top" secondItem="UlI-2D-sF7" secondAttribute="top" id="5kV-Qf-oEb"/>
+                            <constraint firstItem="UlI-2D-sF7" firstAttribute="bottom" secondItem="QLr-VE-oOc" secondAttribute="top" id="DhY-1n-OyY"/>
                             <constraint firstItem="UlI-2D-sF7" firstAttribute="leading" secondItem="9Xi-In-i2Q" secondAttribute="leading" id="Krp-5d-3ae"/>
                             <constraint firstItem="QLr-VE-oOc" firstAttribute="width" secondItem="9Xi-In-i2Q" secondAttribute="width" id="hGi-BP-icy"/>
                             <constraint firstItem="QLr-VE-oOc" firstAttribute="centerX" secondItem="9Xi-In-i2Q" secondAttribute="centerX" id="jV1-IK-yFN"/>

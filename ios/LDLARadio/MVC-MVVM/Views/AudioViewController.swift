@@ -21,7 +21,6 @@ class AudioViewController: UIViewController {
 
     var currentPlayIndexPath: IndexPath?
     var lastTitleName: String = AudioViewModel.ControllerName.LosLocos.rawValue
-    fileprivate var timerPlayed: Timer?
     var radioController = RadioController()
     var radioTimeController = RadioTimeController()
     var rnaController = RNAController()
@@ -106,7 +105,6 @@ class AudioViewController: UIViewController {
         tableView.remembersLastFocusedIndexPath = true
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
-        navigationController?.setToolbarHidden(true, animated: false)
         toolbar.isHidden = true
         
         if let controller = controller {
@@ -131,11 +129,6 @@ class AudioViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        if let timerPlayed = timerPlayed {
-            timerPlayed.invalidate()
-        }
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -273,24 +266,9 @@ class AudioViewController: UIViewController {
             tableView.reloadData()
         }
         
-        reloadTimer()
     }
 
-    private func reloadTimer() {
-
-        let stream = StreamPlaybackManager.instance
-
-        if let timerPlayed = timerPlayed {
-            timerPlayed.invalidate()
-        }
-        if stream.isAboutToPlay() {
-            timerPlayed = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(reloadToolbar), userInfo: nil, repeats: true)
-        } else {
-            toolbar.isHidden = true
-        }
-    }
-
-    @objc private func reloadToolbar() {
+    private func reloadToolbar() {
 
         let stream = StreamPlaybackManager.instance
         let show = !stream.isPlaying()
@@ -513,6 +491,7 @@ extension AudioViewController: AssetPlaybackDelegate {
             if let currentPlayIndexPath = self.currentPlayIndexPath {
                 self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
             }
+            self.toolbar.isHidden = !isPlaying
         }
     }
     
@@ -521,6 +500,7 @@ extension AudioViewController: AssetPlaybackDelegate {
             if let currentPlayIndexPath = self.currentPlayIndexPath {
                 self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
             }
+            self.toolbar.isHidden = false
         }
     }
     
@@ -529,6 +509,7 @@ extension AudioViewController: AssetPlaybackDelegate {
             if let currentPlayIndexPath = self.currentPlayIndexPath {
                 self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
             }
+            self.toolbar.isHidden = false
         }
     }
     
@@ -538,6 +519,7 @@ extension AudioViewController: AssetPlaybackDelegate {
                 self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)
             }
             self.showAlert(title: "Player Error", message: "When trying to play \(audio?.titleText ?? "")", error: error)
+            self.toolbar.isHidden = true
         }
     }
     
