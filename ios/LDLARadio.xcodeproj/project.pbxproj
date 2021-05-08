@@ -90,6 +90,18 @@
 		989E41F0234A090F00975B91 /* SomeOtherTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */; };
 		989E41F2234A094500975B91 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41F1234A094500975B91 /* LoggerTests.swift */; };
 		989E41F3234A095000975B91 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989E41EA2349FF0100975B91 /* Log.swift */; };
+		98A6A9AB2646D9650022BD2A /* WRadio WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 98A6A9AA2646D9650022BD2A /* WRadio WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		98A6A9B02646D9660022BD2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6A9AF2646D9660022BD2A /* Assets.xcassets */; };
+		98A6A9B72646D9660022BD2A /* WRadio WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98A6A9B62646D9660022BD2A /* WRadio WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		98A6A9BC2646D9660022BD2A /* LDLARadioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9BB2646D9660022BD2A /* LDLARadioApp.swift */; };
+		98A6A9BE2646D9660022BD2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9BD2646D9660022BD2A /* ContentView.swift */; };
+		98A6A9C02646D9660022BD2A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9BF2646D9660022BD2A /* NotificationController.swift */; };
+		98A6A9C22646D9660022BD2A /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9C12646D9660022BD2A /* NotificationView.swift */; };
+		98A6A9C42646D9660022BD2A /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9C32646D9660022BD2A /* ComplicationController.swift */; };
+		98A6A9C62646D9660022BD2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6A9C52646D9660022BD2A /* Assets.xcassets */; };
+		98A6A9C92646D9660022BD2A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A6A9C82646D9660022BD2A /* Preview Assets.xcassets */; };
+		98A6A9D52646D9660022BD2A /* WRadioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9D42646D9660022BD2A /* WRadioTests.swift */; };
+		98A6A9E02646D9660022BD2A /* WRadioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9DF2646D9660022BD2A /* WRadioUITests.swift */; };
 		98B1686D230B6D2900A61DBC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1686C230B6D2900A61DBC /* UIColor+.swift */; };
 		98B16871230B8C9800A61DBC /* Audio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B16870230B8C9800A61DBC /* Audio+.swift */; };
 		98B25800246AC4160031A9AA /* Sectionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B257FF246AC4160031A9AA /* Sectionable.swift */; };
@@ -130,7 +142,60 @@
 			remoteGlobalIDString = 428139ED1CE44B7300972264;
 			remoteInfo = LDLARadio;
 		};
+		98A6A9AC2646D9650022BD2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 428139E61CE44B7300972264 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A6A9A92646D9650022BD2A;
+			remoteInfo = "WRadio WatchKit App";
+		};
+		98A6A9B82646D9660022BD2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 428139E61CE44B7300972264 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A6A9B52646D9660022BD2A;
+			remoteInfo = "WRadio WatchKit Extension";
+		};
+		98A6A9D12646D9660022BD2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 428139E61CE44B7300972264 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A6A9B52646D9660022BD2A;
+			remoteInfo = "WRadio WatchKit Extension";
+		};
+		98A6A9DC2646D9660022BD2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 428139E61CE44B7300972264 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A6A9A92646D9650022BD2A;
+			remoteInfo = "WRadio WatchKit App";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		98A6A9E52646D9660022BD2A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				98A6A9B72646D9660022BD2A /* WRadio WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9E92646D9660022BD2A /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				98A6A9AB2646D9650022BD2A /* WRadio WatchKit App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		424BF6CC1CEFB5ED0098BB15 /* StreamPlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StreamPlaybackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -209,6 +274,26 @@
 		989E41EA2349FF0100975B91 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		989E41EF234A090F00975B91 /* SomeOtherTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeOtherTimeTests.swift; sourceTree = "<group>"; };
 		989E41F1234A094500975B91 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		98A6A9A72646D9650022BD2A /* WRadio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WRadio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A6A9AA2646D9650022BD2A /* WRadio WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WRadio WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A6A9AF2646D9660022BD2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		98A6A9B12646D9660022BD2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A6A9B62646D9660022BD2A /* WRadio WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "WRadio WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A6A9BB2646D9660022BD2A /* LDLARadioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDLARadioApp.swift; sourceTree = "<group>"; };
+		98A6A9BD2646D9660022BD2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		98A6A9BF2646D9660022BD2A /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		98A6A9C12646D9660022BD2A /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		98A6A9C32646D9660022BD2A /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		98A6A9C52646D9660022BD2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		98A6A9C82646D9660022BD2A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		98A6A9CA2646D9660022BD2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A6A9CB2646D9660022BD2A /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		98A6A9D02646D9660022BD2A /* WRadioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WRadioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A6A9D42646D9660022BD2A /* WRadioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WRadioTests.swift; sourceTree = "<group>"; };
+		98A6A9D62646D9660022BD2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A6A9DB2646D9660022BD2A /* WRadioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WRadioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A6A9DF2646D9660022BD2A /* WRadioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WRadioUITests.swift; sourceTree = "<group>"; };
+		98A6A9E12646D9660022BD2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98B1686C230B6D2900A61DBC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		98B16870230B8C9800A61DBC /* Audio+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Audio+.swift"; sourceTree = "<group>"; };
 		98B257FF246AC4160031A9AA /* Sectionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sectionable.swift; sourceTree = "<group>"; };
@@ -245,6 +330,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		987DA0B922D663E700F34BD3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9B32646D9660022BD2A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9CD2646D9660022BD2A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9D82646D9660022BD2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -288,6 +394,10 @@
 				42554D4B1D09EEDC0040BD4F /* README.md */,
 				428139F01CE44B7300972264 /* LDLARadio */,
 				987DA0BD22D663E700F34BD3 /* LDLARadioTests */,
+				98A6A9AE2646D9650022BD2A /* WRadio WatchKit App */,
+				98A6A9BA2646D9660022BD2A /* WRadio WatchKit Extension */,
+				98A6A9D32646D9660022BD2A /* WRadioTests */,
+				98A6A9DE2646D9660022BD2A /* WRadioUITests */,
 				428139EF1CE44B7300972264 /* Products */,
 				7073F3B51E155C05004DBB59 /* Frameworks */,
 			);
@@ -298,6 +408,11 @@
 			children = (
 				428139EE1CE44B7300972264 /* Locos Azotea.app */,
 				987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */,
+				98A6A9A72646D9650022BD2A /* WRadio.app */,
+				98A6A9AA2646D9650022BD2A /* WRadio WatchKit App.app */,
+				98A6A9B62646D9660022BD2A /* WRadio WatchKit Extension.appex */,
+				98A6A9D02646D9660022BD2A /* WRadioTests.xctest */,
+				98A6A9DB2646D9660022BD2A /* WRadioUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -485,6 +600,57 @@
 			path = LDLARadioTests;
 			sourceTree = "<group>";
 		};
+		98A6A9AE2646D9650022BD2A /* WRadio WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				98A6A9AF2646D9660022BD2A /* Assets.xcassets */,
+				98A6A9B12646D9660022BD2A /* Info.plist */,
+			);
+			path = "WRadio WatchKit App";
+			sourceTree = "<group>";
+		};
+		98A6A9BA2646D9660022BD2A /* WRadio WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				98A6A9BB2646D9660022BD2A /* LDLARadioApp.swift */,
+				98A6A9BD2646D9660022BD2A /* ContentView.swift */,
+				98A6A9BF2646D9660022BD2A /* NotificationController.swift */,
+				98A6A9C12646D9660022BD2A /* NotificationView.swift */,
+				98A6A9C32646D9660022BD2A /* ComplicationController.swift */,
+				98A6A9C52646D9660022BD2A /* Assets.xcassets */,
+				98A6A9CA2646D9660022BD2A /* Info.plist */,
+				98A6A9CB2646D9660022BD2A /* PushNotificationPayload.apns */,
+				98A6A9C72646D9660022BD2A /* Preview Content */,
+			);
+			path = "WRadio WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		98A6A9C72646D9660022BD2A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				98A6A9C82646D9660022BD2A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		98A6A9D32646D9660022BD2A /* WRadioTests */ = {
+			isa = PBXGroup;
+			children = (
+				98A6A9D42646D9660022BD2A /* WRadioTests.swift */,
+				98A6A9D62646D9660022BD2A /* Info.plist */,
+			);
+			path = WRadioTests;
+			sourceTree = "<group>";
+		};
+		98A6A9DE2646D9660022BD2A /* WRadioUITests */ = {
+			isa = PBXGroup;
+			children = (
+				98A6A9DF2646D9660022BD2A /* WRadioUITests.swift */,
+				98A6A9E12646D9660022BD2A /* Info.plist */,
+			);
+			path = WRadioUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -526,14 +692,101 @@
 			productReference = 987DA0BC22D663E700F34BD3 /* LDLARadioTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		98A6A9A62646D9650022BD2A /* WRadio */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A6A9EA2646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio" */;
+			buildPhases = (
+				98A6A9A52646D9650022BD2A /* Resources */,
+				98A6A9E92646D9660022BD2A /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A6A9AD2646D9650022BD2A /* PBXTargetDependency */,
+			);
+			name = WRadio;
+			productName = WRadio;
+			productReference = 98A6A9A72646D9650022BD2A /* WRadio.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		98A6A9A92646D9650022BD2A /* WRadio WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A6A9E62646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio WatchKit App" */;
+			buildPhases = (
+				98A6A9A82646D9650022BD2A /* Resources */,
+				98A6A9E52646D9660022BD2A /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A6A9B92646D9660022BD2A /* PBXTargetDependency */,
+			);
+			name = "WRadio WatchKit App";
+			productName = "WRadio WatchKit App";
+			productReference = 98A6A9AA2646D9650022BD2A /* WRadio WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		98A6A9B52646D9660022BD2A /* WRadio WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A6A9E22646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio WatchKit Extension" */;
+			buildPhases = (
+				98A6A9B22646D9660022BD2A /* Sources */,
+				98A6A9B32646D9660022BD2A /* Frameworks */,
+				98A6A9B42646D9660022BD2A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WRadio WatchKit Extension";
+			productName = "WRadio WatchKit Extension";
+			productReference = 98A6A9B62646D9660022BD2A /* WRadio WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		98A6A9CF2646D9660022BD2A /* WRadioTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A6A9ED2646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadioTests" */;
+			buildPhases = (
+				98A6A9CC2646D9660022BD2A /* Sources */,
+				98A6A9CD2646D9660022BD2A /* Frameworks */,
+				98A6A9CE2646D9660022BD2A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A6A9D22646D9660022BD2A /* PBXTargetDependency */,
+			);
+			name = WRadioTests;
+			productName = WRadioTests;
+			productReference = 98A6A9D02646D9660022BD2A /* WRadioTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		98A6A9DA2646D9660022BD2A /* WRadioUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A6A9F02646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadioUITests" */;
+			buildPhases = (
+				98A6A9D72646D9660022BD2A /* Sources */,
+				98A6A9D82646D9660022BD2A /* Frameworks */,
+				98A6A9D92646D9660022BD2A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A6A9DD2646D9660022BD2A /* PBXTargetDependency */,
+			);
+			name = WRadioUITests;
+			productName = WRadioUITests;
+			productReference = 98A6A9DB2646D9660022BD2A /* WRadioUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		428139E61CE44B7300972264 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Mobile Patagonia";
 				TargetAttributes = {
 					428139ED1CE44B7300972264 = {
@@ -566,6 +819,33 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 428139ED1CE44B7300972264;
 					};
+					98A6A9A62646D9650022BD2A = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 27XTSJS68A;
+						ProvisioningStyle = Automatic;
+					};
+					98A6A9A92646D9650022BD2A = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 27XTSJS68A;
+						ProvisioningStyle = Automatic;
+					};
+					98A6A9B52646D9660022BD2A = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 27XTSJS68A;
+						ProvisioningStyle = Automatic;
+					};
+					98A6A9CF2646D9660022BD2A = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 27XTSJS68A;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 98A6A9B52646D9660022BD2A;
+					};
+					98A6A9DA2646D9660022BD2A = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 27XTSJS68A;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 98A6A9A92646D9650022BD2A;
+					};
 				};
 			};
 			buildConfigurationList = 428139E91CE44B7300972264 /* Build configuration list for PBXProject "LDLARadio" */;
@@ -585,6 +865,11 @@
 			targets = (
 				428139ED1CE44B7300972264 /* LDLARadio */,
 				987DA0BB22D663E700F34BD3 /* LDLARadioTests */,
+				98A6A9A62646D9650022BD2A /* WRadio */,
+				98A6A9A92646D9650022BD2A /* WRadio WatchKit App */,
+				98A6A9B52646D9660022BD2A /* WRadio WatchKit Extension */,
+				98A6A9CF2646D9660022BD2A /* WRadioTests */,
+				98A6A9DA2646D9660022BD2A /* WRadioUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -620,6 +905,44 @@
 				98B53CF32300FBC4003F50EE /* ArchiveOrgDetail.json in Resources */,
 				9866974E2302C3B200CD9258 /* ArchiveOrgMetaCrash.json in Resources */,
 				98B53CEF23004E03003F50EE /* ArchiveOrgMeta.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9A52646D9650022BD2A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9A82646D9650022BD2A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A6A9B02646D9660022BD2A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9B42646D9660022BD2A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A6A9C92646D9660022BD2A /* Preview Assets.xcassets in Resources */,
+				98A6A9C62646D9660022BD2A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9CE2646D9660022BD2A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9D92646D9660022BD2A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +1076,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		98A6A9B22646D9660022BD2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A6A9C02646D9660022BD2A /* NotificationController.swift in Sources */,
+				98A6A9BE2646D9660022BD2A /* ContentView.swift in Sources */,
+				98A6A9C42646D9660022BD2A /* ComplicationController.swift in Sources */,
+				98A6A9BC2646D9660022BD2A /* LDLARadioApp.swift in Sources */,
+				98A6A9C22646D9660022BD2A /* NotificationView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9CC2646D9660022BD2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A6A9D52646D9660022BD2A /* WRadioTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98A6A9D72646D9660022BD2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A6A9E02646D9660022BD2A /* WRadioUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -760,6 +1111,26 @@
 			isa = PBXTargetDependency;
 			target = 428139ED1CE44B7300972264 /* LDLARadio */;
 			targetProxy = 987DA0C122D663E700F34BD3 /* PBXContainerItemProxy */;
+		};
+		98A6A9AD2646D9650022BD2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A6A9A92646D9650022BD2A /* WRadio WatchKit App */;
+			targetProxy = 98A6A9AC2646D9650022BD2A /* PBXContainerItemProxy */;
+		};
+		98A6A9B92646D9660022BD2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A6A9B52646D9660022BD2A /* WRadio WatchKit Extension */;
+			targetProxy = 98A6A9B82646D9660022BD2A /* PBXContainerItemProxy */;
+		};
+		98A6A9D22646D9660022BD2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A6A9B52646D9660022BD2A /* WRadio WatchKit Extension */;
+			targetProxy = 98A6A9D12646D9660022BD2A /* PBXContainerItemProxy */;
+		};
+		98A6A9DD2646D9660022BD2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A6A9A92646D9650022BD2A /* WRadio WatchKit App */;
+			targetProxy = 98A6A9DC2646D9660022BD2A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -808,6 +1179,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -867,6 +1239,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1004,6 +1377,269 @@
 			};
 			name = Release;
 		};
+		98A6A9E32646D9660022BD2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"WRadio WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "WRadio WatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		98A6A9E42646D9660022BD2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"WRadio WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "WRadio WatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
+		98A6A9E72646D9660022BD2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = WRadio_WatchKit_Extension;
+				INFOPLIST_FILE = "WRadio WatchKit App/Info.plist";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		98A6A9E82646D9660022BD2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = WRadio_WatchKit_Extension;
+				INFOPLIST_FILE = "WRadio WatchKit App/Info.plist";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
+		98A6A9EB2646D9660022BD2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		98A6A9EC2646D9660022BD2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		98A6A9EE2646D9660022BD2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WRadioTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadioTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WRadio WatchKit Extension.appex/WRadio WatchKit Extension";
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		98A6A9EF2646D9660022BD2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WRadioTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadioTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WRadio WatchKit Extension.appex/WRadio WatchKit Extension";
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
+		98A6A9F12646D9660022BD2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WRadioUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadioUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "WRadio WatchKit App";
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		98A6A9F22646D9660022BD2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 27XTSJS68A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WRadioUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.WRadioUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "WRadio WatchKit App";
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1030,6 +1666,51 @@
 			buildConfigurations = (
 				987DA0C422D663E700F34BD3 /* Debug */,
 				987DA0C522D663E700F34BD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98A6A9E22646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A6A9E32646D9660022BD2A /* Debug */,
+				98A6A9E42646D9660022BD2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98A6A9E62646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A6A9E72646D9660022BD2A /* Debug */,
+				98A6A9E82646D9660022BD2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98A6A9EA2646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A6A9EB2646D9660022BD2A /* Debug */,
+				98A6A9EC2646D9660022BD2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98A6A9ED2646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadioTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A6A9EE2646D9660022BD2A /* Debug */,
+				98A6A9EF2646D9660022BD2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98A6A9F02646D9660022BD2A /* Build configuration list for PBXNativeTarget "WRadioUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A6A9F12646D9660022BD2A /* Debug */,
+				98A6A9F22646D9660022BD2A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -7,4 +7,7 @@
    <FileRef
       location = "group:LDLARadio.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Radio/Radio.xcodeproj">
+   </FileRef>
 </Workspace>
