@@ -7,11 +7,7 @@
 //
 
 import Foundation
-import Alamofire
-import AlamofireCoreData
 import CoreData
-import Groot
-import JFCore
 
 /// A singleton that manages all the configuration, request to the server using Alamofire, automatic json conversion with Groot into Core Data instances (AlamofireCoreData)
 class RestApi {
