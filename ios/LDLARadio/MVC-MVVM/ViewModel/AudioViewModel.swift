@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import AVFoundation
-import JFCore
 
 // This view model will be responsible of render out information in the views for Audio info
 class AudioViewModel: BaseViewModelProtocol {
@@ -52,7 +51,7 @@ class AudioViewModel: BaseViewModelProtocol {
 
     var hasDuration: Bool = false
 
-    var error: JFError?
+    var error: NSError?
     
     var isTryingToPlay: Bool {
         return StreamPlaybackManager.instance.isTryingToPlay(url: urlString())

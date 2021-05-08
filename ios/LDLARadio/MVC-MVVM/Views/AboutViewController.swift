@@ -8,7 +8,6 @@
 
 import UIKit
 import PDFKit
-import JFCore
 
 /// A class that is showed in the second tab, it shows my Resumé using PDFKit.
 class AboutViewController: BaseViewController {

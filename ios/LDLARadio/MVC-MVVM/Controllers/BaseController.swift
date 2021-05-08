@@ -7,12 +7,11 @@
 //
 
 import Foundation
-import JFCore
 
 class BaseController: Controllable {
 
     var lastUpdated: Date?
-    var finishBlock: ((_ error: JFError?) -> Void)?
+    var finishBlock: ((_ error: NSError?) -> Void)?
     static var isBookmarkChanged = false
 
     var useRefresh: Bool {
@@ -87,7 +86,7 @@ class BaseController: Controllable {
     func refresh(isClean: Bool = false,
                  prompt: String = "",
                  startClosure: (() -> Void)? = nil,
-                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         finishBlock = finishClosure
 
@@ -101,19 +100,19 @@ class BaseController: Controllable {
                 section: Int,
                 incrementPage: Bool = false,
                 startClosure: (() -> Void)? = nil,
-                finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         RestApi.instance.context?.performAndWait {
             self.expanding(model: model, section: section, incrementPage: incrementPage, startClosure: startClosure, finishClosure: finishClosure)
         }
     }
 
-    internal func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         fatalError()
     }
 
     internal func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         fatalError()
     }

@@ -8,8 +8,6 @@
 
 import XCTest
 import CoreData
-import JFCore
-import Groot
 
 @testable import LDLARadio
 

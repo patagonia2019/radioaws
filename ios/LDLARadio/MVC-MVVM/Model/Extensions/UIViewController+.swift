@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import JFCore
 
 extension UIViewController {
     func share(indexPath: IndexPath?, controller: BaseController? = nil, tableView: UITableView? = nil) {

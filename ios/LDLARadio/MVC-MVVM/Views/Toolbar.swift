@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import JFCore
 import AVKit
 
 class Toolbar: UIToolbar {
@@ -400,9 +399,9 @@ class Toolbar: UIToolbar {
         hideMessages()
 
         let audioPlayInfo = StreamPlaybackManager.instance.info()
-        var error: JFError?
+        var error: NSError?
         if audioPlayInfo?.2 != nil {
-            error = JFError(code: 0, desc: audioPlayInfo?.2, reason: audioPlayInfo?.3, suggestion: "", path: "", line: "", url: "", underError: nil)
+            error = NSError(code: 0, desc: audioPlayInfo?.2, reason: audioPlayInfo?.3, suggestion: "", path: "", line: "", url: "", underError: nil)
             AppDelegate.instance.window?.rootViewController?.showAlert(title: error?.title(), message: error?.message(), error: nil)
         } else {
             AppDelegate.instance.window?.rootViewController?.showAlert(title: audioPlayInfo?.0, message: audioPlayInfo?.1, error: error)
@@ -421,7 +420,7 @@ class Toolbar: UIToolbar {
  Extend `Toolbar` to conform to the `AssetPlaybackDelegate` protocol.
  */
 extension Toolbar: AssetPlaybackDelegate {
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: NSError, audio: Audio?) {
         Analytics.logError(error: error)
 
         AppDelegate.instance.window?.rootViewController?.showAlert(error: error)

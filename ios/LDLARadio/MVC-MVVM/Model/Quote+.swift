@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Groot
 
 extension Quote: Modellable {
 

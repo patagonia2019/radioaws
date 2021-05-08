@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFCore
 
 class RadioTimeController: BaseController {
 
@@ -83,7 +82,7 @@ class RadioTimeController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = AudioViewModel.ControllerName.RT.rawValue,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         
         guard let mainModel = mainModel,
             var mainCatalog = mainCatalogFromDb(sectionViewModel: mainModel) else {
@@ -121,11 +120,11 @@ class RadioTimeController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         guard var dbSection = mainCatalogFromDb(sectionViewModel: model),
             let sectionModel = model else {
-            finishClosure?(JFError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
+            finishClosure?(NSError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
         dbSection.isCollapsed = !dbSection.isCollapsed
@@ -138,7 +137,7 @@ class RadioTimeController: BaseController {
         }
 
         guard let url = dbSection.url ?? sectionModel.urlString() else {
-            finishClosure?(JFError(code: -1, desc: "Where is the catalog URL?", reason: "The collection is empty and the URL is missing", suggestion: "Try to reload the whole catalog.", underError: nil))
+            finishClosure?(NSError(code: -1, desc: "Where is the catalog URL?", reason: "The collection is empty and the URL is missing", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
 
@@ -183,7 +182,7 @@ class RadioTimeController: BaseController {
     }
 
     static func search(text: String = "",
-                       finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                       finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         guard !text.isEmpty,
             let text2Search = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFCore
 
 class RadioController: BaseController {
 
@@ -55,7 +54,7 @@ class RadioController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         var resetInfo = false
         if isClean {
@@ -91,7 +90,7 @@ class RadioController: BaseController {
         }
     }
 
-    private func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    private func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             catalogViewModel.isCollapsed = !isCollapsed

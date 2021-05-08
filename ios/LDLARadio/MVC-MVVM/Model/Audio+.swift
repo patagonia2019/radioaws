@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 import CloudKit
 import AVKit
-import JFCore
 
 extension Audio: Modellable {
 

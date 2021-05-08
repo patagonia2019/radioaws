@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import JFCore
 
 class LaunchViewController: UIViewController {
 

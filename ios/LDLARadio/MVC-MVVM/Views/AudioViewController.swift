@@ -10,8 +10,6 @@ import UIKit
 import AVFoundation
 import AVKit
 import MediaPlayer
-import SwiftSpinner
-import JFCore
 
 class AudioViewController: UIViewController {
     // MARK: Properties
@@ -513,7 +511,7 @@ extension AudioViewController: AssetPlaybackDelegate {
         }
     }
     
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?) {
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: NSError, audio: Audio?) {
         DispatchQueue.main.async {
             if let currentPlayIndexPath = self.currentPlayIndexPath {
                 self.reloadData(currentPlayIndexPath.section, currentPlayIndexPath.row)

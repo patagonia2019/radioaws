@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import AlamofireImage
-import JFCore
 import AVKit
 import MediaPlayer
 

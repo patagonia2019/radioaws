@@ -9,7 +9,6 @@
 import Foundation
 import AVFoundation
 import CoreData
-import JFCore
 
 protocol Modellable {
 

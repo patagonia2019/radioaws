@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import JFCore
 
 class CloudKitManager {
 
@@ -50,7 +49,7 @@ class CloudKitManager {
 
     }
 
-    private func queryAudioPlays(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    private func queryAudioPlays(finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         let predicate = NSPredicate(value: true)
         let queryAudioPlay = CKQuery(recordType: "Audio", predicate: predicate)
         if working == true {
@@ -78,20 +77,20 @@ class CloudKitManager {
             }
 
             DispatchQueue.main.async {
-                var jferror: JFError?
+                var NSError: NSError?
                 if let error = error {
-                    jferror = JFError(code: Int(errno),
+                    NSError = NSError(code: Int(errno),
                                       desc: "Error",
                                       reason: "Cannot sync cloud kit",
                                       suggestion: "Please check your internet connection",
                                       underError: error as NSError?)
                 }
-                finishClosure?(jferror)
+                finishClosure?(NSError)
             }
         }
     }
 
-    func refresh(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func refresh(finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if loggedIn == false {
             DispatchQueue.main.async {
@@ -102,17 +101,17 @@ class CloudKitManager {
         queryAudioPlays(finishClosure: finishClosure)
     }
 
-    func remove(withRecordID recordID: CKRecord.ID, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func remove(withRecordID recordID: CKRecord.ID, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         privateDB.delete(withRecordID: recordID) { (_, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
-                    let jferror = JFError(code: Int(errno),
+                    let NSError = NSError(code: Int(errno),
                                           desc: "Error",
                                           reason: "Cannot remove record",
                                           suggestion: "Please check your internet connection",
                                           underError: error as NSError?)
-                    finishClosure?(jferror)
+                    finishClosure?(NSError)
                 }
                 return
             }
@@ -124,7 +123,7 @@ class CloudKitManager {
 
     }
 
-    func remove(audio: Audio?, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func remove(audio: Audio?, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         if loggedIn == false {
             finishClosure?(nil)
             return
@@ -263,7 +262,7 @@ class CloudKitManager {
 
     }
 
-    func clean(finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    func clean(finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         isReset = true
         if loggedIn == false {
             return

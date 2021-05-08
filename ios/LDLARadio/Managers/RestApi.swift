@@ -61,7 +61,7 @@ class RestApi {
     func requestRNA<T: Insertable>(
         usingQuery query: String,
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rnaServer)
         request(usingUrl: url, method: .get, type: type, finish: finish)
     }
@@ -74,7 +74,7 @@ class RestApi {
     func requestLDLA<T: Insertable>(
         usingQuery query: String,
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.ldlaServer)
         request(usingUrl: url, method: .get, type: type, finish: finish)
     }
@@ -87,7 +87,7 @@ class RestApi {
     func requestRT<T: Insertable>(
         usingQuery query: String? = "",
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.rtServer)
         requestRT(usingUrl: url, type: type, finish: finish)
     }
@@ -100,7 +100,7 @@ class RestApi {
     func requestRT<T: Insertable>(
         usingUrl url: String?,
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         var urlJson: String = url ?? Constants.Service.rtServer
         if urlJson.contains("?") {
             urlJson += "&"
@@ -119,7 +119,7 @@ class RestApi {
     func requestARCH<T: Insertable>(
         usingQuery query: String? = "",
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         let url = Constants.Service.url(with: query, baseUrl: Constants.Service.archServer)
         requestARCH(usingUrl: url, type: type, finish: finish)
     }
@@ -132,7 +132,7 @@ class RestApi {
     func requestARCH<T: Insertable>(
         usingUrl url: String?,
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         var urlJson: String = url ?? Constants.Service.archServer
 
         if urlJson.contains("?") {
@@ -154,7 +154,7 @@ class RestApi {
         usingUrl url: String,
         method: HTTPMethod = .get,
         type: T.Type,
-        finish: ((_ error: JFError?, _ value: T?) -> Void)? = nil) {
+        finish: ((_ error: NSError?, _ value: T?) -> Void)? = nil) {
         guard let context = context ?? CoreDataManager.instance.taskContext else { fatalError() }
         let request = alamofire.request(url, method: method, parameters: nil, encoding: JSONEncoding.default).validate()
         Log.debug("START %@", request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))
@@ -162,7 +162,7 @@ class RestApi {
         request.responseInsert(context: context, type: T.self) { response in
             context.performAndWait({
                 Log.debug("FINISH %@", request.debugDescription.replacingOccurrences(of: "\\\n\t", with: " "))
-                var error: JFError?
+                var error: NSError?
                 if response.error != nil {
                     var desc = "Error"
                     var suggestion = "Please try again later"
@@ -172,7 +172,7 @@ class RestApi {
                         suggestion = "Please check your internet connection"
                         reason = "Empty response"
                     }
-                    error = JFError(code: Int(errno),
+                    error = NSError(code: Int(errno),
                                      desc: desc,
                                      reason: reason,
                                      suggestion: suggestion,
@@ -186,7 +186,7 @@ class RestApi {
     func download(usingUrl url: String,
                   localFilePath: String,
                   progressFraction: ((_ fraction: Int) -> Void)? = nil,
-                  finish: ((_ error: JFError?, _ filePath: String?) -> Void)? = nil) {
+                  finish: ((_ error: NSError?, _ filePath: String?) -> Void)? = nil) {
         let fm = FileManager.default
         if fm.fileExists(atPath: localFilePath),
             let fileSize = try? fm.attributesOfItem(atPath: localFilePath)[.size] as? NSNumber,

@@ -8,8 +8,6 @@
 
 import Foundation
 import CoreData
-import AlamofireCoreData
-import JFCore
 
 struct CityListManager {
     // MARK: Properties
@@ -44,7 +42,7 @@ struct CityListManager {
 
     // MARK: City access
 
-    func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
+    func setup(finish: ((_ error: NSError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/cities.json", type: Many<City>.self) { error, _ in
             if let finish = finish {
                 finish(error)

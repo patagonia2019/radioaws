@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import JFCore
-import AlamofireCoreData
 
 class ElDesconciertoController: BaseController {
 
@@ -72,7 +70,7 @@ class ElDesconciertoController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if isClean == false {
             updateModels()
@@ -109,7 +107,7 @@ class ElDesconciertoController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             models[section].isCollapsed = !isCollapsed

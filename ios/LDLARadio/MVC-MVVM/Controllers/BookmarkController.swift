@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFCore
 
 class BookmarkController: BaseController {
 
@@ -76,7 +75,7 @@ class BookmarkController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         let closure = {
 
@@ -192,14 +191,14 @@ class BookmarkController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         model?.isCollapsed = !(model?.isCollapsed ?? false)
 
         finishClosure?(nil)
     }
 
-    func remove(indexPath: IndexPath, finishClosure: ((_ error: JFError?) -> Void)? = nil) -> Bool {
+    func remove(indexPath: IndexPath, finishClosure: ((_ error: NSError?) -> Void)? = nil) -> Bool {
         let object = model(forSection: indexPath.section, row: indexPath.row)
 
         if let model = object as? AudioViewModel,

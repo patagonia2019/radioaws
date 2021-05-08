@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import JFCore
-import AlamofireCoreData
 
 class ArchiveDocController: BaseController {
 
@@ -89,11 +87,11 @@ class ArchiveDocController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Archive.org",
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         guard let doc = ArchiveDoc.search(byIdentifier: mainModel?.id) else {
             DispatchQueue.main.async {
-                finishClosure?(JFError(code: -1, desc: "No Catalog", reason: "There are no audio files", suggestion: "Try another catalog", underError: nil))
+                finishClosure?(NSError(code: -1, desc: "No Catalog", reason: "There are no audio files", suggestion: "Try another catalog", underError: nil))
             }
             return
         }
@@ -116,7 +114,7 @@ class ArchiveDocController: BaseController {
                     }
                     return
                 }
-                var cError: JFError?
+                var cError: NSError?
                 let archiveDoc = ArchiveDoc.search(byIdentifier: doc.identifier)
                 if let detail = detail,
                     detail.extractFiles() == true,
@@ -127,7 +125,7 @@ class ArchiveDocController: BaseController {
                 } else {
                     detail?.remove()
                     archiveDoc?.remove()
-                    cError = JFError(code: -1, desc: "No files", reason: "There are no audio files", suggestion: "Try another catalog", url: doc.urlString(), underError: nil)
+                    cError = NSError(code: -1, desc: "No files", reason: "There are no audio files", suggestion: "Try another catalog", url: doc.urlString(), underError: nil)
                 }
                 CoreDataManager.instance.save()
                 DispatchQueue.main.async {
@@ -137,7 +135,7 @@ class ArchiveDocController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             model?.isCollapsed = !isCollapsed

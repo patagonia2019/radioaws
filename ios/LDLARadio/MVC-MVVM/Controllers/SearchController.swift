@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFCore
 
 class SearchController: BaseController {
 
@@ -87,7 +86,7 @@ class SearchController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String,
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if isClean == false {
             isAlreadyDone = textList.contains(textToSearch)
@@ -230,7 +229,7 @@ class SearchController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         if incrementPage {
             page += 1
             refresh(isClean: true, prompt: "", startClosure: startClosure, finishClosure: finishClosure)

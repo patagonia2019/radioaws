@@ -8,8 +8,6 @@
 
 import Foundation
 import CoreData
-import AlamofireCoreData
-import JFCore
 
 struct StreamListManager {
     // MARK: Properties
@@ -42,7 +40,7 @@ struct StreamListManager {
         }
     }
 
-    func setup(finish: ((_ error: JFError?) -> Void)? = nil) {
+    func setup(finish: ((_ error: NSError?) -> Void)? = nil) {
         RestApi.instance.requestLDLA(usingQuery: "/streams.json", type: Many<Stream>.self) { error1, _ in
             if finish == nil {
                 guard let error = error1 else {

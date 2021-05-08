@@ -10,7 +10,6 @@ import UIKit
 import AVKit
 import AVFoundation
 import MediaPlayer
-import JFCore
 
 class StreamPlaybackManager: NSObject {
     // MARK: Properties
@@ -147,7 +146,7 @@ class StreamPlaybackManager: NSObject {
             try audioSession.setActive(true)
         } catch let error as NSError {
             #if DEBUG
-            let error = JFError(code: Int(errno),
+            let error = NSError(code: Int(errno),
                                 desc: "Error",
                                 reason: "Audio Session failed",
                                 suggestion: "Please check the audio in your device",
@@ -454,7 +453,7 @@ class StreamPlaybackManager: NSObject {
             reload()
             return
         } else {
-            let error = JFError(code: Int(errno),
+            let error = NSError(code: Int(errno),
                                 desc: "Error",
                                 reason: "Player failed",
                                 suggestion: "Please check your internet connection",
@@ -596,7 +595,7 @@ class StreamPlaybackManager: NSObject {
         commandCenter.changeRepeatModeCommand.currentRepeatType = .off
     }
 
-    func changeAudioBookmark(finish: ((_ error: JFError?) -> Void)? = nil) {
+    func changeAudioBookmark(finish: ((_ error: NSError?) -> Void)? = nil) {
         guard let context = RestApi.instance.context else { fatalError() }
         BaseController.isBookmarkChanged = true
 
@@ -717,7 +716,7 @@ protocol AssetPlaybackDelegate: class {
     func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerCurrentItemDidDetectDuration player: AVPlayer, duration: TimeInterval)
 
     /// This is called when the internal AVPlayer in StreamPlaybackManager finds an error.
-    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: JFError, audio: Audio?)
+    func streamPlaybackManager(_ streamPlaybackManager: StreamPlaybackManager, playerError error: NSError, audio: Audio?)
 
 }
 
@@ -830,7 +829,7 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                     }
                     self.reload()
                 } else {
-                    let errorjf = JFError(code: Int(errno),
+                    let errorjf = NSError(code: Int(errno),
                                         desc: "Error",
                                         reason: "Audio Session failed",
                                         suggestion: "Please check the audio in your device",
@@ -843,7 +842,7 @@ extension StreamPlaybackManager: URLSessionDelegate, URLSessionDownloadDelegate 
                     return
                 }
             } catch {
-                let errorjf = JFError(code: Int(errno),
+                let errorjf = NSError(code: Int(errno),
                                     desc: "Error",
                                     reason: "Audio Session failed",
                                     suggestion: "Please check the audio in your device",

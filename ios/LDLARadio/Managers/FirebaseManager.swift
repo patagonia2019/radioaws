@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseAnalytics
-import JFCore
 
 class FirebaseManager {
 

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFCore
 
 class RNAController: BaseController {
 
@@ -90,7 +89,7 @@ class RNAController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Radio Nacional Argentina",
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if isClean == false {
             updateModels()
@@ -237,7 +236,7 @@ class RNAController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if let isCollapsed = model?.isCollapsed {
             if section == 0 {

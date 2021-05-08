@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import JFCore
-import AlamofireCoreData
 
 class ArchiveOrgController: BaseController {
 
@@ -88,7 +86,7 @@ class ArchiveOrgController: BaseController {
 
     override func privateRefresh(isClean: Bool = false,
                                  prompt: String = "Archive.org",
-                                 finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                                 finishClosure: ((_ error: NSError?) -> Void)? = nil) {
         if isClean == false {
             updateModels()
             if !models.isEmpty {
@@ -130,11 +128,11 @@ class ArchiveOrgController: BaseController {
         }
     }
 
-    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+    internal override func expanding(model: SectionViewModel?, section: Int, incrementPage: Bool, startClosure: (() -> Void)? = nil, finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         guard let archiveCollection = ArchiveCollection.search(byIdentifier: model?.id),
             let model = model else {
-            finishClosure?(JFError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
+            finishClosure?(NSError(code: -1, desc: "Where is the catalog?", reason: "The collection is empty", suggestion: "Try to reload the whole catalog.", underError: nil))
             return
         }
         var page = archiveCollection.currentPage
@@ -183,7 +181,7 @@ class ArchiveOrgController: BaseController {
 
     static func search(text: String = "",
                        pageNumber: Int = 1,
-                       finishClosure: ((_ error: JFError?) -> Void)? = nil) {
+                       finishClosure: ((_ error: NSError?) -> Void)? = nil) {
 
         if text.isEmpty {
             finishClosure?(nil)

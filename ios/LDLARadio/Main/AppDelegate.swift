@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import JFCore
-import SwiftSpinner
 
 @UIApplicationMain
  class AppDelegate: UIResponder, UIApplicationDelegate {
