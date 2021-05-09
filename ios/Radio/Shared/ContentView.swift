@@ -8,21 +8,19 @@
 import SwiftUI
 import CoreData
 
+
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Stream.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Stream.name, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Stream>
 
     var body: some View {
         List {
             ForEach(items) { item in
-                if let imageUrl = item.imageUrl {
-                    ImageView(withURL: imageUrl)
-                }
-                Text("\(item.name ?? "")")
+                StreamRow(item: item)
             }
             .onDelete(perform: deleteItems)
         }

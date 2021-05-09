@@ -45,6 +45,8 @@
 		98A6AA65264799310022BD2A /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA59264785CB0022BD2A /* Stream.swift */; };
 		98A6AA6726479B7B0022BD2A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA6626479B7B0022BD2A /* ImageLoader.swift */; };
 		98A6AA6826479B7B0022BD2A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA6626479B7B0022BD2A /* ImageLoader.swift */; };
+		98A6AA6A2647A58A0022BD2A /* StreamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA692647A58A0022BD2A /* StreamRow.swift */; };
+		98A6AA6B2647A58A0022BD2A /* StreamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA692647A58A0022BD2A /* StreamRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +163,7 @@
 		98A6AA59264785CB0022BD2A /* Stream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		98A6AA5F26478EF90022BD2A /* DataImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		98A6AA6626479B7B0022BD2A /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		98A6AA692647A58A0022BD2A /* StreamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +244,7 @@
 			children = (
 				98A6A91B2646D8650022BD2A /* RadioApp.swift */,
 				98A6A91C2646D8650022BD2A /* ContentView.swift */,
+				98A6AA692647A58A0022BD2A /* StreamRow.swift */,
 				98A6AA6626479B7B0022BD2A /* ImageLoader.swift */,
 				98A6AA59264785CB0022BD2A /* Stream.swift */,
 				98A6AA5F26478EF90022BD2A /* DataImporter.swift */,
@@ -657,6 +661,7 @@
 				98A6AA282646DC2E0022BD2A /* RadioTabView.swift in Sources */,
 				98A6AA6026478EF90022BD2A /* DataImporter.swift in Sources */,
 				98A6AA64264799300022BD2A /* Stream.swift in Sources */,
+				98A6AA6A2647A58A0022BD2A /* StreamRow.swift in Sources */,
 				98A6AA5726477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */,
 				98A6AA6726479B7B0022BD2A /* ImageLoader.swift in Sources */,
 				98A6A9472646D8660022BD2A /* RadioApp.swift in Sources */,
@@ -672,6 +677,7 @@
 				98A6AA292646DC2E0022BD2A /* RadioTabView.swift in Sources */,
 				98A6AA6126478EF90022BD2A /* DataImporter.swift in Sources */,
 				98A6AA65264799310022BD2A /* Stream.swift in Sources */,
+				98A6AA6B2647A58A0022BD2A /* StreamRow.swift in Sources */,
 				98A6AA5826477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */,
 				98A6AA6826479B7B0022BD2A /* ImageLoader.swift in Sources */,
 				98A6A9482646D8660022BD2A /* RadioApp.swift in Sources */,
