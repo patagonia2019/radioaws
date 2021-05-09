@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "radio-nacional.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

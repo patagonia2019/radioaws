@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "fa_carrot_solid-1.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "fa_carrot_solid.png",
+      "idiom" : "ipad"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

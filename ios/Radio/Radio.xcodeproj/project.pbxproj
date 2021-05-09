@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		98A6A9382646D8660022BD2A /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9372646D8660022BD2A /* Tests_iOS.swift */; };
 		98A6A9432646D8660022BD2A /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9422646D8660022BD2A /* Tests_macOS.swift */; };
-		98A6A9452646D8660022BD2A /* Radio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9192646D8650022BD2A /* Radio.xcdatamodeld */; };
-		98A6A9462646D8660022BD2A /* Radio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9192646D8650022BD2A /* Radio.xcdatamodeld */; };
 		98A6A9472646D8660022BD2A /* RadioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A91B2646D8650022BD2A /* RadioApp.swift */; };
 		98A6A9482646D8660022BD2A /* RadioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A91B2646D8650022BD2A /* RadioApp.swift */; };
 		98A6A9492646D8660022BD2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A91C2646D8650022BD2A /* ContentView.swift */; };
@@ -31,6 +29,22 @@
 		98A6A9872646D9460022BD2A /* watchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9862646D9460022BD2A /* watchTests.swift */; };
 		98A6A9922646D9460022BD2A /* watchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6A9912646D9460022BD2A /* watchUITests.swift */; };
 		98A6A9962646D9460022BD2A /* watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 98A6A95F2646D9440022BD2A /* watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		98A6AA282646DC2E0022BD2A /* RadioTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA272646DC2E0022BD2A /* RadioTabView.swift */; };
+		98A6AA292646DC2E0022BD2A /* RadioTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA272646DC2E0022BD2A /* RadioTabView.swift */; };
+		98A6AA2B2646F1600022BD2A /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */; };
+		98A6AA2C2646F1600022BD2A /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */; };
+		98A6AA2D2646F1600022BD2A /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */; };
+		98A6AA2E2646F1600022BD2A /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */; };
+		98A6AA4126475B1C0022BD2A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98A6AA4026475B1C0022BD2A /* CloudKit.framework */; };
+		98A6AA4326475B310022BD2A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98A6AA4226475B310022BD2A /* CloudKit.framework */; };
+		98A6AA5726477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA5526477E8D0022BD2A /* LDLARadio.xcdatamodeld */; };
+		98A6AA5826477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA5526477E8D0022BD2A /* LDLARadio.xcdatamodeld */; };
+		98A6AA6026478EF90022BD2A /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA5F26478EF90022BD2A /* DataImporter.swift */; };
+		98A6AA6126478EF90022BD2A /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA5F26478EF90022BD2A /* DataImporter.swift */; };
+		98A6AA64264799300022BD2A /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA59264785CB0022BD2A /* Stream.swift */; };
+		98A6AA65264799310022BD2A /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA59264785CB0022BD2A /* Stream.swift */; };
+		98A6AA6726479B7B0022BD2A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA6626479B7B0022BD2A /* ImageLoader.swift */; };
+		98A6AA6826479B7B0022BD2A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A6AA6626479B7B0022BD2A /* ImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +118,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		98A6A91A2646D8650022BD2A /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		98A6A91B2646D8650022BD2A /* RadioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioApp.swift; sourceTree = "<group>"; };
 		98A6A91C2646D8650022BD2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		98A6A91D2646D8650022BD2A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -139,6 +152,15 @@
 		98A6A98D2646D9460022BD2A /* watchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = watchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A6A9912646D9460022BD2A /* watchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchUITests.swift; sourceTree = "<group>"; };
 		98A6A9932646D9460022BD2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A6AA272646DC2E0022BD2A /* RadioTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTabView.swift; sourceTree = "<group>"; };
+		98A6AA2A2646F1600022BD2A /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		98A6AA3E26475ACD0022BD2A /* Radio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Radio.entitlements; sourceTree = "<group>"; };
+		98A6AA4026475B1C0022BD2A /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		98A6AA4226475B310022BD2A /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		98A6AA5626477E8D0022BD2A /* LDLARadio.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LDLARadio.xcdatamodel; sourceTree = "<group>"; };
+		98A6AA59264785CB0022BD2A /* Stream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
+		98A6AA5F26478EF90022BD2A /* DataImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
+		98A6AA6626479B7B0022BD2A /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A6AA4126475B1C0022BD2A /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A6AA4326475B310022BD2A /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +221,7 @@
 		98A6A9132646D8650022BD2A = {
 			isa = PBXGroup;
 			children = (
+				98A6AA3E26475ACD0022BD2A /* Radio.entitlements */,
 				98A6A9182646D8650022BD2A /* Shared */,
 				98A6A9252646D8660022BD2A /* iOS */,
 				98A6A92C2646D8660022BD2A /* macOS */,
@@ -207,6 +232,7 @@
 				98A6A9852646D9460022BD2A /* watchTests */,
 				98A6A9902646D9460022BD2A /* watchUITests */,
 				98A6A9242646D8660022BD2A /* Products */,
+				98A6AA3F26475B1C0022BD2A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,9 +241,14 @@
 			children = (
 				98A6A91B2646D8650022BD2A /* RadioApp.swift */,
 				98A6A91C2646D8650022BD2A /* ContentView.swift */,
+				98A6AA6626479B7B0022BD2A /* ImageLoader.swift */,
+				98A6AA59264785CB0022BD2A /* Stream.swift */,
+				98A6AA5F26478EF90022BD2A /* DataImporter.swift */,
+				98A6AA272646DC2E0022BD2A /* RadioTabView.swift */,
 				98A6A91D2646D8650022BD2A /* Persistence.swift */,
+				98A6AA382647529C0022BD2A /* database */,
 				98A6A91E2646D8660022BD2A /* Assets.xcassets */,
-				98A6A9192646D8650022BD2A /* Radio.xcdatamodeld */,
+				98A6AA2A2646F1600022BD2A /* Config.xcconfig */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -321,6 +352,23 @@
 				98A6A9932646D9460022BD2A /* Info.plist */,
 			);
 			path = watchUITests;
+			sourceTree = "<group>";
+		};
+		98A6AA382647529C0022BD2A /* database */ = {
+			isa = PBXGroup;
+			children = (
+				98A6AA5526477E8D0022BD2A /* LDLARadio.xcdatamodeld */,
+			);
+			path = database;
+			sourceTree = "<group>";
+		};
+		98A6AA3F26475B1C0022BD2A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98A6AA4226475B310022BD2A /* CloudKit.framework */,
+				98A6AA4026475B1C0022BD2A /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -537,6 +585,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A6AA2B2646F1600022BD2A /* Config.xcconfig in Resources */,
 				98A6A94D2646D8660022BD2A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,6 +594,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A6AA2C2646F1600022BD2A /* Config.xcconfig in Resources */,
 				98A6A94E2646D8660022BD2A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -567,6 +617,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A6AA2D2646F1600022BD2A /* Config.xcconfig in Resources */,
 				98A6A9622646D9450022BD2A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,6 +627,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98A6A97B2646D9460022BD2A /* Preview Assets.xcassets in Resources */,
+				98A6AA2E2646F1600022BD2A /* Config.xcconfig in Resources */,
 				98A6A9782646D9460022BD2A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -601,8 +653,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98A6A9452646D8660022BD2A /* Radio.xcdatamodeld in Sources */,
 				98A6A94B2646D8660022BD2A /* Persistence.swift in Sources */,
+				98A6AA282646DC2E0022BD2A /* RadioTabView.swift in Sources */,
+				98A6AA6026478EF90022BD2A /* DataImporter.swift in Sources */,
+				98A6AA64264799300022BD2A /* Stream.swift in Sources */,
+				98A6AA5726477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */,
+				98A6AA6726479B7B0022BD2A /* ImageLoader.swift in Sources */,
 				98A6A9472646D8660022BD2A /* RadioApp.swift in Sources */,
 				98A6A9492646D8660022BD2A /* ContentView.swift in Sources */,
 			);
@@ -612,8 +668,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98A6A9462646D8660022BD2A /* Radio.xcdatamodeld in Sources */,
 				98A6A94C2646D8660022BD2A /* Persistence.swift in Sources */,
+				98A6AA292646DC2E0022BD2A /* RadioTabView.swift in Sources */,
+				98A6AA6126478EF90022BD2A /* DataImporter.swift in Sources */,
+				98A6AA65264799310022BD2A /* Stream.swift in Sources */,
+				98A6AA5826477E8D0022BD2A /* LDLARadio.xcdatamodeld in Sources */,
+				98A6AA6826479B7B0022BD2A /* ImageLoader.swift in Sources */,
 				98A6A9482646D8660022BD2A /* RadioApp.swift in Sources */,
 				98A6A94A2646D8660022BD2A /* ContentView.swift in Sources */,
 			);
@@ -701,6 +761,7 @@
 /* Begin XCBuildConfiguration section */
 		98A6A94F2646D8660022BD2A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -762,6 +823,7 @@
 		};
 		98A6A9502646D8660022BD2A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98A6AA2A2646F1600022BD2A /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -819,7 +881,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Radio.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -828,6 +892,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = Radio;
 				SDKROOT = iphoneos;
@@ -841,7 +906,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Radio.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -850,6 +917,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = Radio;
 				SDKROOT = iphoneos;
@@ -868,6 +936,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -877,6 +946,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = Radio;
 				SDKROOT = macosx;
@@ -893,6 +963,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -902,6 +973,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio;
 				PRODUCT_NAME = Radio;
 				SDKROOT = macosx;
@@ -1003,6 +1075,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_ASSET_PATHS = "\"watch Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_PREVIEWS = YES;
@@ -1012,6 +1085,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -1027,6 +1101,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_ASSET_PATHS = "\"watch Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				ENABLE_PREVIEWS = YES;
@@ -1036,6 +1111,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -1054,9 +1130,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = $APP_BUILD;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				IBSC_MODULE = watch_Extension;
 				INFOPLIST_FILE = watch/Info.plist;
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1074,9 +1152,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = $APP_BUILD;
 				DEVELOPMENT_TEAM = 27XTSJS68A;
 				IBSC_MODULE = watch_Extension;
 				INFOPLIST_FILE = watch/Info.plist;
+				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobilepatagonia.LDLARadio.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1265,13 +1345,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		98A6A9192646D8650022BD2A /* Radio.xcdatamodeld */ = {
+		98A6AA5526477E8D0022BD2A /* LDLARadio.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				98A6A91A2646D8650022BD2A /* Shared.xcdatamodel */,
+				98A6AA5626477E8D0022BD2A /* LDLARadio.xcdatamodel */,
 			);
-			currentVersion = 98A6A91A2646D8650022BD2A /* Shared.xcdatamodel */;
-			path = Radio.xcdatamodeld;
+			currentVersion = 98A6AA5626477E8D0022BD2A /* LDLARadio.xcdatamodel */;
+			path = LDLARadio.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

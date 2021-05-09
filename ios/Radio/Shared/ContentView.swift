@@ -12,14 +12,17 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Stream.timestamp, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var items: FetchedResults<Stream>
 
     var body: some View {
         List {
             ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                if let imageUrl = item.imageUrl {
+                    ImageView(withURL: imageUrl)
+                }
+                Text("\(item.name ?? "")")
             }
             .onDelete(perform: deleteItems)
         }
@@ -36,7 +39,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(context: viewContext)
+            let newItem = Stream(context: viewContext)
             newItem.timestamp = Date()
 
             do {

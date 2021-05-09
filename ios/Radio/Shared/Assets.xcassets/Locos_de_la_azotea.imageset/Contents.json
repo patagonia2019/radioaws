@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Locos_de_la_azotea.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

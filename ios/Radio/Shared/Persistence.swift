@@ -7,15 +7,19 @@
 
 import CoreData
 
+
 struct PersistenceController {
     static let shared = PersistenceController()
 
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        for i in 0..<10 {
+            let newItem = Stream(context: viewContext)
+            newItem.imageUrl = "http://cdn-radiotime-logos.tunein.com/s172607q.png"
+            newItem.name = "Radio Del Lago BRC #\(i)"
+            newItem.streamUrl = "http://buecrplb01.cienradios.com.ar/825_Del_Lago_32000.aac"
+            newItem.detail = "FM 92.1"
         }
         do {
             try viewContext.save()
@@ -28,13 +32,14 @@ struct PersistenceController {
         return result
     }()
 
-    let container: NSPersistentCloudKitContainer
+    let container = NSPersistentCloudKitContainer(name: "LDLARadio")
 
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "Radio")
+        
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.

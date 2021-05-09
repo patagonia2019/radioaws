@@ -10,10 +10,11 @@ import SwiftUI
 @main
 struct RadioApp: App {
     let persistenceController = PersistenceController.shared
+    let dataImportor = DataImporter(persistentContainer: PersistenceController.shared.container)
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RadioTabView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

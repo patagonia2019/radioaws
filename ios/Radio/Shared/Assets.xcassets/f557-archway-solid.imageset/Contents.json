@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "f557-archway-solid.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "archway-solid.png",
+      "idiom" : "ipad"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

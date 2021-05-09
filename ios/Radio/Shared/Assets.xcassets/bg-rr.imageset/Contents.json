@@ -1,0 +1,20 @@
+{
+  "images" : [
+    {
+      "filename" : "transistor_radio.jpg",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "transistor_radio_portrait.png",
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "transistor_radio_landscape.jpg",
+      "idiom" : "ipad"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

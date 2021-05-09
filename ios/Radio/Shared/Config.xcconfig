@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  Radio
+//
+//  Created by fox on 08/05/2021.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+APP_VERSION=3.0
+APP_BUILD=8
